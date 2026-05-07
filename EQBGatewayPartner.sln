@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37111.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TemenosMicroService", "TemenosMicroService", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Temenos.API", "Temenos.API\Temenos.API.csproj", "{A980EA07-D247-4D03-BAB0-9ECA7D8BEDB5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{4AB2DE2C-D6AB-474F-BBB8-DB77AF603350}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationMicroService", "NotificationMicroService", "{D3CBC923-64CE-4F8E-8955-0C5A91ABB555}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InstapayMicroService", "InstapayMicroService", "{8025DF91-0AF8-494A-AFCE-8CC2D8F8F85A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PesonetMicroService", "PesonetMicroService", "{EACB7568-8971-468C-BD05-F69CE4F6331C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityMicroService", "IdentityMicroService", "{86891588-310A-4429-BDB6-5329C21EF0B8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CardsMicroService", "CardsMicroService", "{54FFF3E3-8363-4B7C-80B1-AE803B3AB4C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A980EA07-D247-4D03-BAB0-9ECA7D8BEDB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A980EA07-D247-4D03-BAB0-9ECA7D8BEDB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A980EA07-D247-4D03-BAB0-9ECA7D8BEDB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A980EA07-D247-4D03-BAB0-9ECA7D8BEDB5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A980EA07-D247-4D03-BAB0-9ECA7D8BEDB5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38EF8E1E-32BA-4494-BF7E-7A614F4DE9E0}
+	EndGlobalSection
+EndGlobal
