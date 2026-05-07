@@ -1,8 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using System.Data;
-
 using System.Text;
+using System.Text.Json;
 using Temenos.API.Models;
 using Temenos.API.Sevices.IService;
 using Model = Temenos.API.Models;
@@ -14,15 +14,12 @@ namespace Temenos.API.Sevices
     public class TransactionService(IConfiguration configuration, ILogger<TransactionService> logger) : ITransactionService
     {
         private readonly ILogger<TransactionService> _logger = logger;
-        //private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
         private readonly string _conString = configuration["ConnectionStrings:Temenos"]!;
         private readonly string _ftEndpoint = configuration["Endpoints:FundTransfer"]!;
         private readonly string _reversalEndpoint = configuration["Endpoints:Reversal"]!;
         public async Task<Response.Transaction> FundTransfer(string uId, string companyId, Request.Transaction dtoRequest)
         {
             Response.Transaction dtoResponse = new();
-
-           
 
             try
             {
@@ -45,9 +42,14 @@ namespace Temenos.API.Sevices
                     }
                 };
 
-                _logger.LogInformation("Initiating FundTransfer | uniqueIdentifier: {uId}  | Payload: {@request}", uId, request);
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                };
 
-                StringContent? content = new(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+                StringContent? content = new(System.Text.Json.JsonSerializer.Serialize(request, options), Encoding.UTF8, "application/json");
+
+                _logger.LogInformation("Initiating FundTransfer | uniqueIdentifier: {uId}  | Payload: {@request}", uId, System.Text.Json.JsonSerializer.Serialize(request, options));
 
                 using HttpClient? _client = new();
                 _client.Timeout = Timeout.InfiniteTimeSpan;
@@ -67,13 +69,13 @@ namespace Temenos.API.Sevices
 
                 dtoResponse = new()
                 {
-                    Status = response.Header.Status.ToUpper(),
-                    ReferenceNo = response.Header.Status.ToUpper() == "SUCCESS" ? response.Header.Id : null,
-                    Code = response.Header.Status.ToUpper() != "SUCCESS" ? response.Error.ErrorDetails[0].Code : null,
-                    Message = response.Header.Status.ToUpper() != "SUCCESS" ? response.Error.ErrorDetails[0].Code : null
+                    Status = response.Header.Status.Equals("SUCCESS", StringComparison.CurrentCultureIgnoreCase) ? response.Header.Status.ToUpper() : "FAILED",
+                    ReferenceNo = response.Header.Status.Equals("SUCCESS", StringComparison.CurrentCultureIgnoreCase) ? response.Header.Id : null,
+                    Code = !response.Header.Status.Equals("SUCCESS", StringComparison.CurrentCultureIgnoreCase) ? response.Error.ErrorDetails[0].Code : null,
+                    Message = !response.Header.Status.Equals("SUCCESS", StringComparison.CurrentCultureIgnoreCase) ? response.Error.ErrorDetails[0].Message : null
                 };
 
-                _logger.LogInformation("FundTransfer {Status} | uniqueIdentifier: {uId} | Response: {@response}", dtoResponse.Status, uId, response);
+                _logger.LogInformation("FundTransfer {Status} | uniqueIdentifier: {uId} | Response: {response}", dtoResponse.Status, uId, result);
 
             }
             catch (TaskCanceledException ex)
@@ -130,7 +132,15 @@ namespace Temenos.API.Sevices
 
                 TransactionResponse response = JsonConvert.DeserializeObject<Model.TransactionResponse>(result)!;
 
-                _logger.LogInformation("Reversal {Status} | Reference No.: {ReferenceNo} | Response: {@response}", dtoResponse.Status, referenceNo, response);
+                dtoResponse = new()
+                {
+                    Status = response.Header.Status.Equals("SUCCESS", StringComparison.CurrentCultureIgnoreCase) ? response.Header.Status.ToUpper() : "FAILED",
+                    ReferenceNo = response.Header.Status.Equals("SUCCESS", StringComparison.CurrentCultureIgnoreCase) ? response.Header.Id : null,
+                    Code = !response.Header.Status.Equals("SUCCESS", StringComparison.CurrentCultureIgnoreCase) ? response.Error.ErrorDetails[0].Code : null,
+                    Message = !response.Header.Status.Equals("SUCCESS", StringComparison.CurrentCultureIgnoreCase) ? response.Error.ErrorDetails[0].Message : null
+                };
+
+                _logger.LogInformation("Reversal {Status} | Reference No.: {ReferenceNo} | Response: {response}", dtoResponse.Status, referenceNo, result);
 
             }
             catch (TaskCanceledException ex)
@@ -169,8 +179,10 @@ namespace Temenos.API.Sevices
 
             return dtoResponse;
         }
-        public async Task<Response.TransactionStatus?> Status(string uId)
+        public async Task<(Response.TransactionStatus? TransactionStatus, string resultMessage)> Status(string uId)
         {
+            var resultMessage = "";
+
             _logger.LogInformation("Querying FT Status for UID: {UId}", uId);
 
             string query = @"SELECT RECID AS UID, MESSAGE_KEY, TRANS_REFERENCE, DATE_TIME_RECD AS DATE_TIME_RECEIVED, 
@@ -189,9 +201,11 @@ namespace Temenos.API.Sevices
 
                 using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
+                var statusResponse = new Response.TransactionStatus();
+
                 if (await reader.ReadAsync())
                 {
-                    var statusResponse = new Response.TransactionStatus()
+                    statusResponse = new Response.TransactionStatus()
                     {
                         UID = reader["UID"].ToString()!,
                         MESSAGE_KEY = reader["MESSAGE_KEY"].ToString()!,
@@ -204,14 +218,18 @@ namespace Temenos.API.Sevices
                     };
 
                     _logger.LogInformation("FT Status successfully retrieved for UID: {UId} | Response: {@Response}", uId, statusResponse);
-
-                    return statusResponse;
                 }
 
-                _logger.LogWarning("No FT Status record found in database for UID: {UId}", uId);
-
-                return null;
-
+                if (!string.IsNullOrEmpty(statusResponse.UID))
+                {
+                    _logger.LogInformation("FT Status successfully retrieved for UID: {UId} | Response: {@Response}", uId, statusResponse);
+                    return (statusResponse, resultMessage);
+                }
+                else
+                {
+                    _logger.LogWarning("No FT Status record found in database for UID: {UId}", uId);
+                    return (null, resultMessage);
+                }
             }
             catch (Exception ex)
             {

@@ -7,5 +7,6 @@ namespace Temenos.API.Sevices.IService
     {
         Task<Response.Transaction> FundTransfer(string uId, string companyId, Request.Transaction request);
         Task<Response.Transaction> Reversal(string companyId, string referenceNo);
+        Task<(Response.TransactionStatus? TransactionStatus, string resultMessage)> Status(string uId);
     }
 }

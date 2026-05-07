@@ -35,7 +35,7 @@ namespace Temenos.API.Controllers
             }
         }
 
-        [HttpPost("reverse")]
+        [HttpDelete("reverse")]
         public async Task<IActionResult> Reversal(string companyId, string referenceNo)
         {
             try
@@ -50,6 +50,25 @@ namespace Temenos.API.Controllers
                 {
                     return BadRequest(result);
                 }
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("status")]
+        public async Task<IActionResult> Status(string uId)
+        {
+            try
+            {
+                var result = await _transactionService.Status(uId);
+
+                if (result.resultMessage == "SUCCESS")
+                    return Ok(result.TransactionStatus);
+                else
+                    return Ok("No record found");
 
             }
             catch (Exception ex)

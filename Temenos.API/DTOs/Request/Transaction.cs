@@ -6,11 +6,16 @@ namespace Temenos.API.DTOs.Request
     {
         [Required]
         public string TransactionType { get; set; } = string.Empty;
+        [Required]
         public string DebitAmount { get; set; } = string.Empty;
+        [Required]
         public string DebitValueDate { get; set; } = string.Empty;
+        [Required]
         public string DebitAccountNumber { get; set; } = string.Empty;
         public string DebitCurrency { get; set; } = "PHP";
+        [Required]
         public string CreditValueDate { get; set; } = string.Empty;
+        [Required]
         public string CreditAccountNumber { get; set; } = string.Empty;
         public string CreditCurrency { get; set; } = "PHP";
         public string OrderingCust { get; set; } = "PAYMENT";
