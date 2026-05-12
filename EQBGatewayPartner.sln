@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.37111.16
+# Visual Studio Version 18
+VisualStudioVersion = 18.5.11723.231
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TemenosMicroService", "TemenosMicroService", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -19,6 +19,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityMicroService", "Ide
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CardsMicroService", "CardsMicroService", "{54FFF3E3-8363-4B7C-80B1-AE803B3AB4C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.Web", "Gateway\Web\Gateway.Web.csproj", "{3B162744-75CA-4D79-B5F2-F2094AD63234}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.Helper", "Gateway\Helper\Gateway.Helper.csproj", "{A8C5613F-8F32-4F62-BA48-D461E469BBD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.Data", "Gateway\Data\Gateway.Data.csproj", "{4FB32476-C45E-4B61-A3F5-7AA1648EE911}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.BLL", "Gateway\BLL\Gateway.BLL.csproj", "{648F81EF-5F34-400C-AC11-8C05AC5322B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,12 +37,32 @@ Global
 		{A980EA07-D247-4D03-BAB0-9ECA7D8BEDB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A980EA07-D247-4D03-BAB0-9ECA7D8BEDB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A980EA07-D247-4D03-BAB0-9ECA7D8BEDB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B162744-75CA-4D79-B5F2-F2094AD63234}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B162744-75CA-4D79-B5F2-F2094AD63234}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B162744-75CA-4D79-B5F2-F2094AD63234}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B162744-75CA-4D79-B5F2-F2094AD63234}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8C5613F-8F32-4F62-BA48-D461E469BBD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8C5613F-8F32-4F62-BA48-D461E469BBD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8C5613F-8F32-4F62-BA48-D461E469BBD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8C5613F-8F32-4F62-BA48-D461E469BBD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FB32476-C45E-4B61-A3F5-7AA1648EE911}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FB32476-C45E-4B61-A3F5-7AA1648EE911}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FB32476-C45E-4B61-A3F5-7AA1648EE911}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FB32476-C45E-4B61-A3F5-7AA1648EE911}.Release|Any CPU.Build.0 = Release|Any CPU
+		{648F81EF-5F34-400C-AC11-8C05AC5322B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{648F81EF-5F34-400C-AC11-8C05AC5322B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{648F81EF-5F34-400C-AC11-8C05AC5322B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{648F81EF-5F34-400C-AC11-8C05AC5322B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A980EA07-D247-4D03-BAB0-9ECA7D8BEDB5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{3B162744-75CA-4D79-B5F2-F2094AD63234} = {4AB2DE2C-D6AB-474F-BBB8-DB77AF603350}
+		{A8C5613F-8F32-4F62-BA48-D461E469BBD5} = {4AB2DE2C-D6AB-474F-BBB8-DB77AF603350}
+		{4FB32476-C45E-4B61-A3F5-7AA1648EE911} = {4AB2DE2C-D6AB-474F-BBB8-DB77AF603350}
+		{648F81EF-5F34-400C-AC11-8C05AC5322B1} = {4AB2DE2C-D6AB-474F-BBB8-DB77AF603350}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38EF8E1E-32BA-4494-BF7E-7A614F4DE9E0}

@@ -1,0 +1,109 @@
+﻿@page
+@model Portal.Web.Pages.LoginModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Portal - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+
+    <link rel="shortcut icon" href="@Url.Content("~/images/eqb_logo_small.png")" type="image/png" />
+
+    <!-- App css --> 
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <link href="~/css/icons.min.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <link href="~/css/app.min.css" rel="stylesheet" type="text/css"  asp-append-version="true"/>
+    <link href="~/css/site.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+    <link href="~/css/login.css" rel="stylesheet" type="text/css" asp-append-version="true" />
+</head>
+
+<body>
+    @Html.AntiForgeryToken()
+    <div class="d-flex flex-column min-vh-100 p-5">
+        <section class="flex-grow-1 d-flex justify-content-center align-items-center">
+            <div class="container-fluid">
+                <div class="row d-flex align-items-center">
+                    <!-- Logo Section -->
+                    <div class="col-lg-8 d-flex flex-column flex-lg-row align-items-center justify-content-center logo-section row pb-3">
+                        @*           <img src="~/images/EQB_Logo_HD.png"
+                                 class="img-fluid logo-img w-50" > *@
+
+
+
+                        @*   <img src="~/images/EQB_Banner_text.png"
+                             class="img-fluid banner-img w-50"
+                                 alt="Equicom Savings Bank"> *@
+                    </div>
+
+                    <!-- Login Form Section -->
+                    <div class="col-lg-4">
+                        <div class="login-form"> 
+                           @*  <h1 class="text-center">PORTAL APPLICATION</h1> *@
+         @*                    <h1 class="text-center"><badge class="badge bg-danger ">EQB PORTAL</badge></h1> *@
+           @*                  <img src="~/images/EQB_Banner.png"
+                                 class="img-fluid logo-img w-50 text-center">
+                            <div class="divider">
+                                <span></span>
+                            </div> *@
+                            <img id="login-img">
+                            <h1 class="text-center"><b>Sign in</b></h1>
+                            <span><br />Please sign in to access the <b>EQB Portal</b><br/>&nbsp;</span>
+                            <form method="post" action="" autocomplete=" ">
+                                <div class="mb-3">
+                                    <label>Username</label>
+                                    @Html.TextBoxFor(m => Model.Username, new { @class = "form-control", placeholder = "", required = "required", autocomplete = "new-username" })
+                                </div>
+                                <div class="mb-3">
+                                    <label>Password</label>
+                                    @Html.PasswordFor(m => Model.Password, new { @class = "form-control", placeholder = "**********", required = "required", autocomplete = "new-password" })
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        @* @Html.CheckBoxFor(m => m.IsLDAP, new { @class = "form-check-input", id = "IsLDAP" })
+                                        <label for="rememberMe">AD Authentication</label> *@
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-danger w-100">LOGIN <i class="fas fa-sign-in-alt ms-1"></i></button> 
+                            </form> 
+                            
+                            @if (!string.IsNullOrEmpty(Model.Message))
+                            {
+                                <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center p-3 rounded-3 shadow-sm mt-3" role="alert">
+                                    <i class="fas fa-exclamation-circle me-2" style="color: #b02a37; font-size: 1.5rem;"></i>
+                                    <span>@Model.Message</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </section>
+        <!-- Footer Section -->
+        <footer class="text-center py-3">
+            &copy; 
+           @*  <script>
+                       document.write(new Date().getFullYear())
+            </script>  *@
+            2025
+            <span class="text-danger">Equicom Savings Bank</span> All Rights Reserved.
+        </footer>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>  
+    <script>
+        // Refresh page every 50 minutes (3000000 ms)
+        setInterval(() => {
+            console.log("Refreshing login page to keep it valid...");
+            window.location.reload(); // simple, safe page reload
+        }, 15 * 60 * 1000); // 50 minutes
+    </script>
+</body>
+</html>
