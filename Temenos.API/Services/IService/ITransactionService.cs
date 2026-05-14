@@ -1,7 +1,7 @@
 ﻿using Request = Temenos.API.DTOs.Request;
 using Response = Temenos.API.DTOs.Response;
 
-namespace Temenos.API.Sevices.IService
+namespace Temenos.API.Services.IService
 {
     public interface ITransactionService
     {

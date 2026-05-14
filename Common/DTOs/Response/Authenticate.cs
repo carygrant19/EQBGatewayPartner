@@ -1,4 +1,4 @@
-﻿namespace Temenos.API.DTOs.Response
+﻿namespace Common.DTOs.Response
 {
     public class Authenticate
     {

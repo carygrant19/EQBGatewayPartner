@@ -4,12 +4,12 @@ using System.Data;
 using System.Text;
 using System.Text.Json;
 using Temenos.API.Models;
-using Temenos.API.Sevices.IService;
+using Temenos.API.Services.IService;
 using Model = Temenos.API.Models;
 using Request = Temenos.API.DTOs.Request;
 using Response = Temenos.API.DTOs.Response;
 
-namespace Temenos.API.Sevices
+namespace Temenos.API.Services
 {
     public class TransactionService(IConfiguration configuration, ILogger<TransactionService> logger) : ITransactionService
     {

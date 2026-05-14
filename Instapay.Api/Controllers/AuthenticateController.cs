@@ -2,14 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Request = Common.DTOs.Request;
 
-namespace Temenos.API.Controllers
+namespace Instapay.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AuthenticateController(IAuthenticateService authenticateService) : ControllerBase
     {
         private readonly IAuthenticateService _authenticateService = authenticateService;
-        
+
         [HttpPost]
         [Route("")]
         [ApiExplorerSettings(IgnoreApi = true)]

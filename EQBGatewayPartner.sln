@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.37111.16
+# Visual Studio Version 18
+VisualStudioVersion = 18.5.11723.231
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TemenosMicroService", "TemenosMicroService", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -15,9 +15,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InstapayMicroService", "Ins
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PesonetMicroService", "PesonetMicroService", "{EACB7568-8971-468C-BD05-F69CE4F6331C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityMicroService", "IdentityMicroService", "{86891588-310A-4429-BDB6-5329C21EF0B8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CardsMicroService", "CardsMicroService", "{54FFF3E3-8363-4B7C-80B1-AE803B3AB4C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pesonet.API", "Pesonet.API\Pesonet.API.csproj", "{37F0DE1B-F6E1-4A8B-9793-7966FEB81903}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedServices", "SharedServices", "{8F1E0032-5933-4969-BB80-1BA54F7FA091}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{9E2F8C63-30A9-460B-9872-609156E714FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Instapay.Api", "Instapay.Api\Instapay.Api.csproj", "{29AA6A46-84FF-4148-9CC2-C4669B1C1842}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,12 +35,27 @@ Global
 		{A980EA07-D247-4D03-BAB0-9ECA7D8BEDB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A980EA07-D247-4D03-BAB0-9ECA7D8BEDB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A980EA07-D247-4D03-BAB0-9ECA7D8BEDB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37F0DE1B-F6E1-4A8B-9793-7966FEB81903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37F0DE1B-F6E1-4A8B-9793-7966FEB81903}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37F0DE1B-F6E1-4A8B-9793-7966FEB81903}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37F0DE1B-F6E1-4A8B-9793-7966FEB81903}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E2F8C63-30A9-460B-9872-609156E714FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E2F8C63-30A9-460B-9872-609156E714FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E2F8C63-30A9-460B-9872-609156E714FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E2F8C63-30A9-460B-9872-609156E714FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29AA6A46-84FF-4148-9CC2-C4669B1C1842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29AA6A46-84FF-4148-9CC2-C4669B1C1842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29AA6A46-84FF-4148-9CC2-C4669B1C1842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29AA6A46-84FF-4148-9CC2-C4669B1C1842}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A980EA07-D247-4D03-BAB0-9ECA7D8BEDB5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{37F0DE1B-F6E1-4A8B-9793-7966FEB81903} = {EACB7568-8971-468C-BD05-F69CE4F6331C}
+		{9E2F8C63-30A9-460B-9872-609156E714FC} = {8F1E0032-5933-4969-BB80-1BA54F7FA091}
+		{29AA6A46-84FF-4148-9CC2-C4669B1C1842} = {8025DF91-0AF8-494A-AFCE-8CC2D8F8F85A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38EF8E1E-32BA-4494-BF7E-7A614F4DE9E0}

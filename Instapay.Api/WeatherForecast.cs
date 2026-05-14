@@ -1,4 +1,4 @@
-namespace Temenos.API
+namespace Instapay.Api
 {
     public class WeatherForecast
     {

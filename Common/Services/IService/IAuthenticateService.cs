@@ -1,7 +1,7 @@
-﻿using Request = Temenos.API.DTOs.Request;
-using Response = Temenos.API.DTOs.Response;
+﻿using Request = Common.DTOs.Request;
+using Response = Common.DTOs.Response;
 
-namespace Temenos.API.Sevices.IService
+namespace Common.Services.IService
 {
     public interface IAuthenticateService
     {

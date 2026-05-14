@@ -1,16 +1,18 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Common.Services.IService;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Temenos.API.Sevices.IService;
-using Request = Temenos.API.DTOs.Request;
-using Response = Temenos.API.DTOs.Response;
+using Request = Common.DTOs.Request;
+using Response = Common.DTOs.Response;
 
-namespace Temenos.API.Sevices
+namespace Common.Services
 {
-    public class AuthenticateService(IConfiguration configuration, ILogger<TransactionService> logger) : IAuthenticateService
+    public class AuthenticateService(IConfiguration configuration, ILogger<AuthenticateService> logger) : IAuthenticateService
     {
-        private readonly ILogger<TransactionService> _logger = logger;
+        private readonly ILogger<AuthenticateService> _logger = logger;
 
         public async Task<Response.Authenticate> Authenticate(Request.Authenticate model)
         {
@@ -75,6 +77,7 @@ namespace Temenos.API.Sevices
         }
 
         #endregion
+
 
     }
 }

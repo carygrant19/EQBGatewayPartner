@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Temenos.API.Sevices.IService;
+using Temenos.API.Services.IService;
 using Request = Temenos.API.DTOs.Request;
 
 namespace Temenos.API.Controllers

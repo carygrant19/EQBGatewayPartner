@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Temenos.API.DTOs.Request
+namespace Common.DTOs.Request
 {
     public class Authenticate
     {
