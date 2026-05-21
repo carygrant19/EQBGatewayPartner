@@ -1,4 +1,4 @@
-﻿using Gateway.Helper;
+﻿using Gateway.BLL.Helper;
 using Response = Gateway.BLL.DTO.Response;
 using Request = Gateway.BLL.DTO.Request;
 using Model = Gateway.Data.Models;
@@ -6,8 +6,10 @@ using Microsoft.Extensions.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Transactions;
-using Newtonsoft.Json;
-using Microsoft.EntityFrameworkCore; 
+using Newtonsoft.Json; 
+using Gateway.BLL.Services.IService;
+using Gateway.BLL.Services.IServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gateway.BLL.Services
 {
@@ -18,7 +20,7 @@ namespace Gateway.BLL.Services
         , IRepository<Model.UserRole> userRoleRepository
         , IRepository<Model.PasswordHistory> passwordHistoryRepository
         , IMailerService mailerService
-        , ILogService logService) //: IUserService
+        , ILogService logService) : IUserService
 
     {
 
@@ -401,10 +403,10 @@ namespace Gateway.BLL.Services
                         IsLocked = Convert.ToBoolean(u.Status),
                         UserRoles = u.UserRoles!.Select(userRole => new Response.UserRole
                         {
-                            Id = StringManipulation.Encrypt(userRole.Id.ToString(), _encryptionKey),
+                            Id = userRole.Id.ToString(),
                             UserId = userRole.Id.ToString(),
                             Username = u.Username!,
-                            RoleId = StringManipulation.Encrypt(userRole.RoleId.ToString(), _encryptionKey),
+                            RoleId = userRole.RoleId.ToString(),
                             RoleCode = userRole.Role!.Code,
                             RoleDesc = userRole.Role.Description,
                         }).ToList(),
@@ -839,7 +841,7 @@ namespace Gateway.BLL.Services
                     user.ImageContent = model.ImageContent;
                     user.ImageContentThumbnail = model.ImageContent != null ? ResizeImageToThumbnail(model.ImageContent, 100, 100) : null;
                     user.ImageType = model.ImageType;
-                    user.UpdatedBy = model.Username;
+                    user.UpdatedBy = operatorId;
                     user.UpdatedDate = DateTime.Now;
 
 
@@ -1055,7 +1057,7 @@ namespace Gateway.BLL.Services
                     user.PasswordAttempt = 0;
                     user.Status = 0;
                     user.DefaultPassword = false;
-                    user.UpdatedBy = model.OpUserId;
+                    user.UpdatedBy = user.Id;
                     user.UpdatedDate = DateTime.Now;
 
                     await _repository.UpdateAsync(user);
@@ -1158,7 +1160,7 @@ namespace Gateway.BLL.Services
                     user.Status = 0;
                     user.PasswordAttempt = 0;
                     user.DefaultPassword = true;
-                    user.UpdatedBy = model.OpUserId;
+                    user.UpdatedBy = user.Id;
                     user.UpdatedDate = DateTime.Now;
 
 
@@ -1246,7 +1248,7 @@ namespace Gateway.BLL.Services
                     });
                     user.PasswordAttempt = 0;
                     user.Status = 0;
-                    user.UpdatedBy = model.OpUserId;
+                    user.UpdatedBy = user.Id;
                     user.UpdatedDate = DateTime.Now;
 
                     await _repository.UpdateAsync(user);

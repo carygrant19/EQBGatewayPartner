@@ -1,52 +1,220 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-startbar="dark" data-bs-theme="light">
+
 <head>
+     
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Web</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Web.styles.css" asp-append-version="true" />
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    <title>Portal - @ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon --> 
+    <link rel="shortcut icon" type="image/png" href="@Url.Content("~/images/eqb_logo_small.png")">
+   
+    <!-- App css --> 
+      
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/cropper/dist/cropper.css" rel="stylesheet" />
+    <link href="~/lib/cropper/dist/crop_main.css" rel="stylesheet" />
+    <link href="~/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet"/>
+    <link href="~/lib/simple-datatables/style.css" rel="stylesheet" type="text/css" />   
+    <link href="~/lib/air-datepicker/air-datepicker.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" type="text/css" asp-append-version="true" /> 
+
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script> 
+    <script src="~/lib/parsleyjs/parsley.min.js"></script>
+    <script src="~/lib/vue/vue.global.prod.min.js"></script>
+
+    <script src="~/lib/axios/axios.min.js"></script>
+   
+    <script type="text/javascript">
+        var appUrl = '@HttpContextAccessor.HttpContext!.Session.GetString("AppUrl")';
+        var auth = '@HttpContextAccessor.HttpContext.Session.GetString("Authenticated")';
+        var allowedSpecialChar = '@HttpContextAccessor.HttpContext.Session.GetString("SPCCHRALW")';
+        var scRegex = '^$|^[a-zA-Z0-9 ' + allowedSpecialChar + 'ñÑ]+$';
+    </script> 
+</head> 
+@Html.AntiForgeryToken()
+<body style="background-color: var(--bs-body-bg);"> 
+ 
+    <!-- Modal -->
+    <div id="profileModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <form name="profileModal" method="post" enctype="multipart/form-data">
+                <div class="modal-content shadow-sm rounded-4">
+                    <!-- Header -->
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title">
+                            <i class="fas fa-image me-2"></i> Update Profile Image
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <!-- Image container -->
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <div class="img-container text-center border rounded-3 p-2 bg-light">
+                                        <img id="image" class="img-fluid rounded shadow-sm"
+                                             style="max-width: 100%; display: none;"
+                                             src="@HttpContextAccessor.HttpContext!.Session.GetString("AppUrl")/Home?handler=UserProfileImage&timestamp=@DateTime.UtcNow.Ticks"
+                                             alt="Picture">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Preview + Tools -->
+                            <div class="row g-3">
+                                <div class="col-md-3 text-center">
+                                    <label class="fw-bold mb-2">Preview</label>
+                                    <div class="img-preview preview-lg border rounded-3 bg-light" style="width: 100%; height: 150px;"></div>
+                                </div>
+
+                                <div class="col-md-9 docs-buttons">
+                                    <label class="fw-bold mb-2 d-block">Tools</label>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <!-- Cropper Buttons (with tooltips) -->
+                                        <button type="button" class="btn btn-outline-primary" data-method="setDragMode" data-option="move" data-bs-toggle="tooltip" title="Move">
+                                            <i class="fas fa-arrows-alt"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary" data-method="setDragMode" data-option="crop" data-bs-toggle="tooltip" title="Crop">
+                                            <i class="fas fa-crop"></i>
+                                        </button>
+
+                                        <button type="button" class="btn btn-outline-primary" data-method="zoom" data-option="0.1" data-bs-toggle="tooltip" title="Zoom In">
+                                            <i class="fas fa-search-plus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary" data-method="zoom" data-option="-0.1" data-bs-toggle="tooltip" title="Zoom Out">
+                                            <i class="fas fa-search-minus"></i>
+                                        </button>
+
+                                        <button type="button" class="btn btn-outline-primary" data-method="move" data-option="-10" data-second-option="0" data-bs-toggle="tooltip" title="Move Left">
+                                            <i class="fas fa-arrow-left"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary" data-method="move" data-option="10" data-second-option="0" data-bs-toggle="tooltip" title="Move Right">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary" data-method="move" data-option="0" data-second-option="-10" data-bs-toggle="tooltip" title="Move Up">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary" data-method="move" data-option="0" data-second-option="10" data-bs-toggle="tooltip" title="Move Down">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </button>
+
+                                        <button type="button" class="btn btn-outline-primary" data-method="scaleX" data-option="-1" data-bs-toggle="tooltip" title="Flip Horizontal">
+                                            <i class="fas fa-arrows-alt-h"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary" data-method="scaleY" data-option="-1" data-bs-toggle="tooltip" title="Flip Vertical">
+                                            <i class="fas fa-arrows-alt-v"></i>
+                                        </button>
+
+                                        <button type="button" class="btn btn-outline-primary" data-method="disable" data-bs-toggle="tooltip" title="Disable Cropper">
+                                            <i class="fas fa-lock"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary" data-method="enable" data-bs-toggle="tooltip" title="Enable Cropper">
+                                            <i class="fas fa-lock-open"></i>
+                                        </button>
+
+                                        <button type="button" class="btn btn-outline-warning" data-method="reset" data-bs-toggle="tooltip" title="Reset">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Upload -->
+                            <div class="row mt-4">
+                                <div class="col-12 text-center">
+                                    <label class="btn btn-primary">
+                                        <i class="fas fa-upload me-2"></i> Upload image
+                                        <input type="file" name="file" id="inputImage" accept="image/*" hidden>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="DestroyCropper()" data-bs-dismiss="modal">
+                            <i class="fas fa-times-circle me-1"></i> Close
+                        </button>
+                        <button type="button" class="btn btn-success btn-sm" onclick="UploadProfileImage()">
+                            <i class="fas fa-check-circle me-1"></i> Submit
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+            </form>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Web - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
+    <div class="page-wrapper">  
+        <partial name="_Header" />
+        <partial name="_Sidebar" />
+        <div class="page-content"> 
+            <div class="pagePreloader" style="display:none;">
+                <div class="loader8"></div>
+            </div>
+            <div class="contentBody pt-3" style="visibility:hidden;">
+                <div class="preloader" style="display:none">
+                    <div class="loader1"></div>
+                </div>
+                @RenderBody()
+               
+            </div>
+            
+            <partial name="_Footer"></partial>
+        </div>  
+    </div>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(function () {
+            UpdateActivity();
+        });
+        $(document).ready(function () {
+            $("body").tooltip({
+                selector: '[data-tooltip=tooltip]',
+                placement: 'top',
+                trigger: 'hover'
+            });
+        });
+
+        //$.widget.bridge('uibutton', $.ui.button)
+    </script>
+
+    <script src="~/lib/air-datepicker/air-datepicker.js"></script>
+    <script src="~/lib/cropper/dist/cropper.js"></script>
+    <script src="~/lib/cropper/dist/jquery-cropper.js"></script>
+    <script src="~/lib/cropper/dist/customcontrol.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/file-saver/file-saver.js"></script>
+    <script src="~/lib/numeral/numeral.js"></script>
+    <script src="~/lib/simplebar/simplebar.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script> 
+    <script src="~/lib/jquery-twbspagination/jquery.twbspagination.js"></script>
+    
+    <script src="~/js/app/directive/validation.js" asp-append-version="true"></script>
+    <script src="~/js/app/directive/control.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/app.js" asp-append-version="true"></script> 
+    @RenderSection("scripts", false) 
 
-    @await RenderSectionAsync("Scripts", required: false)
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+
+<script>
+
+</script>
+
 </body>
 </html>

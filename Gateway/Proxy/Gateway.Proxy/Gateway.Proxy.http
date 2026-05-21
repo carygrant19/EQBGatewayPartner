@@ -1,0 +1,6 @@
+@Gateway.Proxy_HostAddress = http://localhost:5225
+
+GET {{Gateway.Proxy_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

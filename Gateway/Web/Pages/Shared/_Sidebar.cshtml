@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Http
+
+@inject IHttpContextAccessor HttpContextAccessor
+
+<div class="startbar d-print-none">
+    <!-- LOGO -->
+  
+    
+    <!--end logo-->
+    <div class="startbar-menu">
+       
+        <div class="startbar-collapse" id="startbarCollapse" data-simplebar>
+            <div class="brand text-light font-weight-bold fixed-top bg-danger" style="margin-left: -1rem; width:auto; margin-right: -1rem">
+                <a href="/Home" class="nav-link logo">
+                    <span>
+                        <img src="~/images/EQB_Logo_Inverted.png" alt="Equicom Savings" class="thumb-md logo-light">
+                        <img src="~/images/EQB_Logo.png" alt="Equicom Savings" class="thumb-md logo-dark">
+                    </span>
+                </a>
+                @*<span class="brand-text font-weight-bold text-sm pl-3">EQUICOM SAVINGS</span> *@
+                &nbsp;&nbsp;&nbsp;
+                <div class="mt-2 mb-2" style="margin-left: -1rem">
+                    <a href="/Home" class="nav-link logo">
+                        <span> 
+                            <img src="~/images/EQB_Banner_text_Inverted.png" alt="Equicom Savings" class="img-fluid logo-light" style="width:70%">
+                            <img src="~/images/EQB_Banner_text.png" alt="Equicom Savings" class="img-fluid logo-dark" style="width:70%">
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <div class="d-flex align-items-start flex-column w-100">
+               
+             @*    <div class="user-panel mt-3 pb-1 pl-1 d-flex">
+                    <div class="image">
+                        <img id="profileImg" src="@HttpContextAccessor.HttpContext!.Session.GetString("AppUrl")/Home?handler=UserProfileImage&timestamp=@DateTime.UtcNow.Ticks" class="rounded-circle thumb-md" alt="Profile Image" style="cursor:pointer; height:50px; width:50px;">
+                    </div>
+                    <div class="info p-2">
+                        <a href="" class="nav-link d-block text-xs">
+                            <b style="font-size:.8rem">@HttpContextAccessor.HttpContext.Session.GetString("FullName")</b>
+                        </a>
+                    </div>
+                </div> *@
+                @if (@ViewData["Navigation"] != null)
+                { 
+                    @Html.Raw(@ViewData["Navigation"]) 
+                }
+            </div>
+        </div> 
+    </div>
+</div>
+<div class="startbar-overlay d-print-none"></div>

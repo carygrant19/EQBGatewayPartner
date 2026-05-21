@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Vue Web + API",
+    "Projects": [
+      {
+        "Path": "Gateway\\API\\Gateway.API\\Gateway.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Gateway\\Admin\\Gateway.Admin\\Gateway.Admin.esproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

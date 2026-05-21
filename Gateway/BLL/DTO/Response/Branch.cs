@@ -19,9 +19,7 @@ namespace Gateway.BLL.DTO.Response
         public string Officer { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public string ContactNo { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-
-        public AccountMapping? AccountMappings { get; set; }
+        public string Email { get; set; } = string.Empty; 
 
     }
 }

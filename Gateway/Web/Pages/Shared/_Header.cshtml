@@ -1,0 +1,91 @@
+﻿@using Gateway.BLL.Helper
+@using Microsoft.AspNetCore.Http
+@using Gateway.Web
+@inject IHttpContextAccessor HttpContextAccessor
+
+<div class="topbar d-print-none">
+    <div class="container-fluid">
+        <nav class="topbar-custom d-flex justify-content-between" id="topbar-custom">
+            <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0 dastone">
+                <li>
+                    <button class="nav-link mobile-menu-btn text-always-white" id="togglemenu">
+                        <i class="iconoir-menu"></i>
+                    </button>
+                </li>
+                &ensp;
+                <li class="nav-item d-none d-sm-inline-block text-always-white fs-7">
+                    <span class="text-always-white">EQB Portal</span>
+                </li>
+            </ul>
+            @if (@Convert.ToString(ViewData["Navigation"]) != "")
+            {
+                <ul class="topbar-item list-unstyled d-inline-flex align-items-center mb-0 fs-7">
+
+
+                    <li class="nav-item dropdown text-always-white fs-7">
+                        
+                            <span>@HttpContextAccessor.HttpContext!.Session.GetString("FullName") </span>
+                      
+                    </li>
+              
+                    <li class="dropdown topbar-item">
+                        <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="" role="button"
+                           aria-haspopup="false" aria-expanded="false" data-bs-offset="0,19">
+                          
+                            @* <img id="image" class="thumb-md rounded-circle" src="@HttpContextAccessor.HttpContext!.Session.GetString("AppUrl")/Home?handler=UserProfileImage&timestamp=@DateTime.UtcNow.Ticks" alt="Picture"> *@
+                            <img id="image" 
+                                class="thumb-md rounded-circle"
+                                 src="@HttpContextAccessor.HttpContext!.Session.GetString("AppUrl")/Home?handler=UserProfileImageThumbnail&timestamp=@DateTime.UtcNow.Second"
+                                loading="lazy"
+                                alt="Picture">
+
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end py-0">
+                            <a href="javascript:void(0);" class="dropdown-item text-xs">
+                                <i class="fas fa-desktop mr-2"></i> Branch
+                                <span class="text-muted">@HttpContextAccessor.HttpContext.Session.GetString("BranchCode") | @HttpContextAccessor.HttpContext.Session.GetString("BranchDesc")</span>
+                            </a>
+                            <a href="javascript:void(0);" class="dropdown-item text-xs">
+                                <i class="fas fa-desktop mr-2"></i> Terminal
+                                <span class="text-muted">@HttpContextAccessor.HttpContext.Session.GetString("Terminal")</span>
+                            </a>
+
+                            @if (!HttpContextAccessor.HttpContext!.Session.GetObject<bool>("LDAPAuthentication"))
+                            {
+                                <a href="javascript:void(0);" onclick="ChangePassword();" class="dropdown-item  text-xs">
+                                    <i class="fas fa-key mr-2"></i> Change Password
+                                </a>
+                            }
+                            <a href="javascript:void(0);" onclick="ChangeProfileImage();" class="dropdown-item  text-xs">
+                                <i class="fas fa-image mr-2"></i> Change Profile Image
+                            </a>
+                            @*   <a href="#" onclick="ActivityLog();" class="dropdown-item  text-xs">
+                            <i class="fas fa-list-alt mr-2"></i> Activity Log
+                        </a> *@
+                            <div class="dropdown-divider"></div>
+                            <a href="javascript:void(0);" onclick="Logout();" class="dropdown-item text-danger">
+                                <i class="las la-power-off fs-18 me-1 align-text-bottom"></i>
+                                <span>Logout</span>
+                            </a> 
+                        </div>
+                    </li>
+                    <li class="topbar-item">
+                      @*   <a class="nav-link nav-icon" href="javascript:void(0);" id="light-dark-mode">
+                            <i class="iconoir-half-moon dark-mode"></i>
+                            <i class="iconoir-sun-light light-mode"></i>
+                        </a> *@
+
+                        <div id="toggleButton" class="toggle-button"> 
+                            <a class="nav-link nav-icon" href="javascript:void(0);" id="light-dark-mode">
+                                <i class="iconoir-half-moon dark-mode"></i>
+                                <i class="iconoir-sun-light light-mode"></i>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            }
+            <!--end topbar-nav-->
+        </nav>
+        <!-- end navbar-->
+    </div>
+</div>  

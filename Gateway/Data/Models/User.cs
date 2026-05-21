@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gateway.Data.Models
 {
-    [Table("user")]
+    [Table("Master_User")]
     public class User : Base
     {
         [Key]

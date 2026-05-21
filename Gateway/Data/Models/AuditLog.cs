@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gateway.Data.Models
 {
-    [Table("LogAudit")]
+    [Table("Log_Audit")]
     public class AuditLog
-    {
+    {      
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        public string TableName { get; set; } = string.Empty;
         public string RecordId { get; set; } = string.Empty;
+        public string TableName { get; set; } = string.Empty; 
         public string Terminal { get; set; } = string.Empty;
         public string OperationType { get; set; } = string.Empty;
         public int? ChangeBy { get; set; } = 0;

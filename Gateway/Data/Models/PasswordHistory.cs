@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gateway.Data.Models
 {
-    [Table("PasswordHistory")]
+    [Table("Master_Password_History")]
     public class PasswordHistory
     {
         [Key]

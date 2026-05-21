@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gateway.Data.Models
 {
-    [Table("LogException")]
+    [Table("Log_Exception")]
     public class ExceptionLog
     {
         [Key]

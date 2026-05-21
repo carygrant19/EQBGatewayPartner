@@ -1,0 +1,365 @@
+﻿@page
+@model Gateway.Web.Pages.Security.UserModel
+@{
+    ViewData["Title"] = Model.PageTitle;
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@* @using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor *@
+<div id="controller">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><button type="button" class="btn btn-md" onclick="GoBack();"><i class="nav-icon fa fa-lg fa-arrow-circle-left text-secondary"></i></button> <b class="text-lg">@ViewData["Title"]</b> </h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-end">
+                        @foreach (var item in Model.PageUrl.Split('/'))
+                        {
+                            if (!String.IsNullOrEmpty(@item))
+                            {
+                                <li class="breadcrumb-item">@item</li>
+                            }
+                        }
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid" autocomplete="off">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-lg-6 mb-3">
+                                    <div class="input-group">
+                                    @if (Model.Permission.Contains("[SEARCH]"))
+                                    {
+                                        <input type="text" id="searchDescription" autocomplete="off" class="form-control" placeholder="Enter Name" v-model="search.description" v-on:keypress="KeyPress_Search" data-parsley-restrict-special-characters />
+                                    } 
+                                    @if (Model.Permission.Contains("[SEARCH]"))
+                                    {
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" v-on:click="Search();">
+                                            <i class="nav-icon fas fa-search"></i> Search
+                                        </button>
+                                    } 
+                                    @if (Model.Permission.Contains("[ADD]"))
+                                    {
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Add()">
+                                            <i class="nav-icon fas fa-plus-circle"></i> Enroll
+                                        </button>
+                                    }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 table-responsive" v-show="!show_table">
+                                    <span>No record(s) found!</span>
+                                </div>
+                                <div class="col-12 table-responsive" v-show="show_table">
+                                    <div class="row form-group pb-3">
+                                        <div class="col-auto">
+                                            Show
+                                        </div>
+                                        <div class="col-auto">
+                                            <select name="params_length"
+                                                    v-model="params.pageSize"
+                                                    class="form-control form-control-sm custom-select"
+                                                    v-on:change="ItemCountChange()"
+                                                    style="min-width: 50px;">
+                                                <option v-for="(pageSize, index) in pageSizeArray" :key="pageSize" :value="pageSize">
+                                                    {{ pageSize }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-auto">
+                                            records
+                                        </div>
+                                    </div>
+                                    <table class="table datatable fs-13">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="10%"></th>
+                                                <th width="20%">Username <i :class="['fas', SortClass('Username')]" style="cursor:pointer" v-on:click="Sort('Username')"></i></th>
+                                                <th width="25%">Name <i :class="['fas', SortClass('LastName,FirstName')]" style="cursor:pointer" v-on:click="Sort('LastName')"></i></th>
+                                                <th width="25%">Roles </th>
+                                                <th class="text-center" width="20%">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="record in records" :key="records.id">
+                                                <td> <img :src="`data:${record.imageType};base64,${record.imageContent}`" alt="user" class="rounded-circle thumb-lg align-self-center" style="width: 60px; height: 60px;"></td>
+                                                <td class="align-middle" data-title="Code">{{ record.username }}</td>
+                                                <td class="align-middle" data-title="Description">{{ record.lastName }}, {{ record.firstName }} {{ record.middleName }}</td>
+                                                <td class="align-middle" data-title="Description">
+                                                    {{ record.userRoles.slice()
+                                                    .sort((a, b) => a.roleDesc.localeCompare(b.roleDesc))
+                                                    .map(role => role.roleDesc)
+                                                    .join(', ')  }}
+                                                </td>
+                              
+                                                <td class="text-center align-middle">
+
+                                                    @if (Model.Permission.Contains("[UNLOCK]"))
+                                                    {
+                                                        <button type="button" class="btn btn-info btn-sm mr-1 mx-1" v-if="record.isLocked" v-on:click="UnlockUser(record)" data-tooltip="tooltip" title="Unlock">
+                                                            <i class="fas fa-lock-open"></i>
+                                                        </button>
+                                                    }
+                                                    @if (Model.Permission.Contains("[RESET]"))
+                                                    {
+                                                        <button type="button" class="btn btn-warning btn-sm mr-1 mx-1" v-if="!record.ldapAuthentication" v-on:click="ResetPassword(record)" data-tooltip="tooltip" title="Reset">
+                                                            <i class="fas fa-refresh"></i>
+                                                        </button>
+                                                    }
+
+                                                    @if (Model.Permission.Contains("[EDIT]"))
+                                                    {
+                                                        <button type="button" class="btn btn-info btn-sm mr-1 mx-1" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Edit(record)" data-tooltip="tooltip" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    }
+
+                                                    @if (Model.Permission.Contains("[DELETE]"))
+                                                    {
+                                                        <button type="button" class="btn btn-danger btn-sm mr-1 mx-1" v-on:click="Delete(record);" v-if="!record.deleted" data-tooltip="tooltip" title="Delete">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    }
+                                                    @if (Model.Permission.Contains("[RESTORE]"))
+                                                    {
+                                                        <button type="button" class="btn btn-success btn-sm mr-1 mx-1" v-on:click="Restore(record);" v-if="record.deleted" data-tooltip="tooltip" title="Restore">
+                                                            <i class="fas fa-undo"></i>
+                                                        </button>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-12 table-responsive" v-show="show_table">
+                                    <ul id="sync-pagination" class="pagination-sm float-end"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="formModal" class="modal fade text-sm" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-lg" role="document">
+                    <form name="formModal" id="dataForm" method="post" autocomplete="off" data-parsley-validate>
+                        <div class="modal-content">
+                            <div class="modal-header bg-danger">
+                                <h5 class="modal-title left"> <i :class="['fa',ActionModeIcon()]"> </i>   {{ actionMode }} @ViewData["Title"]</h5>
+                                <a href="#" class="modal-close right"><i class="mdl2 mdl2-cancel" aria-hidden="true"></i></a>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row col">
+                                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6"> 
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="code">AD Authentication</label>
+                                                <div class="form-check"> 
+                                                    <label class="form-check-label">
+                                                        <input type="radio" value="false" v-model="formData.ldapAuthentication" v-on:change="LDAPChange" name="rdbIsLDAP">
+                                                        No
+                                                    </label>
+                                                    &nbsp;&nbsp;&nbsp;
+                                                    <label class="form-check-label">
+                                                        <input type="radio" value="true" v-model="formData.ldapAuthentication" v-on:change="LDAPChange" name="rdbIsLDAP">
+                                                        Yes
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12" v-show="isLDAP === 'true'">
+                                            <button type="button" class="btn btn-info btn-sm" v-on:click="Sync()"><i class="nav-icon fas fa-sync"></i> Sync from AD</button>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="Code">Username</label>
+                                                <input type="text" class="form-control text-uppercase" name="Username"
+                                                       v-model="formData.username"
+                                                       :disabled="disableControl.username"
+                                                       data-parsley-id="code"
+                                                       data-parsley-required-field
+                                                       data-parsley-validate-if-empty
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-restrict-special-characters-no-spaces>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="FirstName">First name</label>
+                                                <input type="text" class="form-control" name="FirstName"
+                                                       v-model="formData.firstName"
+                                                       :disabled="disableControl.firstName"
+                                                       data-parsley-id="firstName"
+                                                       data-parsley-required-field
+                                                       data-parsley-validate-if-empty
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-restrict-name>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="MiddleName">Middle name</label>
+                                                <input type="text" class="form-control" name="MiddleName"
+                                                       v-model="formData.middleName"
+                                                       :disabled="disableControl.middleName"
+                                                       data-parsley-id="middleName"
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-restrict-name>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="LastName">Last name</label>
+                                                <input type="text" class="form-control" name="LastName"
+                                                       v-model="formData.lastName"
+                                                       :disabled="disableControl.lastName"
+                                                       data-parsley-id="lastName"
+                                                       data-parsley-required-field
+                                                       data-parsley-validate-if-empty
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-restrict-name>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="Email">Email</label>
+                                                <input type="text" class="form-control" name="Email"
+                                                       v-model="formData.email"
+                                                       :disabled="disableControl.email"
+                                                       data-parsley-id="email"
+                                                       data-parsley-required-field
+                                                       data-parsley-validate-if-empty
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-multi-email-validator>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="Branch">Branch</label>
+                                                <select class="form-control custom-select"
+                                                        v-model="formData.branch"
+                                                        data-parsley-trigger="change focusout"
+                                                        data-parsley-required-message="Required field"
+                                                        required>
+                                                    <option value="" selected>-- Please Select --</option>
+                                                    <template v-for="branch in branches" :key="branch.id">
+                                                        <option :value="branch.id">{{ branch.code }} - {{branch.description}}</option>
+                                                    </template>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                                        <div class="col-md-12">
+                                            <div class="card card-outline">
+                                                <div class="card-header card-outline">
+                                                    <h3 class="card-title"><i class="nav-icon fas fa-plus"></i> Roles</h3> 
+                                                </div>
+                                              
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-12 table-responsive">
+                                                            <table class="table datatable fs-13">
+                                                                <thead>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="selectedRole in selectedRoles">
+                                                                        <td width="40%" class="align-middle"> {{selectedRole.roleDesc}}</td>
+                                                                        <td width="20%" class="text-right align-middle">
+
+
+                                                                            <button type="button" class="btn btn-danger btn-xs mr-1" v-on:click="RemoveRole(selectedRole)" title="Remove">
+                                                                                <i class="fas fa-trash"></i>
+                                                                            </button>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col float-right">
+                                                        <button type="button" class="btn btn-primary btn-sm float-right" data-bs-toggle="modal" data-bs-target="#roleModal" v-on:click="AddRole()">  <i class="nav-icon fas fa-plus"></i> Add Role</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal"><i class="nav-icon fas fa-times-circle"></i> Close</button>
+                                <button type="button" class="btn btn-success btn-sm" v-on:click="Save()"><i class="nav-icon fas fa-check-circle"></i> Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="roleModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog">
+                    <form class="form-parsley" id="roleForm" action="#" data-parsley-validate="">
+                        <div class="modal-content">
+                            <div class="modal-header bg-danger">
+                                <h5 class="modal-title" id="myModalLabel">Role</h5>
+                                <a href="#" class="modal-close right"><i class="mdl2 mdl2-cancel" aria-hidden="true"></i></a>  
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="role">Role</label>
+                                        <select class="form-control custom-select"
+                                                v-model="roleFormData.roleId"
+                                                data-parsley-trigger="change focusout"
+                                                data-parsley-required-message="Required field"
+                                                required>
+                                            <option value="" selected>-- Please Select --</option>
+                                            <template v-for="role in roles" :key="role.id"> 
+                                                <option :value="role.id">{{role.description}}</option>
+                                            </template>
+                                        </select>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#formModal"><i class="nav-icon fas fa-times-circle"></i> Close</button>
+                                <button type="button" class="btn btn-primary" v-on:click="SaveRole()" data-bs-dismiss="modal"><i class="nav-icon fas fa-check-circle"></i> Save Role</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+<style>
+    /*for multiple modal - fixes scrolling in first modal*/
+    .modal {
+        overflow: auto !important;
+    }
+</style>
+
+@section scripts
+{
+    <script src="~/js/app/directive/common.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/branch.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/user.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/role.js" asp-append-version="true"></script>
+    <script src="~/js/app/controller/security/user.js" asp-append-version="true"></script> 
+}
+
+
+

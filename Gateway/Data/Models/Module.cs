@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gateway.Data.Models
 {
-    [Table("Module")]
+    [Table("Master_Module")]
     public class Module : Base
     {
         [Key]
@@ -29,7 +29,7 @@ namespace Gateway.Data.Models
         public bool Deleted { get; set; } = false;
     }
 
-    [Table("ModulePermission")]
+    [Table("Map_Module_Permission")]
     public class ModulePermission
     {
         public long Id { get; set; }
@@ -43,4 +43,11 @@ namespace Gateway.Data.Models
         public Module? Module { get; set; }
     }
 
+    public class ModuleProperty
+    {
+        public string Url { get; set; } = string.Empty;
+        public string Permission { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Icon { get; set; } = string.Empty;
+    }
 }

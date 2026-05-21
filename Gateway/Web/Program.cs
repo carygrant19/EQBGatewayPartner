@@ -1,83 +1,84 @@
 using Gateway.Data.Models;
-using Gateway.Helper; 
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Text.Json.Serialization;
 using Gateway.BLL;
+using Gateway.BLL.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
+ 
 builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 var systemParameters = builder.Configuration.GetSection("SystemParameters").Get<SystemParameters>();
+ 
+builder.Services.AddControllersWithViews()
+    //.AddRazorRuntimeCompilation()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        // Para sa camelcasing, uncomment para pwede naka Capital ang return ng json
+        // options.JsonSerializerOptions.PropertyNamingPolicy = null;
+    });
 
-builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+    });
+ 
 builder.Services.AddDbContext<EFDbContext>(options =>
 {
     options.UseSqlServer(configuration.GetConnectionString("Default")!);
     options.EnableSensitiveDataLogging();
 });
-
-builder.Services.GatewayServices();
+ 
 builder.Services.HelperServices(configuration);
-
-builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-
-builder.Services.AddControllers().AddNewtonsoftJson((options =>
-{ 
-    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore; 
-}));
-
+builder.Services.PortalServices();
+ 
 builder.Services.AddRazorPages();
 builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDistributedMemoryCache();
+ 
+ 
+
+builder.Services.AddHealthChecks();
+ 
+builder.Services.AddAuthentication("CookieAuth")
+    .AddCookie("CookieAuth", options =>
+    {
+        options.LoginPath = "/Login"; 
+    });
+builder.Services.AddAuthorization();
+ 
 builder.Services.AddSession(options =>
 {
     options.Cookie.Name = "EQBGateway.session";
     if (systemParameters != null)
+    {
         options.IdleTimeout = TimeSpan.FromMinutes(Convert.ToDouble(systemParameters.SessionTimeOutMinutes));
-    //options.IdleTimeout = TimeSpan.FromSeconds(20);
+    }
     options.Cookie.IsEssential = true;
     options.Cookie.HttpOnly = true;
-    //options.Cookie.Domain = "swift.com";
-    //options.Cookie.Path = "/";
-    //options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    //options.Cookie.HttpOnly = true;
 });
 
-builder.Services.AddAuthentication("CookieAuth")
-    .AddCookie("CookieAuth", options =>
-    {
-        options.LoginPath = "/Login"; // Redirects to this path if not authenticated 
-    });
-
-builder.Services.AddAuthorization();
-
-builder.Services.AddControllersWithViews().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-
-    //Para sa camelcasing, uncomment para pwede naka Capital ang return ng json
-    //options.JsonSerializerOptions.PropertyNamingPolicy = null;
+builder.Services.AddAutoMapper(cfg =>
+{ 
+    cfg.AddProfile(new MappingProfile(configuration));
 });
-
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-app.MapFallbackToPage("/Login");
+
 app.UseStatusCodePages(context =>
 {
-
     if (context.HttpContext.Response.StatusCode == 400)
     {
         context.HttpContext.Response.Redirect("/Error?code=400");
@@ -86,37 +87,33 @@ app.UseStatusCodePages(context =>
     {
         context.HttpContext.Response.Redirect("/Error?code=404");
     }
-
     return Task.CompletedTask;
 });
+
 app.UseHttpsRedirection();
+ 
 app.Use(async (context, next) =>
 {
-    // Check if the request is targeting the "css" folder
     if (context.Request.Path.StartsWithSegments("/css", StringComparison.OrdinalIgnoreCase))
     {
-        // Allow only GET and HEAD methods
-        if (!HttpMethods.IsGet(context.Request.Method) &&
-            !HttpMethods.IsHead(context.Request.Method))
+        if (!HttpMethods.IsGet(context.Request.Method) && !HttpMethods.IsHead(context.Request.Method))
         {
             context.Response.StatusCode = StatusCodes.Status405MethodNotAllowed;
-            return; // Terminate request here
+            return;
         }
     }
     await next();
 });
-app.UseStaticFiles();
-app.UseSession();
-app.UseRouting();
 
+app.UseStaticFiles();  
+
+app.UseRouting();      
+
+app.UseSession();      
+
+app.UseAuthentication();  
 app.UseAuthorization();
-
-app.MapStaticAssets();
-app.UseEndpoints(endpoints =>
-{
-    _ = endpoints.MapRazorPages();
-});
-
+ 
 app.Use(async (context, next) =>
 {
     context.Request.EnableBuffering();
@@ -128,6 +125,8 @@ app.Use(async (context, next) =>
 });
  
 app.MapRazorPages()
-   .WithStaticAssets();
+   .WithStaticAssets();  
+ 
+app.MapFallbackToPage("/Login");
 
 app.Run();

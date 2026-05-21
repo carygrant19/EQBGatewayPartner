@@ -1,0 +1,261 @@
+﻿@page
+@model Gateway.Web.Pages.Security.RoleModel
+@{
+    ViewData["Title"] = Model.PageTitle;
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@* @using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor *@
+<div id="controller">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><button type="button" class="btn btn-md" onclick="GoBack();"><i class="nav-icon fa fa-lg fa-arrow-circle-left text-secondary"></i></button> <b class="text-lg">@ViewData["Title"]</b> </h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-end">
+                        @foreach (var item in Model.PageUrl.Split('/'))
+                        {
+                            if (!String.IsNullOrEmpty(@item))
+                            {
+                                <li class="breadcrumb-item">@item</li>
+                            }
+                        }
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid" autocomplete="off">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-lg-6 mb-3">
+                                    <div class="input-group">
+                                    @if (Model.Permission.Contains("[SEARCH]"))
+                                    {
+                                        <input type="text" id="searchDescription" autocomplete="off" class="form-control" placeholder="Enter Description" v-model="search.description" v-on:keypress="KeyPress_Search" data-parsley-restrict-special-characters />
+                                    } 
+                                    @if (Model.Permission.Contains("[SEARCH]"))
+                                    {
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" v-on:click="Search();">
+                                            <i class="nav-icon fas fa-search"></i> Search
+                                        </button>
+                                    }
+
+                                    @if (Model.Permission.Contains("[ADD]"))
+                                    {
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Add()">
+                                            <i class="nav-icon fas fa-plus-circle"></i> Add
+                                        </button>
+                                    }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 table-responsive" v-show="!show_table">
+                                    <span>No record(s) found!</span>
+                                </div>
+                                <div class="col-12 table-responsive" v-show="show_table">
+                                    <div class="row form-group pb-3">
+                                        <div class="col-auto">
+                                            Show
+                                        </div>
+                                        <div class="col-auto">
+                                            <select name="params_length"
+                                                    v-model="params.pageSize"
+                                                    class="form-control form-control-sm custom-select"
+                                                    v-on:change="ItemCountChange()"
+                                                    style="min-width: 50px;">
+                                                <option v-for="(pageSize, index) in pageSizeArray" :key="pageSize" :value="pageSize">
+                                                    {{ pageSize }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-auto">
+                                            records
+                                        </div>
+                                    </div>
+                                    <table class="table datatable fs-13">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="30%">Code <i :class="['fas', SortClass('Code')]" style="cursor:pointer" v-on:click="Sort('Code')"></i></th>
+                                                <th width="30%">Description <i :class="['fas', SortClass('Description')]" style="cursor:pointer" v-on:click="Sort('Description')"></i></th>
+                                                <th class="text-center" width="10%">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody> 
+                                            <tr v-for="record in records">
+
+                                                <td class="align-middle" data-title="Code">{{ record.code }}</td>
+                                                <td class="align-middle" data-title="Description">{{ record.description }}</td>
+                                                <td class="text-center align-middle">
+                                                    @*    <button type="button" class="btn btn-info btn-sm mr-1 mx-1" v-on:click="Delete(item);" data-tooltip="tooltip" title="Manage User">
+                                                    <i class="far fa-user"></i>
+                                                    </button> *@
+                                                    @if (Model.Permission.Contains("[EDIT]"))
+                                                    {
+                                                        <button type="button" class="btn btn-info btn-sm mr-1 mx-1" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Edit(record)" data-tooltip="tooltip" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    }
+
+                                                    @if (Model.Permission.Contains("[DELETE]"))
+                                                    {
+                                                        <button type="button" class="btn btn-danger btn-sm mr-1 mx-1" v-on:click="Delete(record);" v-if="!record.deleted" data-tooltip="tooltip" title="Delete">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    }
+                                                    @if (Model.Permission.Contains("[RESTORE]"))
+                                                    {
+                                                        <button type="button" class="btn btn-success btn-sm mr-1 mx-1" v-on:click="Restore(record);" v-if="record.deleted" data-tooltip="tooltip" title="Restore">
+                                                            <i class="fas fa-undo"></i>
+                                                        </button>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-12 table-responsive" v-show="show_table">
+                                    <ul id="sync-pagination" class="pagination-sm float-end"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (Model.Permission.Contains("[ADD]") || Model.Permission.Contains("[EDIT]"))
+            {
+                <div id="formModal" class="modal fade text-sm" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+                    <div class="modal-dialog  modal-xl" role="document">
+                        <form name="formModal" id="dataForm" method="post" autocomplete="off" data-parsley-validate="">
+                            <div class="modal-content">
+                                <div class="modal-header bg-danger">
+                                    <h5 class="modal-title left"> <i :class="['fa',ActionModeIcon()]"> </i>   {{ actionMode }} @ViewData["Title"]</h5>
+                                    <a href="#" class="modal-close right"><i class="mdl2 mdl2-cancel" aria-hidden="true"></i></a>
+                                </div>
+                                <div class="modal-body"> 
+                                    <div class="row col">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="Code">Code</label>
+                                                <input type="text" class="form-control text-uppercase" name="Code"
+                                                       v-model="formData.code"
+                                                       :disabled="disableControl.code"
+                                                       data-parsley-id="code"
+                                                       data-parsley-required-field
+                                                       data-parsley-validate-if-empty
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-restrict-special-characters-no-spaces>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="Description">Description</label>
+                                                <input type="text" class="form-control" name="Description"
+                                                       v-model="formData.description"
+                                                       data-parsley-id="description"
+                                                       data-parsley-required-field
+                                                       data-parsley-validate-if-empty
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-restrict-special-characters>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 text-xs">
+                                            <div class="tree" id="tree">
+                                                <div class="col-sm-12 pt-3">
+                                                    <div class="form-group">
+                                                        <label for="Description">Filter by Group: &emsp;</label>
+                                                        <select id="moduleGroupSelect"
+                                                                v-model="search.moduleGroup"
+                                                                class="form-control form-control-md custom-select d-inline-block"
+                                                                style="width: auto; min-width: 200px;"
+                                                                v-on:change="ModuleGroupChange()">
+                                                            <option value="">All</option>
+                                                            <template v-for="group in moduleGroups" :key="group.code">
+                                                                <option :value="group.code">{{ group.description }}</option>
+                                                            </template>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                 
+                                                <table id="modulesTable" class="table table-sm table-hover tree">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-sm" width="10%">Group</th>
+                                                            <th class="text-sm" width="25%">Module</th>
+                                                            <th class="text-center" width="5%">
+                                                                <input type="checkbox" id="chk_0">
+                                                            </th>
+                                                            <th class="text-sm">Action Controls</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                              
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer justify-content-between sticky-footer">
+                                    <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal"><i class="nav-icon fas fa-times-circle"></i> Close</button>
+                                    <button type="button" class="btn btn-success btn-sm" v-on:click="Save()"><i class="nav-icon fas fa-check-circle"></i> Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </section>
+</div>
+<style>
+    /*for multiple modal - fixes scrolling in first modal*/
+    .modal {
+        overflow: auto !important;
+    }
+
+    @@media (min-width: 1200px) {
+        .modal-xl {
+            max-width: 90% !important;  
+            width: 90% !important;
+            justify-content: center;
+        }
+    }
+
+
+</style>
+ 
+<style>
+   
+    .modal-footer.sticky-footer {
+        position: sticky;
+        bottom: 0;
+        background-color: #fff; /* or match your modal background */
+        z-index: 10;
+        border-top: 1px solid #dee2e6; /* optional: border to separate */
+    }
+</style>
+@section scripts
+{
+    <script src="~/js/app/directive/common.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/role.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/module.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/permission.js" asp-append-version="true"></script> 
+    <script src="~/js/app/controller/security/role.js" asp-append-version="true"></script>  
+}
+
+
+

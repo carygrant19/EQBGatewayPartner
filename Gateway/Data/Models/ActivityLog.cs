@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gateway.Data.Models
 {
-    [Table("LogActivity")]
+    [Table("Log_Activity")]
     public class ActivityLog
     {
         [Key]

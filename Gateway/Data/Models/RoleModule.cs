@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gateway.Data.Models
 {
-    [Table("RoleModulePermission")]
+    [Table("Map_Role_Module_Permission")]
     public class RoleModulePermission
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
