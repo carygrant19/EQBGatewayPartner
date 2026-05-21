@@ -1,18 +1,17 @@
 using Gateway.BLL.Helper;
 using Gateway.BLL.Services.IService;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc; 
 using Request = Gateway.BLL.DTO.Request;
 using Response = Gateway.BLL.DTO.Response;
 
-namespace Gateway.Web.Pages.Gateway
+namespace Gateway.Web.Pages.Security
 {
-    public class RouteModel(IRouteService service) : PageModelExtension
+    public class PermissionModel(IPermissionService service) : PageModelExtension
     {
-        private readonly IRouteService _service = service;
-        private readonly string _moduleName = "Route";
+        private readonly IPermissionService _service = service;
 
         public IActionResult OnGet()
-        { 
+        {
             string page = ValidateAccess();
 
             if (page == "")
@@ -20,53 +19,58 @@ namespace Gateway.Web.Pages.Gateway
                 return Page();
             }
             else
-            {
                 return Redirect(page);
-            }
+
         }
 
         public async Task<JsonResult> OnGetAll()
         {
+
             try
             {
                 var data = await _service.Get();
+
                 return new JsonResult(data);
             }
             catch (Exception ex)
             {
-                return new JsonResult(new Response.Result
-                {
-                    Status = "ERROR",
-                    Message = ex.Message
-                });
+                return new(
+                    new Response.Result
+                    {
+                        Status = "ERROR",
+                        Message = ex.Message
+                    }
+                );
             }
-        }
 
+        }
         public async Task<JsonResult> OnPostFilter([FromBody] Request.FParam param)
         {
             try
             {
                 var data = await _service.Filter(param);
+
                 return new JsonResult(data);
             }
             catch (Exception ex)
             {
-                return new JsonResult(new Response.Result
-                {
-                    Status = "ERROR",
-                    Message = ex.Message
-                });
+                return new(
+                   new Response.Result
+                   {
+                       Status = "ERROR",
+                       Message = ex.Message
+                   }
+                );
             }
         }
-
-        public async Task<JsonResult> OnPostSave([FromBody] Request.Route model)
-        { 
+        public async Task<JsonResult> OnPostSave([FromBody] Request.Permission model)
+        {
             model.OpUser = HttpContext.Session.GetString("Username")!;
-            model.OpUserId = HttpContext.Session.GetString("UserId");
+            model.OpUserId = HttpContext!.Session.GetString("UserId");
             model.Terminal = HttpContext.Session.GetString("Terminal");
 
             try
-            { 
+            {
                 if (string.IsNullOrEmpty(model.Id))
                 {
                     return new JsonResult(await _service.Create(model));
@@ -78,11 +82,13 @@ namespace Gateway.Web.Pages.Gateway
             }
             catch (Exception ex)
             {
-                return new JsonResult(new Response.Result
-                {
-                    Status = "ERROR",
-                    Message = ex.Message
-                });
+                return new(
+                   new Response.Result
+                   {
+                       Status = "ERROR",
+                       Message = ex.Message
+                   }
+               );
             }
         }
 
@@ -90,23 +96,26 @@ namespace Gateway.Web.Pages.Gateway
         {
             try
             {
-                Request.Route model = new()
+                Request.Permission model = new()
                 {
                     OpUser = HttpContext.Session.GetString("Username")!,
-                    OpUserId = HttpContext.Session.GetString("UserId"),
+                    OpUserId = HttpContext!.Session.GetString("UserId"),
                     Terminal = HttpContext.Session.GetString("Terminal"),
                     Id = id
                 };
 
                 return new JsonResult(await _service.Delete(model));
+
             }
             catch (Exception ex)
             {
-                return new JsonResult(new Response.Result
-                {
-                    Status = "ERROR",
-                    Message = ex.Message
-                });
+                return new(
+                   new Response.Result
+                   {
+                       Status = "ERROR",
+                       Message = ex.Message
+                   }
+               );
             }
         }
 
@@ -114,24 +123,28 @@ namespace Gateway.Web.Pages.Gateway
         {
             try
             {
-                Request.Route model = new()
+                Request.Permission model = new()
                 {
                     OpUser = HttpContext.Session.GetString("Username")!,
-                    OpUserId = HttpContext.Session.GetString("UserId"),
+                    OpUserId = HttpContext!.Session.GetString("UserId"),
                     Terminal = HttpContext.Session.GetString("Terminal"),
                     Id = id
                 };
 
                 return new JsonResult(await _service.Restore(model));
+
             }
             catch (Exception ex)
             {
-                return new JsonResult(new Response.Result
-                {
-                    Status = "ERROR",
-                    Message = ex.Message
-                });
+                return new(
+                   new Response.Result
+                   {
+                       Status = "ERROR",
+                       Message = ex.Message
+                   }
+               );
             }
         }
+
     }
 }
