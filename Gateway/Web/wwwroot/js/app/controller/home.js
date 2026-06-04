@@ -1,109 +1,162 @@
-"use strict";
-// --- 2. Vue Component Logic ---
-// Now ref will correctly accept <UserParams>
-const { createApp, ref, onMounted } = Vue;
+﻿const { createApp, reactive, ref, computed, onMounted, filter } = Vue;
+
 const controller = createApp({
-    setup() {
-        // State Management
-        const params = ref({
-            sortColumn: "LogDate",
-            descending: true,
-            pageSize: 5,
-            pageNum: 1,
-            filters: []
-        });
-        const records = ref([]);
+    setup() { 
+        onMounted(() => {
+            global.GetRecords = GetRecords;
+            GetRecords(); 
+            GetNews(); 
+        });  
+        params.sortColumn = "LogDate"; 
+        params.descending = true;  
+        params.pageSize = 5;
+        const mrcTransactionCount = ref([]);   
         const news = ref([]);
-        const years = ref([]);
-        const show_table = ref(false);
-        const actionMode = ref('Add');
-        // Logic: News
+         
         const GetNews = async () => {
             const feedUrl = 'https://fintechnews.ph/feed';
             const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
             try {
+
                 const res = await fetch(apiUrl);
                 news.value = await res.json();
-            }
-            catch (err) {
+
+                //alert(news.items[0].title);
+
+            } catch (err) {
                 console.error("Feed error:", err);
+                //feed.innerHTML = "<p>Could not load RSS feed.</p>";
             }
-        };
+
+        }; 
+        const years = ref([]);
+        const currentYear = new Date().getFullYear();
+        for (let year = currentYear; year >= 2025; year--) {
+            years.value.push(year);
+        } 
+      
+        
         const GetRecords = async () => {
+
             $(".preloader").show();
-            const result = await UserService.UserActivityLog(params.value);
-            if (result.data && result.data.totalRecord > 0) {
+
+            const result = await UserService.UserActivityLog(params);
+                 
+            if (result.data.totalRecord > 0) {
                 records.value = result.data.data;
                 show_table.value = true;
-                if (params.value.pageNum > result.data.totalPage) {
-                    params.value.pageNum -= 1;
+
+                if (params.pageNum > result.data.totalPage) {
+                    params.pageNum = params.pageNum - 1;
                     initPages(result.data.totalPage);
                     GetRecords();
                 }
-                else {
+                else if (result.data.totalPage > params.pageNum) {
                     initPages(result.data.totalPage);
                 }
+                else if (result.data.totalPage > 1) {
+                    initPages(result.data.totalPage);
+                }
+                else
+                    $('#sync-pagination').twbsPagination('destroy'); 
             }
             else {
                 records.value = [];
                 show_table.value = false;
-                $('#sync-pagination').twbsPagination('destroy');
             }
+
             $('.preloader').fadeOut('slow');
-        };
+                 
+
+        }; 
+ 
         const Search = () => {
-            params.value.filters = [];
-            params.value.pageNum = 1;
+            params.filters = [];
+            params.pageNum = 1;
+            //if ($('#searchDescription').val().trim() !== "")
+            //    params.filters.push({ "Property": "Description", "Value": search.description, "Operator": "Contains" });
             GetRecords();
         };
+         
+        //Table Events
         const initPages = (tp) => {
             $('#sync-pagination').twbsPagination('destroy');
             $('#sync-pagination').twbsPagination({
                 totalPages: tp,
                 initiateStartPageClick: false,
                 hideOnlyOnePage: true,
-                startPage: params.value.pageNum,
+                startPage: params.pageNum,
                 onPageClick: (evt, page) => {
-                    params.value.pageNum = page;
+                    params.pageNum = page;
                     GetRecords();
                 }
             });
         };
+        const ItemCountChange = () => {
+            params.pageNum = 1;
+            Search();
+        }; 
+          
         const Sort = (col) => {
-            params.value.sortColumn = col;
-            params.value.descending = !params.value.descending;
+            params.sortColumn = col;
+
+            if (params.descending) {
+                params.descending = false;
+            } else {
+                params.descending = true;
+            }
             GetRecords();
         };
         const SortClass = (col) => {
-            if (params.value.sortColumn === col) {
-                return params.value.descending ? 'fa-sort-up' : 'fa-sort-down';
+            if (params.sortColumn === col) {
+                if (params.descending) {
+                    return 'fa-sort-up';
+                } else {
+                    return 'fa-sort-down';
+                }
             }
             return 'fa fa-sort';
         };
-        onMounted(() => {
-            const currentYear = new Date().getFullYear();
-            for (let year = currentYear; year >= 2025; year--) {
-                years.value.push(year);
+        const ActionModeIcon = () => {
+
+            if (actionMode.value == 'Add') {
+                return 'fa-plus-circle';
             }
-            global.GetRecords = GetRecords;
-            GetRecords();
-            GetNews();
-        });
-        return {
+            else {
+                return 'fa-edit';
+            }
+
+        }; 
+        
+        //GetMRCTransactionCount();
+        const returnProps = {
+            actionMode,  
+            pageSizeArray,
             params,
-            records,
-            news,
-            years,
             show_table,
-            actionMode,
-            Search,
-            Sort,
-            SortClass,
-            ItemCountChange: () => Search(),
-            ActionModeIcon: () => actionMode.value === 'Add' ? 'fa-plus-circle' : 'fa-edit'
+            disableControl, 
+            records,  
+            branches, 
+            months,
+            years, 
+            news
+        };
+
+        // Return methods
+        const returnMethod = {
+            ItemCountChange: (col) => ItemCountChange(Search),
+            Sort: (col) => Sort(col, GetRecords),
+            SortClass: (col) => SortClass(col),
+            Search,   
+            ActionModeIcon, 
+        };
+        return {
+            ...returnProps,
+            ...returnMethod
+
         };
     }
-});
+}); 
 global.registerFormatPlugins(controller);
 controller.mount('#controller');
-//# sourceMappingURL=home.js.map
+ 

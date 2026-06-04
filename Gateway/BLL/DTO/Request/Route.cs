@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gateway.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,6 +10,8 @@ namespace Gateway.BLL.DTO.Request
         [Required(AllowEmptyStrings = true)]
         [MaxLength(50)]
         public string Id { get; set; } = string.Empty;
+        [Required] 
+        public string Code { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(255)]
@@ -16,7 +19,7 @@ namespace Gateway.BLL.DTO.Request
 
         [MaxLength(500)]
         public string? Description { get; set; }
-
+        public string? Category { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true;
 
         public bool IsWebSocket { get; set; }
@@ -52,7 +55,6 @@ namespace Gateway.BLL.DTO.Request
 
         public int Priority { get; set; } = 1;
 
-        // --- RATE LIMITING STRATEGIES ---
         public bool EnableRateLimiting { get; set; }
         public int? RateLimit { get; set; }
         [MaxLength(10)]
@@ -62,17 +64,14 @@ namespace Gateway.BLL.DTO.Request
         [MaxLength(500)]
         public string? RateLimitQuotaExceededMessage { get; set; }
 
-        // --- CACHING STRATEGIES ---
         public bool EnableCaching { get; set; }
         public int? CacheTtlSeconds { get; set; }
 
-        // --- QUALITY OF SERVICE (QoS) CONFIGS ---
         public bool EnableQoS { get; set; }
         public int? QoSTimeoutMs { get; set; } = 30000;
         public int? QoSExceptionsAllowedBeforeBreaking { get; set; } = 3;
         public int? QoSDurationOfBreakMs { get; set; } = 10000;
 
-        // --- LOAD BALANCER PROPERTIES ---
         [Required]
         [MaxLength(50)]
         public string LoadBalancerType { get; set; } = "RoundRobin";
@@ -80,7 +79,6 @@ namespace Gateway.BLL.DTO.Request
         public string? LoadBalancerKey { get; set; }
         public int? LoadBalancerExpiryMs { get; set; }
 
-        // --- POLICY & TIME BOUNDARY ENFORCEMENTS ---
         public bool RequireSignature { get; set; }
         public bool EnableTimeLimit { get; set; }
         [MaxLength(5)]
@@ -90,7 +88,6 @@ namespace Gateway.BLL.DTO.Request
         [MaxLength(50)]
         public string? AllowedDays { get; set; }
 
-        // --- SERVICE DISCOVERY CONFIGS ---
         public bool UseServiceDiscovery { get; set; }
         [MaxLength(255)]
         public string? ServiceName { get; set; }
@@ -99,9 +96,9 @@ namespace Gateway.BLL.DTO.Request
         public bool EnableServicePolling { get; set; }
         public int? PollingIntervalMs { get; set; } = 300;
 
-        // --- CHILD RELATIONAL COLLECTIONS ---
         public List<RouteHost>? Hosts { get; set; } = [];
         public List<RouteIpRule>? IpRules { get; set; } = [];
+        public List<RouteClient>? Clients { get; set; } = [];
     }
 
     public class RouteHost
@@ -112,6 +109,9 @@ namespace Gateway.BLL.DTO.Request
 
         [Required]
         public int Port { get; set; }
+
+        [Required] 
+        public string Description { get; set; } = string.Empty;
     }
 
     public class RouteIpRule
@@ -122,6 +122,20 @@ namespace Gateway.BLL.DTO.Request
 
         [Required]
         [MaxLength(10)]
-        public string RuleType { get; set; } = "Allow"; // Allow or Deny
+        public string RuleType { get; set; } = "Allow";
+
+        [Required]
+        public string Description { get; set; } = string.Empty;
+    }
+
+    public class RouteClient
+    {
+        public long Id { get; set; }
+
+        public long RouteId { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string ClientId { get; set; } = string.Empty;
     }
 }

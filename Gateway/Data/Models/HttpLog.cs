@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Gateway.Data.Models
 {
-    [Table("LogHttp")]
+    [Table("Log_Http")]
     public class HttpLog
     {
         [Key]

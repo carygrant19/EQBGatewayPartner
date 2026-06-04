@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gateway.Data.Models
 {
-    [Table("Master_Api_Client")]
-    public class ApiClient
+    [Table("Master_Client")]
+    public class Client
     {
         [Key]
         public int Id { get; set; }

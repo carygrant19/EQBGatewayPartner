@@ -15,6 +15,7 @@ namespace Gateway.BLL
             services.AddScoped<ILogService, LogService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IBranchService, BranchService>();
+            services.AddScoped<IClientService, ClientService>();
             services.AddScoped<ILDAPService, LDAPService>();
             services.AddScoped<IModuleService, ModuleService>();
             services.AddScoped<IPermissionService, PermissionService>();
@@ -22,7 +23,7 @@ namespace Gateway.BLL
             services.AddScoped<IUserService, UserService>();
 
             //Application
-            services.AddScoped<IRouteService, RouteService>();
+            services.AddScoped<IRouteService, RouteService>();  
             return services; 
         }
     }

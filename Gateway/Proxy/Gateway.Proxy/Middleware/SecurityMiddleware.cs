@@ -10,7 +10,7 @@ namespace Gateway.Proxy.Middleware;
 public class SecurityMiddleware(RequestDelegate next, ILogger<SecurityMiddleware> logger)
 {
     public async Task InvokeAsync(HttpContext context,
-        IApiClientService apiClientService,
+        IClientService apiClientService,
         ICertificateValidatorService certValidator,
         IOptionsMonitor<OcelotCustomFileConfiguration> config,
         ILogService logService)

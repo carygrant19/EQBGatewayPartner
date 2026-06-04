@@ -4,7 +4,11 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <OutputType>Exe</OutputType> 
+	<TypeScriptCompileBlocked>false</TypeScriptCompileBlocked>
+	<TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+	<TypeScriptJSOutputPath>wwwroot/js/app/controller</TypeScriptJSOutputPath>
+	<TypeScriptTarget>ESNext</TypeScriptTarget>
+	<TypeScriptLib>ESNext,DOM</TypeScriptLib>
   </PropertyGroup>
  
   <ItemGroup>
@@ -17,12 +21,17 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="10.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="10.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BLL\Gateway.BLL.csproj" />
     <ProjectReference Include="..\Data\Gateway.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Scripts\app\controller\" />
   </ItemGroup>
 
 </Project>

@@ -187,9 +187,17 @@ global.getBadgeClass = (status) => {
         FAILED: 'bg-danger',
         SUCCESS: 'bg-success',
         ERROR: 'bg-danger',
+
+        GET: 'bg-primary',
+        POST: 'bg-success',
+        PUT: 'bg-warning',
+        PATCH: 'bg-warning',
+        DELETE: 'bg-danger',
+        
     };
     return badgeColors[status] || ''; // Default to empty string if status not found
 };
+
 
 //Months
 global.months = Vue.ref([

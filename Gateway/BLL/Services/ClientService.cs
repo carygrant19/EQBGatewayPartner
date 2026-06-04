@@ -12,27 +12,27 @@ using Response = Gateway.BLL.DTO.Response;
 
 namespace Gateway.BLL.Services
 {
-    public class ApiClientService(EFDbContext efDbContext, IConfiguration configuration, IMapper mapper, IRepository<Models.ApiClient> apiClientRepository, ILogService logService) : IApiClientService
+    public class ClientService(EFDbContext efDbContext, IConfiguration configuration, IMapper mapper, IRepository<Models.Client> ClientRepository, ILogService logService) : IClientService
     {
 
         private readonly EFDbContext _efDbContext = efDbContext;
         //private readonly IConfiguration _configuration = configuration;
-        private readonly IRepository<Models.ApiClient> _apiClientRepository = apiClientRepository;
+        private readonly IRepository<Models.Client> _ClientRepository = ClientRepository;
         private readonly ILogService _logService = logService;
         private readonly IMapper _mapper = mapper;
-        private readonly string _moduleName = "ApiUser";
+        private readonly string _moduleName = "Client";
         private readonly string _encryptionKey = configuration["AppContext:EncryptionKey"]!;
 
-        public async Task<Response.ApiClient> Authenticate(string username, string password)
+        public async Task<Response.Client> Authenticate(string username, string password)
         {
             try
             { 
-                var query = _efDbContext.ApiClient!.FirstOrDefault(u => u.Username == username
+                var query = _efDbContext.Client!.FirstOrDefault(u => u.Username == username
                     && u.Password == StringManipulation.Encrypt(password, _encryptionKey)
                     && u.Deleted != true
                 ); 
 
-                return await Task.FromResult(_mapper.Map<Response.ApiClient>(query));
+                return await Task.FromResult(_mapper.Map<Response.Client>(query));
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace Gateway.BLL.Services
 
         }
 
-        public async Task<Response.ApiClient> ByApiKey(string key)
+        public async Task<Response.Client> ByApiKey(string key)
         {
             try
             {
@@ -50,8 +50,8 @@ namespace Gateway.BLL.Services
                 {
                     return new();
                 }
-                var result = _efDbContext.Set<Models.ApiClient>()!.FirstOrDefault(b => b.ApiKey.ToString().ToUpper() == key.ToUpper() && b.Deleted != true); 
-                return await Task.FromResult(_mapper.Map<Response.ApiClient>(result));
+                var result = _efDbContext.Set<Models.Client>()!.FirstOrDefault(b => b.ApiKey.ToString().ToUpper() == key.ToUpper() && b.Deleted != true); 
+                return await Task.FromResult(_mapper.Map<Response.Client>(result));
             }
             catch (Exception ex)
             {
@@ -59,11 +59,11 @@ namespace Gateway.BLL.Services
                 throw;
             }
         }
-        public async Task<List<Response.ApiClient>?> GetAll(bool includeDeleted)
+        public async Task<List<Response.Client>?> GetAll(bool includeDeleted)
         {
             try
             {
-                var clientList = _efDbContext.Set<Models.ApiClient>();
+                var clientList = _efDbContext.Set<Models.Client>();
 
                 if (!includeDeleted)
                     clientList.Where(e => e.Deleted != true);
@@ -73,12 +73,12 @@ namespace Gateway.BLL.Services
 
                 var result = (from u in clientList
                               join company in companyList on u.CompanyId equals company.Id
-                              select new Response.ApiClient
+                              select new Response.Client
                               {
-                                  Id = u.Id.ToString().ToUpper(),
+                                  Id = u.Id.ToString(),
                                   Username = u.Username,
                                   CompanyId = u.CompanyId.ToString(),
-                                  CompanyName = company.Name,
+                                  CompanyCode = company.Code,
                                   CompanyDescription = company.Description,
                                   Description = u.Description,
                                   ApiKey = u.ApiKey,
@@ -97,13 +97,13 @@ namespace Gateway.BLL.Services
             }
         }
 
-        public async Task<Response.ApiClient> ById(string id)
+        public async Task<Response.Client> ById(string id)
         {
             try
             {
-                var result = _efDbContext.ApiClient!.FirstOrDefault(b => b.Id.ToString().ToUpper() == id && b.Deleted != true);
+                var result = _efDbContext.Client!.FirstOrDefault(b => b.Id.ToString().ToUpper() == id && b.Deleted != true);
 
-                return await Task.FromResult(_mapper.Map<Response.ApiClient>(result));
+                return await Task.FromResult(_mapper.Map<Response.Client>(result));
             }
             catch (Exception ex)
             {
@@ -113,21 +113,21 @@ namespace Gateway.BLL.Services
 
         }
         
-        public async Task<Response.VApiClient> Filter(Request.FParam model)
+        public async Task<Response.VClient> Filter(Request.FParam model)
         {
             try
             {
-                var propertySelector = EFramework.BuildPropertySelector<Models.ApiClient>(model.SortColumn);
+                var propertySelector = EFramework.BuildPropertySelector<Models.Client>(model.SortColumn);
 
-                Response.VApiClient data = new();
+                Response.VClient data = new();
 
-                //var query = _efDbContext.ApiClient!.AsQueryable();
+                //var query = _efDbContext.Client!.AsQueryable();
 
-                var clientList = _efDbContext.Set<Models.ApiClient>().AsQueryable();
+                var clientList = _efDbContext.Set<Models.Client>().AsQueryable();
 
 
                 if (model.Filters != null && model.Filters.Count != 0)
-                    clientList = clientList.Where(ExpressionBuilder.GetExpression<Models.ApiClient>(model.Filters));
+                    clientList = clientList.Where(ExpressionBuilder.GetExpression<Models.Client>(model.Filters));
 
                 //var companyList = _efDbContext.Set<Company>();
 
@@ -147,17 +147,17 @@ namespace Gateway.BLL.Services
                 int recordsToSkip = (model.PageNum - 1) * model.PageSize;
                 var pagedQuery = clientList.Skip(recordsToSkip).Take(model.PageSize);
 
-                //data.Data = _mapper.Map<List<Response.FApiClient>>(pagedQuery.ToList());
+                //data.Data = _mapper.Map<List<Response.FClient>>(pagedQuery.ToList());
 
 
                 var result = (from u in pagedQuery
                                   //join company in companyList on u.CompanyId equals company.Id
-                              select new Response.FApiClient
+                              select new Response.FClient
                               {
                                   Id = u.Id.ToString().ToUpper(),
                                   Username = u.Username,
                                   CompanyId = u.CompanyId.ToString().ToUpper(),
-                                  CompanyName = u.Company.Name,
+                                  CompanyCode = u.Company.Code,
                                   CompanyDescription = u.Company.Description,
                                   Description = u.Description,
                                   Password = StringManipulation.Decrypt(u.Password, _encryptionKey),
@@ -176,7 +176,7 @@ namespace Gateway.BLL.Services
                 return new();
             }
         }
-        public async Task<Response.Result> Create(Request.ApiClient model)
+        public async Task<Response.Result> Create(Request.Client model)
         {
             Response.Result result = new();
             TransactionScope transactionScope = new(TransactionScopeAsyncFlowOption.Enabled);
@@ -193,7 +193,7 @@ namespace Gateway.BLL.Services
                     Action = action
                 };
 
-                var data = _efDbContext.ApiClient!.FirstOrDefault(u => u.Username == model.Username);
+                var data = _efDbContext.Client!.FirstOrDefault(u => u.Username == model.Username);
 
                 if (data == null)
                 {
@@ -211,7 +211,7 @@ namespace Gateway.BLL.Services
                         CreatedDate = DateTime.Now
                     };
 
-                    await _apiClientRepository.AddAsync(data);
+                    await _ClientRepository.AddAsync(data);
 
                     var AuditLog = new Models.AuditLog()
                     {
@@ -260,7 +260,7 @@ namespace Gateway.BLL.Services
 
             return await Task.FromResult(result);
         }
-        public async Task<Response.Result> Update(Request.ApiClient model)
+        public async Task<Response.Result> Update(Request.Client model)
         {
             Response.Result result = new();
 
@@ -280,7 +280,7 @@ namespace Gateway.BLL.Services
                     Action = action
                 };
 
-                var data = _efDbContext.ApiClient!.FirstOrDefault(u => u.Username == model.Username);
+                var data = _efDbContext.Client!.FirstOrDefault(u => u.Username == model.Username);
 
                 if (data != null)
                 {
@@ -290,7 +290,7 @@ namespace Gateway.BLL.Services
                     }
                     else
                     {
-                        var x = _efDbContext.ApiClient!.Any(d => d.Username == model.Username);
+                        var x = _efDbContext.Client!.Any(d => d.Username == model.Username);
 
                         if (!x)
                             updateStatus = 1;
@@ -324,7 +324,7 @@ namespace Gateway.BLL.Services
                     data.UpdatedBy = userId;
                     data.UpdatedDate = DateTime.Now;
 
-                    await _apiClientRepository.UpdateAsync(data);
+                    await _ClientRepository.UpdateAsync(data);
 
                     var AuditLog = new Models.AuditLog()
                     {
@@ -371,7 +371,7 @@ namespace Gateway.BLL.Services
             return await Task.FromResult(result);
         }
 
-        public async Task<Response.Result> Delete(Request.ApiClient model)
+        public async Task<Response.Result> Delete(Request.Client model)
         {
             Response.Result result = new();
             TransactionScope transactionScope = new(TransactionScopeAsyncFlowOption.Enabled);
@@ -388,7 +388,7 @@ namespace Gateway.BLL.Services
                     Action = _action
                 };
 
-                var data = _efDbContext.ApiClient!.FirstOrDefault(u => u.Username == model.Username);
+                var data = _efDbContext.Client!.FirstOrDefault(u => u.Username == model.Username);
 
                 if (data != null)
                 {
@@ -401,7 +401,7 @@ namespace Gateway.BLL.Services
                     data.UpdatedBy = userId;
                     data.UpdatedDate = DateTime.Now;
 
-                    await _apiClientRepository.DeleteAsync(data);
+                    await _ClientRepository.DeleteAsync(data);
 
                     var AuditLog = new Models.AuditLog()
                     {
@@ -452,8 +452,88 @@ namespace Gateway.BLL.Services
 
         }
 
+        public async Task<Response.Result> Restore(Request.Client model)
+        {
+            Response.Result result = new();
+            TransactionScope transactionScope = new(TransactionScopeAsyncFlowOption.Enabled);
+
+            try
+            {
+                var _action = "RESTORE";
+                var userId = _efDbContext.User!.FirstOrDefault(u => u.Username == model.OpUser)!.Id;
+
+                var activityLog = new Models.ActivityLog()
+                {
+                    UserId = userId,
+                    ModuleName = _moduleName,
+                    Action = _action
+                };
+
+                var data = _efDbContext.Client!.FirstOrDefault(u => u.Username == model.Username);
+
+                if (data != null)
+                {
+                    var oldValue = JsonConvert.SerializeObject(data!, new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+
+                    data.Deleted = false;
+                    data.UpdatedBy = userId;
+                    data.UpdatedDate = DateTime.Now;
+
+                    await _ClientRepository.DeleteAsync(data);
+
+                    var AuditLog = new Models.AuditLog()
+                    {
+                        RecordId = data.Id.ToString(),
+                        Terminal = model.Terminal!,
+                        OperationType = _action,
+                        ChangeBy = userId,
+                        ActionDate = (DateTime)data.UpdatedDate,
+                        TableName = _moduleName,
+                        OriginalData = "[restored :false]",
+                        NewData = "[restored :true]"
+                    };
+
+                    activityLog.Details = string.Format("[Username: {0}] deleted.", data.Username);
+                    result.Status = "SUCCESS";
+                    result.Message = string.Format("{0} deleted.", _moduleName);
+
+                    _logService.LogActivity(activityLog);
+                    _logService.LogAudit(AuditLog!);
+
+                }
+                else
+                {
+                    result.Status = "FAILED";
+                    result.Message = string.Format("{0} not exist.", _moduleName);
+                }
+
+                transactionScope.Complete();
+
+            }
+            catch (TransactionAbortedException ex)
+            {
+                _logService.LogException(ex, _moduleName);
+                result = new Response.Result() { Status = "ERROR", Message = "Error encountered" };
+            }
+            catch (Exception ex)
+            {
+                _logService.LogException(ex, _moduleName);
+                result = new Response.Result() { Status = "ERROR", Message = "Error encountered" };
+            }
+            finally
+            {
+
+                transactionScope.Dispose();
+            }
+
+            return await Task.FromResult(result);
+
+        }
         //reset api key & secret
-        public async Task<Response.APISecurityResult> ResetAPIKeySecret(Request.ApiClient model)
+        public async Task<Response.APISecurityResult> ResetAPIKeySecret(Request.Client model)
         {
             Response.APISecurityResult result = new();
             string newKey = StringManipulation.Random(16), newSecret = StringManipulation.Random(16);
@@ -469,13 +549,13 @@ namespace Gateway.BLL.Services
                     Action = action
                 };
 
-                var client = _efDbContext.ApiClient!.FirstOrDefault(b => b.Id.ToString().ToUpper() == model.Id);
+                var client = _efDbContext.Client!.FirstOrDefault(b => b.Id.ToString().ToUpper() == model.Id);
                 if (client != null)
                 {
 
                     client.ApiKey = newKey;
                     client.ApiSecret = newSecret;
-                    await _apiClientRepository.UpdateAsync(client);
+                    await _ClientRepository.UpdateAsync(client);
                     result.Status = "SUCCESS";
                     result.Key = newKey;
                     result.Secret = newSecret;
@@ -500,7 +580,7 @@ namespace Gateway.BLL.Services
 
         }
         //reset password
-        public async Task<Response.APISecurityResult> ResetPassword(Request.ApiClient model)
+        public async Task<Response.APISecurityResult> ResetPassword(Request.Client model)
         {
             Response.APISecurityResult result = new();
             string password = StringManipulation.Random(8);
@@ -517,12 +597,12 @@ namespace Gateway.BLL.Services
                     Action = action
                 };
 
-                var client = _efDbContext.ApiClient!.FirstOrDefault(b => b.Id.ToString().ToUpper() == model.Id);
+                var client = _efDbContext.Client!.FirstOrDefault(b => b.Id.ToString().ToUpper() == model.Id);
                 if (client != null)
                 {
 
                     client.Password = newPassword;
-                    await _apiClientRepository.UpdateAsync(client);
+                    await _ClientRepository.UpdateAsync(client);
                     result.Status = "SUCCESS";
                     result.Password = password;
 

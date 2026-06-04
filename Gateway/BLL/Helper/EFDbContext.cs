@@ -18,9 +18,10 @@ namespace Gateway.BLL.Helper
         public DbSet<Models.TransactionLog> TransactionLog { get; set; }
 
 
-        public DbSet<Models.ActiveUser> ActiveUser { get; set; }
-        public DbSet<Models.ApiClient> ApiClient { get; set; }
+        public DbSet<Models.ActiveUser> ActiveUser { get; set; } 
         public DbSet<Models.Branch> Branch { get; set; }
+        public DbSet<Models.Client> Client { get; set; }
+        public DbSet<Models.Company> Company { get; set; }
         public DbSet<Models.Module> Module { get; set; }
         public DbSet<Models.ModulePermission> ModulePermission { get; set; }
         public DbSet<Models.PasswordHistory> PasswordHistory { get; set; }
@@ -72,18 +73,29 @@ namespace Gateway.BLL.Helper
 
             //application
             modelBuilder.Entity<Route>()
-                .HasMany(r => r.Hosts)
-                .WithOne(h => h.Route)
-                .HasForeignKey(h => h.RouteId)
-                .HasPrincipalKey(r => r.Id)
-                .OnDelete(DeleteBehavior.Cascade);  
-             
+              .HasMany(r => r.Hosts)
+              .WithOne(h => h.Route)
+              .HasForeignKey(h => h.RouteId)
+              .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Route>()
                 .HasMany(r => r.IpRules)
                 .WithOne(i => i.Route)
                 .HasForeignKey(i => i.RouteId)
-                .HasPrincipalKey(r => r.Id)
-                .OnDelete(DeleteBehavior.Cascade);  
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Route>()
+                .HasMany(r => r.Clients)
+                .WithOne(c => c.Route)
+                .HasForeignKey(c => c.RouteId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Route>()
+                .HasOne(r => r.RouteCategory)
+                .WithMany()
+                .HasForeignKey(r => r.Category)
+                .HasPrincipalKey(c => c.Code);
+
         }
     }
      

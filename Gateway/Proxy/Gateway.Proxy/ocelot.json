@@ -1,85 +1,143 @@
-{
+﻿{
+  "GlobalConfiguration": {
+    "ClientIdHeader": "X-Client-Id",
+    "QuotaExceededMessage": "API allocation bounds breached.",
+    "RateLimitHttpStatusCode": 429,
+    "EnableRateLimitHeaders": true,
+    "LogLevel": "Warning",
+    "EnableRequestId": true,
+    "AuthenticationOptions": {
+      "HasScheme": false,
+      "HasScope": false
+    },
+    "DownstreamHeaderTransform": {},
+    "HttpHandlerOptions": {},
+    "MetadataOptions": {
+      "CurrentCulture": "en-US",
+      "NumberStyle": "Any",
+      "Separators": [
+        ","
+      ],
+      "StringSplitOption": "None",
+      "TrimChars": [
+        " "
+      ]
+    },
+    "SecurityOptions": {
+      "IPAllowedList": [],
+      "IPBlockedList": [],
+      "ExcludeAllowedFromBlocked": false
+    },
+    "ServiceDiscoveryProvider": {
+      "Port": 0,
+      "PollingInterval": 0
+    },
+    "UpstreamHeaderTransform": {}
+  },
   "Routes": [
     {
-      "Id": "AUTH-001",
+      "Id": "1",
+      "RequireSignature": true,
+      "TimeLimit": {
+        "EnableTimeLimit": true,
+        "TimeFrom": "06:00",
+        "TimeTo": "22:00",
+        "AllowedDays": [
+          0,
+          1,
+          6
+        ]
+      },
+      "Client": [
+        "3",
+        "5",
+        "6"
+      ],
+      "AddClaimsToRequest": {},
+      "AddHeadersToRequest": {},
+      "AddQueriesToRequest": {},
+      "ChangeDownstreamPathTemplate": {},
+      "DangerousAcceptAnyServerCertificateValidator": false,
+      "DelegatingHandlers": [],
+      "DownstreamHeaderTransform": {},
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "10.20.0.104",
+          "Port": 443
+        }
+      ],
+      "DownstreamPathTemplate": "/api/auth/authenticate",
+      "Priority": 1,
+      "RouteClaimsRequirement": {},
+      "RouteIsCaseSensitive": false,
+      "SecurityOptions": {
+        "IPAllowedList": [
+          "172.16.69.15",
+          "::1"
+        ],
+        "IPBlockedList": [],
+        "ExcludeAllowedFromBlocked": false
+      },
+      "UpstreamHeaderTemplates": {},
+      "UpstreamHeaderTransform": {},
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
       "UpstreamPathTemplate": "/authenticate",
-      "UpstreamHttpMethod": [ "Post" ],
-      "DownstreamPathTemplate": "/api/auth/login",
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKeys": [
+          "Bearer"
+        ],
+        "HasScheme": true,
+        "HasScope": false
+      },
       "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "internal-auth-service.com",
-          "Port": 443
-        }
-      ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Limit": 100,
+        "Period": "1m",
+        "Wait": "60s",
+        "StatusCode": 429,
+        "QuotaMessage": "API allocation bounds breached."
+      }
+    },
+    {
+      "Id": "2",
+      "RequireSignature": false,
       "Client": [],
-      "RequireSignature": false,
-      "TimeLimit": {
-        "EnableTimeLimit": true,
-        "TimeFrom": "08:00",
-        "TimeTo": "17:00",
-        "AllowedDays": [ 1, 2, 3, 5 ]
+      "AddClaimsToRequest": {},
+      "AddHeadersToRequest": {},
+      "AddQueriesToRequest": {},
+      "ChangeDownstreamPathTemplate": {},
+      "DangerousAcceptAnyServerCertificateValidator": false,
+      "DelegatingHandlers": [],
+      "DownstreamHeaderTransform": {},
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "dogapi.dog",
+          "Port": 443
+        }
+      ],
+      "DownstreamPathTemplate": "/api/v2/breeds",
+      "Priority": 1,
+      "RouteClaimsRequirement": {},
+      "RouteIsCaseSensitive": false,
+      "UpstreamHeaderTemplates": {},
+      "UpstreamHeaderTransform": {},
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "UpstreamPathTemplate": "/breeds",
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKeys": [],
+        "HasScheme": false,
+        "HasScope": false
       },
-      "Description": "Test for bypass logic (Should log REQUEST/RESPONSE even if unauthorized)"
-    },
-    {
-      "Id": "ORD-001",
-      "UpstreamPathTemplate": "/secure/orders",
-      "UpstreamHttpMethod": [ "Post" ],
-      "DownstreamPathTemplate": "/api/orders/create",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "internal-orders-api.com",
-          "Port": 443
-        }
-      ],
-      "Client": [ "CARYGRANT" ],
-      "RequireSignature": false,
-      "TimeLimit": {
-        "EnableTimeLimit": true,
-        "TimeFrom": "08:00",
-        "TimeTo": "17:00",
-        "AllowedDays": [ 1, 2, 3, 4, 5 ]
-      },
-      "Description": "Test for Time Range (Mon-Fri) and Request Signature"
-    },
-    {
-      "Id": "SSL-001",
-      "UpstreamPathTemplate": "/ssl/protected-data",
-      "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamPathTemplate": "/api/data/export",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "secure-data-backend.com",
-          "Port": 443
-        }
-      ],
-      "Client": [ "CARYGRANT" ],
-      "RequireSignature": false,
-      "EnableTimeLimit": false,
-      "Description": "Test for SSL Certificate Validation (Ensure SSLRequired is true in DB for CARYGRANT)"
-    },
-    {
-      "Id": "PAT-001",
-      "UpstreamPathTemplate": "/api/products/{id}",
-      "UpstreamHttpMethod": [ "Get" ],
-      "DownstreamPathTemplate": "/products/details/{id}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "inventory-api.com",
-          "Port": 443
-        }
-      ],
-      "Client": [ "CARYGRANT" ],
-      "RequireSignature": false,
-      "EnableTimeLimit": false,
-      "Description": "Test for Wildcard Pattern Matching (Ensures {id} is logged correctly)"
+      "DownstreamScheme": "https"
     }
   ],
-  "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:7001"
-  }
+  "DynamicRoutes": [],
+  "Aggregates": []
 }

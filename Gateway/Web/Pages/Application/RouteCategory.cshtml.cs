@@ -3,40 +3,47 @@ using Gateway.BLL.Services.IService;
 using Microsoft.AspNetCore.Mvc;
 using Request = Gateway.BLL.DTO.Request;
 using Response = Gateway.BLL.DTO.Response;
-namespace Gateway.Web.Pages.Application.RouteManagement
+
+namespace Gateway.Pages.Application
 {
-    public class IndexModel(IRouteService service) : PageModelExtension
+    public class RouteCategoryModel(IRouteService service) : PageModelExtension
     {
+
         private readonly IRouteService _service = service;
+
         public IActionResult OnGet()
-        { 
+        {
             string page = ValidateAccess();
+
             if (page == "")
             {
                 return Page();
             }
             else
                 return Redirect(page);
+
         }
 
-        public async Task<JsonResult> OnPostFilter([FromBody] Request.FParam param)
+        public async Task<JsonResult> OnGetAllCategory()
         {
+
             try
             {
-                var data = await _service.Filter(param);
+                var data = await _service.GetCategory();
 
                 return new JsonResult(data);
             }
             catch (Exception ex)
             {
                 return new(
-                   new Response.Result
-                   {
-                       Status = "ERROR",
-                       Message = ex.Message
-                   }
+                    new Response.Result
+                    {
+                        Status = "ERROR",
+                        Message = ex.Message
+                    }
                 );
             }
-        }
+
+        } 
     }
 }

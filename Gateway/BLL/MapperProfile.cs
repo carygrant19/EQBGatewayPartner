@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Gateway.BLL.Helper; 
 using Microsoft.Extensions.Configuration; 
 using Model = Gateway.Data.Models;
+using Request = Gateway.BLL.DTO.Request;
 using Response = Gateway.BLL.DTO.Response;
 namespace Gateway.BLL
 {
@@ -11,8 +13,8 @@ namespace Gateway.BLL
         {
             var encryptionKey = configuration["AppContext:EncryptionKey"]!;
              
-            CreateMap<Model.ApiClient, Response.ApiClient>();
-            CreateMap<Model.ApiClient, Response.FApiClient>();
+            CreateMap<Model.Client, Response.Client>();
+            CreateMap<Model.Client, Response.FClient>();
 
             CreateMap<Model.User, Response.User>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => StringManipulation.Encrypt(src.Id.ToString(), encryptionKey)));
@@ -26,6 +28,15 @@ namespace Gateway.BLL
                     .ForMember(dest => dest.ModulePermission, opt => opt.MapFrom(src => src.ModulePermission != null ? string.Join("|", src.ModulePermission.Select(mp => mp.PermissionId.ToString())) : ""));
 
             CreateMap<Model.Permission, Response.FPermission>().ForMember(dest => dest.Id, opt => opt.MapFrom(src => StringManipulation.Encrypt(src.Id.ToString(), configuration["AppContext:EncryptionKey"]!)));
+
+
+            // Core Route mapping configuration
+            CreateMap<Request.Route, Model.Route>();
+
+            // Child collection mappings (so AutoMapper can resolve nested lists automatically)
+            CreateMap<Request.RouteHost, Model.RouteHost>();
+            CreateMap<Request.RouteIpRule, Model.RouteIpRule>();
+            CreateMap<Request.RouteClient, Model.RouteClient>();
         }
     }
 }

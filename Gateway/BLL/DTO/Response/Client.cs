@@ -7,21 +7,21 @@
         public string? Secret { get; set; } = string.Empty;
         public string? Password { get; set; } = string.Empty;
     }
-    public class VApiClient : ListBase
+    public class VClient : ListBase
     {
-        public List<FApiClient> Data { get; set; } = [];
+        public List<FClient> Data { get; set; } = [];
     }
 
-    public class FApiClient : ApiClient
+    public class FClient : Client
     {
         public bool Deleted { get; set; }
     }
-    public class ApiClient : Base
+    public class Client : Base
     {
         public string Id { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
         public string CompanyId { get; set; } = string.Empty;
-        public string CompanyName { get; set; } = string.Empty;
+        public string CompanyCode { get; set; } = string.Empty;
         public string CompanyDescription { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;

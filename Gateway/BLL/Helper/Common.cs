@@ -7,14 +7,14 @@ namespace Gateway.BLL.Helper
 {
     public class Common 
     {
-        private readonly IApiClientService _apiClientService;
+        private readonly IClientService _apiClientService;
 
-        public Common(IApiClientService apiClientService)
+        public Common(IClientService apiClientService)
         {
             _apiClientService = apiClientService;
         }
 
-        public async Task<Response.ApiClient> GetApiClient(string apiKey)
+        public async Task<Response.Client> GetApiClient(string apiKey)
         {
             return await _apiClientService.ByApiKey(apiKey!);
         }
@@ -29,7 +29,7 @@ namespace Gateway.BLL.Helper
             return true;
         }
 
-        public static bool ValidateRequestMethodAndSignature(HttpContext context, Response.ApiClient client, out string message)
+        public static bool ValidateRequestMethodAndSignature(HttpContext context, Response.Client client, out string message)
         {
             if (context.Request.Method.Equals("post", StringComparison.OrdinalIgnoreCase))
             {

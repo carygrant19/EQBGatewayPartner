@@ -2,7 +2,7 @@
 
 namespace Gateway.BLL.DTO.Request
 {
-    public class ApiClient : Base
+    public class Client : Base
     {
         [Required(AllowEmptyStrings = true)]
         [MaxLength(50)]

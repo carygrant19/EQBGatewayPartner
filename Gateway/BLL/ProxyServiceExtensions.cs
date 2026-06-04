@@ -15,7 +15,7 @@ namespace Gateway.BLL
             services.AddScoped<ILogService, LogService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             
-            services.AddScoped<IApiClientService, ApiClientService>();
+            services.AddScoped<IClientService, ClientService>();
             services.AddScoped<ICertificateValidatorService, CertificateValidatorService>();
             services.AddSingleton<IMailerService, MailerService>();
             services.AddScoped<IUserService, UserService>();

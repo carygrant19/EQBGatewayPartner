@@ -14,7 +14,7 @@ builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
 var systemParameters = builder.Configuration.GetSection("SystemParameters").Get<SystemParameters>();
  
 builder.Services.AddControllersWithViews()
-    //.AddRazorRuntimeCompilation()
+    .AddRazorRuntimeCompilation()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;

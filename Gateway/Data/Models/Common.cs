@@ -85,5 +85,9 @@
         public string? Filename { get; set; }
         public byte[]? FileBytes { get; set; }
     }
-
+    public class OcelotConfigFile
+    {
+        public string? FilePath { get; set; } = string.Empty;
+        public string? BackupPath { get; set; } = string.Empty;
+    }
 }

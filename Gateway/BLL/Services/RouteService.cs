@@ -1,14 +1,19 @@
 ﻿using AutoMapper;
+using Gateway.BLL.Helper;
+using Gateway.BLL.Services.IService;
+using Gateway.BLL.Services.IServices;
+using Gateway.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using Gateway.BLL.Services.IService;
+using Ocelot.Configuration.File;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Transactions;
 using Model = Gateway.Data.Models;
 using Request = Gateway.BLL.DTO.Request;
 using Response = Gateway.BLL.DTO.Response;
-using Gateway.BLL.Helper;
-using Gateway.BLL.Services.IServices;
-using Microsoft.EntityFrameworkCore;
 
 namespace Gateway.BLL.Services
 {
@@ -23,24 +28,225 @@ namespace Gateway.BLL.Services
         private readonly IRepository<Model.Route> _repository = repository;
         private readonly ILogService _logService = logService;
         private readonly IMapper _mapper = mapper;
-        private readonly string _encryptionKey = configuration["AppContext:EncryptionKey"]!;
         private readonly string _moduleName = "Route";
+
+        public async Task<Response.Result> GenerateOcelotConfigFile(OcelotConfigFile ocelotConfigFile)
+        {
+            Response.Result result = new();
+
+            try
+            {
+                OcelotCustomFileConfiguration config = await Config();
+
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                };
+
+                var configJson = System.Text.Json.JsonSerializer.Serialize(config, options);
+
+                string originalFilePath = ocelotConfigFile.FilePath!;
+                string dateFolder = DateTime.Now.ToString("yyyy-MM-dd");
+                string fullBackupPath = Path.Combine(ocelotConfigFile.BackupPath!, dateFolder);
+                string backupFileName = $"ocelot_{DateTime.Now.ToString("HHmmssf")}.json";
+
+                if (!Directory.Exists(fullBackupPath))
+                {
+                    Directory.CreateDirectory(fullBackupPath);
+                }
+
+                if (File.Exists(originalFilePath))
+                {
+                    string backupFileFullPath = Path.Combine(fullBackupPath, backupFileName);
+                    File.Copy(originalFilePath, backupFileFullPath, overwrite: true);
+                }
+
+                await File.WriteAllTextAsync(originalFilePath, configJson, Encoding.UTF8);
+
+                result.Status = "SUCCESS";
+                result.Message = "Ocelot gateway custom configuration file compiled successfully.";
+            }
+            catch (Exception ex)
+            {
+                result.Status = "FAILED";
+                result.Message = $"An error occurred while compiling file configuration: {ex.Message}";
+            }
+
+            return result;
+        }
+
+        public async Task<OcelotCustomFileConfiguration> Config()
+        {
+            try
+            {
+                var result = await _efDbContext.Set<Route>()
+                    .Include(c => c.Clients)
+                    .Include(i => i.IpRules)
+                    .Include(h => h.Hosts)
+                    .Where(e => e.IsActive == true)
+                    .ToListAsync();
+
+                OcelotCustomFileConfiguration ocelot = new()
+                {
+                    GlobalConfiguration = new CustomFileGlobalConfiguration
+                    {
+                        ClientIdHeader = "X-Client-Id",
+                        EnableRateLimitHeaders = true,
+                        RateLimitHttpStatusCode = 429,
+                        QuotaExceededMessage = "API allocation bounds breached.",
+                        LogLevel = "Warning",
+                        EnableRequestId = true
+                    },
+                    Routes = new List<CustomFileRoute>()
+                };
+
+                foreach (var item in result)
+                {
+                    CustomFileRoute oRoute = new()
+                    {
+                        DownstreamPathTemplate = item.DownstreamPathTemplate,
+                        DownstreamScheme = item.DownstreamScheme,
+                        UpstreamPathTemplate = item.UpstreamPathTemplate,
+                        UpstreamHttpMethod = OcelotMethod(item.UpstreamHttpMethod) ?? new HashSet<string>(),
+
+                        DownstreamHostAndPorts = OcelotHost(item.Hosts) ?? new List<FileHostAndPort>(),
+                        SecurityOptions = OcelotSecurityOptions(item.IpRules),
+                        RateLimitOptions = OcelotRateLimit(
+                            item.EnableRateLimiting,
+                            item.RatePeriod,
+                            item.RatePeriodTimespan ?? 0,
+                            item.RateLimit ?? 0,
+                            item.RateLimitHttpStatusCode,
+                            item.RateLimitQuotaExceededMessage
+                        ),
+
+                        AuthenticationOptions = new FileAuthenticationOptions
+                        {
+                       
+                            AuthenticationProviderKeys = !string.IsNullOrEmpty(item.AuthenticationProviderKey)
+                                ? new string[] { item.AuthenticationProviderKey }
+                                : Array.Empty<string>(),
+                            AllowedScopes = new List<string>()
+                        },
+
+                        Id = item.Id.ToString(),
+                        RequireSignature = item.RequireSignature,
+                        Client = OcelotClient(item.Clients),
+                        TimeLimit = OcelotTimeLimit(item.EnableTimeLimit, item.TimeFrom, item.TimeTo, item.AllowedDays)
+                    };
+
+                    ocelot.Routes.Add(oRoute);
+                }
+
+                return ocelot;
+            }
+            catch (Exception ex)
+            {
+                _logService.LogException(ex, _moduleName);
+                throw;
+            }
+        }
+
+        // --- FIXED PRIVATE METHODS WITH COMPLIANT TARGET TYPE EXPRESSIONS ---
+
+        private static HashSet<string>? OcelotMethod(string httpMethod)
+        {
+            return string.IsNullOrEmpty(httpMethod)
+                ? null
+                : httpMethod.Split('|', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(m => m.Trim().ToUpper()) // Cleans whitespace issues (e.g. "GET | POST")
+                            .ToHashSet();
+        }
+
+        private static FileRateLimitByHeaderRule? OcelotRateLimit(
+             bool enableRateLimiting,
+             string? period,
+             int timeSpan,
+             int limit,
+             int? httpStatusCode,
+             string? quotaMessage)
+        {
+            return enableRateLimiting
+                ? new FileRateLimitByHeaderRule
+                {
+                    EnableRateLimiting = enableRateLimiting,
+                    Period = period,
+                    Wait = $"{timeSpan}s", // Modern Ocelot duration string syntax
+                    Limit = limit,
+
+                    // Modern feature properties mapped from your database fields
+                    StatusCode = httpStatusCode ?? 429,
+                    QuotaMessage = quotaMessage
+                }
+                : null;
+        }
+
+        private static List<FileHostAndPort>? OcelotHost(ICollection<RouteHost> hosts)
+        {
+            if (hosts == null || !hosts.Any()) return null;
+
+            return hosts.Select(h => new FileHostAndPort
+            {
+                Host = h.Host,
+                Port = h.Port
+            }).ToList();
+        }
+
+        private static FileSecurityOptions? OcelotSecurityOptions(ICollection<RouteIpRule> ipRules)
+        {
+            if (ipRules == null || !ipRules.Any()) return null;
+
+            return new FileSecurityOptions
+            {
+                IPAllowedList = ipRules.Where(r => r.RuleType == "Allow").Select(r => r.IpAddressOrRange).ToList(),
+                IPBlockedList = ipRules.Where(r => r.RuleType == "Deny").Select(r => r.IpAddressOrRange).ToList()
+            };
+        }
+
+        private static List<string> OcelotClient(ICollection<RouteClient> clients)
+        {
+            return clients != null && clients.Any()
+                ? clients.Select(c => c.ClientId).ToList()
+                : new List<string>();
+        }
+
+        private static Gateway.Data.Models.TimeLimit? OcelotTimeLimit(bool enableTimeLimit, string? timeFrom, string? timeTo, string? allowedDaysString)
+        {
+            if (!enableTimeLimit) return null;
+
+            List<int> parsedDays = new();
+            if (!string.IsNullOrEmpty(allowedDaysString))
+            {
+                parsedDays = allowedDaysString.Split(',')
+                    .Select(d => int.TryParse(d.Trim(), out int val) ? val : -1)
+                    .Where(val => val >= 0 && val <= 6)
+                    .ToList();
+            }
+
+            return new Gateway.Data.Models.TimeLimit
+            {
+                EnableTimeLimit = enableTimeLimit,
+                TimeFrom = timeFrom,
+                TimeTo = timeTo,
+                AllowedDays = parsedDays
+            };
+        }
 
         public async Task<List<Response.Route>> Get()
         {
             try
             {
-                // Pull active proxy routes along with their corresponding host maps and firewall rules
                 var routes = await _efDbContext.Set<Model.Route>()
                     .Include(r => r.Hosts)
                     .Include(r => r.IpRules)
                     .Where(e => e.IsActive == true)
                     .ToListAsync();
 
-                // Manually map to DTO structures to align with your encryption pattern bounds
                 var result = routes.Select(q => new Response.Route
                 {
-                    Id = q.Id, // Primary keys for Routes are explicit varchar strings in your schema
+                    Id = q.Id.ToString(),
+                    Code = q.Code,
                     Name = q.Name,
                     Description = q.Description,
                     IsActive = q.IsActive,
@@ -101,6 +307,7 @@ namespace Gateway.BLL.Services
                 var query = _efDbContext.Set<Model.Route>()!
                     .Include(r => r.Hosts)
                     .Include(r => r.IpRules)
+                    .Include(r => r.Clients)
                     .AsQueryable();
 
                 if (model.Filters != null && model.Filters.Count != 0)
@@ -119,8 +326,85 @@ namespace Gateway.BLL.Services
                 int recordsToSkip = (model.PageNum - 1) * model.PageSize;
                 var pagedQuery = await query.Skip(recordsToSkip).Take(model.PageSize).ToListAsync();
 
-                // Leverages AutoMapper to handle complex nested entity structures dynamically
-                vData.Data = _mapper.Map<List<Response.FRoute>>(pagedQuery);
+                vData.Data = pagedQuery.Select(r => new Response.FRoute
+                {
+                    Id = r.Id.ToString(),
+                    Code = r.Code,
+                    Name = r.Name,
+                    Description = r.Description,
+                    Category = r.Category,
+                    IsActive = r.IsActive,
+                    IsWebSocket = r.IsWebSocket,
+                    UpstreamPathTemplate = r.UpstreamPathTemplate,
+                    UpstreamHttpMethod = r.UpstreamHttpMethod,
+                    DownstreamPathTemplate = r.DownstreamPathTemplate,
+                    DownstreamScheme = r.DownstreamScheme,
+                    UpstreamHost = r.UpstreamHost,
+                    DownstreamHttpVersion = r.DownstreamHttpVersion,
+                    DangerousAcceptAnyServerCertificateValidator = r.DangerousAcceptAnyServerCertificateValidator,
+                    AuthenticationProviderKey = r.AuthenticationProviderKey,
+                    RouteIsCaseSensitive = r.RouteIsCaseSensitive,
+                    Priority = r.Priority,
+
+                    EnableRateLimiting = r.EnableRateLimiting,
+                    RateLimit = r.RateLimit,
+                    RatePeriod = r.RatePeriod,
+                    RatePeriodTimespan = r.RatePeriodTimespan,
+                    RateLimitHttpStatusCode = r.RateLimitHttpStatusCode,
+                    RateLimitQuotaExceededMessage = r.RateLimitQuotaExceededMessage,
+
+                    EnableCaching = r.EnableCaching,
+                    CacheTtlSeconds = r.CacheTtlSeconds,
+                    EnableQoS = r.EnableQoS,
+                    QoSTimeoutMs = r.QoSTimeoutMs,
+                    QoSExceptionsAllowedBeforeBreaking = r.QoSExceptionsAllowedBeforeBreaking,
+                    QoSDurationOfBreakMs = r.QoSDurationOfBreakMs,
+
+                    LoadBalancerType = r.LoadBalancerType,
+                    LoadBalancerKey = r.LoadBalancerKey,
+                    LoadBalancerExpiryMs = r.LoadBalancerExpiryMs,
+                    RequireSignature = r.RequireSignature,
+                    EnableTimeLimit = r.EnableTimeLimit,
+                    TimeFrom = r.TimeFrom,
+                    TimeTo = r.TimeTo,
+                    AllowedDays = r.AllowedDays,
+
+                    UseServiceDiscovery = r.UseServiceDiscovery,
+                    ServiceName = r.ServiceName,
+                    ServiceNamespace = r.ServiceNamespace,
+                    EnableServicePolling = r.EnableServicePolling,
+                    PollingIntervalMs = r.PollingIntervalMs,
+
+                    CreatedBy = r.CreatedBy.ToString(),
+                    CreatedDate = r.CreatedDate,
+                    UpdatedBy = r.UpdatedBy?.ToString(),
+                    UpdatedDate = r.UpdatedDate,
+
+                    Hosts = r.Hosts?.Select(h => new Response.FRouteHost
+                    {
+                        Id = h.Id,
+                        RouteId = h.RouteId.ToString(),
+                        Host = h.Host,
+                        Port = h.Port,
+                        Description = h.Description ?? string.Empty
+                    }).ToList() ?? new List<Response.FRouteHost>(),
+
+                    IpRules = r.IpRules?.Select(ip => new Response.FRouteIpRule
+                    {
+                        Id = ip.Id,
+                        RouteId = ip.RouteId.ToString(),
+                        IpAddressOrRange = ip.IpAddressOrRange,
+                        RuleType = ip.RuleType,
+                        Description = ip.Description ?? string.Empty
+                    }).ToList() ?? new List<Response.FRouteIpRule>(),
+
+                    Clients = r.Clients?.Select(c => new Response.FRouteClient
+                    {
+                        Id = c.Id,
+                        RouteId = c.RouteId.ToString(),
+                        ClientId = c.ClientId
+                    }).ToList() ?? new List<Response.FRouteClient>()
+                }).ToList();
 
                 return vData;
             }
@@ -148,53 +432,69 @@ namespace Gateway.BLL.Services
                     Action = action
                 };
 
-                // Check for duplicate endpoint routing registration structures
-                var data = await _efDbContext.Set<Model.Route>().FirstOrDefaultAsync(d => d.Id.Trim().ToUpper() == model.Id.Trim().ToUpper());
+                var data = await _efDbContext.Set<Model.Route>().FirstOrDefaultAsync(d => d.Code == model.Code);
 
                 if (data == null)
                 {
                     data = _mapper.Map<Model.Route>(model);
-                    data.CreatedBy = model.OpUser ?? "SYSTEM";
+
+                    data.Hosts = new List<Model.RouteHost>();
+                    data.IpRules = new List<Model.RouteIpRule>();
+                    data.Clients = new List<Model.RouteClient>();
+
+                    data.CreatedBy = (int)user.Id;
                     data.CreatedDate = DateTime.Now;
                     data.IsActive = true;
 
-                    // 1. Save core proxy routing parameters
                     await _repository.AddAsync(data);
 
-                    // 2. Map and insert child load balancing server host instances
                     if (model.Hosts != null && model.Hosts.Any())
                     {
-                        var hosts = model.Hosts.Select(h => new Model.RouteHost
+                        foreach (var h in model.Hosts)
                         {
-                            RouteId = data.Id,
-                            Host = h.Host,
-                            Port = h.Port
-                        }).ToList();
-                        await _efDbContext.Set<Model.RouteHost>().AddRangeAsync(hosts);
+                            data.Hosts.Add(new Model.RouteHost
+                            {
+                                Host = h.Host,
+                                Port = h.Port,
+                                Description = h.Description
+                            });
+                        }
                     }
 
-                    // 3. Map and insert child access control ip restrictions
                     if (model.IpRules != null && model.IpRules.Any())
                     {
-                        var rules = model.IpRules.Select(i => new Model.RouteIpRule
+                        foreach (var i in model.IpRules)
                         {
-                            RouteId = data.Id,
-                            IpAddressOrRange = i.IpAddressOrRange,
-                            RuleType = i.RuleType
-                        }).ToList();
-                        await _efDbContext.Set<Model.RouteIpRule>().AddRangeAsync(rules);
+                            data.IpRules.Add(new Model.RouteIpRule
+                            {
+                                IpAddressOrRange = i.IpAddressOrRange,
+                                RuleType = i.RuleType,
+                                Description = i.Description
+                            });
+                        }
+                    }
+
+                    if (model.Clients != null && model.Clients.Any())
+                    {
+                        foreach (var c in model.Clients)
+                        {
+                            data.Clients.Add(new Model.RouteClient
+                            {
+                                ClientId = c.ClientId
+                            });
+                        }
                     }
 
                     await _efDbContext.SaveChangesAsync();
 
                     var auditLog = new Model.AuditLog()
                     {
-                        RecordId = data.Id,
+                        RecordId = data.Id.ToString(),
                         Terminal = model.Terminal!,
                         OperationType = action,
                         ChangeBy = user.Id!,
                         ActionDate = DateTime.Now,
-                        TableName = "Routes",
+                        TableName = "Master_Routes",
                         OriginalData = "",
                         NewData = JsonConvert.SerializeObject(data, new JsonSerializerSettings
                         {
@@ -210,7 +510,7 @@ namespace Gateway.BLL.Services
                 }
                 else
                 {
-                    result = new Response.Result() { Status = "FAILED", Message = string.Format("{0} routing key identifier already exists.", _moduleName) };
+                    result = new Response.Result() { Status = "FAILED", Message = string.Format("{0} route code already exists.", _moduleName) };
                 }
 
                 transactionScope.Complete();
@@ -235,7 +535,7 @@ namespace Gateway.BLL.Services
 
             try
             {
-                var user = _efDbContext.User!.FirstOrDefault(d => d.Username == model.OpUser) ?? new Model.User() { Id = 0 };
+                var user = await _efDbContext.User!.FirstOrDefaultAsync(d => d.Username == model.OpUser) ?? new Model.User() { Id = 0 };
                 var action = "EDIT";
                 var activityLog = new Model.ActivityLog()
                 {
@@ -243,63 +543,101 @@ namespace Gateway.BLL.Services
                     ModuleName = _moduleName,
                     Action = action
                 };
-                // Explicit varchar keys do not require string decryption helpers
+
                 var data = await _efDbContext.Set<Model.Route>()
                     .Include(r => r.Hosts)
                     .Include(r => r.IpRules)
-                    .FirstOrDefaultAsync(l => l.Id == model.Id);
+                    .Include(r => r.Clients)
+                    .FirstOrDefaultAsync(l => l.Id == Convert.ToInt64(model.Id));
 
                 if (data != null)
                 {
                     var oldValue = JsonConvert.SerializeObject(data, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 
-                    // Map modified parent property primitives cleanly
+                    // 1. Remove old sub-table items from Change Tracker
+                    _efDbContext.Set<Model.RouteHost>().RemoveRange(data.Hosts);
+                    _efDbContext.Set<Model.RouteIpRule>().RemoveRange(data.IpRules);
+                    _efDbContext.Set<Model.RouteClient>().RemoveRange(data.Clients);
+
+                    data.Hosts.Clear();
+                    data.IpRules.Clear();
+                    data.Clients.Clear();
+
+                    // 2. ISOLATION STEP: Extract incoming collections to local variables to prevent AutoMapper double-mapping
+                    var incomingHosts = model.Hosts;
+                    var incomingIpRules = model.IpRules;
+                    var incomingClients = model.Clients;
+
+                    // Empty the model lists temporarily so the mapper ignores them
+                    model.Hosts = new();
+                    model.IpRules = new();
+                    model.Clients = new();
+
+                    // 3. Map primary table scalar settings safely (Paths, Schemes, Categories, etc.)
                     _mapper.Map(model, data);
-                    data.UpdatedBy = model.OpUser;
+
+                    // Restore the model state back to its original form
+                    model.Hosts = incomingHosts;
+                    model.IpRules = incomingIpRules;
+                    model.Clients = incomingClients;
+
+                    data.UpdatedBy = (int)user.Id;
                     data.UpdatedDate = DateTime.Now;
 
                     await _repository.UpdateAsync(data);
 
-                    // Re-align Child Records: Remove old load balancing instances and rewrite fresh properties
-                    var oldHosts = _efDbContext.Set<Model.RouteHost>().Where(h => h.RouteId == data.Id);
-                    _efDbContext.Set<Model.RouteHost>().RemoveRange(oldHosts);
-
-                    if (model.Hosts != null && model.Hosts.Any())
+                    // 4. Bind the new explicit data sets cleanly to the empty tracking collections
+                    if (incomingHosts != null && incomingHosts.Any())
                     {
-                        var newHosts = model.Hosts.Select(h => new Model.RouteHost
+                        foreach (var h in incomingHosts)
                         {
-                            RouteId = data.Id,
-                            Host = h.Host,
-                            Port = h.Port
-                        }).ToList();
-                        await _efDbContext.Set<Model.RouteHost>().AddRangeAsync(newHosts);
+                            data.Hosts.Add(new Model.RouteHost
+                            {
+                                RouteId = data.Id,
+                                Host = h.Host,
+                                Port = h.Port,
+                                Description = h.Description
+                            });
+                        }
                     }
 
-                    // Re-align Child Records: Purge old firewall tracking bounds and insert clean rules
-                    var oldRules = _efDbContext.Set<Model.RouteIpRule>().Where(i => i.RouteId == data.Id);
-                    _efDbContext.Set<Model.RouteIpRule>().RemoveRange(oldRules);
-
-                    if (model.IpRules != null && model.IpRules.Any())
+                    if (incomingIpRules != null && incomingIpRules.Any())
                     {
-                        var newRules = model.IpRules.Select(i => new Model.RouteIpRule
+                        foreach (var i in incomingIpRules)
                         {
-                            RouteId = data.Id,
-                            IpAddressOrRange = i.IpAddressOrRange,
-                            RuleType = i.RuleType
-                        }).ToList();
-                        await _efDbContext.Set<Model.RouteIpRule>().AddRangeAsync(newRules);
+                            data.IpRules.Add(new Model.RouteIpRule
+                            {
+                                RouteId = data.Id,
+                                IpAddressOrRange = i.IpAddressOrRange,
+                                RuleType = i.RuleType,
+                                Description = i.Description
+                            });
+                        }
                     }
 
+                    if (incomingClients != null && incomingClients.Any())
+                    {
+                        foreach (var c in incomingClients)
+                        {
+                            data.Clients.Add(new Model.RouteClient
+                            {
+                                RouteId = data.Id,
+                                ClientId = c.ClientId
+                            });
+                        }
+                    }
+
+                    // 5. Commit structural changes safely without duplicates
                     await _efDbContext.SaveChangesAsync();
 
                     var auditLog = new Model.AuditLog()
                     {
-                        RecordId = data.Id,
+                        RecordId = data.Id.ToString(),
                         Terminal = model.Terminal!,
                         OperationType = action,
-                        ChangeBy = user.Id!,
+                        ChangeBy = user.Id,
                         ActionDate = DateTime.Now,
-                        TableName = "Routes",
+                        TableName = "Master_Routes",
                         OriginalData = oldValue,
                         NewData = JsonConvert.SerializeObject(data, new JsonSerializerSettings
                         {
@@ -334,7 +672,6 @@ namespace Gateway.BLL.Services
 
             return result;
         }
-
         public async Task<Response.Result> Delete(Request.Route model)
         {
             Response.Result result = new();
@@ -352,25 +689,24 @@ namespace Gateway.BLL.Services
                     Action = action
                 };
 
-                var data = await _efDbContext.Set<Model.Route>().FirstOrDefaultAsync(l => l.Id == model.Id);
+                var data = await _efDbContext.Set<Model.Route>().FirstOrDefaultAsync(l => l.Id == Convert.ToInt64(model.Id));
 
                 if (data != null)
                 {
-                    // Routes use IsActive flag states to cut traffic paths instantly instead of dropping table profiles
                     data.IsActive = false;
-                    data.UpdatedBy = model.OpUser;
+                    data.UpdatedBy = user.Id;
                     data.UpdatedDate = DateTime.Now;
 
                     await _repository.UpdateAsync(data);
 
                     var auditLog = new Model.AuditLog()
                     {
-                        RecordId = data.Id,
+                        RecordId = data.Id.ToString(),
                         Terminal = model.Terminal!,
                         OperationType = action,
                         ChangeBy = user.Id,
                         ActionDate = DateTime.Now,
-                        TableName = "Routes",
+                        TableName = "Master_Routes",
                         OriginalData = "[IsActive : true]",
                         NewData = "[IsActive : false]"
                     };
@@ -420,24 +756,24 @@ namespace Gateway.BLL.Services
                     Action = action
                 };
 
-                var data = await _efDbContext.Set<Model.Route>().FirstOrDefaultAsync(l => l.Id == model.Id);
+                var data = await _efDbContext.Set<Model.Route>().FirstOrDefaultAsync(l => l.Id == Convert.ToInt64(model.Id));
 
                 if (data != null)
                 {
                     data.IsActive = true;
-                    data.UpdatedBy = model.OpUser;
+                    data.UpdatedBy = user.Id;
                     data.UpdatedDate = DateTime.Now;
 
                     await _repository.UpdateAsync(data);
 
                     var auditLog = new Model.AuditLog()
                     {
-                        RecordId = data.Id,
+                        RecordId = data.Id.ToString(),
                         Terminal = model.Terminal!,
                         OperationType = action,
                         ChangeBy = user.Id,
                         ActionDate = DateTime.Now,
-                        TableName = "Routes",
+                        TableName = "Master_Routes",
                         OriginalData = "[IsActive : false]",
                         NewData = "[IsActive : true]"
                     };
@@ -468,6 +804,30 @@ namespace Gateway.BLL.Services
             }
 
             return result;
+        }
+
+
+        public async Task<List<Response.RouteCategory>> GetCategory()
+        {
+            try
+            {
+                var permissions = _efDbContext.Set<Model.RouteCategory>().Where(e => e.Deleted != true).AsQueryable(); 
+                var result = (from q in permissions
+                              select new Response.RouteCategory
+                              {
+                                  Id = q.Id.ToString(),
+                                  Code = q.Code,
+                                  Description = q.Description!
+                              }
+                ).ToList();
+
+                return await Task.FromResult(result);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogException(ex, _moduleName);
+                throw;
+            }
         }
     }
 }

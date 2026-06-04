@@ -7,7 +7,7 @@ namespace Gateway.BLL.Helper
 {
     public static class ValidateRequest
     {
-        public static string Signature(HttpContext context, Response.ApiClient client)
+        public static string Signature(HttpContext context, Response.Client client)
         {
             var request = context.Request;
 

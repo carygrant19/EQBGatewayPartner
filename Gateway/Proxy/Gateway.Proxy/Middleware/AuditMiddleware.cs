@@ -15,7 +15,7 @@ namespace Gateway.Proxy.Middleware
             context.Request.Headers["X-TraceID"] = traceId;
 
             var route = context.Items["MatchedRoute"] as CustomFileRoute;
-            var client = context.Items["MatchedClient"] as Response.ApiClient;
+            var client = context.Items["MatchedClient"] as Response.Client;
 
             context.Request.EnableBuffering();
             var formattedRequest = await FormatRequest(context.Request);
