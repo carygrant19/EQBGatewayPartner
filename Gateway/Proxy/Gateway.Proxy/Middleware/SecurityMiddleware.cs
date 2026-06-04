@@ -15,12 +15,13 @@ public class SecurityMiddleware(RequestDelegate next, ILogger<SecurityMiddleware
         IOptionsMonitor<OcelotCustomFileConfiguration> config,
         ILogService logService)
     {
+
         string traceId = context.TraceIdentifier;
 
         context.Request.Headers.TryGetValue("X-Api-Key", out var apiKey);
         var client = await apiClientService.ByApiKey(apiKey!);
 
-        if (client != null)
+        if (client != null) 
         {
             context.Items["MatchedClient"] = client;
         }
