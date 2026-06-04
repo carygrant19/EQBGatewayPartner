@@ -1,0 +1,6 @@
+@ServiceMesh.API_HostAddress = http://localhost:5272
+
+GET {{ServiceMesh.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

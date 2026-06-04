@@ -1,4 +1,4 @@
-namespace Instapay.Api
+namespace BayadCenter.Api
 {
     public class WeatherForecast
     {

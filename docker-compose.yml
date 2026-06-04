@@ -1,6 +1,5 @@
-version: '3.8'
-
 services:
+
   jaeger:
     image: jaegertracing/all-in-one:latest
     container_name: jaeger
@@ -10,3 +9,16 @@ services:
       - "4318:4318"
     environment:
       - COLLECTOR_OTLP_ENABLED=true
+    command: 
+      - "--query.ui-config=/etc/jaeger/ui-config.json"
+    volumes:
+      - ./ui-config.json:/etc/jaeger/ui-config.json
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=carygrant
+      - RABBITMQ_DEFAULT_PASS=Gokou@59
+    ports:
+      - "5672:5672"   
+      - "15672:15672"

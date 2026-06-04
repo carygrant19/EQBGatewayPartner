@@ -1,0 +1,8 @@
+{
+  "themes": {
+    "enabled": true
+  },
+  "search": {
+    "maxLimit": 1000
+  }
+}

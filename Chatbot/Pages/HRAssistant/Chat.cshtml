@@ -1,0 +1,117 @@
+﻿@page
+@model Chatbot.Pages.HRAssistant.ChatModel
+@{
+}
+
+<h2>EQB HR Assistant (Rank and File)</h2>
+
+<div id="chatBox"></div>
+
+<div id="inputArea">
+    <input type="text" id="messageInput" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<style>
+    #chatBox {
+        border: 1px solid #ddd;
+        height: 400px;
+        overflow-y: auto;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message {
+        max-width: 70%;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 10px;
+    }
+
+    .user {
+        align-self: flex-end;
+        background-color: #007bff;
+        color: white;
+    }
+
+    .bot {
+        align-self: flex-start;
+        background-color: #f1f1f1;
+    }
+
+    #inputArea {
+        margin-top: 10px;
+        display: flex;
+    }
+
+    #messageInput {
+        flex: 1;
+        padding: 10px;
+    }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+    .withUrl("/chathub")
+    .build();
+
+    connection.on("ReceiveMessage", function (message) {
+    removeTyping();
+    addMessage(message, "bot");
+    });
+
+    async function start() {
+    try {
+    await connection.start();
+    console.log("Connected");
+    } catch (err) {
+    setTimeout(start, 2000);
+    }
+    }
+
+    start();
+
+    function sendMessage() {
+    const input = document.getElementById("messageInput");
+    const message = input.value;
+
+    if (!message) return;
+
+    addMessage(message, "user");
+    addTyping();
+
+    connection.invoke("SendMessage", message);
+
+    input.value = "";
+    }
+
+    function addMessage(message, type) {
+    const chatBox = document.getElementById("chatBox");
+
+    const div = document.createElement("div");
+    div.classList.add("message", type);
+    div.innerText = message;
+
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function addTyping() {
+    const chatBox = document.getElementById("chatBox");
+
+    const div = document.createElement("div");
+    div.id = "typing";
+    div.classList.add("message", "bot");
+    div.innerHTML = "<em>Typing...</em>";
+
+    chatBox.appendChild(div);
+    }
+
+    function removeTyping() {
+    const typing = document.getElementById("typing");
+    if (typing) typing.remove();
+    }
+</script>

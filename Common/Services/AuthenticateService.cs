@@ -69,7 +69,7 @@ namespace Common.Services
                  issuer: configuration["JWT:Issuer"]!,
                  audience: configuration["JWT:Audience"]!,
                  claims: claims,
-                 expires: DateTime.Now.AddDays(365),
+                 expires: DateTime.Now.AddDays(int.Parse(configuration["JWT:ExpiresIn"]!)),
                  signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
              );
 
