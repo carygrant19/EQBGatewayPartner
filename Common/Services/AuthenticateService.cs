@@ -69,12 +69,15 @@ namespace Common.Services
                  issuer: configuration["JWT:Issuer"]!,
                  audience: configuration["JWT:Audience"]!,
                  claims: claims,
-                 expires: DateTime.Now.AddDays(int.Parse(configuration["JWT:ExpiresIn"]!)),
+                 expires: DateTime.Now.AddDays(int.Parse(configuration["JWT:Duration"]!)), //modify
                  signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
              );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+
+        //method 
 
         #endregion
 
