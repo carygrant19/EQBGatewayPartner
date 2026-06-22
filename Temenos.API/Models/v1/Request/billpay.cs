@@ -1,14 +1,14 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Temenos.API.Models
+namespace Temenos.API.Models.v1.Request
 {
-    internal class TransactionRequest
+    internal class billpay
     {
         [JsonPropertyName("body")]
-        public TransactionRequestBody Body { get; set; } = new TransactionRequestBody();
+        public billpayBody Body { get; set; } = new billpayBody();
     }
 
-    internal class TransactionRequestBody
+    internal class billpayBody
     {
         [JsonPropertyName("transactionType")]
         public string TransactionType { get; set; } = string.Empty!;

@@ -1,8 +1,8 @@
 using Serilog;
 using Common.Services;
 using Common.Services.IService;
-using Temenos.API.Services;
-using Temenos.API.Services.IService;
+using v1 = Temenos.API.Services.v1;
+using iv1 = Temenos.API.Services.IService.v1;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
@@ -62,7 +62,8 @@ try
 
     builder.Host.UseSerilog();
     builder.Services.AddScoped<IAuthenticateService, AuthenticateService>();
-    builder.Services.AddScoped<ITransactionService, TransactionService>();
+    builder.Services.AddScoped<iv1.ITransactionService, v1.TransactionService>();
+    builder.Services.AddScoped<iv1.IAccountService, v1.AccountService>();
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddOpenApi();

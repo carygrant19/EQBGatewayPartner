@@ -1,16 +1,16 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Temenos.API.Models
+namespace Temenos.API.Models.v1.Response
 {
-    internal class TransactionResponse
+    internal class billpay
     {
         [JsonPropertyName("header")]
-        public TransactionResponseHead Header { get; set; } = new();
+        public billpayResponseHead Header { get; set; } = new();
         [JsonPropertyName("error")]
-        public TransactionResponseError Error { get; set; } = new();
+        public billpayResponseError Error { get; set; } = new();
     }
 
-    internal class TransactionResponseHead
+    internal class billpayResponseHead
     {
         [JsonPropertyName("transactionStatus")]
         public string TransactionStatus { get; set; } = string.Empty;
@@ -22,15 +22,15 @@ namespace Temenos.API.Models
         public string Status { get; set; } = string.Empty;
     }
 
-    public class TransactionResponseError
+    internal class billpayResponseError
     {
         [JsonPropertyName("type")]
         public string Type { get; set; } = string.Empty;
         [JsonPropertyName("errorDetails")]
-        public List<TransactionResponseErrorDetails> ErrorDetails { get; set; } = default!;
+        public List<billpayResponseErrorDetails> ErrorDetails { get; set; } = default!;
     }
 
-    public class TransactionResponseErrorDetails
+    internal class billpayResponseErrorDetails
     {
         [JsonPropertyName("code")]
         public string Code { get; set; } = string.Empty;

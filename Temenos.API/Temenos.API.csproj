@@ -30,4 +30,16 @@
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="scripts\account_details_v1.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="scripts\closing _balance_v1.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="scripts\transaction_status_v1.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
