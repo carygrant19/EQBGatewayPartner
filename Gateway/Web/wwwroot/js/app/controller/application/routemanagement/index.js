@@ -252,10 +252,11 @@ const controller = createApp({
         const Save = async () => {
             const parsleyInstance = $('#modalRouteForm').parsley();
 
-            // Evaluates both standard text controls and your client whitelist constraint length rules
             const isParsleyValid = parsleyInstance.validate();
             const isClientsValid = formData.clients && formData.clients.length > 0;
-            const isValid = isParsleyValid && isClientsValid;
+            // Evaluates dynamic destination server row array counts explicitly
+            const isHostsValid = formData.hosts && formData.hosts.length > 0;
+            const isValid = isParsleyValid && isClientsValid && isHostsValid;
 
             tabErrors.general = false;
             tabErrors.hosts = false;
@@ -315,9 +316,12 @@ const controller = createApp({
                     }
                 });
 
-                // Appends a structural verification block onto your reactive whitelist tab logger state
                 if (!isClientsValid) {
                     tabErrors.clients = true;
+                }
+                // Flags tab 2 badge explicitly if empty
+                if (!isHostsValid) {
+                    tabErrors.hosts = true;
                 }
 
                 let incompleteSections = [];

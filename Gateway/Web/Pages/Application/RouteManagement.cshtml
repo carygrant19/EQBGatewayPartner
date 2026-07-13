@@ -506,8 +506,8 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <label class="form-label fw-bold small">Inbound Path Template (What external consumers hit)</label>
-                                                    <input type="text" class="form-control font-monospace text-danger" name="route_upstream_path" v-model="formData.upstreamPathTemplate" placeholder="e.g., /api/v1/auth/token" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-path="true" />
+                                                    <label class="form-label fw-bold small">Inbound Path Template</label>
+                                                    <input type="text" class="form-control font-monospace text-primary" name="route_upstream_path" v-model="formData.upstreamPathTemplate" placeholder="e.g., /api/v1/auth/token" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-path="true" />
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label fw-bold small">Outbound Target Scheme</label>
@@ -519,7 +519,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <label class="form-label fw-bold small">Outbound Forward Path (Where proxy routes inside cluster)</label>
+                                                    <label class="form-label fw-bold small">Outbound Forward Path</label>
                                                     <input type="text" class="form-control font-monospace text-success" name="route_downstream_path" v-model="formData.downstreamPathTemplate" placeholder="e.g., /identity/connect/token" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-path="true" />
                                                 </div>
                                                 <div class="col-md-4">
@@ -557,7 +557,7 @@
                                             <h4 class="mb-3 border-bottom pb-2 text-primary">Target Internal Destination Servers</h4>
                                             <div class="row g-3 mb-4">
                                                 <div v-bind:class="formData.loadBalancerType === 'CookieStickySessions' ? 'col-md-4' : 'col-md-6'">
-                                                    <label class="form-label small fw-bold">Cluster Balance Directing Strategy</label>
+                                                    <label class="form-label small fw-bold">Load Balancer Strategy</label>
                                                     <select class="form-select" name="route_balancer_type" v-model="formData.loadBalancerType" data-parsley-trigger="change focusout" data-parsley-required="true">
                                                         <option value="RoundRobin">Round Robin (Cycle evenly through server nodes sequentially)</option>
                                                         <option value="LeastConnection">Least Connection (Forward to the least busy server node)</option>
@@ -576,14 +576,14 @@
                                             </div>
 
                                             <div class="mt-4 mb-3">
-                                                <h5 class="form-label fw-bold small mb-2 text-secondary">Target Infrastructure Node Addresses</h5>
+                                                <h5 class="form-label fw-bold small mb-2">Target Infrastructure Node Addresses</h5>
                                                 <button type="button" class="btn btn-outline-primary btn-sm fw-bold shadow-sm" v-on:click="addHostRow">
                                                     <i class="fas fa-plus me-1"></i> Add Target Node Endpoint
                                                 </button>
                                             </div>
 
                                             <div class="alert alert-warning small p-2" v-if="!formData.hosts || formData.hosts.length === 0">
-                                                <i class="fas fa-exclamation-triangle"></i> At least 1 outbound target server configuration parameter destination row entry must be bound.
+                                                <i class="fas fa-exclamation-triangle"></i> At least 1 outbound target server destination must be set.
                                             </div>
 
                                             <div class="row g-2 mb-2 align-items-center" v-for="(item, index) in formData.hosts" :key="index">
