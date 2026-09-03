@@ -80,7 +80,7 @@ namespace Gateway.BLL.Services
         {
             try
             {
-                var result = await _efDbContext.Set<Route>()
+                var result = await _efDbContext.Set<Model.Route>()
                     .Include(c => c.Clients)
                     .Include(i => i.IpRules)
                     .Include(h => h.Hosts)
@@ -91,12 +91,16 @@ namespace Gateway.BLL.Services
                 {
                     GlobalConfiguration = new CustomFileGlobalConfiguration
                     {
-                        ClientIdHeader = "X-Client-Id",
-                        EnableRateLimitHeaders = true,
-                        RateLimitHttpStatusCode = 429,
-                        QuotaExceededMessage = "API allocation bounds breached.",
+                        RateLimitOptions = new FileGlobalRateLimitByHeaderRule
+                        {
+                            ClientIdHeader = "X-Client-Id",
+                            QuotaExceededMessage = "API allocation bounds breached.",
+                            HttpStatusCode = 429,
+                            EnableHeaders = true
+                        },
                         LogLevel = "Warning",
-                        EnableRequestId = true
+                        EnableRequestId = true,
+                        AuthenticationOptions = null
                     },
                     Routes = new List<CustomFileRoute>()
                 };
@@ -109,32 +113,36 @@ namespace Gateway.BLL.Services
                         DownstreamScheme = item.DownstreamScheme,
                         UpstreamPathTemplate = item.UpstreamPathTemplate,
                         UpstreamHttpMethod = OcelotMethod(item.UpstreamHttpMethod) ?? new HashSet<string>(),
-
                         DownstreamHostAndPorts = OcelotHost(item.Hosts) ?? new List<FileHostAndPort>(),
                         SecurityOptions = OcelotSecurityOptions(item.IpRules),
                         RateLimitOptions = OcelotRateLimit(
-                            item.EnableRateLimiting,
-                            item.RatePeriod,
-                            item.RatePeriodTimespan ?? 0,
-                            item.RateLimit ?? 0,
-                            item.RateLimitHttpStatusCode,
-                            item.RateLimitQuotaExceededMessage
-                        ),
-
-                        AuthenticationOptions = new FileAuthenticationOptions
-                        {
-                       
-                            AuthenticationProviderKeys = !string.IsNullOrEmpty(item.AuthenticationProviderKey)
-                                ? new string[] { item.AuthenticationProviderKey }
-                                : Array.Empty<string>(),
-                            AllowedScopes = new List<string>()
-                        },
-
+                                item.EnableRateLimiting,
+                                item.RatePeriod,
+                                item.RatePeriodTimespan ?? 0,
+                                item.RateLimit ?? 0,
+                                item.RateLimitHttpStatusCode,
+                                item.RateLimitQuotaExceededMessage
+                            ),
                         Id = item.Id.ToString(),
                         RequireSignature = item.RequireSignature,
                         Client = OcelotClient(item.Clients),
                         TimeLimit = OcelotTimeLimit(item.EnableTimeLimit, item.TimeFrom, item.TimeTo, item.AllowedDays)
                     };
+
+                    // Direct per-endpoint auth setting based on UI/database input
+                    if (!string.IsNullOrWhiteSpace(item.AuthenticationProviderKey))
+                    {
+                        oRoute.AuthenticationOptions = new FileAuthenticationOptions
+                        {
+                            AuthenticationProviderKey = item.AuthenticationProviderKey.Trim(),
+                            AuthenticationProviderKeys = new string[] { item.AuthenticationProviderKey.Trim() },
+                            AllowedScopes = new List<string>()
+                        };
+                    }
+                    else
+                    {
+                        oRoute.AuthenticationOptions = null;
+                    }
 
                     ocelot.Routes.Add(oRoute);
                 }
@@ -148,18 +156,16 @@ namespace Gateway.BLL.Services
             }
         }
 
-        // --- FIXED PRIVATE METHODS WITH COMPLIANT TARGET TYPE EXPRESSIONS ---
-
         private static HashSet<string>? OcelotMethod(string httpMethod)
         {
             return string.IsNullOrEmpty(httpMethod)
                 ? null
                 : httpMethod.Split('|', StringSplitOptions.RemoveEmptyEntries)
-                            .Select(m => m.Trim().ToUpper()) // Cleans whitespace issues (e.g. "GET | POST")
+                            .Select(m => m.Trim().ToUpper())
                             .ToHashSet();
         }
 
-        private static FileRateLimitByHeaderRule? OcelotRateLimit(
+        private static FileRateLimitByHeaderRule OcelotRateLimit(
              bool enableRateLimiting,
              string? period,
              int timeSpan,
@@ -167,19 +173,18 @@ namespace Gateway.BLL.Services
              int? httpStatusCode,
              string? quotaMessage)
         {
-            return enableRateLimiting
-                ? new FileRateLimitByHeaderRule
-                {
-                    EnableRateLimiting = enableRateLimiting,
-                    Period = period,
-                    Wait = $"{timeSpan}s", // Modern Ocelot duration string syntax
-                    Limit = limit,
-
-                    // Modern feature properties mapped from your database fields
-                    StatusCode = httpStatusCode ?? 429,
-                    QuotaMessage = quotaMessage
-                }
-                : null;
+            return new FileRateLimitByHeaderRule
+            {
+                EnableRateLimiting = enableRateLimiting,
+                Period = enableRateLimiting ? period : null,
+                PeriodTimespan = enableRateLimiting ? (timeSpan > 0 ? timeSpan : 60) : 0,
+                Wait = enableRateLimiting ? $"{timeSpan}s" : null,
+                Limit = enableRateLimiting ? limit : 0,
+                StatusCode = httpStatusCode ?? 429,
+                QuotaMessage = quotaMessage,
+                EnableHeaders = true,
+                ClientWhitelist = new List<string>()
+            };
         }
 
         private static List<FileHostAndPort>? OcelotHost(ICollection<RouteHost> hosts)
@@ -554,7 +559,6 @@ namespace Gateway.BLL.Services
                 {
                     var oldValue = JsonConvert.SerializeObject(data, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 
-                    // 1. Remove old sub-table items from Change Tracker
                     _efDbContext.Set<Model.RouteHost>().RemoveRange(data.Hosts);
                     _efDbContext.Set<Model.RouteIpRule>().RemoveRange(data.IpRules);
                     _efDbContext.Set<Model.RouteClient>().RemoveRange(data.Clients);
@@ -563,20 +567,16 @@ namespace Gateway.BLL.Services
                     data.IpRules.Clear();
                     data.Clients.Clear();
 
-                    // 2. ISOLATION STEP: Extract incoming collections to local variables to prevent AutoMapper double-mapping
                     var incomingHosts = model.Hosts;
                     var incomingIpRules = model.IpRules;
                     var incomingClients = model.Clients;
 
-                    // Empty the model lists temporarily so the mapper ignores them
                     model.Hosts = new();
                     model.IpRules = new();
                     model.Clients = new();
 
-                    // 3. Map primary table scalar settings safely (Paths, Schemes, Categories, etc.)
                     _mapper.Map(model, data);
 
-                    // Restore the model state back to its original form
                     model.Hosts = incomingHosts;
                     model.IpRules = incomingIpRules;
                     model.Clients = incomingClients;
@@ -586,7 +586,6 @@ namespace Gateway.BLL.Services
 
                     await _repository.UpdateAsync(data);
 
-                    // 4. Bind the new explicit data sets cleanly to the empty tracking collections
                     if (incomingHosts != null && incomingHosts.Any())
                     {
                         foreach (var h in incomingHosts)
@@ -627,7 +626,6 @@ namespace Gateway.BLL.Services
                         }
                     }
 
-                    // 5. Commit structural changes safely without duplicates
                     await _efDbContext.SaveChangesAsync();
 
                     var auditLog = new Model.AuditLog()
@@ -672,6 +670,7 @@ namespace Gateway.BLL.Services
 
             return result;
         }
+
         public async Task<Response.Result> Delete(Request.Route model)
         {
             Response.Result result = new();
@@ -806,22 +805,19 @@ namespace Gateway.BLL.Services
             return result;
         }
 
-
         public async Task<List<Response.RouteCategory>> GetCategory()
         {
             try
             {
-                var permissions = _efDbContext.Set<Model.RouteCategory>().Where(e => e.Deleted != true).AsQueryable(); 
-                var result = (from q in permissions
-                              select new Response.RouteCategory
-                              {
-                                  Id = q.Id.ToString(),
-                                  Code = q.Code,
-                                  Description = q.Description!
-                              }
-                ).ToList();
-
-                return await Task.FromResult(result);
+                return await _efDbContext.Set<Model.RouteCategory>()
+                    .Where(e => e.Deleted != true)
+                    .Select(q => new Response.RouteCategory
+                    {
+                        Id = q.Id.ToString(),
+                        Code = q.Code,
+                        Description = q.Description!
+                    })
+                    .ToListAsync();
             }
             catch (Exception ex)
             {

@@ -67,7 +67,7 @@
                                     @if (Model.Permission.Contains("[SEARCH]"))
                                     {
                                         <div class="input-group input-group-sm" style="width: 300px; max-width: 100%;">
-                                            <input type="text" id="searchDescription" v-on:keyup.enter="Search();" autocomplete="off" class="form-control" placeholder="Search Route Code or Name..." v-model="search.codeOrName" />
+                                            <input type="text" id="searchDescription" v-on:keyup.enter="Search();" autocomplete="off" class="form-control" placeholder="Search Code or Name..." v-model="search.codeOrName" />
                                             <button type="button" class="btn btn-outline-secondary" v-on:click="Search();">
                                                 <i class="fas fa-search"></i> Search
                                             </button>
@@ -87,7 +87,7 @@
                                 </div>
 
                                 <div class="col-12 col-md-auto ms-md-auto text-start text-md-end">
-                                    <button type="button" class="btn btn-info btn-sm text-white text-nowrap px-4 fw-bold shadow-sm" v-on:click="Publish();" data-tooltip="tooltip" title="Publish Configuration Changes">
+                                    <button type="button" class="btn btn-info btn-sm text-white text-nowrap px-4 fw-bold shadow-sm" v-on:click="Publish();" data-tooltip="tooltip" title="Publish Changes">
                                         <i class="fas fa-cloud-upload-alt me-1"></i> Publish
                                     </button>
                                 </div>
@@ -95,7 +95,7 @@
 
                             <div class="row">
                                 <div class="col-12 table-responsive" v-show="!show_table">
-                                    <span class="text-muted p-2 d-block">No matching proxy route configurations found!</span>
+                                    <span class="text-muted p-2 d-block">No route configurations found.</span>
                                 </div>
 
                                 <div class="col-12 table-responsive" v-show="show_table">
@@ -116,10 +116,10 @@
                                             <thead class="table-light text-uppercase">
                                                 <tr>
                                                     <th style="width: 10%;">Status</th>
-                                                    <th style="width: 25%;">Route Identity</th>
-                                                    <th style="width: 35%;">Routing Pipeline</th>
-                                                    <th style="width: 18%;">Backend Cluster</th>
-                                                    <th style="width: 12%;">Features</th>
+                                                    <th style="width: 25%;">Route Info</th>
+                                                    <th style="width: 35%;">Path Mapping</th>
+                                                    <th style="width: 18%;">Destination</th>
+                                                    <th style="width: 12%;">Rules</th>
                                                     <th class="text-center" style="width: 10%;">Action</th>
                                                 </tr>
                                             </thead>
@@ -130,10 +130,10 @@
                                                         <span v-else class="badge bg-danger px-2 py-1 fw-bold">OFFLINE</span>
 
                                                         <div class="mt-2 d-flex gap-2">
-                                                            <span v-if="record.isWebSocket" class="text-info font-monospace fw-bold" style="font-size: 0.7rem;" title="WebSocket Tunnel Enabled">
+                                                            <span v-if="record.isWebSocket" class="text-info font-monospace fw-bold" style="font-size: 0.7rem;" title="WebSocket Enabled">
                                                                 <i class="fas fa-bolt me-0.5"></i>WS
                                                             </span>
-                                                            <span v-if="record.enableTimeLimit" class="text-warning font-monospace fw-bold" style="font-size: 0.7rem;" v-bind:title="'Schedule Active: ' + record.timeFrom + ' - ' + record.timeTo">
+                                                            <span v-if="record.enableTimeLimit" class="text-warning font-monospace fw-bold" style="font-size: 0.7rem;" v-bind:title="'Schedule: ' + record.timeFrom + ' - ' + record.timeTo">
                                                                 <i class="fas fa-clock me-0.5"></i>TIMED
                                                             </span>
                                                         </div>
@@ -146,7 +146,7 @@
                                                                     {{ record.routeGroup }}
                                                                 </span>
                                                                 <span v-if="record.dangerousAcceptAnyServerCertificateValidator" class="badge bg-warning-subtle text-warning border border-warning-subtle font-monospace fw-bold" style="font-size: 0.65rem;">
-                                                                    <i class="fas fa-shield-alt me-1"></i>BYPASS VALIDATION
+                                                                    <i class="fas fa-shield-alt me-1"></i>BYPASS SSL
                                                                 </span>
                                                             </div>
                                                             <b class="text-primary font-monospace d-block mb-0.5" style="font-size: 0.9rem; letter-spacing: -0.01em;">
@@ -168,17 +168,17 @@
                                                                     {{ record.upstreamHttpMethod || 'ANY' }}
                                                                 </span>
                                                                 <span class="font-monospace text-dark fw-bold" style="font-size: 0.85rem;">{{ record.upstreamPathTemplate }}</span>
-                                                                <span v-if="record.upstreamHost" class="badge bg-light text-primary border border-primary-subtle font-monospace ms-auto" style="font-size: 0.65rem;" v-bind:title="'Domain Restricted: ' + record.upstreamHost">
+                                                                <span v-if="record.upstreamHost" class="badge bg-light text-primary border border-primary-subtle font-monospace ms-auto" style="font-size: 0.65rem;" v-bind:title="'Domain: ' + record.upstreamHost">
                                                                     <i class="fas fa-globe me-1"></i>{{ record.upstreamHost }}
                                                                 </span>
                                                             </div>
 
                                                             <div class="ps-3 my-1 d-flex align-items-center gap-2 text-black-50 border-start border-2 ms-4" style="font-size: 0.75rem; height: 14px;">
                                                                 <span v-if="record.authenticationProviderKey" class="font-monospace text-primary-emphasis bg-primary-subtle border border-primary-subtle px-1.5 py-0.25 rounded fw-bold" style="font-size: 0.65rem;">
-                                                                    <i class="fas fa-key me-1"></i>Enforces: {{ record.authenticationProviderKey }}
+                                                                    <i class="fas fa-key me-1"></i>Auth: {{ record.authenticationProviderKey }}
                                                                 </span>
                                                                 <span v-else class="font-monospace text-muted opacity-50 fw-semibold" style="font-size: 0.65rem;">
-                                                                    <i class="fas fa-unlock me-1"></i>Anonymous Access Lane
+                                                                    <i class="fas fa-unlock me-1"></i>Public Access
                                                                 </span>
                                                             </div>
 
@@ -217,10 +217,10 @@
                                                                     <i class="fas fa-cloud me-1"></i>Registry: {{ record.serviceName }}
                                                                 </span>
                                                                 <span v-else class="badge bg-light text-dark border font-monospace fw-bold px-1.5 py-0.5">
-                                                                    <i class="fas fa-server me-1 text-black-50"></i>Nodes: {{ record.hosts ? record.hosts.length : 0 }}
+                                                                    <i class="fas fa-server me-1 text-black-50"></i>Servers: {{ record.hosts ? record.hosts.length : 0 }}
                                                                 </span>
 
-                                                                <span class="badge bg-light text-dark border font-monospace fw-bold px-1.5 py-0.5" v-bind:title="(record.clients ? record.clients.length : 0) + ' Whitelisted consumers'">
+                                                                <span class="badge bg-light text-dark border font-monospace fw-bold px-1.5 py-0.5" v-bind:title="(record.clients ? record.clients.length : 0) + ' Allowed Clients'">
                                                                     <i class="fas fa-user-shield me-1 text-black-50"></i>Clients: {{ record.clients ? record.clients.length : 0 }}
                                                                 </span>
                                                             </div>
@@ -239,10 +239,10 @@
                                                                 <i class="fas fa-heartbeat me-1.5 text-warning"></i>QoS: {{ record.qoSTimeoutMs }}ms
                                                             </div>
                                                             <div v-if="record.requireSignature" class="text-danger fw-bold">
-                                                                <i class="fas fa-signature me-1.5 text-danger"></i>HMAC Secure
+                                                                <i class="fas fa-signature me-1.5 text-danger"></i>HMAC Signature
                                                             </div>
                                                             <span v-if="!record.enableRateLimiting && !record.enableCaching && !record.enableQoS && !record.requireSignature" class="text-muted font-monospace ps-1 italic">
-                                                                Standard Proxy
+                                                                Standard
                                                             </span>
                                                         </div>
                                                     </td>
@@ -251,25 +251,25 @@
                                                         <div class="btn-group shadow-sm border rounded" role="group">
                                                             @if (Model.Permission.Contains("[VIEW]"))
                                                             {
-                                                                <button type="button" class="btn btn-light btn-sm text-success border-0 px-2.5" v-on:click="View(record)" data-tooltip="tooltip" title="View Configurations">
+                                                                <button type="button" class="btn btn-light btn-sm text-success border-0 px-2.5" v-on:click="View(record)" data-tooltip="tooltip" title="View Details">
                                                                     <i class="fas fa-eye"></i>
                                                                 </button>
                                                             }
                                                             @if (Model.Permission.Contains("[EDIT]"))
                                                             {
-                                                                <button type="button" class="btn btn-light btn-sm text-info border-start px-2.5" v-on:click="Edit(record)" data-tooltip="tooltip" title="Modify Configurations">
+                                                                <button type="button" class="btn btn-light btn-sm text-info border-start px-2.5" v-on:click="Edit(record)" data-tooltip="tooltip" title="Edit Route">
                                                                     <i class="fas fa-edit"></i>
                                                                 </button>
                                                             }
                                                             @if (Model.Permission.Contains("[DELETE]"))
                                                             {
-                                                                <button type="button" class="btn btn-light btn-sm text-danger border-start px-2.5" v-on:click="Delete(record);" v-if="record.isActive" data-tooltip="tooltip" title="Deactivate">
+                                                                <button type="button" class="btn btn-light btn-sm text-danger border-start px-2.5" v-on:click="Delete(record);" v-if="record.isActive" data-tooltip="tooltip" title="Disable Route">
                                                                     <i class="far fa-trash-alt"></i>
                                                                 </button>
                                                             }
                                                             @if (Model.Permission.Contains("[RESTORE]"))
                                                             {
-                                                                <button type="button" class="btn btn-light btn-sm text-warning border-start px-2.5" v-on:click="Restore(record);" v-if="!record.isActive" data-tooltip="tooltip" title="Activate">
+                                                                <button type="button" class="btn btn-light btn-sm text-warning border-start px-2.5" v-on:click="Restore(record);" v-if="!record.isActive" data-tooltip="tooltip" title="Enable Route">
                                                                     <i class="fas fa-undo"></i>
                                                                 </button>
                                                             }
@@ -280,6 +280,7 @@
                                         </table>
                                     </div>
 
+                                    <!-- Mobile Card View -->
                                     <div class="d-md-none d-flex flex-column gap-3">
                                         <div v-for="record in records" :key="record.id" class="card border border-light-subtle shadow-sm small">
                                             <div class="card-header bg-light d-flex justify-content-between align-items-center py-2 px-3">
@@ -324,7 +325,7 @@
 
                                                 <div class="d-flex flex-wrap gap-1.5 align-items-center bg-body p-2 border rounded">
                                                     <span class="font-monospace text-dark ps-0.5" style="font-size: 0.75rem;">
-                                                        <i class="fas fa-server text-black-50 me-1"></i>Nodes: <b>{{ record.useServiceDiscovery ? 'Registry' : (record.hosts ? record.hosts.length : 0) }}</b>
+                                                        <i class="fas fa-server text-black-50 me-1"></i>Servers: <b>{{ record.useServiceDiscovery ? 'Registry' : (record.hosts ? record.hosts.length : 0) }}</b>
                                                     </span>
                                                     <span class="text-black-50" style="font-size: 0.75rem;">|</span>
                                                     <span class="font-monospace text-dark" style="font-size: 0.75rem;">
@@ -337,7 +338,7 @@
                                                 </div>
 
                                                 <div v-if="record.dangerousAcceptAnyServerCertificateValidator" class="bg-warning-subtle text-warning-emphasis p-2 border border-warning rounded font-monospace" style="font-size: 0.7rem;">
-                                                    <i class="fas fa-exclamation-triangle me-1"></i>SSL verification logic bypassed on this lane.
+                                                    <i class="fas fa-exclamation-triangle me-1"></i>SSL certificate check disabled for this route.
                                                 </div>
 
                                                 <div class="d-flex flex-wrap gap-1.5 pt-1">
@@ -354,7 +355,7 @@
                                                         <i class="fas fa-signature me-1"></i> HMAC
                                                     </span>
                                                     <span v-if="!record.enableRateLimiting && !record.enableCaching && !record.enableQoS && !record.requireSignature" class="text-muted font-monospace ps-0.5 fs-11 italic">
-                                                        No active policy parameters.
+                                                        No active rules.
                                                     </span>
                                                 </div>
                                             </div>
@@ -398,85 +399,88 @@
                 </div>
             </div>
 
+            <!-- Route Settings Modal -->
             <div class="modal fade" id="routeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="routeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl modal-dialog-scrollable">
                     <div class="modal-content">
                         <div class="modal-header bg-dark text-white">
                             <h5 class="modal-title" id="routeModalLabel">
                                 <i class="fas" :class="isEditMode ? 'fa-edit text-info' : 'fa-plus-circle text-success'"></i>
-                                {{ isEditMode ? 'Edit Route Settings' : 'Create New Gateway Route' }}
+                                {{ isEditMode ? 'Edit Route' : 'Add New Route' }}
                             </h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" v-on:click="resetForm"></button>
                         </div>
 
                         <div class="modal-body p-0">
                             <div class="d-flex flex-column flex-md-row w-100" style="min-height: 550px;">
+                                <!-- Navigation Sidebar -->
                                 <div class="bg-light border-end p-3" style="width: 260px; min-width: 260px;">
                                     <div class="nav flex-column nav-pills">
-
                                         <button type="button" class="nav-link d-flex align-items-center text-start py-2.5 mb-1 text-nowrap shadow-sm border border-light-subtle" :style="modalTab === 'general' ? 'background-color: #0d6efd !important; color: #ffffff !important;' : 'background-color: #ffffff !important; color: #333333 !important;'" v-on:click="modalTab = 'general'">
-                                            <i class="fas fa-network-wired me-2"></i> 1. Basic Settings
-                                            <i v-if="tabErrors.general" class="fas fa-exclamation-circle text-danger ms-auto ps-2" title="Contains invalid parameters"></i>
+                                            <i class="fas fa-network-wired me-2"></i> 1. Basic Info
+                                            <i v-if="tabErrors.general" class="fas fa-exclamation-circle text-danger ms-auto ps-2" title="Contains errors"></i>
                                         </button>
 
                                         <button type="button" class="nav-link d-flex align-items-center text-start py-2.5 mb-1 text-nowrap shadow-sm border border-light-subtle" :style="modalTab === 'hosts' ? 'background-color: #0d6efd !important; color: #ffffff !important;' : 'background-color: #ffffff !important; color: #333333 !important;'" v-on:click="modalTab = 'hosts'">
                                             <i class="fas fa-server me-2"></i> 2. Servers ({{ formData.hosts ? formData.hosts.length : 0 }})
-                                            <i v-if="tabErrors.hosts" class="fas fa-exclamation-circle text-danger ms-auto ps-2" title="Contains invalid parameters"></i>
+                                            <i v-if="tabErrors.hosts" class="fas fa-exclamation-circle text-danger ms-auto ps-2" title="Contains errors"></i>
                                         </button>
 
                                         <button type="button" class="nav-link d-flex align-items-center text-start py-2.5 mb-1 text-nowrap shadow-sm border border-light-subtle" :style="modalTab === 'ipmanagement' ? 'background-color: #0d6efd !important; color: #ffffff !important;' : 'background-color: #ffffff !important; color: #333333 !important;'" v-on:click="modalTab = 'ipmanagement'">
                                             <i class="fas fa-shield-alt me-2"></i> 3. IP Rules ({{ formData.ipRules ? formData.ipRules.length : 0 }})
-                                            <i v-if="tabErrors.ipmanagement" class="fas fa-exclamation-circle text-danger ms-auto ps-2" title="Contains invalid parameters"></i>
+                                            <i v-if="tabErrors.ipmanagement" class="fas fa-exclamation-circle text-danger ms-auto ps-2" title="Contains errors"></i>
                                         </button>
 
                                         <button type="button" class="nav-link d-flex align-items-center text-start py-2.5 mb-1 text-nowrap shadow-sm border border-light-subtle" :style="modalTab === 'clients' ? 'background-color: #0d6efd !important; color: #ffffff !important;' : 'background-color: #ffffff !important; color: #333333 !important;'" v-on:click="modalTab = 'clients'">
-                                            <i class="fas fa-users me-2"></i> 4. Whitelist ({{ formData.clients ? formData.clients.length : 0 }})
-                                            <i v-if="tabErrors.clients" class="fas fa-exclamation-circle text-danger ms-auto ps-2" title="Contains invalid parameters"></i>
+                                            <i class="fas fa-users me-2"></i> 4. Allowed Clients ({{ formData.clients ? formData.clients.length : 0 }})
+                                            <i v-if="tabErrors.clients" class="fas fa-exclamation-circle text-danger ms-auto ps-2" title="Contains errors"></i>
                                         </button>
 
                                         <button type="button" class="nav-link d-flex align-items-center text-start py-2.5 mb-1 text-nowrap shadow-sm border border-light-subtle" :style="modalTab === 'qos' ? 'background-color: #0d6efd !important; color: #ffffff !important;' : 'background-color: #ffffff !important; color: #333333 !important;'" v-on:click="modalTab = 'qos'">
                                             <i class="fas fa-bolt me-2"></i> 5. Limits & Cache
-                                            <i v-if="tabErrors.qos" class="fas fa-exclamation-circle text-danger ms-auto ps-2" title="Contains invalid parameters"></i>
+                                            <i v-if="tabErrors.qos" class="fas fa-exclamation-circle text-danger ms-auto ps-2" title="Contains errors"></i>
                                         </button>
 
                                         <button type="button" class="nav-link d-flex align-items-center text-start py-2.5 mb-1 text-nowrap shadow-sm border border-light-subtle" :style="modalTab === 'advanced' ? 'background-color: #0d6efd !important; color: #ffffff !important;' : 'background-color: #ffffff !important; color: #333333 !important;'" v-on:click="modalTab = 'advanced'">
                                             <i class="fas fa-clock me-2"></i> 6. Schedule
-                                            <i v-if="tabErrors.advanced" class="fas fa-exclamation-circle text-danger ms-auto ps-2" title="Contains invalid parameters"></i>
+                                            <i v-if="tabErrors.advanced" class="fas fa-exclamation-circle text-danger ms-auto ps-2" title="Contains errors"></i>
                                         </button>
                                     </div>
                                     <hr />
                                     <div class="px-2 small text-muted">
-                                        <b>Global Status Switch:</b>
+                                        <b>Route Status:</b>
                                         <div class="form-check form-switch mt-2">
                                             <input class="form-check-input" type="checkbox" id="modalIsActive" v-model="formData.isActive">
                                             <label class="form-check-label fw-bold" for="modalIsActive">
-                                                {{ formData.isActive ? 'Route Online' : 'Route Offline' }}
+                                                {{ formData.isActive ? 'Online' : 'Offline' }}
                                             </label>
                                         </div>
                                         <div class="mt-3" v-if="formData.isWebSocket">
-                                            <span class="badge bg-info d-block p-2"><i class="fas fa-bolt"></i> WebSocket Tunnel Active</span>
+                                            <span class="badge bg-info d-block p-2"><i class="fas fa-bolt"></i> WebSocket Active</span>
                                         </div>
                                     </div>
                                 </div>
 
+                                <!-- Form Body -->
                                 <div class="flex-grow-1 p-4 overflow-auto bg-white" style="max-height: 650px;">
                                     <form id="modalRouteForm" v-on:submit.prevent="Save" data-parsley-validate="" data-parsley-excluded="input[type=button], input[type=submit], input[type=reset], input[type=hidden]">
 
+                                        <!-- Tab 1: Basic Info -->
                                         <div v-show="modalTab === 'general'" data-tab-name="general">
-                                            <h4 class="mb-3 border-bottom pb-2 text-primary">Basic Settings</h4>
+                                            <h4 class="mb-3 border-bottom pb-2 text-primary">Basic Info</h4>
                                             <div class="row g-3">
                                                 <div class="col-md-12">
-                                                    <label class="form-label fw-bold small">Route Category</label>
+                                                    <label class="form-label fw-bold small">Category</label>
                                                     <select class="form-select border-primary fw-bold text-dark" id="category" name="route_category" v-model="formData.category" data-parsley-trigger="change focusout" data-parsley-required-message="Category is required." data-parsley-required="true">
-                                                        <option value="">--Please Select--</option>
+                                                        <option value="">-- Select Category --</option>
                                                         <template v-for="category in categories" :key="category.id">
                                                             <option :value="category.code">{{category.description}}</option>
                                                         </template>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label class="form-label fw-bold small">Route Identifier Code</label>
-                                                    <input type="text" class="form-control" name="route_code" v-model="formData.code" placeholder="e.g., ROUTE-USER-SIGNIN" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-alphanumeric-only="true" :disabled="isEditMode" />
+                                                    <label class="form-label fw-bold small">Route Code</label>
+                                                    <input type="text" class="form-control" name="route_code" v-model="formData.code" placeholder="e.g., USER-LOGIN" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-alphanumeric-dash="true" :disabled="isEditMode" />
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label fw-bold small">Route Name</label>
@@ -484,19 +488,19 @@
                                                            class="form-control"
                                                            name="route_name"
                                                            v-model="formData.name"
-                                                           placeholder="e.g., Identity Token Verification API"
+                                                           placeholder="e.g., User Login API"
                                                            data-parsley-required="true"
                                                            data-parsley-trigger="change focusout"
-                                                           data-parsley-required-message="This value is required."
-                                                           data-parsley-restrict-name="true"
+                                                           data-parsley-required-message="Name is required."
+                                                           data-parsley-restrict-entity-name="true"
                                                            v-on:input="validateFieldInline('route_name')" />
                                                 </div>
                                                 <div class="col-12">
                                                     <label class="form-label small fw-bold">Description</label>
-                                                    <textarea class="form-control" name="route_description" v-model="formData.description" rows="2" placeholder="Describe what this specific route does..." data-parsley-trigger="change focusout" data-parsley-required="true"></textarea>
+                                                    <textarea class="form-control" name="route_description" v-model="formData.description" rows="2" placeholder="Short description of what this route does..." data-parsley-trigger="change focusout" data-parsley-required="true"></textarea>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label class="form-label fw-bold small">Inbound HTTP Method</label>
+                                                    <label class="form-label fw-bold small">Incoming Method</label>
                                                     <select class="form-select" name="route_upstream_method" v-model="formData.upstreamHttpMethod" data-parsley-trigger="change focusout" data-parsley-required="true">
                                                         <option value="GET">GET</option>
                                                         <option value="POST">POST</option>
@@ -506,95 +510,96 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <label class="form-label fw-bold small">Inbound Path Template</label>
-                                                    <input type="text" class="form-control font-monospace text-primary" name="route_upstream_path" v-model="formData.upstreamPathTemplate" placeholder="e.g., /api/v1/auth/token" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-path="true" />
+                                                    <label class="form-label fw-bold small">Incoming Path</label>
+                                                    <input type="text" class="form-control font-monospace text-primary" name="route_upstream_path" v-model="formData.upstreamPathTemplate" placeholder="e.g., /api/login" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-path="true" />
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label class="form-label fw-bold small">Outbound Target Scheme</label>
+                                                    <label class="form-label fw-bold small">Target Protocol</label>
                                                     <select class="form-select" name="route_downstream_scheme" v-model="formData.downstreamScheme" v-on:change="updateWebSocketState" data-parsley-trigger="change focusout" data-parsley-required="true">
-                                                        <option value="http">http:// (Unsecured Connection Scheme)</option>
-                                                        <option value="https">https:// (Secure Connection Scheme)</option>
-                                                        <option value="ws">ws:// (Websocket Lane)</option>
-                                                        <option value="wss">wss:// (Secure Websocket Lane)</option>
+                                                        <option value="http">http:// (HTTP)</option>
+                                                        <option value="https">https:// (HTTPS)</option>
+                                                        <option value="ws">ws:// (WebSocket)</option>
+                                                        <option value="wss">wss:// (Secure WebSocket)</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <label class="form-label fw-bold small">Outbound Forward Path</label>
-                                                    <input type="text" class="form-control font-monospace text-success" name="route_downstream_path" v-model="formData.downstreamPathTemplate" placeholder="e.g., /identity/connect/token" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-path="true" />
+                                                    <label class="form-label fw-bold small">Target Path</label>
+                                                    <input type="text" class="form-control font-monospace text-success" name="route_downstream_path" v-model="formData.downstreamPathTemplate" placeholder="e.g., /api/v1/login" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-path="true" />
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label class="form-label small fw-bold">Limit to Specific Inbound Host domain (Optional)</label>
-                                                    <input type="text" class="form-control font-monospace" name="route_upstream_host" v-model="formData.upstreamHost" placeholder="e.g., api.partnerdomain.com" data-parsley-host="true" />
+                                                    <label class="form-label small fw-bold">Incoming Domain (Optional)</label>
+                                                    <input type="text" class="form-control font-monospace" name="route_upstream_host" v-model="formData.upstreamHost" placeholder="e.g., api.example.com" data-parsley-host="true" />
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label class="form-label small fw-bold">Internal Protocol Handling Version</label>
+                                                    <label class="form-label small fw-bold">HTTP Version</label>
                                                     <select class="form-select" name="route_http_version" v-model="formData.downstreamHttpVersion" data-parsley-trigger="change focusout" data-parsley-required="true">
-                                                        <option value="1.1">HTTP/1.1 (Standard Engine)</option>
-                                                        <option value="1.0">HTTP/1.0 (Legacy Forwarding)</option>
-                                                        <option value="2.0">HTTP/2.0 (High Volume Streaming)</option>
+                                                        <option value="1.1">HTTP/1.1 (Default)</option>
+                                                        <option value="1.0">HTTP/1.0 (Legacy)</option>
+                                                        <option value="2.0">HTTP/2.0 (High Performance)</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label class="form-label small fw-bold">Gateway Processing Evaluation Priority Order</label>
+                                                    <label class="form-label small fw-bold">Priority Order</label>
                                                     <input type="number" class="form-control" name="route_priority" v-model.number="formData.priority" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-numeric-only="true" />
                                                 </div>
                                                 <div class="col-md-6 pt-2">
                                                     <div class="form-check form-switch">
                                                         <input class="form-check-input" type="checkbox" id="modalCaseSensitive" name="route_case_sensitive" v-model="formData.routeIsCaseSensitive">
-                                                        <label class="form-check-label small fw-bold" for="modalCaseSensitive">URL Pipeline Mapping is Case-Sensitive</label>
+                                                        <label class="form-check-label small fw-bold" for="modalCaseSensitive">Case-sensitive Path</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 pt-2">
                                                     <div class="form-check form-switch">
                                                         <input class="form-check-input" type="checkbox" id="modalCertValidator" name="route_cert_validator" v-model="formData.dangerousAcceptAnyServerCertificateValidator">
-                                                        <label class="form-check-label small fw-bold text-danger" for="modalCertValidator"><i class="fas fa-exclamation-triangle"></i> Trust All Outbound Destination SSL Entities (Bypass Handshake Validation Failures)</label>
+                                                        <label class="form-check-label small fw-bold text-danger" for="modalCertValidator"><i class="fas fa-exclamation-triangle"></i> Ignore SSL Errors (Bypass Certificate Check)</label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
+                                        <!-- Tab 2: Destination Servers -->
                                         <div v-show="modalTab === 'hosts'" data-tab-name="hosts">
-                                            <h4 class="mb-3 border-bottom pb-2 text-primary">Target Internal Destination Servers</h4>
+                                            <h4 class="mb-3 border-bottom pb-2 text-primary">Destination Servers</h4>
                                             <div class="row g-3 mb-4">
                                                 <div v-bind:class="formData.loadBalancerType === 'CookieStickySessions' ? 'col-md-4' : 'col-md-6'">
-                                                    <label class="form-label small fw-bold">Load Balancer Strategy</label>
+                                                    <label class="form-label small fw-bold">Load Balancer</label>
                                                     <select class="form-select" name="route_balancer_type" v-model="formData.loadBalancerType" data-parsley-trigger="change focusout" data-parsley-required="true">
-                                                        <option value="RoundRobin">Round Robin (Cycle evenly through server nodes sequentially)</option>
-                                                        <option value="LeastConnection">Least Connection (Forward to the least busy server node)</option>
-                                                        <option value="NoLoadBalancer">No Active Balancer Strategy (Direct Map Single Server)</option>
-                                                        <option value="CookieStickySessions">Cookie Sticky Sessions Locking</option>
+                                                        <option value="RoundRobin">Round Robin (Rotate evenly)</option>
+                                                        <option value="LeastConnection">Least Connection (Send to least busy)</option>
+                                                        <option value="NoLoadBalancer">None (Direct to single server)</option>
+                                                        <option value="CookieStickySessions">Sticky Session (Cookie)</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-4" v-if="formData.loadBalancerType === 'CookieStickySessions'">
-                                                    <label class="form-label small fw-bold text-primary">Sticky Cookie Tracking Identifier</label>
+                                                    <label class="form-label small fw-bold text-primary">Cookie Name</label>
                                                     <input type="text" class="form-control" name="route_balancer_key" v-model="formData.loadBalancerKey" placeholder="e.g., SessionId" data-parsley-trigger="change focusout" data-parsley-required="true" />
                                                 </div>
                                                 <div v-bind:class="formData.loadBalancerType === 'CookieStickySessions' ? 'col-md-4' : 'col-md-6'">
-                                                    <label class="form-label small fw-bold">Balancer Session Expiry Lifetime (ms)</label>
+                                                    <label class="form-label small fw-bold">Session Expiry (ms)</label>
                                                     <input type="number" class="form-control" name="route_balancer_expiry" v-model.number="formData.loadBalancerExpiryMs" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-numeric-only="true" />
                                                 </div>
                                             </div>
 
                                             <div class="mt-4 mb-3">
-                                                <h5 class="form-label fw-bold small mb-2">Target Infrastructure Node Addresses</h5>
+                                                <h5 class="form-label fw-bold small mb-2">Server Endpoints</h5>
                                                 <button type="button" class="btn btn-outline-primary btn-sm fw-bold shadow-sm" v-on:click="addHostRow">
-                                                    <i class="fas fa-plus me-1"></i> Add Target Node Endpoint
+                                                    <i class="fas fa-plus me-1"></i> Add Server
                                                 </button>
                                             </div>
 
                                             <div class="alert alert-warning small p-2" v-if="!formData.hosts || formData.hosts.length === 0">
-                                                <i class="fas fa-exclamation-triangle"></i> At least 1 outbound target server destination must be set.
+                                                <i class="fas fa-exclamation-triangle"></i> At least 1 target server is required.
                                             </div>
 
                                             <div class="row g-2 mb-2 align-items-center" v-for="(item, index) in formData.hosts" :key="index">
                                                 <div class="col-md-5">
-                                                    <input type="text" class="form-control font-monospace text-dark" :name="'host_ip_' + index" v-model="item.host" placeholder="Internal Node IP Block / Private Domain Scope Address" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-host="true" />
+                                                    <input type="text" class="form-control font-monospace text-dark" :name="'host_ip_' + index" v-model="item.host" placeholder="Server IP or Domain" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-host />
                                                 </div>
                                                 <div class="col-md-2">
-                                                    <input type="number" class="form-control font-monospace text-dark" :name="'host_port_' + index" v-model.number="item.port" placeholder="Port Number" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-numeric-only="true" />
+                                                    <input type="number" class="form-control font-monospace text-dark" :name="'host_port_' + index" v-model.number="item.port" placeholder="Port" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-numeric-only="true" />
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <input type="text" class="form-control text-dark" :name="'host_desc_' + index" v-model="item.description" placeholder="Node Tracking Label Descriptor (Optional)" />
+                                                    <input type="text" class="form-control text-dark" :name="'host_desc_' + index" v-model="item.description" placeholder="Server Label (Optional)" />
                                                 </div>
                                                 <div class="col-md-1 text-center">
                                                     <button type="button" class="btn btn-sm btn-link text-danger" v-on:click="formData.hosts.splice(index, 1)">
@@ -604,41 +609,42 @@
                                             </div>
                                         </div>
 
+                                        <!-- Tab 3: Security & IP Rules -->
                                         <div v-show="modalTab === 'ipmanagement'" data-tab-name="ipmanagement">
-                                            <h4 class="mb-3 border-bottom pb-2 text-primary">Security Rules & IP Firewall Restrictions</h4>
+                                            <h4 class="mb-3 border-bottom pb-2 text-primary">Security & IP Rules</h4>
                                             <div class="card p-3 bg-light-subtle mb-3 border border-light-subtle shadow-sm">
                                                 <div class="row g-3">
                                                     <div class="col-md-6">
-                                                        <label class="form-label fw-bold d-block small">Security Token Validation Context Lane</label>
+                                                        <label class="form-label fw-bold d-block small">Authentication Type</label>
                                                         <select class="form-select form-select-sm border-primary fw-bold text-dark" name="route_auth_key" v-model="formData.authenticationProviderKey" data-parsley-trigger="change focusout">
-                                                            <option value="">None (Anonymous Access Lane)</option>
-                                                            <option value="Bearer">Bearer (JWT Token Authentication)</option>
-                                                            <option value="Basic">Basic Authentication Scheme</option>
+                                                            <option value="">None (Public)</option>
+                                                            <option value="Bearer">Bearer Token (JWT)</option>
+                                                            <option value="Basic">Basic Auth</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-6 pt-4">
                                                         <div class="form-check form-switch">
                                                             <input class="form-check-input" type="checkbox" id="modalSignature" name="route_require_signature" v-model="formData.requireSignature">
-                                                            <label class="form-check-label small fw-bold text-dark" for="modalSignature">Verify Data Payload Integrity (Enforce downstream HMAC validation rules)</label>
+                                                            <label class="form-check-label small fw-bold text-dark" for="modalSignature">Require Request Signature (HMAC Validation)</label>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="mt-4 mb-3">
-                                                <h5 class="fw-bold text-secondary small mb-2">IP Block Filtering List</h5>
+                                                <h5 class="fw-bold text-secondary small mb-2">IP Restrictions</h5>
                                                 <button type="button" class="btn btn-outline-primary btn-sm fw-bold shadow-sm" v-on:click="formData.ipRules.push({ ipAddressOrRange: '', ruleType: 'Allow', description: '' })">
-                                                    <i class="fas fa-shield-alt me-1"></i> Add IP Filter Rule
+                                                    <i class="fas fa-shield-alt me-1"></i> Add IP Rule
                                                 </button>
                                             </div>
 
                                             <div class="alert alert-info small p-2" v-if="!formData.ipRules || formData.ipRules.length === 0">
-                                                <i class="fas fa-info-circle"></i> No network limits active. This endpoint lane accepts any public requests.
+                                                <i class="fas fa-info-circle"></i> No IP rules active. All incoming IPs are allowed.
                                             </div>
 
                                             <div class="row g-2 mb-2 align-items-center" v-for="(rule, idx) in formData.ipRules" :key="idx">
                                                 <div class="col-md-5">
-                                                    <input type="text" class="form-control font-monospace" :name="'ip_range_' + idx" v-model="rule.ipAddressOrRange" placeholder="Inbound Caller IP Node / CIDR Block Subnet Notation" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-ip-port="true" />
+                                                    <input type="text" class="form-control font-monospace" :name="'ip_range_' + idx" v-model="rule.ipAddressOrRange" placeholder="Client IP or CIDR (e.g. 192.168.1.1)" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-ip-port="true" />
                                                 </div>
                                                 <div class="col-md-2">
                                                     <select class="form-select fw-bold" :name="'ip_type_' + idx" v-model="rule.ruleType" :class="rule.ruleType === 'Allow' ? 'text-success' : 'text-danger'" data-parsley-trigger="change focusout" data-parsley-required="true">
@@ -647,7 +653,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <input type="text" class="form-control" :name="'ip_desc_' + idx" v-model="rule.description" placeholder="Acl Identity Trace Label Notes (Optional)" />
+                                                    <input type="text" class="form-control" :name="'ip_desc_' + idx" v-model="rule.description" placeholder="Rule Description (Optional)" />
                                                 </div>
                                                 <div class="col-md-1 text-center">
                                                     <button type="button" class="btn btn-sm btn-link text-danger" v-on:click="formData.ipRules.splice(idx, 1)">
@@ -657,15 +663,16 @@
                                             </div>
                                         </div>
 
+                                        <!-- Tab 4: Allowed Clients -->
                                         <div v-show="modalTab === 'clients'" data-tab-name="clients">
                                             <div class="card shadow-sm border border-light-subtle mb-0">
                                                 <div class="card-header bg-white py-3 border-bottom">
-                                                    <h5 class="fw-bold m-0 text-dark mb-3"><i class="fas fa-user-shield me-2 text-secondary"></i> Whitelisted Consumer Account Assignments</h5>
+                                                    <h5 class="fw-bold m-0 text-dark mb-3"><i class="fas fa-user-shield me-2 text-secondary"></i> Allowed Client Accounts</h5>
                                                     <div class="row g-2 align-items-end bg-light p-3 border rounded border-light-subtle">
                                                         <div class="col-md-9">
-                                                            <label class="form-label fw-bold small text-secondary">Select Registered Consumer Profile to Append</label>
+                                                            <label class="form-label fw-bold small text-secondary">Select Client to Add</label>
                                                             <select class="form-select border-primary fw-bold text-dark" id="clientSelectionNode" name="client_selection_node" v-model="selectedClientId">
-                                                                <option value="" disabled selected hidden>Choose an active system profile profile lane</option>
+                                                                <option value="" disabled selected hidden>Select a client profile...</option>
                                                                 <option v-for="client in clients" :key="client.id" :value="client.id">
                                                                     {{ client.username }} — {{ client.description }}
                                                                 </option>
@@ -673,7 +680,7 @@
                                                         </div>
                                                         <div class="col-md-3">
                                                             <button type="button" class="btn btn-primary btn-sm fw-bold shadow-sm w-100 py-2" v-on:click="addClientInline">
-                                                                <i class="fas fa-plus me-1"></i> Authorize Client Key
+                                                                <i class="fas fa-plus me-1"></i> Add Client
                                                             </button>
                                                         </div>
                                                     </div>
@@ -682,24 +689,24 @@
                                                     <table class="table mb-0 align-middle">
                                                         <thead class="table-light text-secondary small text-uppercase border-bottom">
                                                             <tr>
-                                                                <th width="10%" class="ps-4 py-2.5"></th>
-                                                                <th width="25%" class="ps-4 py-2.5">Username Identifier</th>
-                                                                <th width="25%" class="py-2.5">Label Reference</th>
-                                                                <th width="25%" class="py-2.5">Entity / Affiliate Company</th>
+                                                                <th width="10%" class="ps-4 py-2.5">SSL</th>
+                                                                <th width="25%" class="ps-4 py-2.5">Username</th>
+                                                                <th width="25%" class="py-2.5">Name / Label</th>
+                                                                <th width="25%" class="py-2.5">Company</th>
                                                                 <th width="15%" class="text-center pe-3 py-2.5">Action</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr v-for="(client, index) in formData.clients" :key="index" class="border-bottom">
                                                                 <td class="ps-4 fw-medium text-dark">
-                                                                    <span class="badge bg-success-subtle text-success border border-success-subtle mt-1 small" v-if="getClientMetadata(client.clientId).sslRequired">🔒 Client SSL TLS</span>
+                                                                    <span class="badge bg-success-subtle text-success border border-success-subtle mt-1 small" v-if="getClientMetadata(client.clientId).sslRequired">🔒 SSL Required</span>
                                                                 </td>
                                                                 <td class="ps-4 fw-medium text-dark">
                                                                     {{ getClientMetadata(client.clientId).username || 'N/A' }}
                                                                 </td>
                                                                 <td>
                                                                     <span class="text-dark d-block fw-bold">
-                                                                        {{ getClientMetadata(client.clientId).description || 'Unknown Profile Reference Line' }}
+                                                                        {{ getClientMetadata(client.clientId).description || 'No label' }}
                                                                     </span>
                                                                 </td>
                                                                 <td class="ps-4 fw-medium text-dark">
@@ -713,7 +720,7 @@
                                                             </tr>
                                                             <tr v-if="!formData.clients || formData.clients.length === 0">
                                                                 <td colspan="5" class="text-center py-5 text-muted">
-                                                                    <i class="fas fa-info-circle me-1"></i> No application consumer locks appended yet. This tunnel allows matching caller contexts seamlessly.
+                                                                    <i class="fas fa-info-circle me-1"></i> No client restrictions set. All valid callers can access this route.
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -722,37 +729,38 @@
                                             </div>
                                         </div>
 
+                                        <!-- Tab 5: Limits & Cache -->
                                         <div v-show="modalTab === 'qos'" data-tab-name="qos">
-                                            <h4 class="mb-3 border-bottom pb-2 text-primary">Traffic Limits, Response Caching & Timeouts</h4>
+                                            <h4 class="mb-3 border-bottom pb-2 text-primary">Rate Limits, Caching & Timeouts</h4>
 
                                             <div class="card p-4 mb-4 bg-light-subtle border border-light-subtle shadow-sm">
                                                 <div class="form-check form-switch mb-3">
                                                     <input class="form-check-input" type="checkbox" id="modalRateLimiting" name="qos_rate_enabled" v-model="formData.enableRateLimiting">
-                                                    <label class="form-check-label fw-bold text-dark" for="modalRateLimiting">Enable Volume Rate Limiting Throttling Controls</label>
+                                                    <label class="form-check-label fw-bold text-dark" for="modalRateLimiting">Enable Rate Limiting</label>
                                                 </div>
                                                 <div class="row g-3" v-if="formData.enableRateLimiting">
                                                     <div class="col-md-3">
-                                                        <label class="form-label small fw-semibold">Max Request Bound Allotment</label>
+                                                        <label class="form-label small fw-semibold">Max Requests</label>
                                                         <input type="number" class="form-control" name="qos_rate_limit" v-model.number="formData.rateLimit" placeholder="100" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-numeric-only="true" />
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <label class="form-label small fw-semibold">Evaluation Scale Frame (Period)</label>
-                                                        <input type="text" class="form-control" name="qos_rate_period" v-model="formData.ratePeriod" placeholder="e.g. 1m, 1h, 1s" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-duration-format="true" />
+                                                        <label class="form-label small fw-semibold">Time Window (e.g., 1m, 1h)</label>
+                                                        <input type="text" class="form-control" name="qos_rate_period" v-model="formData.ratePeriod" placeholder="1m" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-duration-format="true" />
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <label class="form-label small fw-semibold">Isolation Penalty Duration Timespan (s)</label>
+                                                        <label class="form-label small fw-semibold">Block Duration (Seconds)</label>
                                                         <input type="number" class="form-control" name="qos_rate_timespan" v-model.number="formData.ratePeriodTimespan" placeholder="60" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-numeric-only="true" />
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <label class="form-label small fw-semibold">Rejection Response HTTP Status Code</label>
+                                                        <label class="form-label small fw-semibold">Error Status Code</label>
                                                         <select class="form-select" name="qos_rate_status" v-model.number="formData.rateLimitHttpStatusCode" data-parsley-trigger="change focusout" data-parsley-required="true">
                                                             <option value="429">429 - Too Many Requests (Default)</option>
-                                                            <option value="403">403 - Request Forbidden Lane</option>
-                                                            <option value="503">503 - Internal Service Unavailable</option>
+                                                            <option value="403">403 - Forbidden</option>
+                                                            <option value="503">503 - Service Unavailable</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-12 mt-3">
-                                                        <label class="form-label small fw-semibold">Custom Quota Exhausted Text Body Message String</label>
+                                                        <label class="form-label small fw-semibold">Quota Exceeded Message</label>
                                                         <input type="text" class="form-control" name="qos_rate_msg" v-model="formData.rateLimitQuotaExceededMessage" placeholder="API allocation bounds breached..." data-parsley-trigger="change focusout" data-parsley-required="true" />
                                                     </div>
                                                 </div>
@@ -761,11 +769,11 @@
                                             <div class="card p-4 mb-4 bg-light-subtle border border-light-subtle shadow-sm">
                                                 <div class="form-check form-switch mb-2">
                                                     <input class="form-check-input" type="checkbox" id="modalCaching" name="qos_cache_enabled" v-model="formData.enableCaching">
-                                                    <label class="form-check-label fw-bold text-dark" for="modalCaching">Activate Memory Output Cache Store Layer</label>
+                                                    <label class="form-check-label fw-bold text-dark" for="modalCaching">Enable Response Caching</label>
                                                 </div>
                                                 <div class="row g-3" v-if="formData.enableCaching">
                                                     <div class="col-md-4">
-                                                        <label class="form-label small fw-semibold">Cache Object Expiry Ttl Duration (Seconds)</label>
+                                                        <label class="form-label small fw-semibold">Cache Duration (Seconds)</label>
                                                         <input type="number" class="form-control" name="qos_cache_ttl" v-model.number="formData.cacheTtlSeconds" placeholder="300" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-numeric-only="true" />
                                                     </div>
                                                 </div>
@@ -774,50 +782,51 @@
                                             <div class="card p-4 bg-light-subtle border border-light-subtle shadow-sm">
                                                 <div class="form-check form-switch mb-3">
                                                     <input class="form-check-input" type="checkbox" id="modalQos" name="qos_breaker_enabled" v-model="formData.enableQoS">
-                                                    <label class="form-check-label fw-bold text-dark" for="modalQos">Enable Dynamic Circuit Breaker Isolation (QoS Resiliency System)</label>
+                                                    <label class="form-check-label fw-bold text-dark" for="modalQos">Enable Circuit Breaker (QoS)</label>
                                                 </div>
                                                 <div class="row g-3" v-if="formData.enableQoS">
                                                     <div class="col-md-4">
-                                                        <label class="form-label small fw-semibold">Gateway Processing Execution Timeout (ms)</label>
+                                                        <label class="form-label small fw-semibold">Request Timeout (ms)</label>
                                                         <input type="number" class="form-control" name="qos_breaker_timeout" v-model.number="formData.qoSTimeoutMs" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-numeric-only="true" />
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <label class="form-label small fw-semibold">Consecutive Errors Threshold Count Before Tripping</label>
+                                                        <label class="form-label small fw-semibold">Allowed Failures Before Tripping</label>
                                                         <input type="number" class="form-control" name="qos_breaker_failures" v-model.number="formData.qoSExceptionsAllowedBeforeBreaking" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-numeric-only="true" />
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <label class="form-label small fw-semibold">Breaker Open Circuit Recovery Hold Sleep Time (ms)</label>
+                                                        <label class="form-label small fw-semibold">Break Duration (ms)</label>
                                                         <input type="number" class="form-control" name="qos_breaker_duration" v-model.number="formData.qoSDurationOfBreakMs" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-numeric-only="true" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
+                                        <!-- Tab 6: Service Discovery & Schedule -->
                                         <div v-show="modalTab === 'advanced'" data-tab-name="advanced">
-                                            <h4 class="mb-3 border-bottom pb-2 text-primary">Discovery Registry & Execution Schedules</h4>
+                                            <h4 class="mb-3 border-bottom pb-2 text-primary">Service Discovery & Schedule</h4>
 
                                             <div class="card p-3 mb-3 bg-light-subtle shadow-sm border border-light-subtle">
                                                 <div class="form-check form-switch mb-3">
                                                     <input class="form-check-input" type="checkbox" id="modalDiscovery" name="discovery_enabled" v-model="formData.useServiceDiscovery">
-                                                    <label class="form-check-label fw-bold text-dark" for="modalDiscovery">Source Cluster Nodes via Cloud Microservice Registry Provider</label>
+                                                    <label class="form-check-label fw-bold text-dark" for="modalDiscovery">Use Service Discovery</label>
                                                 </div>
                                                 <div class="row g-3" v-if="formData.useServiceDiscovery">
                                                     <div class="col-md-6">
-                                                        <label class="form-label small fw-bold">Service Discovery Registry Endpoint Key Name</label>
-                                                        <input type="text" class="form-control" name="discovery_name" v-model="formData.serviceName" placeholder="e.g., payment-processing-microservice" data-parsley-trigger="change focusout" data-parsley-required="true" />
+                                                        <label class="form-label small fw-bold">Service Name</label>
+                                                        <input type="text" class="form-control" name="discovery_name" v-model="formData.serviceName" placeholder="e.g., payment-service" data-parsley-trigger="change focusout" data-parsley-required="true" />
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <label class="form-label small fw-bold">Cluster Logical Namespace Target Scope</label>
-                                                        <input type="text" class="form-control" name="discovery_namespace" v-model="formData.serviceNamespace" placeholder="e.g., core-banking-production" />
+                                                        <label class="form-label small fw-bold">Namespace (Optional)</label>
+                                                        <input type="text" class="form-control" name="discovery_namespace" v-model="formData.serviceNamespace" placeholder="e.g., production" />
                                                     </div>
                                                     <div class="col-md-6 pt-3">
                                                         <div class="form-check form-switch">
                                                             <input class="form-check-input" type="checkbox" id="modalPolling" name="discovery_polling_enabled" v-model="formData.enableServicePolling">
-                                                            <label class="form-check-label small fw-bold" for="modalPolling">Enforce Continuous Polling Thread Task Registry Refreshes</label>
+                                                            <label class="form-check-label small fw-bold" for="modalPolling">Enable Service Polling</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6" v-if="formData.enableServicePolling">
-                                                        <label class="form-label small fw-bold">Polling Registry Query Sync Clock Interval Speed (ms)</label>
+                                                        <label class="form-label small fw-bold">Polling Interval (ms)</label>
                                                         <input type="number" class="form-control" name="discovery_polling_interval" v-model.number="formData.pollingIntervalMs" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-restrict-numeric-only="true" />
                                                     </div>
                                                 </div>
@@ -826,19 +835,19 @@
                                             <div class="card p-3 bg-light-subtle shadow-sm border border-light-subtle">
                                                 <div class="form-check form-switch mb-3">
                                                     <input class="form-check-input" type="checkbox" id="modalTimeLimit" name="schedule_enabled" v-model="formData.enableTimeLimit">
-                                                    <label class="form-check-label fw-bold text-dark" for="modalTimeLimit">Enforce Route Operational Availability Window Constraints</label>
+                                                    <label class="form-check-label fw-bold text-dark" for="modalTimeLimit">Enable Operating Schedule</label>
                                                 </div>
                                                 <div class="row g-3" v-if="formData.enableTimeLimit">
                                                     <div class="col-md-6">
-                                                        <label class="form-label small fw-bold">Allow Traffic Entry Frame Time Hour (24h HH:mm format)</label>
+                                                        <label class="form-label small fw-bold">Start Time (24h HH:mm)</label>
                                                         <input type="text" class="form-control" name="schedule_time_from" v-model="formData.timeFrom" placeholder="06:00" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-military-time="true" />
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <label class="form-label small fw-bold">Deactivate Target Forwarding Beyond Time Hour (24h HH:mm format)</label>
+                                                        <label class="form-label small fw-bold">End Time (24h HH:mm)</label>
                                                         <input type="text" class="form-control" name="schedule_time_to" v-model="formData.timeTo" placeholder="22:00" data-parsley-trigger="change focusout" data-parsley-required="true" data-parsley-military-time="true" />
                                                     </div>
                                                     <div class="col-12">
-                                                        <label class="form-label small d-block fw-bold mb-2">Allowed Days Operational Access Permission Grid Matrix</label>
+                                                        <label class="form-label small d-block fw-bold mb-2">Active Days</label>
                                                         <div class="d-flex flex-wrap gap-3 p-2 border rounded bg-white">
                                                             <div v-for="day in [{l:'Sunday',v:'0'},{l:'Monday',v:'1'},{l:'Tuesday',v:'2'},{l:'Wednesday',v:'3'},{l:'Thursday',v:'4'},{l:'Friday',v:'5'},{l:'Saturday',v:'6'}]" :key="day.v" class="form-check">
                                                                 <input class="form-check-input" type="checkbox" :id="'day_' + day.v" :value="day.v" v-model="selectedDays" v-on:change="syncDaysToString">
@@ -859,40 +868,41 @@
                             <button type="button" class="btn btn-success" :disabled="isSubmitting" v-on:click="triggerFormSubmit">
                                 <span v-if="isSubmitting" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
                                 <i class="fas fa-save me-1" v-else></i>
-                                {{ isSubmitting ? 'Saving changes...' : (isEditMode ? 'Save Changes' : 'Publish Route') }}
+                                {{ isSubmitting ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Save Route') }}
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Filter Modal -->
             <div id="filterModal" class="modal fade text-sm" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
                 <div class="modal-dialog modal-md" role="document">
                     <form name="filterModal" id="filterForm" method="post" autocomplete="off" data-parsley-validate="">
                         <div class="modal-content">
                             <div class="modal-header bg-danger text-white">
-                                <h5 class="modal-title left"> <i class="fas fa-search me-1"></i> Advanced Query Filtering</h5>
+                                <h5 class="modal-title left"> <i class="fas fa-search me-1"></i> Filter Routes</h5>
                                 <button type="button" class="btn-close btn-close-white text-light" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row g-3">
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <label class="form-label fw-bold">Route Target (Code or Name Pattern)</label>
-                                            <input type="text" class="form-control" v-model="search.codeOrName" placeholder="Enter partial character strings..." />
+                                            <label class="form-label fw-bold">Route Code or Name</label>
+                                            <input type="text" class="form-control" v-model="search.codeOrName" placeholder="Enter search text..." />
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <label class="form-label fw-bold">Upstream Inbound Path Lookup</label>
-                                            <input type="text" class="form-control font-monospace" v-model="search.upstreamPath" placeholder="e.g., /api/v1/payments" />
+                                            <label class="form-label fw-bold">Incoming Path</label>
+                                            <input type="text" class="form-control font-monospace" v-model="search.upstreamPath" placeholder="e.g., /api/payments" />
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer justify-content-end">
-                                <button type="button" class="btn btn-outline-secondary btn-sm me-2" v-on:click="FilterForm">Reset Filters</button>
-                                <button type="button" class="btn btn-success btn-sm" v-on:click="Filter()"><i class="fas fa-check-circle me-1"></i> Execute Search</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm me-2" v-on:click="FilterForm">Reset</button>
+                                <button type="button" class="btn btn-success btn-sm" v-on:click="Filter()"><i class="fas fa-check-circle me-1"></i> Apply Filter</button>
                             </div>
                         </div>
                     </form>

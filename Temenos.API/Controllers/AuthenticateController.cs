@@ -9,15 +9,16 @@ namespace Temenos.API.Controllers
     public class AuthenticateController(IAuthenticateService authenticateService) : ControllerBase
     {
         private readonly IAuthenticateService _authenticateService = authenticateService;
-        
+
         [HttpPost]
-        [Route("")]
-        [ApiExplorerSettings(IgnoreApi = true)]
-        public async Task<IActionResult> Authenticate(Request.Authenticate model)
+        public async Task<IActionResult> Authenticate(
+            [FromBody] Request.Authenticate model,
+            [FromHeader] Request.VendorHeaderRequest headers)
         {
             try
             {
-                return Ok(await _authenticateService.Authenticate(model));
+                var result = await _authenticateService.Authenticate(headers, model);
+                return Ok(result);
             }
             catch (Exception ex)
             {

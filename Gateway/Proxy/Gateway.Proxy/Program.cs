@@ -33,7 +33,8 @@ if (mailSettings == null)
 } 
 builder.Services.AddSingleton(mailSettings);
 builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(context.Configuration));
- 
+
+//uncomment to enable bearer token validation in ocelot
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -47,7 +48,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ClockSkew = TimeSpan.Zero
         };
     });
- 
+
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.Configure<CertificateOptions>(builder.Configuration.GetSection("Certificate"));
 builder.Services.AddDbContext<EFDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("Default")!));

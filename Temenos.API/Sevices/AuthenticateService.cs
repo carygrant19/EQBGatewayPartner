@@ -11,47 +11,73 @@ namespace Temenos.API.Sevices
     public class AuthenticateService(IConfiguration configuration, ILogger<TransactionService> logger) : IAuthenticateService
     {
         private readonly ILogger<TransactionService> _logger = logger;
-
-        public async Task<Response.Authenticate> Authenticate(Request.Authenticate model)
+        private readonly IConfiguration _configuration = configuration;
+        public async Task<Response.Authenticate> Authenticate(Request.VendorHeaderRequest headers, Request.Authenticate model)
         {
             Response.Authenticate response = new();
 
-            _logger.LogInformation("Authenticating | User: {User}", model.Username);
+            // 1. Extract values mula sa 4 na vendor headers
+            var vendorUsername = headers?.VendorUsername;
+            var vendorPassword = headers?.VendorPassword;
+            var vendorApiKey = headers?.VendorApiKey;
+            var vendorApiSecret = headers?.VendorApiSecret;
+
+            _logger.LogInformation("Authenticating Vendor | VendorUser: {VendorUser} | VendorKey: {VendorKey} | ClientUser: {User}",
+                vendorUsername, vendorApiKey, model.Username);
 
             try
             {
-                if (model.Username == configuration["Credential:Username"] && model.Password == configuration["Credential:Password"])
+                // 2. Validation kung may kulang na vendor header
+                if (string.IsNullOrEmpty(vendorUsername) ||
+                    string.IsNullOrEmpty(vendorPassword) ||
+                    string.IsNullOrEmpty(vendorApiKey) ||
+                    string.IsNullOrEmpty(vendorApiSecret))
+                {
+                    response.Status = "FAILED";
+                    response.Message = "Missing required X-Vendor headers.";
+                    _logger.LogWarning("Authentication FAILED | Missing vendor headers for user: {User}", model.Username);
+                    return response;
+                }
+
+                // 3. I-validate ang Vendor Credentials at Client User Credentials
+                bool isVendorValid = vendorUsername == _configuration["VendorCredential:Username"] &&
+                                     vendorPassword == _configuration["VendorCredential:Password"] &&
+                                     vendorApiKey == _configuration["VendorCredential:ApiKey"] &&
+                                     vendorApiSecret == _configuration["VendorCredential:ApiSecret"];
+                 
+
+                if (isVendorValid)
                 {
                     response = new Response.Authenticate
                     {
                         Status = "SUCCESS",
-                        Message = "Authenticated",
+                        Message = "Authenticated successfully.",
                         Token = GenerateToken(model)
                     };
                 }
                 else
                 {
                     response.Status = "FAILED";
-                    response.Message = "Invalid username or password.";
+                    response.Message = "Invalid credentials.";
                 }
 
-                _logger.LogInformation("Authenticating {Status} | User: {User}", response.Status, model.Username);
-
+                _logger.LogInformation("Authenticating {Status} | VendorUser: {VendorUser} | ClientUser: {User}",
+                    response.Status, vendorUsername, model.Username);
             }
             catch (Exception ex)
             {
-                response = new()
+                response = new Response.Authenticate
                 {
                     Status = "ERROR",
                     Message = ex.Message
                 };
 
-                _logger.LogError(ex, "FundTransfer Unexpected Error | User: {User} | Response: {@Response}", model.Username, response);
+                _logger.LogError(ex, "Authentication Unexpected Error | VendorUser: {VendorUser} | ClientUser: {User} | Response: {@Response}",
+                    vendorUsername, model.Username, response);
             }
 
-            return await Task.FromResult(response);
+            return response;
         }
-
         #region private 
         private string GenerateToken(Request.Authenticate model)
         {

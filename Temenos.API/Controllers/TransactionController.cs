@@ -5,7 +5,7 @@ using Request = Temenos.API.DTOs.Request;
 
 namespace Temenos.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TransactionController(ITransactionService transactionService) : ControllerBase
@@ -13,7 +13,7 @@ namespace Temenos.API.Controllers
         private readonly ITransactionService _transactionService = transactionService;
 
         [HttpPost("fundTransfer")]
-        public async Task<IActionResult> FundTransfer(string uId, string companyId, Request.Transaction request) 
+        public async Task<IActionResult> FundTransfer([FromHeader]string uId, [FromHeader]string companyId, [FromBody] Request.Transaction request) 
         {
             try
             {

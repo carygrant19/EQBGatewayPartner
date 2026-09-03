@@ -6,6 +6,7 @@ namespace Gateway.BLL.Services.IService
     {
         Task<Response.Client> Authenticate(string id, string password);
         Task<Response.Client> ByApiKey(string key);
+        Task<Response.Client> ByUsernameAndPassword(string username, string password);
         Task<List<Response.Client>> GetAll(bool includeDeleted);
         Task<Response.Client> ById(string id);
         Task<Response.VClient> Filter(Request.FParam model);

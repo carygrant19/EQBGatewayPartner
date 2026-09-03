@@ -1,13 +1,43 @@
 [
   {
-    "Name": "Vue Web + API",
+    "Name": "Proxy + Web",
     "Projects": [
       {
-        "Path": "Gateway\\API\\Gateway.API\\Gateway.API.csproj",
+        "Path": "Gateway\\Web\\Gateway.Web.csproj",
         "Action": "Start"
       },
       {
-        "Path": "Gateway\\Admin\\Gateway.Admin\\Gateway.Admin.esproj",
+        "Path": "Gateway\\Proxy\\Gateway.Proxy\\Gateway.Proxy.csproj",
+        "Action": "Start"
+      }
+    ]
+  },
+  {
+    "Name": "Proxy + T24 API",
+    "Projects": [
+      {
+        "Path": "Temenos.API\\Temenos.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Gateway\\Proxy\\Gateway.Proxy\\Gateway.Proxy.csproj",
+        "Action": "Start"
+      }
+    ]
+  },
+  {
+    "Name": "All",
+    "Projects": [
+      {
+        "Path": "Temenos.API\\Temenos.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Gateway\\Web\\Gateway.Web.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Gateway\\Proxy\\Gateway.Proxy\\Gateway.Proxy.csproj",
         "Action": "Start"
       }
     ]

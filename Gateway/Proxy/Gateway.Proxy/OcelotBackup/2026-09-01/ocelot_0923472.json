@@ -1,9 +1,15 @@
 ﻿{
   "GlobalConfiguration": {
-    "RateLimitHttpStatusCode": 0,
-    "EnableRateLimitHeaders": false,
+    "ClientIdHeader": "X-Client-Id",
+    "QuotaExceededMessage": "API allocation bounds breached.",
+    "RateLimitHttpStatusCode": 429,
+    "EnableRateLimitHeaders": true,
     "LogLevel": "Warning",
     "EnableRequestId": true,
+    "AuthenticationOptions": {
+      "HasScheme": false,
+      "HasScope": false
+    },
     "DownstreamHeaderTransform": {},
     "HttpHandlerOptions": {},
     "MetadataOptions": {
@@ -16,12 +22,6 @@
       "TrimChars": [
         " "
       ]
-    },
-    "RateLimitOptions": {
-      "ClientIdHeader": "X-Client-Id",
-      "HttpStatusCode": 429,
-      "QuotaExceededMessage": "API allocation bounds breached.",
-      "EnableHeaders": true
     },
     "SecurityOptions": {
       "IPAllowedList": [],
@@ -40,16 +40,12 @@
       "RequireSignature": true,
       "TimeLimit": {
         "EnableTimeLimit": true,
-        "TimeFrom": "00:00",
-        "TimeTo": "23:59",
+        "TimeFrom": "06:00",
+        "TimeTo": "22:00",
         "AllowedDays": [
           0,
           1,
-          6,
-          3,
-          2,
-          4,
-          5
+          6
         ]
       },
       "Client": [
@@ -66,11 +62,11 @@
       "DownstreamHeaderTransform": {},
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 9003
+          "Host": "10.20.0.104",
+          "Port": 443
         }
       ],
-      "DownstreamPathTemplate": "/api/authenticate",
+      "DownstreamPathTemplate": "/api/auth/authenticate",
       "Priority": 1,
       "RouteClaimsRequirement": {},
       "RouteIsCaseSensitive": false,
@@ -88,14 +84,19 @@
         "POST"
       ],
       "UpstreamPathTemplate": "/authenticate",
-      "DownstreamScheme": "http",
+      "AuthenticationOptions": {
+        "AllowedScopes": [],
+        "AuthenticationProviderKeys": [
+          "Bearer"
+        ],
+        "HasScheme": true,
+        "HasScope": false
+      },
+      "DownstreamScheme": "https",
       "RateLimitOptions": {
-        "ClientWhitelist": [],
         "EnableRateLimiting": true,
-        "EnableHeaders": true,
         "Limit": 100,
         "Period": "1m",
-        "PeriodTimespan": 60,
         "Wait": "60s",
         "StatusCode": 429,
         "QuotaMessage": "API allocation bounds breached."
@@ -128,90 +129,13 @@
         "GET"
       ],
       "UpstreamPathTemplate": "/breeds",
-      "DownstreamScheme": "http",
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": false,
-        "EnableHeaders": true,
-        "Limit": 0,
-        "PeriodTimespan": 0,
-        "StatusCode": 429,
-        "QuotaMessage": ""
-      }
-    },
-    {
-      "Id": "3",
-      "RequireSignature": false,
-      "TimeLimit": {
-        "EnableTimeLimit": true,
-        "TimeFrom": "00:00",
-        "TimeTo": "23:59",
-        "AllowedDays": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5,
-          6
-        ]
-      },
-      "Client": [
-        "3",
-        "9",
-        "4",
-        "5"
-      ],
-      "AddClaimsToRequest": {},
-      "AddHeadersToRequest": {},
-      "AddQueriesToRequest": {},
-      "ChangeDownstreamPathTemplate": {},
-      "DangerousAcceptAnyServerCertificateValidator": false,
-      "DelegatingHandlers": [],
-      "DownstreamHeaderTransform": {},
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 9003
-        }
-      ],
-      "DownstreamPathTemplate": "/api/transaction/fundTransfer",
-      "Priority": 1,
-      "RouteClaimsRequirement": {},
-      "RouteIsCaseSensitive": false,
-      "SecurityOptions": {
-        "IPAllowedList": [
-          "172.16.69.15",
-          "::1"
-        ],
-        "IPBlockedList": [],
-        "ExcludeAllowedFromBlocked": false
-      },
-      "UpstreamHeaderTemplates": {},
-      "UpstreamHeaderTransform": {},
-      "UpstreamHttpMethod": [
-        "POST"
-      ],
-      "UpstreamPathTemplate": "/fundtransfer",
       "AuthenticationOptions": {
         "AllowedScopes": [],
-        "AuthenticationProviderKey": "Bearer",
-        "AuthenticationProviderKeys": [
-          "Bearer"
-        ],
-        "HasScheme": true,
+        "AuthenticationProviderKeys": [],
+        "HasScheme": false,
         "HasScope": false
       },
-      "DownstreamScheme": "http",
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": false,
-        "EnableHeaders": true,
-        "Limit": 0,
-        "PeriodTimespan": 0,
-        "StatusCode": 429,
-        "QuotaMessage": ""
-      }
+      "DownstreamScheme": "https"
     }
   ],
   "DynamicRoutes": [],

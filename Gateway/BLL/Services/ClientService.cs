@@ -59,6 +59,23 @@ namespace Gateway.BLL.Services
                 throw;
             }
         }
+        public async Task<Response.Client> ByUsernameAndPassword(string username, string password)
+        {
+            try
+            {
+                if (username == null || username == string.Empty || password == null || password == string.Empty)
+                {
+                    return new();
+                }
+                var result = _efDbContext.Set<Models.Client>()!.FirstOrDefault(b => b.Username.ToString().ToUpper() == username.ToUpper() && b.Password == StringManipulation.Encrypt(password,_encryptionKey) && b.Deleted != true);
+                return await Task.FromResult(_mapper.Map<Response.Client>(result));
+            }
+            catch (Exception ex)
+            {
+                _logService.LogException(ex, _moduleName);
+                throw;
+            }
+        }
         public async Task<List<Response.Client>?> GetAll(bool includeDeleted)
         {
             try

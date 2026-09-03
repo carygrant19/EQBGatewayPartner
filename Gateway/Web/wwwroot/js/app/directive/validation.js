@@ -2,10 +2,32 @@ $(function () {
     var pathRegex = /^\/[a-zA-Z0-9-_.]+(\/[a-zA-Z0-9-_.]+)*(\/\{[a-zA-Z0-9-_]+\})*\/?$/;
     var ipRegex = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^::1$/;
     var ipPortRegex = /^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|([a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}|::1)(?::\d{1,5})?$/;
-    var hostRegex = /^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|([a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})(?::\d{1,5})?$/;
+    var hostRegex = /^(localhost|((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}))$/i;
     var multiHostRegex = /^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}|localhost):\d{1,5}$/;
-    var alphanumericWithNoSpaces = '^$|^[a-zA-Z0-9Ò—]+$';
-    var generalScRegex = /^[\p{L}\s.-]+$/u;
+
+    var alphanumericWithNoSpaces = '^$|^[a-zA-Z0-9-]+$';
+    var nameRegex = /^[\p{L}\s.-]+$/u;
+
+    // Entity/Item Name Regex: Allows letters, numbers, spaces, dashes (-), underscores (_), slashes (/), ampersands (&), dots (.), and parentheses ()
+    var entityNameRegex = /^[\p{L}0-9\s._\-\/&()]+$/u;
+
+    window.Parsley.addValidator('restrictCode', {
+        validateString: function (value) {
+            return /^$|^[a-zA-Z0-9_-]+$/.test(value);
+        },
+        messages: {
+            en: 'This field can only contain letters, numbers, dashes (-), and underscores (_) with no spaces.'
+        }
+    });
+
+    window.Parsley.addValidator('restrictEntityName', {
+        validateString: function (value) {
+            return entityNameRegex.test(value);
+        },
+        messages: {
+            en: 'This field can only contain letters, numbers, spaces, and basic symbols (- _ / & . ()).'
+        }
+    });
 
     window.Parsley.addValidator('restrictNumericOnly', {
         validateString: function (value) {
@@ -36,22 +58,44 @@ $(function () {
         }
     });
 
+    window.Parsley.addValidator('restrictAlphaSpaceDash', {
+        validateString: function (value) {
+            return /^$|^[a-zA-Z\s-]+$/.test(value);
+        },
+        messages: {
+            en: 'This field can only contain letters, spaces, and dashes.'
+        }
+    });
+
+    window.Parsley.addValidator('restrictAlphanumericSpaceDash', {
+        validateString: function (value) {
+            return /^$|^[a-zA-Z0-9\s-]+$/.test(value);
+        },
+        messages: {
+            en: 'This field can only contain letters, numbers, spaces, and dashes.'
+        }
+    });
+
     window.Parsley.addValidator('restrictAlphanumericOnly', {
         validateString: function (value) {
-            // ABSOLUTE FIX: If the field is empty, return true so 'required' can trigger instead
-            if (value.trim() === '') return true;
             return /^$|^[a-zA-Z0-9]+$/.test(value);
         },
         messages: {
             en: 'This field cannot contain special characters.'
         }
+    }); 
+    window.Parsley.addValidator('restrictAlphanumericDash', {
+        validateString: function (value) {
+            return /^$|^[a-zA-Z0-9-]+$/.test(value);
+        },
+        messages: {
+            en: 'This field can only contain letters, numbers, and dashes with no spaces.'
+        }
     });
 
     window.Parsley.addValidator('restrictName', {
         validateString: function (value) {
-            // ABSOLUTE FIX: If the field is empty, return true so 'required' can trigger instead
-            if (value.trim() === '') return true;
-            return generalScRegex.test(value);
+            return nameRegex.test(value);
         },
         messages: {
             en: 'This field can only contain letters, spaces, dashes, and dots.'
@@ -60,7 +104,7 @@ $(function () {
 
     window.Parsley.addValidator('restrictSpecialCharacters', {
         validateString: function (value) {
-            return generalScRegex.test(value);
+            return entityNameRegex.test(value);
         },
         messages: {
             en: 'This field cannot contain restricted special characters.'
@@ -72,7 +116,7 @@ $(function () {
             return new RegExp(alphanumericWithNoSpaces).test(value);
         },
         messages: {
-            en: 'This field cannot contain restricted special characters.'
+            en: 'This field can only contain letters, numbers, and dashes with no spaces.'
         }
     });
 
@@ -108,7 +152,7 @@ $(function () {
             return hostRegex.test(value);
         },
         messages: {
-            en: 'This field must be in the format of an IP address or domain followed by a port number (e.g. google.com, 10.20.0.24:9999).'
+            en: 'This field must be in the format of an IP address or domain followed by a port number (e.g. google.com, 10.20.0.24:9999, 127.0.0.1 (localhost)).'
         }
     });
 
@@ -191,9 +235,11 @@ $(function () {
     window.Parsley.addValidator('dateFormat', {
         validateString: function (value) {
             const regex = /^\d{4}-\d{2}-\d{2}$/;
+
             if (!regex.test(value)) {
                 return false;
             }
+
             const [year, month, day] = value.split('-').map(Number);
             const date = new Date(year, month - 1, day);
             return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
