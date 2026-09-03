@@ -1,4 +1,5 @@
-﻿using Gateway.BLL.Services.IServices;
+﻿using Gateway.BLL.Services.IService;
+using Gateway.BLL.Services.IServices;
 using Gateway.Data.Models;
 using Microsoft.AspNetCore.Http.Extensions;
 using System.IO.Compression;
@@ -14,7 +15,7 @@ namespace Gateway.Proxy.Middleware
             string traceId = context.TraceIdentifier;
             context.Request.Headers["X-TraceID"] = traceId;
 
-            var route = context.Items["MatchedRoute"] as CustomFileRoute;
+            var endpoint = context.Items["MatchedEndpoint"] as ApiEndpoint;
             var client = context.Items["MatchedClient"] as Response.Client;
 
             context.Request.EnableBuffering();
@@ -23,7 +24,7 @@ namespace Gateway.Proxy.Middleware
             logService.LogHttp(new HttpLog
             {
                 ClientId = client?.Id,
-                RouteId = route?.Id ?? "",
+                RouteId = endpoint?.Id.ToString() ?? "",
                 TraceId = traceId,
                 HttpMethod = context.Request.Method,
                 Uri = context.Request.GetDisplayUrl(),
@@ -40,26 +41,24 @@ namespace Gateway.Proxy.Middleware
 
             await next(context);
 
-            
             var responseData = await FormatResponse(context.Response);
 
             logService.LogHttp(new HttpLog
             {
                 ClientId = client?.Id,
                 TraceId = traceId,
-                RouteId = route?.Id ?? "",
+                RouteId = endpoint?.Id.ToString() ?? "",
                 ResponseCode = context.Response.StatusCode.ToString(),
                 ResponseData = responseData,
                 ResponseDate = DateTime.Now
             }, "RESPONSE");
-            
 
             context.Response.Headers["X-TraceID"] = traceId;
             memStream.Position = 0;
             await memStream.CopyToAsync(originalBodyStream);
         }
 
-        private async Task<string> FormatRequest(HttpRequest request)
+        private static async Task<string> FormatRequest(HttpRequest request)
         {
             request.EnableBuffering();
             var builder = new StringBuilder();
@@ -95,10 +94,10 @@ namespace Gateway.Proxy.Middleware
             return builder.ToString();
         }
 
-        private async Task<string> FormatResponse(HttpResponse response)
+        private static async Task<string> FormatResponse(HttpResponse response)
         {
             response.Body.Seek(0, SeekOrigin.Begin);
-            string text = "";
+            string text;
             if (response.Headers["Content-Encoding"].ToString().Contains("gzip"))
             {
                 var bytes = await ReadFullyAsync(response.Body);

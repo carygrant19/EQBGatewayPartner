@@ -10,17 +10,15 @@ namespace Gateway.BLL.Helper
         {
             this.ChangeTracker.LazyLoadingEnabled = false;
         }
-        //Logging
+
         public DbSet<Models.ActivityLog> ActivityLog { get; set; }
         public DbSet<Models.AuditLog> AuditLog { get; set; }
         public DbSet<Models.ExceptionLog> ExceptionLog { get; set; }
         public DbSet<Models.HttpLog> HttpLog { get; set; }
         public DbSet<Models.TransactionLog> TransactionLog { get; set; }
 
-
-        public DbSet<Models.ActiveUser> ActiveUser { get; set; } 
+        public DbSet<Models.ActiveUser> ActiveUser { get; set; }
         public DbSet<Models.Branch> Branch { get; set; }
-        public DbSet<Models.Client> Client { get; set; }
         public DbSet<Models.Company> Company { get; set; }
         public DbSet<Models.Module> Module { get; set; }
         public DbSet<Models.ModulePermission> ModulePermission { get; set; }
@@ -31,10 +29,19 @@ namespace Gateway.BLL.Helper
         public DbSet<Models.User> User { get; set; }
         public DbSet<Models.UserRole> UserRole { get; set; }
 
-        //Application
-        public DbSet<Models.Route> Route { get; set; }
+        public DbSet<Models.Client> Client { get; set; }
+        public DbSet<Models.ClientCredential> ClientCredential { get; set; }
+        public DbSet<Models.ClientRouteAccess> ClientRouteAccess { get; set; }
+
+        public DbSet<Models.Category> Category { get; set; }
+        public DbSet<Models.ApiEndpoint> ApiEndpoint { get; set; }
+        public DbSet<Models.TargetHost> TargetHost { get; set; }
+        public DbSet<Models.EndpointIpRule> EndpointIpRule { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Module>()
                 .HasMany(m => m.Children)
                 .WithOne(m => m.Parent)
@@ -46,13 +53,13 @@ namespace Gateway.BLL.Helper
                 .WithMany(m => m.ModulePermission)
                 .HasForeignKey(mp => mp.ModuleId)
                 .HasPrincipalKey(m => m.Id);
-             
-            
+
             modelBuilder.Entity<RoleModulePermission>()
                 .HasOne(m => m.Permissions)
                 .WithMany(rm => rm.RoleModulePermissions)
                 .HasForeignKey(rm => rm.PermissionId)
                 .HasPrincipalKey(m => m.Id);
+
             modelBuilder.Entity<User>()
                 .HasMany(m => m.UserRoles)
                 .WithOne(rm => rm.User)
@@ -71,32 +78,36 @@ namespace Gateway.BLL.Helper
                 .HasForeignKey(rm => rm.BranchId)
                 .HasPrincipalKey(m => m.Id);
 
-            //application
-            modelBuilder.Entity<Route>()
-              .HasMany(r => r.Hosts)
-              .WithOne(h => h.Route)
-              .HasForeignKey(h => h.RouteId)
-              .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Models.ApiEndpoint>(entity =>
+            {
+                entity.HasOne(e => e.Category)
+                    .WithMany()
+                    .HasForeignKey(e => e.CategoryId)
+                    .OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<Route>()
-                .HasMany(r => r.IpRules)
-                .WithOne(i => i.Route)
-                .HasForeignKey(i => i.RouteId)
-                .OnDelete(DeleteBehavior.Cascade);
+                entity.HasMany(e => e.TargetHosts)
+                    .WithOne(h => h.ApiEndpoint)
+                    .HasForeignKey(h => h.EndpointId)
+                    .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Route>()
-                .HasMany(r => r.Clients)
-                .WithOne(c => c.Route)
-                .HasForeignKey(c => c.RouteId)
-                .OnDelete(DeleteBehavior.Cascade);
+                entity.HasMany(e => e.IpRules)
+                    .WithOne(i => i.ApiEndpoint)
+                    .HasForeignKey(i => i.EndpointId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
-            modelBuilder.Entity<Route>()
-                .HasOne(r => r.RouteCategory)
-                .WithMany()
-                .HasForeignKey(r => r.Category)
-                .HasPrincipalKey(c => c.Code);
+            modelBuilder.Entity<Models.Client>(entity =>
+            {
+                entity.HasMany(c => c.Credentials)
+                    .WithOne(cr => cr.Client)
+                    .HasForeignKey(cr => cr.ClientId)
+                    .OnDelete(DeleteBehavior.Cascade);
 
+                entity.HasMany(c => c.RouteAccesses)
+                    .WithOne(ra => ra.Client)
+                    .HasForeignKey(ra => ra.ClientId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
         }
     }
-     
 }

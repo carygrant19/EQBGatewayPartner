@@ -1,14 +1,13 @@
 $(function () {
-    var pathRegex = /^\/[a-zA-Z0-9-_.]+(\/[a-zA-Z0-9-_.]+)*(\/\{[a-zA-Z0-9-_]+\})*\/?$/;
-    var ipRegex = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^::1$/;
-    var ipPortRegex = /^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|([a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}|::1)(?::\d{1,5})?$/;
-    var hostRegex = /^(localhost|((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}))$/i;
-    var multiHostRegex = /^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}|localhost):\d{1,5}$/;
+    // Updated Regex Patterns (Supports localhost, 127.0.0.1, IPv6 ::1, and Ports)  
+    var pathRegex = /^\/([a-zA-Z0-9-_.]|\{[\*a-zA-Z0-9-_?]+\})+(\/([a-zA-Z0-9-_.]|\{[\*a-zA-Z0-9-_?]+\}))*\/?$/;
+    var ipRegex = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^::1$|^localhost$/i;
+    var ipPortRegex = /^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|([a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}|::1|localhost)(?::\d{1,5})?$/i;
+    var hostRegex = /^(localhost|((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}))(?::\d{1,5})?$/i;
+    var multiHostRegex = /^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}|localhost):\d{1,5}$/i;
 
     var alphanumericWithNoSpaces = '^$|^[a-zA-Z0-9-]+$';
     var nameRegex = /^[\p{L}\s.-]+$/u;
-
-    // Entity/Item Name Regex: Allows letters, numbers, spaces, dashes (-), underscores (_), slashes (/), ampersands (&), dots (.), and parentheses ()
     var entityNameRegex = /^[\p{L}0-9\s._\-\/&()]+$/u;
 
     window.Parsley.addValidator('restrictCode', {
@@ -83,7 +82,8 @@ $(function () {
         messages: {
             en: 'This field cannot contain special characters.'
         }
-    }); 
+    });
+
     window.Parsley.addValidator('restrictAlphanumericDash', {
         validateString: function (value) {
             return /^$|^[a-zA-Z0-9-]+$/.test(value);
@@ -134,7 +134,7 @@ $(function () {
             return ipRegex.test(value);
         },
         messages: {
-            en: 'This field must be in the format of an IP address (e.g. 10.20.0.24).'
+            en: 'This field must be in the format of an IP address or localhost (e.g. 10.20.0.24, localhost).'
         }
     });
 
@@ -143,7 +143,7 @@ $(function () {
             return ipPortRegex.test(value);
         },
         messages: {
-            en: 'This field must be in the format of an IP address (e.g. 10.20.0.24:9999).'
+            en: 'This field must be in the format of an IP or localhost with optional port (e.g. 10.20.0.24:9999, localhost:5000).'
         }
     });
 
@@ -152,7 +152,7 @@ $(function () {
             return hostRegex.test(value);
         },
         messages: {
-            en: 'This field must be in the format of an IP address or domain followed by a port number (e.g. google.com, 10.20.0.24:9999, 127.0.0.1 (localhost)).'
+            en: 'This field must be an IP, domain, or localhost with optional port (e.g. google.com, 10.20.0.24:9999, localhost:5000).'
         }
     });
 
@@ -167,7 +167,7 @@ $(function () {
             return true;
         },
         messages: {
-            en: 'This field must contain hosts in the format of IP addresses, domains, or "localhost" followed by a port number, separated by "|".'
+            en: 'This field must contain hosts separated by "|" (e.g. localhost:5000|10.20.0.24:9999).'
         }
     });
 
@@ -251,7 +251,7 @@ $(function () {
 
     window.Parsley.addValidator('requiredField', {
         validateString: function (value) {
-            return value.trim() !== '';
+            return value && value.trim() !== '';
         },
         messages: {
             en: 'Required field.'

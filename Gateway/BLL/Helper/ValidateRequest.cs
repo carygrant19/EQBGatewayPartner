@@ -3,11 +3,12 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Response = Gateway.BLL.DTO.Response;
+
 namespace Gateway.BLL.Helper
 {
     public static class ValidateRequest
     {
-        public static string Signature(HttpContext context, Response.Client client)
+        public static async Task<string> SignatureAsync(HttpContext context, Response.Client client, string? apiSecret = null)
         {
             var request = context.Request;
 
@@ -17,49 +18,46 @@ namespace Gateway.BLL.Helper
             }
 
             var signature = signatureHeader.FirstOrDefault();
-            //var body = ReadBodyAsync(request).Result;
-            var signedText = "";
-            if (context.Request.Method.Equals("get", StringComparison.OrdinalIgnoreCase) || context.Request.Method.Equals("delete", StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrWhiteSpace(signature))
             {
-                //Key as Signature
+                return "No signature.";
+            }
+
+            string signedText;
+            if (request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase) ||
+                request.Method.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
+            {
+                // Key as Signature for GET/DELETE
                 signedText = client.ApiKey;
             }
-            else 
+            else
             {
-                //Payload as Signature
-                signedText = ReadBodyAsync(request).Result;
-                
+                // Payload as Signature for POST/PUT/PATCH
+                signedText = await ReadBodyAsync(request);
             }
 
-            
+            string secretToUse = !string.IsNullOrEmpty(apiSecret) ? apiSecret : client.ApiKey;
 
-            if (IsValidSignature(signedText, signature!, client.ApiSecret))
+            if (IsValidSignature(signedText, signature, secretToUse))
             {
                 return "Valid";
             }
-            else
-            {
-                return "Invalid signature.";
-            }
+
+            return "Invalid signature.";
         }
 
-        #region methods
+        #region Helper Methods
+
         public static string Generate(string data, string key)
         {
             using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(key));
-            byte[] hash;
-
-            if (string.IsNullOrEmpty(data))
-            {
-                hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(key));
-            }
-            else
-            {
-                hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(data));
-            }
+            byte[] hash = string.IsNullOrEmpty(data)
+                ? hmac.ComputeHash(Encoding.UTF8.GetBytes(key))
+                : hmac.ComputeHash(Encoding.UTF8.GetBytes(data));
 
             return Convert.ToBase64String(hash);
         }
+
         private static async Task<string> ReadBodyAsync(HttpRequest request)
         {
             if (!request.Body.CanSeek)
@@ -69,47 +67,32 @@ namespace Gateway.BLL.Helper
 
             request.Body.Position = 0;
 
-            var reader = new StreamReader(request.Body, Encoding.UTF8);
-            var body = await reader.ReadToEndAsync().ConfigureAwait(false);
+            using var reader = new StreamReader(request.Body, Encoding.UTF8, leaveOpen: true);
+            var body = await reader.ReadToEndAsync();
 
             request.Body.Position = 0;
 
             return body;
         }
+
         private static bool IsValidSignature(string data, string signature, string secret)
         {
-            using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(secret));
-
-            byte[] computedHash;
-
-            if (string.IsNullOrEmpty(data))
-            {
-                computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(secret));
-            }
-            else
-            {
-                computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(data));
-            }
-
-            var computedSignature = Convert.ToBase64String(computedHash);
-            return computedSignature == signature;
+            var computedSignature = Generate(data, secret);
+            return string.Equals(computedSignature, signature, StringComparison.Ordinal);
         }
 
         #endregion
 
+        #region Certificate Validation
 
-        #region Certificate
+        public static bool ValidateCertificate(X509Certificate2? clientCertificate, X509Certificate2? systemCertificate)
+        {
+            if (clientCertificate == null || systemCertificate == null)
+                return false;
 
-        public static bool ValidateCertificate(X509Certificate2 clientCertificate, X509Certificate2 systemCertificate)
-        { 
-            if (clientCertificate.Thumbprint == systemCertificate.Thumbprint)
-                return true;
-
-            return false;
+            return string.Equals(clientCertificate.Thumbprint, systemCertificate.Thumbprint, StringComparison.OrdinalIgnoreCase);
         }
 
         #endregion
-
-
     }
 }

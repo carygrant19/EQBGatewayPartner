@@ -1,55 +1,45 @@
 ﻿using Gateway.BLL.Helper;
 using Gateway.BLL.Services;
 using Gateway.BLL.Services.IService;
-using Gateway.BLL.Services.IServices;
 using Gateway.Data.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Text.Json;
 using Response = Gateway.BLL.DTO.Response;
+
 namespace Gateway.Proxy.Middleware;
 
-public class SecurityMiddleware(RequestDelegate next, ILogger<SecurityMiddleware> logger)
+public class SecurityMiddleware(RequestDelegate next)
 {
     public async Task InvokeAsync(
         HttpContext context,
         IClientService apiClientService,
         ICertificateValidatorService certValidator,
-        IOptionsMonitor<OcelotCustomFileConfiguration> config,
-        ILogService logService)
+        EFDbContext dbContext)
     {
         string traceId = context.TraceIdentifier;
+        var path = context.Request.Path.Value ?? "";
 
-        // 1. ADD THIS BYPASS CHECK FOR THE HEALTH ENDPOINT
-        bool isHealthRoute = context.Request.Path.Value!.Equals("/health", StringComparison.OrdinalIgnoreCase)
-                          || context.Request.Path.Value!.EndsWith("/health", StringComparison.OrdinalIgnoreCase);
-
-        if (isHealthRoute)
+        if (path.Equals("/health", StringComparison.OrdinalIgnoreCase) || path.EndsWith("/health", StringComparison.OrdinalIgnoreCase))
         {
-            await next(context); // Skip everything and pass directly to the health check controller
+            await next(context);
             return;
         }
 
-        bool isAuthenticateRoute = context.Request.Path.Value!.Contains("authenticate", StringComparison.OrdinalIgnoreCase);
-
+        bool isAuthenticateRoute = path.Contains("authenticate", StringComparison.OrdinalIgnoreCase);
         Response.Client? client = null;
 
-        // =========================================================
-        // 1. ROUTE: /authenticate (Validation via Username/Password)
-        // =========================================================
         if (isAuthenticateRoute)
         {
-            // Kinakailangan ang Buffering para mabasa ang body sa middleware at mabasa pa rin downstream ni Ocelot
             context.Request.EnableBuffering();
-
-            string username = string.Empty;
-            string password = string.Empty;
+            string clientCode = string.Empty;
+            string clientSecret = string.Empty;
 
             using (var reader = new StreamReader(context.Request.Body, Encoding.UTF8, leaveOpen: true))
             {
                 var bodyText = await reader.ReadToEndAsync();
-                context.Request.Body.Position = 0; // I-reset ang stream position para mabasa pa ng downstream controllers
+                context.Request.Body.Position = 0;
 
                 if (!string.IsNullOrWhiteSpace(bodyText))
                 {
@@ -57,8 +47,9 @@ public class SecurityMiddleware(RequestDelegate next, ILogger<SecurityMiddleware
                     {
                         using var doc = JsonDocument.Parse(bodyText);
                         var root = doc.RootElement;
-                        if (root.TryGetProperty("username", out var uElement)) username = uElement.GetString() ?? "";
-                        if (root.TryGetProperty("password", out var pElement)) password = pElement.GetString() ?? "";
+
+                        if (root.TryGetProperty("code", out var cElement) || root.TryGetProperty("client_id", out cElement) || root.TryGetProperty("username", out cElement)) clientCode = cElement.GetString() ?? "";
+                        if (root.TryGetProperty("secret", out var sElement) || root.TryGetProperty("password", out sElement) || root.TryGetProperty("api_key", out sElement)) clientSecret = sElement.GetString() ?? "";
                     }
                     catch (JsonException)
                     {
@@ -68,108 +59,107 @@ public class SecurityMiddleware(RequestDelegate next, ILogger<SecurityMiddleware
                 }
             }
 
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(clientCode) || string.IsNullOrEmpty(clientSecret))
             {
-                await BlockRequest(context, 400, "Username and Password are required.", traceId);
+                await BlockRequest(context, 400, "Client Code and Secret are required.", traceId);
                 return;
             }
 
-            // Hanapin si Client gamit ang Username at Password
-            client = await apiClientService.ByUsernameAndPassword(username, password);
+            client = await apiClientService.ByUsernameAndPassword(clientCode, clientSecret);
 
-            if (client == null)
+            if (client == null || string.IsNullOrEmpty(client.Code))
             {
-                await BlockRequest(context, 401, "Invalid client username or password.", traceId);
+                await BlockRequest(context, 401, "Invalid client credentials.", traceId);
                 return;
             }
 
-            // Automatic Injection para hindi mag-error si Ocelot Rate Limiter
-            context.Request.Headers["X-Client-Id"] = client.Id.ToString();
+            context.Request.Headers["X-Client-Id"] = client.Id;
             context.Items["MatchedClient"] = client;
-
             await next(context);
             return;
         }
 
-        // =========================================================
-        // 2. OTHER ROUTES (Validation via X-Api-Key)
-        // =========================================================
-        context.Request.Headers.TryGetValue("X-Api-Key", out var apiKey);
-        client = await apiClientService.ByApiKey(apiKey!);
+        var activeEndpoints = await dbContext.Set<ApiEndpoint>()
+            .Include(e => e.IpRules)
+            .Where(e => e.IsActive)
+            .AsNoTracking()
+            .ToListAsync();
 
-        if (client == null || string.IsNullOrEmpty(client.Username))
+        var endpoint = activeEndpoints.FirstOrDefault(e =>
         {
-            await BlockRequest(context, 401, "Invalid or missing API Key.", traceId);
-            return;
-        }
+            var basePath = e.UpstreamPathTemplate
+                .Replace("{**catch-all}", "", StringComparison.OrdinalIgnoreCase)
+                .Replace("{*catch-all}", "", StringComparison.OrdinalIgnoreCase)
+                .TrimEnd('/');
 
-        // Automatic Injection ng Client ID
-        context.Request.Headers["X-Client-Id"] = client.Id.ToString();
-        context.Items["MatchedClient"] = client;
+            if (string.IsNullOrEmpty(basePath)) return false;
 
-        // SSL Certificate Check
-        if (client.SSLRequired && !certValidator.Validate(context.Connection.ClientCertificate))
+            return path.StartsWith(basePath, StringComparison.OrdinalIgnoreCase) || path.Equals(basePath, StringComparison.OrdinalIgnoreCase);
+        });
+
+        if (endpoint != null)
         {
-            await BlockRequest(context, 403, "Valid Client Certificate Required.", traceId);
-            return;
-        }
+            context.Items["MatchedEndpoint"] = endpoint;
 
-        // Route Authorization & Schedule Checks
-        var route = config.CurrentValue.Routes.FirstOrDefault(r =>
-            context.Request.Path.Value.Contains(r.UpstreamPathTemplate, StringComparison.OrdinalIgnoreCase));
-
-        if (route != null)
-        {
-            context.Items["MatchedRoute"] = route;
-            string rMessage = "";
-            bool authorized = true;
-
-            if (route.TimeLimit != null && route.TimeLimit.EnableTimeLimit)
+            bool isTimeValid = Common.IsEndpointTimeValid(endpoint.DateFrom, endpoint.DateTo, endpoint.TimeFrom, endpoint.TimeTo, endpoint.AllowedDays);
+            if (!isTimeValid)
             {
-                int currentDay = (int)DateTime.Now.DayOfWeek;
-
-                if (route.TimeLimit.AllowedDays != null && route.TimeLimit.AllowedDays.Count > 0)
-                {
-                    if (!route.TimeLimit.AllowedDays.Contains(currentDay))
-                    {
-                        authorized = false;
-                        rMessage = "Access denied: Not allowed on this day of the week.";
-                    }
-                }
-
-                if (authorized)
-                {
-                    TimeSpan.TryParse(route.TimeLimit.TimeFrom, out TimeSpan start);
-                    TimeSpan.TryParse(route.TimeLimit.TimeTo, out TimeSpan end);
-
-                    if (!Common.IsWithinTimeLimit(start, end))
-                    {
-                        authorized = false;
-                        rMessage = "Access denied: Outside of allowed time range.";
-                    }
-                }
-            }
-
-            if (authorized && route.RequireSignature)
-            {
-                if (!Common.ValidateRequestMethodAndSignature(context, client, out string sigMessage))
-                {
-                    authorized = false;
-                    rMessage = sigMessage;
-                }
-            }
-
-            if (!authorized)
-            {
-                await BlockRequest(context, 401, rMessage, traceId);
+                await BlockRequest(context, 403, "Access Denied: Endpoint is currently outside of its operating hours or active dates.", traceId);
                 return;
+            }
+
+            if (endpoint.IpRules != null && endpoint.IpRules.Count > 0)
+            {
+                var clientIp = context.Connection.RemoteIpAddress?.ToString() ?? "";
+                bool isBlocked = endpoint.IpRules.Any(r => r.RuleType.Equals("Deny", StringComparison.OrdinalIgnoreCase) && r.IpAddressOrRange == clientIp);
+                bool hasAllowRules = endpoint.IpRules.Any(r => r.RuleType.Equals("Allow", StringComparison.OrdinalIgnoreCase));
+                bool isAllowed = !isBlocked && (!hasAllowRules || endpoint.IpRules.Any(r => r.RuleType.Equals("Allow", StringComparison.OrdinalIgnoreCase) && r.IpAddressOrRange == clientIp));
+
+                if (!isAllowed)
+                {
+                    await BlockRequest(context, 403, "Access denied by IP security policy.", traceId);
+                    return;
+                }
+            }
+        }
+
+        bool requireApiKey = endpoint?.RequireApiKey ?? true;
+
+        if (requireApiKey)
+        {
+            context.Request.Headers.TryGetValue("X-Api-Key", out var apiKey);
+            client = await apiClientService.ByApiKey(apiKey!);
+
+            if (client == null || string.IsNullOrEmpty(client.Code))
+            {
+                await BlockRequest(context, 401, "Invalid or missing API Key.", traceId);
+                return;
+            }
+
+            context.Request.Headers["X-Client-Id"] = client.Id;
+            context.Items["MatchedClient"] = client;
+
+            if (client.SSLRequired && !certValidator.Validate(context.Connection.ClientCertificate))
+            {
+                await BlockRequest(context, 403, "Valid Client Certificate Required.", traceId);
+                return;
+            }
+
+            if (context.Request.Headers.ContainsKey("X-Signature"))
+            {
+                string sigValidationResult = await ValidateRequest.SignatureAsync(context, client);
+                if (!sigValidationResult.Equals("Valid", StringComparison.OrdinalIgnoreCase))
+                {
+                    await BlockRequest(context, 401, sigValidationResult, traceId);
+                    return;
+                }
             }
         }
 
         await next(context);
     }
 
-    private async Task BlockRequest(HttpContext context, int statusCode, string message, string traceId)
+    private static async Task BlockRequest(HttpContext context, int statusCode, string message, string traceId)
     {
         context.Response.StatusCode = statusCode;
         context.Response.Headers["X-TraceID"] = traceId;

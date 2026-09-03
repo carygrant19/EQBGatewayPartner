@@ -1,18 +1,18 @@
 ﻿using AutoMapper;
-using Azure.Core;
-using Gateway.BLL.Helper; 
-using Microsoft.Extensions.Configuration; 
+using Gateway.BLL.Helper;
+using Microsoft.Extensions.Configuration;
 using Model = Gateway.Data.Models;
 using Request = Gateway.BLL.DTO.Request;
 using Response = Gateway.BLL.DTO.Response;
+
 namespace Gateway.BLL
 {
     public class MappingProfile : Profile
-    { 
+    {
         public MappingProfile(IConfiguration configuration)
         {
             var encryptionKey = configuration["AppContext:EncryptionKey"]!;
-             
+
             CreateMap<Model.Client, Response.Client>();
             CreateMap<Model.Client, Response.FClient>();
 
@@ -22,21 +22,34 @@ namespace Gateway.BLL
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => StringManipulation.Encrypt(src.Id.ToString(), encryptionKey)));
 
             CreateMap<Model.Module, Response.FModule>()
-                    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => StringManipulation.Encrypt(src.Id.ToString(), configuration["AppContext:EncryptionKey"]!)))
-                    .ForMember(dest => dest.ParentId, opt => opt.MapFrom(src => src.ParentId.ToString()))
-                    .ForMember(dest => dest.ParentName, opt => opt.MapFrom(src => src.Parent != null ? src.Parent.Name : ""))
-                    .ForMember(dest => dest.ModulePermission, opt => opt.MapFrom(src => src.ModulePermission != null ? string.Join("|", src.ModulePermission.Select(mp => mp.PermissionId.ToString())) : ""));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => StringManipulation.Encrypt(src.Id.ToString(), encryptionKey)))
+                .ForMember(dest => dest.ParentId, opt => opt.MapFrom(src => src.ParentId.ToString()))
+                .ForMember(dest => dest.ParentName, opt => opt.MapFrom(src => src.Parent != null ? src.Parent.Name : ""))
+                .ForMember(dest => dest.ModulePermission, opt => opt.MapFrom(src => src.ModulePermission != null ? string.Join("|", src.ModulePermission.Select(mp => mp.PermissionId.ToString())) : ""));
 
-            CreateMap<Model.Permission, Response.FPermission>().ForMember(dest => dest.Id, opt => opt.MapFrom(src => StringManipulation.Encrypt(src.Id.ToString(), configuration["AppContext:EncryptionKey"]!)));
+            CreateMap<Model.Permission, Response.FPermission>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => StringManipulation.Encrypt(src.Id.ToString(), encryptionKey)));
 
+            CreateMap<Model.Category, Response.Category>();
+            CreateMap<Request.Category, Model.Category>();
 
-            // Core Route mapping configuration
-            CreateMap<Request.Route, Model.Route>();
+            CreateMap<Request.TargetHost, Model.TargetHost>();
+            CreateMap<Model.TargetHost, Response.FTargetHost>()
+                .ForMember(dest => dest.EndpointId, opt => opt.MapFrom(src => src.EndpointId.ToString()));
 
-            // Child collection mappings (so AutoMapper can resolve nested lists automatically)
-            CreateMap<Request.RouteHost, Model.RouteHost>();
-            CreateMap<Request.RouteIpRule, Model.RouteIpRule>();
-            CreateMap<Request.RouteClient, Model.RouteClient>();
+            CreateMap<Request.EndpointIpRule, Model.EndpointIpRule>();
+            CreateMap<Model.EndpointIpRule, Response.FEndpointIpRule>()
+                .ForMember(dest => dest.EndpointId, opt => opt.MapFrom(src => src.EndpointId.ToString()));
+
+            CreateMap<Request.ApiEndpoint, Model.ApiEndpoint>();
+            CreateMap<Model.ApiEndpoint, Response.ApiEndpoint>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : "Uncategorized"));
+            CreateMap<Model.ApiEndpoint, Response.FApiEndpoint>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : "Uncategorized"));
+
+            CreateMap<Request.Client, Model.Client>();
         }
     }
 }

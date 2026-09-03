@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Request = Gateway.BLL.DTO.Request;
 using Response = Gateway.BLL.DTO.Response;
 
-namespace Gateway.Web.Pages.Application
+namespace Gateway.Web.Pages.Maintenance
 {
     public class ClientModel(IClientService service) : PageModelExtension
     {

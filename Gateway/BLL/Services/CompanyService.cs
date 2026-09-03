@@ -1,4 +1,5 @@
 ﻿using Gateway.BLL.Helper;
+using Gateway.BLL.Services.IService;
 using Gateway.BLL.Services.IServices;
 using Newtonsoft.Json; 
 using System.Transactions;
@@ -7,7 +8,7 @@ using Request = Gateway.BLL.DTO.Request;
 using Response = Gateway.BLL.DTO.Response;
 namespace Gateway.BLL.Services
 {
-    public class CompanyService(EFDbContext efDbContext, IRepository<Model.Company> repository, ILogService logService) //: IBranchService
+    public class CompanyService(EFDbContext efDbContext, IRepository<Model.Company> repository, ILogService logService) : ICompanyService
     {
         private readonly EFDbContext _efDbContext = efDbContext;
         private readonly IRepository<Model.Company> _repository = repository;

@@ -1,0 +1,420 @@
+﻿@page
+@model Gateway.Web.Pages.ApiManagement.IndexModel
+@{
+    ViewData["Title"] = Model.PageTitle;
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div id="controller">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>
+                        <button type="button" class="btn btn-md" onclick="GoBack();">
+                            <i class="nav-icon fa fa-lg fa-arrow-circle-left text-secondary"></i>
+                        </button>
+                        <b class="text-lg">@ViewData["Title"]</b>
+                    </h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-end">
+                        @foreach (var item in Model.PageUrl.Split('/'))
+                        {
+                            if (!String.IsNullOrEmpty(@item))
+                            {
+                                <li class="breadcrumb-item">@item</li>
+                            }
+                        }
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid" autocomplete="off">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Search & Action Bar -->
+                            <div class="row mb-3">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="input-group">
+                                        @if (Model.Permission.Contains("[SEARCH]"))
+                                        {
+                                            <input type="text" id="searchDescription" class="form-control" placeholder="Search route name or path..." v-model="search.keyword" v-on:keypress="KeyPress_Search" />
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" v-on:click="Search();">
+                                                <i class="fas fa-search"></i> Search
+                                            </button>
+                                        }
+                                        @if (Model.Permission.Contains("[ADD]"))
+                                        {
+                                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Add()">
+                                                <i class="fas fa-plus-circle"></i> Add Route
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Records Table -->
+                            <div class="row">
+                                <div class="col-12 table-responsive" v-show="!show_table">
+                                    <span>No record(s) found!</span>
+                                </div>
+
+                                <div class="col-12 table-responsive" v-show="show_table">
+                                    <div class="row form-group pb-3">
+                                        <div class="col-auto">Show</div>
+                                        <div class="col-auto">
+                                            <select v-model="params.pageSize" class="form-control form-control-sm custom-select" v-on:change="ItemCountChange()">
+                                                <option v-for="pageSize in pageSizeArray" :key="pageSize" :value="pageSize">{{ pageSize }}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-auto">records</div>
+                                    </div>
+
+                                    <table class="table datatable fs-13">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="12%">Code <i v-bind:class="['fas', SortClass('Code')]" style="cursor:pointer" v-on:click="Sort('Code')"></i></th>
+                                                <th width="18%">Name <i v-bind:class="['fas', SortClass('Name')]" style="cursor:pointer" v-on:click="Sort('Name')"></i></th>
+                                                <th width="15%">Category</th>
+                                                <th width="20%">Upstream Path</th>
+                                                <th width="20%">Downstream Target</th>
+                                                <th class="text-center" width="15%">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="record in records" :key="record.id">
+                                                <td class="align-middle fw-bold">{{ record.code }}</td>
+                                                <td class="align-middle">{{ record.name }}</td>
+                                                <td class="align-middle">
+                                                    <span class="badge bg-info text-dark">{{ record.categoryName || 'Uncategorized' }}</span>
+                                                </td>
+                                                <td class="align-middle"><code>{{ record.upstreamPathTemplate }}</code></td>
+                                                <td class="align-middle"><code>{{ record.downstreamScheme }}://{{ record.downstreamPathTemplate }}</code></td>
+                                                <td class="text-center align-middle">
+                                                    @if (Model.Permission.Contains("[EDIT]"))
+                                                    {
+                                                        <button type="button" class="btn btn-info btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Edit(record)" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    }
+                                                    @if (Model.Permission.Contains("[DELETE]"))
+                                                    {
+                                                        <button type="button" class="btn btn-danger btn-sm mx-1" v-on:click="Delete(record);" v-if="record.isActive" title="Disable">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    }
+                                                    @if (Model.Permission.Contains("[RESTORE]"))
+                                                    {
+                                                        <button type="button" class="btn btn-success btn-sm mx-1" v-on:click="Restore(record);" v-if="!record.isActive" title="Restore">
+                                                            <i class="fas fa-undo"></i>
+                                                        </button>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-12 table-responsive" v-show="show_table">
+                                    <ul id="sync-pagination" class="pagination-sm float-end"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modern Side-Tabs Modal -->
+            @if (Model.Permission.Contains("[ADD]") || Model.Permission.Contains("[EDIT]"))
+            {
+                <div id="formModal" class="modal fade text-sm" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+                    <div class="modal-dialog modal-xl" role="document">
+                        <form name="formModal" id="dataForm" method="post" autocomplete="off" data-parsley-validate="">
+                            <div class="modal-content border-0 shadow-lg">
+                                <div class="modal-header bg-primary text-white py-2">
+                                    <h5 class="modal-title fs-6 fw-bold">
+                                        <i v-bind:class="['fa', ActionModeIcon()]"></i> {{ actionMode }} @ViewData["Title"]
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                </div>
+
+                                <div class="modal-body p-0">
+                                    <div class="row g-0">
+                                        <!-- Side Navigation Sidebar -->
+                                        <div class="col-md-3 bg-light border-end py-3 px-2">
+                                            <div class="nav flex-column nav-pills custom-side-tabs" id="v-pills-tab" role="tablist">
+                                                <button class="nav-link text-start active d-flex justify-content-between align-items-center mb-1" id="v-basic-tab" data-bs-toggle="pill" data-bs-target="#v-basic" type="button">
+                                                    <span><i class="fas fa-sliders-h me-2"></i> General & Routing</span>
+                                                    <span class="badge bg-danger rounded-pill" v-if="tabErrors.basic > 0">{{ tabErrors.basic }} missing</span>
+                                                </button>
+                                                <button class="nav-link text-start d-flex justify-content-between align-items-center mb-1" id="v-target-tab" data-bs-toggle="pill" data-bs-target="#v-target" type="button">
+                                                    <span><i class="fas fa-server me-2"></i> Target Hosts</span>
+                                                    <span class="badge bg-danger rounded-pill" v-if="tabErrors.target > 0">{{ tabErrors.target }} missing</span>
+                                                </button>
+                                                <button class="nav-link text-start d-flex justify-content-between align-items-center mb-1" id="v-traffic-tab" data-bs-toggle="pill" data-bs-target="#v-traffic" type="button">
+                                                    <span><i class="fas fa-tachometer-alt me-2"></i> Traffic & Cache</span>
+                                                    <span class="badge bg-danger rounded-pill" v-if="tabErrors.traffic > 0">{{ tabErrors.traffic }} missing</span>
+                                                </button>
+                                                <button class="nav-link text-start d-flex justify-content-between align-items-center mb-1" id="v-security-tab" data-bs-toggle="pill" data-bs-target="#v-security" type="button">
+                                                    <span><i class="fas fa-shield-alt me-2"></i> Access & IP Rules</span>
+                                                    <span class="badge bg-danger rounded-pill" v-if="tabErrors.security > 0">{{ tabErrors.security }} missing</span>
+                                                </button>
+                                            </div>
+
+                                            <div class="alert alert-warning text-xs mt-4 mx-1 p-2" v-if="totalErrors > 0">
+                                                <i class="fas fa-exclamation-triangle me-1"></i>
+                                                <b>{{ totalErrors }} required field(s)</b> remaining. Check tabs with red badges.
+                                            </div>
+                                        </div>
+
+                                        <!-- Tab Content Panel -->
+                                        <div class="col-md-9 p-3">
+                                            <div class="tab-content" id="v-pills-tabContent">
+                                                <!-- TAB 1: General & Routing -->
+                                                <div class="tab-pane fade show active" id="v-basic">
+                                                    <h6 class="fw-bold border-bottom pb-2 mb-3 text-primary"><i class="fas fa-sliders-h me-1"></i> General & Route Information</h6>
+                                                    <div class="row">
+                                                        <div class="col-md-4 form-group mb-2">
+                                                            <label class="form-label required">Route Code</label>
+                                                            <input type="text" class="form-control text-uppercase" name="Code" v-model="formData.code" :disabled="disableControl.code" data-parsley-required-field data-parsley-restrict-code data-parsley-trigger="change focusout" />
+                                                        </div>
+                                                        <div class="col-md-5 form-group mb-2">
+                                                            <label class="form-label required">Route Name</label>
+                                                            <input type="text" class="form-control" name="Name" v-model="formData.name" data-parsley-required-field data-parsley-trigger="change focusout" />
+                                                        </div>
+                                                        <div class="col-md-3 form-group mb-2">
+                                                            <label class="form-label required">Category</label>
+                                                            <select class="form-control custom-select" name="Category" v-model="formData.categoryId" data-parsley-required-field>
+                                                                <option :value="null" disabled>Select Category</option>
+                                                                <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-12 form-group mb-2">
+                                                            <label>Description</label>
+                                                            <input type="text" class="form-control" name="Description" v-model="formData.description" />
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-2">
+                                                            <label class="form-label required">Upstream Path Template</label>
+                                                            <input type="text" class="form-control" name="UpstreamPathTemplate" v-model="formData.upstreamPathTemplate" placeholder="/api/v1/resource/{**catch-all}" data-parsley-required-field data-parsley-restrict-path />
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-2">
+                                                            <label class="form-label required">Upstream HTTP Methods</label>
+                                                            <input type="text" class="form-control text-uppercase" name="UpstreamHttpMethod" v-model="formData.upstreamHttpMethod" placeholder="GET|POST|PUT" data-parsley-required-field />
+                                                        </div>
+                                                        <div class="col-md-4 form-group mb-2">
+                                                            <label class="form-label required">Downstream Scheme</label>
+                                                            <select class="form-control custom-select" name="DownstreamScheme" v-model="formData.downstreamScheme">
+                                                                <option value="https">https</option>
+                                                                <option value="http">http</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-8 form-group mb-2">
+                                                            <label class="form-label required">Downstream Path Template</label>
+                                                            <input type="text" class="form-control" name="DownstreamPathTemplate" v-model="formData.downstreamPathTemplate" placeholder="/resource/{**catch-all}" data-parsley-required-field />
+                                                        </div>
+                                                        <div class="col-md-12 d-flex align-items-center mt-3">
+                                                            <div class="form-check form-switch me-4">
+                                                                <input class="form-check-input" type="checkbox" id="chkApiKey" v-model="formData.requireApiKey">
+                                                                <label class="form-check-label fw-bold" for="chkApiKey">Require API Key</label>
+                                                            </div>
+                                                            <div class="form-check form-switch me-4">
+                                                                <input class="form-check-input" type="checkbox" id="chkActive" v-model="formData.isActive">
+                                                                <label class="form-check-label fw-bold" for="chkActive">Is Active</label>
+                                                            </div>
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" id="chkWebsocket" v-model="formData.isWebSocket">
+                                                                <label class="form-check-label fw-bold" for="chkWebsocket">WebSocket</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- TAB 2: Target Hosts -->
+                                                <div class="tab-pane fade" id="v-target">
+                                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                                                        <h6 class="fw-bold mb-0 text-primary"><i class="fas fa-server me-1"></i> Backend Target Hosts</h6>
+                                                        <button type="button" class="btn btn-xs btn-outline-primary" v-on:click="AddTargetHost()">
+                                                            <i class="fas fa-plus me-1"></i> Add Target Host
+                                                        </button>
+                                                    </div>
+                                                    <table class="table table-bordered text-sm">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th>Host / Domain / IP</th>
+                                                                <th width="15%">Port</th>
+                                                                <th width="15%">Weight</th>
+                                                                <th>Description</th>
+                                                                <th width="10%" class="text-center">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr v-for="(host, index) in formData.targetHosts" :key="index">
+                                                                <td>
+                                                                    <input type="text" class="form-control form-control-sm" v-model="host.host" placeholder="localhost or 127.0.0.1" data-parsley-required-field data-parsley-host />
+                                                                </td>
+                                                                <td><input type="number" class="form-control form-control-sm" v-model.number="host.port" min="1" max="65535" data-parsley-required-field /></td>
+                                                                <td><input type="number" class="form-control form-control-sm" v-model.number="host.weight" min="1" /></td>
+                                                                <td><input type="text" class="form-control form-control-sm" v-model="host.description" /></td>
+                                                                <td class="text-center">
+                                                                    <button type="button" class="btn btn-sm btn-danger" v-on:click="RemoveTargetHost(index)">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <!-- TAB 3: Traffic & Cache -->
+                                                <div class="tab-pane fade" id="v-traffic">
+                                                    <h6 class="fw-bold border-bottom pb-2 mb-3 text-primary"><i class="fas fa-tachometer-alt me-1"></i> Traffic Policy & Caching</h6>
+                                                    <div class="row">
+                                                        <div class="col-md-6 form-group mb-2">
+                                                            <label>Load Balancing Policy</label>
+                                                            <select class="form-control custom-select" v-model="formData.loadBalancingPolicy">
+                                                                <option value="RoundRobin">RoundRobin</option>
+                                                                <option value="LeastRequests">LeastRequests</option>
+                                                                <option value="Random">Random</option>
+                                                                <option value="FirstAlphabetical">FirstAlphabetical</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-2">
+                                                            <label>Timeout (Seconds)</label>
+                                                            <input type="number" class="form-control" v-model.number="formData.timeoutSeconds" min="1" />
+                                                        </div>
+                                                        <div class="col-md-12 my-2"><hr /></div>
+                                                        <div class="col-md-12 form-group">
+                                                            <div class="form-check form-switch mb-2">
+                                                                <input class="form-check-input" type="checkbox" id="chkRateLimit" v-model="formData.enableRateLimiting">
+                                                                <label class="form-check-label fw-bold" for="chkRateLimit">Enable Rate Limiting</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-2" v-if="formData.enableRateLimiting">
+                                                            <label class="form-label required">Max Requests Limit</label>
+                                                            <input type="number" class="form-control" v-model.number="formData.rateLimit" min="1" placeholder="100" data-parsley-required-field />
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-2" v-if="formData.enableRateLimiting">
+                                                            <label class="form-label required">Timespan Window (Seconds)</label>
+                                                            <input type="number" class="form-control" v-model.number="formData.ratePeriodTimespan" min="1" placeholder="60" data-parsley-required-field />
+                                                        </div>
+                                                        <div class="col-md-12 my-2"><hr /></div>
+                                                        <div class="col-md-12 form-group">
+                                                            <div class="form-check form-switch mb-2">
+                                                                <input class="form-check-input" type="checkbox" id="chkCache" v-model="formData.enableCaching">
+                                                                <label class="form-check-label fw-bold" for="chkCache">Enable Response Caching</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-2" v-if="formData.enableCaching">
+                                                            <label class="form-label required">Cache TTL (Seconds)</label>
+                                                            <input type="number" class="form-control" v-model.number="formData.cacheTtlSeconds" min="1" placeholder="60" data-parsley-required-field />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- TAB 4: Access & IP Rules -->
+                                                <div class="tab-pane fade" id="v-security">
+                                                    <h6 class="fw-bold border-bottom pb-2 mb-3 text-primary"><i class="fas fa-shield-alt me-1"></i> Access Windows & IP Filtering</h6>
+                                                    <div class="row">
+                                                        <div class="col-md-6 form-group mb-2">
+                                                            <label>Operating Time From</label>
+                                                            <input type="time" class="form-control" v-model="formData.timeFrom" />
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-2">
+                                                            <label>Operating Time To</label>
+                                                            <input type="time" class="form-control" v-model="formData.timeTo" />
+                                                        </div>
+                                                        <div class="col-md-12 form-group mb-3">
+                                                            <label class="d-block">Allowed Operating Days</label>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="1" id="dMon" v-model="selectedDays"><label class="form-check-label" for="dMon">Mon</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="2" id="dTue" v-model="selectedDays"><label class="form-check-label" for="dTue">Tue</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="3" id="dWed" v-model="selectedDays"><label class="form-check-label" for="dWed">Wed</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="4" id="dThu" v-model="selectedDays"><label class="form-check-label" for="dThu">Thu</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="5" id="dFri" v-model="selectedDays"><label class="form-check-label" for="dFri">Fri</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="6" id="dSat" v-model="selectedDays"><label class="form-check-label" for="dSat">Sat</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="0" id="dSun" v-model="selectedDays"><label class="form-check-label" for="dSun">Sun</label></div>
+                                                        </div>
+                                                    </div>
+                                                    <hr />
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <span class="fw-bold">IP Security Rules</span>
+                                                        <button type="button" class="btn btn-xs btn-outline-primary" v-on:click="AddIpRule()">
+                                                            <i class="fas fa-plus me-1"></i> Add IP Rule
+                                                        </button>
+                                                    </div>
+                                                    <table class="table table-bordered text-sm">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th>IP Address / Range / localhost</th>
+                                                                <th width="20%">Rule Type</th>
+                                                                <th>Description</th>
+                                                                <th width="10%" class="text-center">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr v-for="(rule, index) in formData.ipRules" :key="index">
+                                                                <td><input type="text" class="form-control form-control-sm" v-model="rule.ipAddressOrRange" placeholder="192.168.1.1 or localhost" data-parsley-required-field /></td>
+                                                                <td>
+                                                                    <select class="form-control form-control-sm custom-select" v-model="rule.ruleType">
+                                                                        <option value="Allow">Allow</option>
+                                                                        <option value="Deny">Deny</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td><input type="text" class="form-control form-control-sm" v-model="rule.description" /></td>
+                                                                <td class="text-center">
+                                                                    <button type="button" class="btn btn-sm btn-danger" v-on:click="RemoveIpRule(index)">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer justify-content-between bg-light py-2">
+                                    <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">
+                                        <i class="fas fa-times-circle"></i> Close
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-sm" v-on:click="Save()">
+                                        <i class="fas fa-check-circle"></i> Save Route
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+</div>
+
+<style>
+    .custom-side-tabs .nav-link {
+        color: #495057;
+        font-weight: 500;
+        border-radius: 4px;
+        padding: 10px 12px;
+    }
+    .custom-side-tabs .nav-link.active {
+        background-color: #0d6efd;
+        color: #fff;
+    }
+    .modal {
+        overflow: auto !important;
+    }
+</style>
+
+@section scripts
+{
+    <script src="~/js/app/directive/common.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/apimanagement/apiendpoint.js" asp-append-version="true"></script>
+    <script src="~/js/app/controller/apimanagement/apiendpoint.js" asp-append-version="true"></script>
+}
