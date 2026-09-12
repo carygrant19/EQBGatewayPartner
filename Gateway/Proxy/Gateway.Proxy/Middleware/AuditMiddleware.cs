@@ -2,7 +2,6 @@
 using Gateway.BLL.Services.IServices;
 using Gateway.Data.Models;
 using Microsoft.AspNetCore.Http.Extensions;
-using System.IO.Compression;
 using System.Text;
 using Response = Gateway.BLL.DTO.Response;
 
@@ -39,23 +38,40 @@ namespace Gateway.Proxy.Middleware
             using var memStream = new MemoryStream();
             context.Response.Body = memStream;
 
-            await next(context);
-
-            var responseData = await FormatResponse(context.Response);
-
-            logService.LogHttp(new HttpLog
+            try
             {
-                ClientId = client?.Id,
-                TraceId = traceId,
-                RouteId = endpoint?.Id.ToString() ?? "",
-                ResponseCode = context.Response.StatusCode.ToString(),
-                ResponseData = responseData,
-                ResponseDate = DateTime.Now
-            }, "RESPONSE");
+                await next(context);
+            }
+            finally
+            {
+                endpoint ??= context.Items["MatchedEndpoint"] as ApiEndpoint;
+                client ??= context.Items["MatchedClient"] as Response.Client;
 
-            context.Response.Headers["X-TraceID"] = traceId;
-            memStream.Position = 0;
-            await memStream.CopyToAsync(originalBodyStream);
+                var responseData = await FormatResponse(memStream);
+
+                logService.LogHttp(new HttpLog
+                {
+                    ClientId = client?.Id,
+                    TraceId = traceId,
+                    RouteId = endpoint?.Id.ToString() ?? "",
+                    ResponseCode = context.Response.StatusCode.ToString(),
+                    ResponseData = responseData,
+                    ResponseDate = DateTime.Now
+                }, "RESPONSE");
+
+                if (!context.Response.Headers.ContainsKey("X-TraceID"))
+                {
+                    context.Response.Headers["X-TraceID"] = traceId;
+                }
+
+                if (memStream.CanRead && memStream.CanSeek && memStream.Length > 0)
+                {
+                    memStream.Position = 0;
+                    await memStream.CopyToAsync(originalBodyStream);
+                }
+
+                context.Response.Body = originalBodyStream;
+            }
         }
 
         private static async Task<string> FormatRequest(HttpRequest request)
@@ -94,39 +110,26 @@ namespace Gateway.Proxy.Middleware
             return builder.ToString();
         }
 
-        private static async Task<string> FormatResponse(HttpResponse response)
+        private static async Task<string> FormatResponse(MemoryStream memStream)
         {
-            response.Body.Seek(0, SeekOrigin.Begin);
-            string text;
-            if (response.Headers["Content-Encoding"].ToString().Contains("gzip"))
+            try
             {
-                var bytes = await ReadFullyAsync(response.Body);
-                var decompressed = Decompress(bytes);
-                text = Encoding.UTF8.GetString(decompressed);
+                if (!memStream.CanSeek || !memStream.CanRead || memStream.Length == 0)
+                {
+                    return "[Empty Response Body]";
+                }
+
+                memStream.Seek(0, SeekOrigin.Begin);
+                using var reader = new StreamReader(memStream, Encoding.UTF8, leaveOpen: true);
+                var text = await reader.ReadToEndAsync();
+                memStream.Seek(0, SeekOrigin.Begin);
+
+                return string.IsNullOrWhiteSpace(text) ? "[Empty Response Body]" : text;
             }
-            else
+            catch (Exception ex)
             {
-                using var reader = new StreamReader(response.Body, Encoding.UTF8, leaveOpen: true);
-                text = await reader.ReadToEndAsync();
+                return $"[Error reading response body: {ex.Message}]";
             }
-            response.Body.Seek(0, SeekOrigin.Begin);
-            return text;
-        }
-
-        private static async Task<byte[]> ReadFullyAsync(Stream input)
-        {
-            using var ms = new MemoryStream();
-            await input.CopyToAsync(ms);
-            return ms.ToArray();
-        }
-
-        private static byte[] Decompress(byte[] data)
-        {
-            using var compressedStream = new MemoryStream(data);
-            using var zipStream = new GZipStream(compressedStream, CompressionMode.Decompress);
-            using var resultStream = new MemoryStream();
-            zipStream.CopyTo(resultStream);
-            return resultStream.ToArray();
         }
     }
 }

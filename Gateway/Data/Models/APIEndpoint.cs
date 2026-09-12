@@ -22,6 +22,7 @@ namespace Gateway.Data.Models
         public string? Description { get; set; }
 
         public int? CategoryId { get; set; }
+        public int? AuthProviderId { get; set; }
 
         public bool IsActive { get; set; } = true;
         public bool IsWebSocket { get; set; } = false;
@@ -72,10 +73,41 @@ namespace Gateway.Data.Models
         public int? UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
 
+        // --- ENTERPRISE GATEWAY FEATURES ---
+        [Required]
+        [StringLength(20)]
+        public string IntegrationType { get; set; } = "PROXY"; // PROXY, INTERNAL_AUTH, MOCK
+
+        public bool StripPath { get; set; } = true;
+
+        public bool PreserveHostHeader { get; set; } = false;
+
+        [Required]
+        [StringLength(100)]
+        public string AllowedMethods { get; set; } = "GET,POST,PUT,DELETE";
+
+        [StringLength(20)]
+        public string? ApiVersion { get; set; } = "v1";
+
+        public int MaxRetries { get; set; } = 0;
+
+        public int RetryDelayMs { get; set; } = 1000;
+
+        public bool EnableCircuitBreaker { get; set; } = false;
+
+        public int? MockResponseCode { get; set; }
+
+        public string? MockResponseBody { get; set; }
+
+        // --- NAVIGATIONS ---
         [ForeignKey(nameof(CategoryId))]
         public virtual Category? Category { get; set; }
 
+        [ForeignKey(nameof(AuthProviderId))]
+        public virtual AuthProvider? AuthProvider { get; set; }
+
         public virtual ICollection<TargetHost> TargetHosts { get; set; } = [];
         public virtual ICollection<EndpointIpRule> IpRules { get; set; } = [];
+        public virtual ICollection<EndpointTransform> Transforms { get; set; } = [];
     }
 }

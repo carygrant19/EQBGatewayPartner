@@ -23,6 +23,12 @@ namespace Gateway.Data.Models
         [StringLength(255)]
         public string? Description { get; set; }
 
+        // --- HEALTH CHECK FEATURES ---
+        [StringLength(255)]
+        public string? HealthCheckPath { get; set; }
+
+        public bool IsHealthy { get; set; } = true;
+
         [ForeignKey(nameof(EndpointId))]
         public virtual ApiEndpoint? ApiEndpoint { get; set; }
     }

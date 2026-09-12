@@ -14,6 +14,7 @@
 
         public List<FTargetHost> TargetHosts { get; set; } = [];
         public List<FEndpointIpRule> IpRules { get; set; } = [];
+        public List<FEndpointTransform> Transforms { get; set; } = [];
     }
 
     public class ApiEndpoint
@@ -25,6 +26,9 @@
 
         public int? CategoryId { get; set; }
         public string? CategoryName { get; set; }
+
+        public int? AuthProviderId { get; set; }
+        public string? AuthProviderName { get; set; }
 
         public bool IsActive { get; set; }
         public bool IsWebSocket { get; set; }
@@ -53,6 +57,18 @@
         public int CacheTtlSeconds { get; set; }
         public string AllowedOrigins { get; set; } = "*";
         public long? MaxRequestBodySize { get; set; }
+
+        // --- ENTERPRISE GATEWAY FEATURES ---
+        public string IntegrationType { get; set; } = "PROXY";
+        public bool StripPath { get; set; } = true;
+        public bool PreserveHostHeader { get; set; } = false;
+        public string AllowedMethods { get; set; } = "GET,POST,PUT,DELETE";
+        public string? ApiVersion { get; set; } = "v1";
+        public int MaxRetries { get; set; } = 0;
+        public int RetryDelayMs { get; set; } = 1000;
+        public bool EnableCircuitBreaker { get; set; } = false;
+        public int? MockResponseCode { get; set; }
+        public string? MockResponseBody { get; set; }
     }
 
     public class FTargetHost
@@ -63,6 +79,8 @@
         public int Port { get; set; }
         public int Weight { get; set; }
         public string? Description { get; set; }
+        public string? HealthCheckPath { get; set; }
+        public bool IsHealthy { get; set; } = true;
     }
 
     public class FEndpointIpRule
@@ -72,5 +90,15 @@
         public string IpAddressOrRange { get; set; } = string.Empty;
         public string RuleType { get; set; } = string.Empty;
         public string? Description { get; set; }
+    }
+
+    public class FEndpointTransform
+    {
+        public int Id { get; set; }
+        public string EndpointId { get; set; } = string.Empty;
+        public string TransformPhase { get; set; } = string.Empty;
+        public string Action { get; set; } = string.Empty;
+        public string HeaderName { get; set; } = string.Empty;
+        public string? HeaderValue { get; set; }
     }
 }

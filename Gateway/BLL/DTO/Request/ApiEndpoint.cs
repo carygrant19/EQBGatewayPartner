@@ -18,6 +18,7 @@ namespace Gateway.BLL.DTO.Request
         public string? Description { get; set; }
 
         public int? CategoryId { get; set; }
+        public int? AuthProviderId { get; set; }
 
         public bool IsActive { get; set; } = true;
         public bool IsWebSocket { get; set; } = false;
@@ -59,8 +60,31 @@ namespace Gateway.BLL.DTO.Request
         public string AllowedOrigins { get; set; } = "*";
         public long? MaxRequestBodySize { get; set; }
 
+        // --- ENTERPRISE GATEWAY FEATURES ---
+        [Required(AllowEmptyStrings = false)]
+        [MaxLength(20)]
+        public string IntegrationType { get; set; } = "PROXY"; // PROXY, INTERNAL_AUTH, MOCK
+
+        public bool StripPath { get; set; } = true;
+        public bool PreserveHostHeader { get; set; } = false;
+
+        [Required(AllowEmptyStrings = false)]
+        [MaxLength(100)]
+        public string AllowedMethods { get; set; } = "GET,POST,PUT,DELETE";
+
+        [MaxLength(20)]
+        public string? ApiVersion { get; set; } = "v1";
+
+        public int MaxRetries { get; set; } = 0;
+        public int RetryDelayMs { get; set; } = 1000;
+        public bool EnableCircuitBreaker { get; set; } = false;
+
+        public int? MockResponseCode { get; set; }
+        public string? MockResponseBody { get; set; }
+
         public List<TargetHost> TargetHosts { get; set; } = [];
         public List<EndpointIpRule> IpRules { get; set; } = [];
+        public List<EndpointTransform> Transforms { get; set; } = [];
     }
 
     public class TargetHost
@@ -76,6 +100,11 @@ namespace Gateway.BLL.DTO.Request
 
         [MaxLength(255)]
         public string? Description { get; set; }
+
+        [MaxLength(255)]
+        public string? HealthCheckPath { get; set; }
+
+        public bool IsHealthy { get; set; } = true;
     }
 
     public class EndpointIpRule
@@ -92,5 +121,25 @@ namespace Gateway.BLL.DTO.Request
 
         [MaxLength(255)]
         public string? Description { get; set; }
+    }
+
+    public class EndpointTransform
+    {
+        public int Id { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        [MaxLength(20)]
+        public string TransformPhase { get; set; } = "Request"; // "Request" o "Response"
+
+        [Required(AllowEmptyStrings = false)]
+        [MaxLength(20)]
+        public string Action { get; set; } = "Add"; // "Add", "Remove", "Append"
+
+        [Required(AllowEmptyStrings = false)]
+        [MaxLength(100)]
+        public string HeaderName { get; set; } = string.Empty;
+
+        [MaxLength(500)]
+        public string? HeaderValue { get; set; }
     }
 }

@@ -4,18 +4,32 @@ const controller = createApp({
     setup() {
         const records = ref([]);
         const categories = ref([]);
+        const authProviders = ref([]);
         const show_table = ref(false);
         const actionMode = ref("Add");
+        const viewData = ref(null);
+
+        // HTTP Methods State
+        const availableMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
+        const selectedMethods = ref([]);
 
         const tabErrors = reactive({
             basic: 0,
+            security: 0,
             target: 0,
-            traffic: 0,
-            security: 0
+            transform: 0,
+            resilience: 0,
+            traffic: 0
         });
 
         const totalErrors = computed(() => {
-            return tabErrors.basic + tabErrors.target + tabErrors.traffic + tabErrors.security;
+            return tabErrors.basic + tabErrors.security + tabErrors.target + tabErrors.transform + tabErrors.resilience + tabErrors.traffic;
+        });
+
+        const parsedViewMethods = computed(() => {
+            if (!viewData.value) return [];
+            const source = viewData.value.allowedMethods || viewData.value.upstreamHttpMethod || "GET";
+            return source.replace(/\|/g, ',').split(',').map(m => m.trim().toUpperCase()).filter(m => m);
         });
 
         const params = reactive({
@@ -36,36 +50,67 @@ const controller = createApp({
             name: "",
             description: "",
             categoryId: null,
+            authProviderId: null,
             isActive: true,
             isWebSocket: false,
             requireApiKey: true,
+            enableCatchAll: false,
+            upstreamBase: "",
+            downstreamBase: "",
             upstreamPathTemplate: "",
-            upstreamHttpMethod: "GET",
+            upstreamHttpMethod: "GET,POST",
             downstreamPathTemplate: "",
             downstreamScheme: "https",
             priority: 1,
+            integrationType: "PROXY",
+            stripPath: true,
+            preserveHostHeader: false,
+            allowedMethods: "GET,POST,PUT,DELETE",
+            apiVersion: "v1",
+            maxRetries: 0,
+            retryDelayMs: 1000,
+            enableCircuitBreaker: false,
+            mockResponseCode: 200,
+            mockResponseBody: '{\n  "message": "Mock Response Success"\n}',
             enableRateLimiting: false,
             rateLimit: 100,
             ratePeriodTimespan: 60,
             timeFrom: null,
             timeTo: null,
-            dateFrom: null,
-            dateTo: null,
             allowedDays: "",
-            loadBalancingPolicy: "RoundRobin",
+            loadBalancingPolicy: null,
             timeoutSeconds: 30,
             enableCaching: false,
             cacheTtlSeconds: 60,
-            allowedOrigins: "*",
             targetHosts: [],
-            ipRules: []
+            ipRules: [],
+            transforms: []
         });
 
         onMounted(() => {
             global.GetRecords = GetRecords;
             GetCategories();
+            GetAuthProviders();
             GetRecords();
         });
+
+        const getMethodBadgeClass = (method) => {
+            switch (method) {
+                case 'GET': return 'bg-success';
+                case 'POST': return 'bg-primary';
+                case 'PUT': return 'bg-warning text-dark';
+                case 'DELETE': return 'bg-danger';
+                case 'PATCH': return 'bg-info text-dark';
+                default: return 'bg-secondary';
+            }
+        };
+
+        const CleanPath = (path) => {
+            if (!path) return "";
+            return path.replace(/\/\{\*\*(catch-all|remainder)\}/gi, '')
+                .replace(/\{\*\*(catch-all|remainder)\}/gi, '')
+                .replace(/\/$/, '');
+        };
 
         const GetCategories = async () => {
             try {
@@ -73,6 +118,17 @@ const controller = createApp({
                 if (response.data) categories.value = response.data;
             } catch (error) {
                 console.error("Failed to load categories", error);
+            }
+        };
+
+        const GetAuthProviders = async () => {
+            try {
+                if (typeof ApiEndpointService.AuthProviders === 'function') {
+                    const response = await ApiEndpointService.AuthProviders();
+                    if (response.data) authProviders.value = response.data;
+                }
+            } catch (error) {
+                console.error("Failed to load auth providers", error);
             }
         };
 
@@ -119,49 +175,77 @@ const controller = createApp({
             };
 
             tabErrors.basic = countErrorsInTab('#v-basic');
-            tabErrors.target = countErrorsInTab('#v-target');
-            tabErrors.traffic = countErrorsInTab('#v-traffic');
+            if (selectedMethods.value.length === 0) {
+                tabErrors.basic++;
+            }
+
             tabErrors.security = countErrorsInTab('#v-security');
+            tabErrors.target = formData.integrationType === 'PROXY' ? countErrorsInTab('#v-target') : 0;
+            tabErrors.transform = formData.integrationType === 'PROXY' ? countErrorsInTab('#v-transform') : 0;
+            tabErrors.resilience = countErrorsInTab('#v-resilience');
+            tabErrors.traffic = countErrorsInTab('#v-traffic');
 
             return totalErrors.value === 0;
+        };
+
+        const ResetTabErrors = () => {
+            tabErrors.basic = 0;
+            tabErrors.security = 0;
+            tabErrors.target = 0;
+            tabErrors.transform = 0;
+            tabErrors.resilience = 0;
+            tabErrors.traffic = 0;
         };
 
         const Add = () => {
             if ($('#dataForm').parsley()) $('#dataForm').parsley().reset();
             actionMode.value = "Add";
             disableControl.code = false;
-
-            tabErrors.basic = 0;
-            tabErrors.target = 0;
-            tabErrors.traffic = 0;
-            tabErrors.security = 0;
+            ResetTabErrors();
 
             formData.id = "0";
             formData.code = "";
             formData.name = "";
             formData.description = "";
             formData.categoryId = categories.value.length > 0 ? categories.value[0].id : null;
+            formData.authProviderId = null;
             formData.isActive = true;
             formData.isWebSocket = false;
             formData.requireApiKey = true;
+            formData.enableCatchAll = false;
+            formData.upstreamBase = "";
+            formData.downstreamBase = "";
             formData.upstreamPathTemplate = "";
-            formData.upstreamHttpMethod = "GET";
+            formData.upstreamHttpMethod = "GET,POST";
             formData.downstreamPathTemplate = "";
             formData.downstreamScheme = "https";
             formData.priority = 1;
+            formData.integrationType = "PROXY";
+            formData.stripPath = true;
+            formData.preserveHostHeader = false;
+            formData.allowedMethods = "GET,POST,PUT,DELETE";
+            formData.apiVersion = "v1";
+            formData.maxRetries = 0;
+            formData.retryDelayMs = 1000;
+            formData.enableCircuitBreaker = false;
+            formData.mockResponseCode = 200;
+            formData.mockResponseBody = '{\n  "message": "Mock Response Success"\n}';
             formData.enableRateLimiting = false;
             formData.rateLimit = 100;
             formData.ratePeriodTimespan = 60;
             formData.timeFrom = null;
             formData.timeTo = null;
             formData.allowedDays = "";
-            formData.loadBalancingPolicy = "RoundRobin";
+            formData.loadBalancingPolicy = null;
             formData.timeoutSeconds = 30;
             formData.enableCaching = false;
             formData.cacheTtlSeconds = 60;
 
-            formData.targetHosts = [{ host: "localhost", port: 5000, weight: 1, description: "Primary" }];
+            selectedMethods.value = ['GET', 'POST', 'PUT', 'DELETE'];
+
+            formData.targetHosts = [{ host: "localhost", port: 5000, weight: 1, description: "Primary Host", healthCheckPath: "/health", isHealthy: true }];
             formData.ipRules = [];
+            formData.transforms = [];
             selectedDays.value = [];
 
             nextTick(() => {
@@ -173,13 +257,23 @@ const controller = createApp({
             if ($('#dataForm').parsley()) $('#dataForm').parsley().reset();
             actionMode.value = "Edit";
             disableControl.code = true;
-
-            tabErrors.basic = 0;
-            tabErrors.target = 0;
-            tabErrors.traffic = 0;
-            tabErrors.security = 0;
+            ResetTabErrors();
 
             Object.assign(formData, record);
+            formData.loadBalancingPolicy = record.loadBalancingPolicy || null;
+
+            const catchAllRegex = /\{\*\*(catch-all|remainder)\}/i;
+            formData.enableCatchAll = catchAllRegex.test(record.upstreamPathTemplate || "");
+
+            formData.upstreamBase = CleanPath(record.upstreamPathTemplate);
+            formData.downstreamBase = CleanPath(record.downstreamPathTemplate);
+
+            const stringSource = record.allowedMethods || record.upstreamHttpMethod || "GET,POST";
+            selectedMethods.value = stringSource
+                .replace(/\|/g, ',')
+                .split(',')
+                .map(m => m.trim().toUpperCase())
+                .filter(m => m);
 
             if (record.allowedDays) {
                 selectedDays.value = record.allowedDays.split(',');
@@ -189,21 +283,43 @@ const controller = createApp({
 
             formData.targetHosts = record.targetHosts ? [...record.targetHosts] : [];
             formData.ipRules = record.ipRules ? [...record.ipRules] : [];
+            formData.transforms = record.transforms ? [...record.transforms] : [];
 
             nextTick(() => {
                 $('#v-basic-tab').tab('show');
             });
         };
 
+        const View = (record) => {
+            viewData.value = { ...record };
+            nextTick(() => {
+                $('#viewModal').modal('show');
+            });
+        };
+
         const Save = async () => {
+            // Reconstruct full paths from base inputs + catch-all flag
+            let upBase = formData.upstreamBase ? formData.upstreamBase.replace(/\/$/, '') : "";
+            let downBase = formData.downstreamBase ? formData.downstreamBase.replace(/\/$/, '') : "";
+
+            if (formData.enableCatchAll) {
+                formData.upstreamPathTemplate = upBase + "/{**catch-all}";
+                formData.downstreamPathTemplate = downBase + "/{**catch-all}";
+            } else {
+                formData.upstreamPathTemplate = upBase;
+                formData.downstreamPathTemplate = downBase;
+            }
+
             const isValid = ValidateTabs();
 
             if (!isValid) {
                 let errorMessages = [];
-                if (tabErrors.basic > 0) errorMessages.push(`<b>General & Routing</b>: ${tabErrors.basic} issue(s)`);
-                if (tabErrors.target > 0) errorMessages.push(`<b>Target Hosts</b>: ${tabErrors.target} issue(s)`);
-                if (tabErrors.traffic > 0) errorMessages.push(`<b>Traffic & Cache</b>: ${tabErrors.traffic} issue(s)`);
-                if (tabErrors.security > 0) errorMessages.push(`<b>Access & IP Rules</b>: ${tabErrors.security} issue(s)`);
+                if (tabErrors.basic > 0) errorMessages.push(`<b>General & Routing</b>: ${tabErrors.basic} field(s)`);
+                if (tabErrors.security > 0) errorMessages.push(`<b>Security & Auth</b>: ${tabErrors.security} field(s)`);
+                if (tabErrors.target > 0) errorMessages.push(`<b>Target Hosts</b>: ${tabErrors.target} field(s)`);
+                if (tabErrors.transform > 0) errorMessages.push(`<b>Header Transforms</b>: ${tabErrors.transform} field(s)`);
+                if (tabErrors.resilience > 0) errorMessages.push(`<b>Resilience & Mocking</b>: ${tabErrors.resilience} field(s)`);
+                if (tabErrors.traffic > 0) errorMessages.push(`<b>Traffic & Cache</b>: ${tabErrors.traffic} field(s)`);
 
                 swal.fire({
                     icon: 'warning',
@@ -213,6 +329,8 @@ const controller = createApp({
                 return;
             }
 
+            formData.allowedMethods = selectedMethods.value.join(',');
+            formData.upstreamHttpMethod = selectedMethods.value.join(',');
             formData.allowedDays = selectedDays.value.join(',');
 
             $(".preloader").show();
@@ -236,7 +354,7 @@ const controller = createApp({
                 swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'An unexpected error occurred.'
+                    text: 'An unexpected error occurred while saving route.'
                 });
             } finally {
                 $('.preloader').fadeOut('slow');
@@ -305,7 +423,7 @@ const controller = createApp({
         };
 
         const AddTargetHost = () => {
-            formData.targetHosts.push({ host: "localhost", port: 5000, weight: 1, description: "" });
+            formData.targetHosts.push({ host: "localhost", port: 5000, weight: 1, description: "", healthCheckPath: "/health", isHealthy: true });
             nextTick(() => ValidateTabs());
         };
 
@@ -324,6 +442,16 @@ const controller = createApp({
             nextTick(() => ValidateTabs());
         };
 
+        const AddTransform = () => {
+            formData.transforms.push({ transformPhase: "Request", action: "Add", headerName: "", headerValue: "" });
+            nextTick(() => ValidateTabs());
+        };
+
+        const RemoveTransform = (index) => {
+            formData.transforms.splice(index, 1);
+            nextTick(() => ValidateTabs());
+        };
+
         const ActionModeIcon = () => actionMode.value === 'Add' ? 'fa-plus-circle' : 'fa-edit';
 
         return {
@@ -336,9 +464,15 @@ const controller = createApp({
             formData,
             records,
             categories,
+            authProviders,
             selectedDays,
+            availableMethods,
+            selectedMethods,
+            getMethodBadgeClass,
             tabErrors,
             totalErrors,
+            viewData,
+            parsedViewMethods,
             ItemCountChange: () => ItemCountChange(Search),
             Sort: (col) => Sort(col, GetRecords),
             SortClass: (col) => SortClass(col),
@@ -347,13 +481,16 @@ const controller = createApp({
             ActionModeIcon,
             Add,
             Edit,
+            View,
             Delete,
             Save,
             Restore,
             AddTargetHost,
             RemoveTargetHost,
             AddIpRule,
-            RemoveIpRule
+            RemoveIpRule,
+            AddTransform,
+            RemoveTransform
         };
     }
 });
