@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="DTOs\Request\v1\loans\" />
     <Folder Include="Logs\" />
   </ItemGroup>
 

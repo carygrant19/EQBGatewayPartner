@@ -3,13 +3,14 @@ using Newtonsoft.Json;
 using System.Data;
 using System.Text;
 using System.Text.Json;
-using Temenos.API.Services.IService.v1;
+using Temenos.API.Services.IService.v1.casa;
 using ApiResponse = Common.DTOs.Response.Api;
-using Model = Temenos.API.Models.v1;
-using Request = Temenos.API.DTOs.Request.v1;
-using Response = Temenos.API.DTOs.Response.v1;
+using ModelRequest = Temenos.API.Models.v1.Request.casa;
+using ModelResponse = Temenos.API.Models.v1.Response.casa;
+using DTORequest = Temenos.API.DTOs.Request.v1.casa;
+using DTOResponse = Temenos.API.DTOs.Response.v1.casa;
 
-namespace Temenos.API.Services.v1
+namespace Temenos.API.Services.v1.casa
 {
     public class TransactionService(IConfiguration configuration, ILogger<TransactionService> logger) : ITransactionService
     {
@@ -18,15 +19,15 @@ namespace Temenos.API.Services.v1
         private readonly string _ftEndpoint = configuration["Endpoints:v1_FundTransfer"]!;
         private readonly string _reversalEndpoint = configuration["Endpoints:v1_Reversal"]!;
         private readonly string _scriptPath = Path.Combine($"{Directory.GetCurrentDirectory()}{"\\scripts"}");
-        public async Task<ApiResponse.Response<Response.FundTransfer>> FundTransfer(string uId, string companyId, Request.FundTransfer dtoRequest)
+        public async Task<ApiResponse.Response<DTOResponse.FundTransfer>> FundTransfer(string uId, string companyId, DTORequest.FundTransfer dtoRequest)
         {
-            ApiResponse.Response<Response.FundTransfer> dtoResponse = new();
+            ApiResponse.Response<DTOResponse.FundTransfer> dtoResponse = new();
 
             try
             {
-                Model.Request.billpay request = new()
+                ModelRequest.billpay request = new()
                 {
-                    Body = new Model.Request.billpayBody
+                    Body = new ModelRequest.billpayBody
                     {
                         TransactionType = dtoRequest.TransactionType,
                         DebValDate = dtoRequest.DebitValueDate,
@@ -64,18 +65,18 @@ namespace Temenos.API.Services.v1
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
                 result = JsonConvert.DeserializeObject(httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult())!.ToString()!;
 
-                Model.Response.billpay response = JsonConvert.DeserializeObject<Model.Response.billpay>(result)!;
+                ModelResponse.billpay response = JsonConvert.DeserializeObject<ModelResponse.billpay>(result)!;
 
                 _logger.LogInformation("FundTransfer {Status} | uniqueIdentifier: {uId} | Response: {response}", response, uId, result);
 
 
                 if (response.Header.Status.Equals("SUCCESS", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    dtoResponse = new ApiResponse.Response<Response.FundTransfer>
+                    dtoResponse = new ApiResponse.Response<DTOResponse.FundTransfer>
                     {
                         Success = true,
                         Message = "Transaction processed successfully.",
-                        Data = new Response.FundTransfer
+                        Data = new DTOResponse.FundTransfer
                         {
                             TransactionId = uId,
                             ReferenceNo = response.Header.Id,
@@ -89,11 +90,11 @@ namespace Temenos.API.Services.v1
                 }
                 else
                 {
-                    dtoResponse = new ApiResponse.Response<Response.FundTransfer>
+                    dtoResponse = new ApiResponse.Response<DTOResponse.FundTransfer>
                     {
                         Success = false,
                         Message = "Transaction declined.",
-                        Data = new Response.FundTransfer
+                        Data = new DTOResponse.FundTransfer
                         {
                             TransactionId = uId,
                             ReferenceNo = response.Header.Id,
@@ -151,7 +152,7 @@ namespace Temenos.API.Services.v1
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
                 result = JsonConvert.DeserializeObject(httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult())!.ToString()!;
 
-                Model.Response.billpay response = JsonConvert.DeserializeObject<Model.Response.billpay>(result)!;
+                ModelResponse.billpay response = JsonConvert.DeserializeObject<ModelResponse.billpay>(result)!;
 
                 _logger.LogInformation("Reversal {Status} | Reference No.: {ReferenceNo} | Response: {response}", response.Header.Status.ToUpper(), referenceNo, response);
 
@@ -200,11 +201,11 @@ namespace Temenos.API.Services.v1
 
             return dtoResponse;
         }
-        public async Task<ApiResponse.Response<Response.TransactionStatus>> Status(string uId)
+        public async Task<ApiResponse.Response<DTOResponse.TransactionStatus>> Status(string uId)
         {
             string script1 = File.ReadAllText(Path.Combine(_scriptPath, "transaction_status_v1.sql"));
 
-            ApiResponse.Response<Response.TransactionStatus> dtoResponse = new();
+            ApiResponse.Response<DTOResponse.TransactionStatus> dtoResponse = new();
 
             _logger.LogInformation("Retrieving Status for UID: {UId}", uId);
 
@@ -220,7 +221,7 @@ namespace Temenos.API.Services.v1
 
                 using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
-                var statusResponse = new Response.TransactionStatus();
+                var statusResponse = new DTOResponse.TransactionStatus();
 
                 if (await reader.ReadAsync())
                 {
@@ -229,11 +230,11 @@ namespace Temenos.API.Services.v1
                     {
                         _logger.LogInformation("FT Status successfully retrieved for UID: {UId} | Response: {@Response}", uId, statusResponse);
 
-                        dtoResponse = new ApiResponse.Response<Response.TransactionStatus>
+                        dtoResponse = new ApiResponse.Response<DTOResponse.TransactionStatus>
                         {
                             Success = true,
                             Message = "Transaction retrieved.",
-                            Data = new Response.TransactionStatus
+                            Data = new DTOResponse.TransactionStatus
                             {
                                 UID = reader["UID"].ToString()!,
                                 MessageKey = reader["MESSAGE_KEY"].ToString()!,
@@ -251,7 +252,7 @@ namespace Temenos.API.Services.v1
                 }
                 else
                 {
-                    dtoResponse = new ApiResponse.Response<Response.TransactionStatus>
+                    dtoResponse = new ApiResponse.Response<DTOResponse.TransactionStatus>
                     {
                         Success = false,
                         Message = $"The requested transaction (ID: {uId}) could not be found.",
@@ -271,7 +272,7 @@ namespace Temenos.API.Services.v1
         }
         public async Task<ApiResponse.Response<object>> ClosingBalance(string referenceNo)
         {
-            string script1 = File.ReadAllText(Path.Combine(_scriptPath, "closing _balance_v1.sql"));
+            string script1 = File.ReadAllText(Path.Combine(_scriptPath, "closing_balance_v1.sql"));
             
             ApiResponse.Response<object> dtoResponse = new();
             
@@ -289,7 +290,7 @@ namespace Temenos.API.Services.v1
 
                 using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
-                var statusResponse = new Response.TransactionStatus();
+                var statusResponse = new DTOResponse.TransactionStatus();
 
                 if (await reader.ReadAsync())
                 {

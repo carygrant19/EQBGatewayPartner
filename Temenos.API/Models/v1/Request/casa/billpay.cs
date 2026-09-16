@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Temenos.API.Models.v1.Request
+namespace Temenos.API.Models.v1.Request.casa
 {
     internal class billpay
     {

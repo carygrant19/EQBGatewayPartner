@@ -1,65 +1,65 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
-namespace Temenos.API.Models.v1.Response
+namespace Temenos.API.Models.v1.Response.casa
 {
     internal class balanceInquiry
     {
-        [JsonProperty("header")]
+        [JsonPropertyName("header")]
         public balanceInquiryHeader Header { get; set; } = new();
-        [JsonProperty("body")]
+        [JsonPropertyName("body")]
         public List<balanceInquiryBody> Body { get; set; } = new();
 
-        [JsonProperty("error")]
+        [JsonPropertyName("error")]
         public BalanceInquiryError Error { get; set; } = new();
     }
     internal class balanceInquiryHeader
     {
-        [JsonProperty("audit")]
+        [JsonPropertyName("audit")]
         public balanceInquiryAudit Audit { get; set; } = new();
 
-        [JsonProperty("page_start")]
+        [JsonPropertyName("page_start")]
         public int PageStart { get; set; } = 0;
 
-        [JsonProperty("page_token")]
+        [JsonPropertyName("page_token")]
         public string PageToken { get; set; } = string.Empty;
 
-        [JsonProperty("total_size")]
+        [JsonPropertyName("total_size")]
         public int TotalSize { get; set; } = 0;
 
-        [JsonProperty("page_size")]
+        [JsonPropertyName("page_size")]
         public int PageSize { get; set; } = 0;
     }
     internal class balanceInquiryAudit
     {
-        [JsonProperty("T24_time")]
+        [JsonPropertyName("T24_time")]
         public int T24Time { get; set; } = 0;
 
-        [JsonProperty("parse_time")]
+        [JsonPropertyName("parse_time")]
         public int ParseTime { get; set; } = 0;
     }
     internal class balanceInquiryBody
     {
-        [JsonProperty("product")]
+        [JsonPropertyName("product")]
         public string Product { get; set; } = string.Empty;
-        [JsonProperty("balance")]
+        [JsonPropertyName("balance")]
         public decimal Balance { get; set; } = 0;
-        [JsonProperty("accountName")]
+        [JsonPropertyName("accountName")]
         public string AccountName { get; set; } = string.Empty;
-        [JsonProperty("accountType")]
+        [JsonPropertyName("accountType")]
         public string AccountType { get; set; } = string.Empty;
-        [JsonProperty("currency")]
+        [JsonPropertyName("currency")]
         public string Currency { get; set; } = string.Empty;
-        [JsonProperty("classification")]
+        [JsonPropertyName("classification")]
         public string Classification { get; set; } = string.Empty;
     }
 
     internal class BalanceInquiryError
     {
-        [JsonProperty("code")]
+        [JsonPropertyName("code")]
         public string Code { get; set; } = string.Empty;
-        [JsonProperty("message")]
+        [JsonPropertyName("message")]
         public string Message { get; set; } = string.Empty;
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; } = string.Empty;
     }
 }

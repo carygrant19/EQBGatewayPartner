@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Temenos.API.Services.IService.v1;
+using Temenos.API.Services.IService.v1.casa;
 using ApiResponse = Common.DTOs.Response.Api;
-using Request = Temenos.API.DTOs.Request.v1;
 
-namespace Temenos.API.Controllers.v1
+namespace Temenos.API.Controllers.v1.casa
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/casa/[controller]")]
     [ApiController]
     public class AccountController(IAccountService accountService) : ControllerBase
     {
@@ -83,7 +82,6 @@ namespace Temenos.API.Controllers.v1
                 return StatusCode(500, dtoResponse);
             }
         }
-
 
     }
 }

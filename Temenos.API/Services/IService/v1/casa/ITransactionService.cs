@@ -1,8 +1,8 @@
-﻿using Request = Temenos.API.DTOs.Request.v1;
-using Response = Temenos.API.DTOs.Response.v1;
+﻿using Request = Temenos.API.DTOs.Request.v1.casa;
+using Response = Temenos.API.DTOs.Response.v1.casa;
 using ApiResponse = Common.DTOs.Response.Api;
 
-namespace Temenos.API.Services.IService.v1
+namespace Temenos.API.Services.IService.v1.casa
 {
     public interface ITransactionService
     {

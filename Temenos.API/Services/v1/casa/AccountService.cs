@@ -1,27 +1,25 @@
-﻿using Common.DTOs.Response.Api;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using System.Data;
-using System.Security.Cryptography;
-using Temenos.API.Services.IService.v1;
 using ApiResponse = Common.DTOs.Response.Api;
-using Response = Temenos.API.DTOs.Response.v1;
-using Model = Temenos.API.Models.v1;
+using DTOResponse = Temenos.API.DTOs.Response.v1.casa;
+using ModelResponse= Temenos.API.Models.v1.Response.casa;
+using Temenos.API.Services.IService.v1.casa;
 
-namespace Temenos.API.Services.v1
+namespace Temenos.API.Services.v1.casa
 {
-    public class AccountService(IConfiguration configuration, ILogger<TransactionService> logger) : IAccountService
+    public class AccountService(IConfiguration configuration, ILogger<AccountService> logger) : IAccountService
     {
-        private readonly ILogger<TransactionService> _logger = logger;
+        private readonly ILogger<AccountService> _logger = logger;
         private readonly string _conString = configuration["ConnectionStrings:Temenos"]!;
         private readonly string _balanceInquiry = configuration["Endpoints:v1_BalanceInquiry"]!;
         private readonly string _scriptPath = Path.Combine($"{Directory.GetCurrentDirectory()}{"\\scripts"}");
 
-        public async Task<ApiResponse.Response<Response.AccountDetails>> Details(string accountNo)
+        public async Task<ApiResponse.Response<DTOResponse.AccountDetails>> Details(string accountNo)
         {
             string script1 = File.ReadAllText(Path.Combine(_scriptPath, "account_details_v1.sql"));
 
-            ApiResponse.Response<Response.AccountDetails> dtoResponse = new();
+            ApiResponse.Response<DTOResponse.AccountDetails> dtoResponse = new();
 
             _logger.LogInformation("Retrieving account details for AccountNo: {accountNo}", accountNo);
 
@@ -37,7 +35,7 @@ namespace Temenos.API.Services.v1
 
                 using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
-                var statusResponse = new Response.AccountDetails();
+                var statusResponse = new DTOResponse.AccountDetails();
 
                 if (await reader.ReadAsync())
                 {
@@ -46,11 +44,11 @@ namespace Temenos.API.Services.v1
                     {
                         _logger.LogInformation("Account details successfully retrieved for AccountNo: {accountNo}", accountNo);
 
-                        dtoResponse = new ApiResponse.Response<Response.AccountDetails>
+                        dtoResponse = new ApiResponse.Response<DTOResponse.AccountDetails>
                         {
                             Success = true,
                             Message = "Account details retrieved.",
-                            Data = new Response.AccountDetails
+                            Data = new DTOResponse.AccountDetails
                             {
                                 AccountNo = reader["ACCOUNT_NUMBER"].ToString()!,
                                 Description = reader["DESCRIPTION"].ToString()!,
@@ -69,7 +67,7 @@ namespace Temenos.API.Services.v1
                 }
                 else
                 {
-                    dtoResponse = new ApiResponse.Response<Response.AccountDetails>
+                    dtoResponse = new ApiResponse.Response<DTOResponse.AccountDetails>
                     {
                         Success = false,
                         Message = $"The requested account details (Account No: {accountNo}) could not be found.",
@@ -88,9 +86,9 @@ namespace Temenos.API.Services.v1
             return dtoResponse;
         }
 
-        public async Task<ApiResponse.Response<Response.BalanceInquiry>> InquireBalance(string accountNo)
+        public async Task<ApiResponse.Response<DTOResponse.BalanceInquiry>> InquireBalance(string accountNo)
         {
-            ApiResponse.Response<Response.BalanceInquiry> dtoResponse = new();
+            ApiResponse.Response<DTOResponse.BalanceInquiry> dtoResponse = new();
 
             _logger.LogInformation("Retrieving balance inquiry for AccountNo: {accountNo}", accountNo);
 
@@ -104,18 +102,18 @@ namespace Temenos.API.Services.v1
                 var result = httpResponse.Content.ReadAsStringAsync().Result;
                 result = JsonConvert.DeserializeObject(httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult())!.ToString()!;
 
-                Model.Response.balanceInquiry response = JsonConvert.DeserializeObject<Model.Response.balanceInquiry>(result)!;
+                ModelResponse.balanceInquiry response = JsonConvert.DeserializeObject<ModelResponse.balanceInquiry>(result)!;
 
 
                 _logger.LogInformation("Balance Inquiry {Status} | Account No: {accountNo} | Response: {response}", response, accountNo, result);
 
                 if (response.Error == null)
                 {
-                    dtoResponse = new ApiResponse.Response<Response.BalanceInquiry>
+                    dtoResponse = new ApiResponse.Response<DTOResponse.BalanceInquiry>
                     {
                         Success = true,
                         Message = "Balance details retrieved.",
-                        Data = new Response.BalanceInquiry
+                        Data = new DTOResponse.BalanceInquiry
                         {
                             AccountNo = accountNo,
                             Balance = response.Body[0].Balance.ToString(),
@@ -128,7 +126,7 @@ namespace Temenos.API.Services.v1
                 }
                 else
                 {
-                    dtoResponse = new ApiResponse.Response<Response.BalanceInquiry>
+                    dtoResponse = new ApiResponse.Response<DTOResponse.BalanceInquiry>
                     {
                         Success = false,
                         Message = "Failed to retrieve details.",

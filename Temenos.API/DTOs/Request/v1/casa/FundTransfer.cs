@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Temenos.API.DTOs.Request.v1
+namespace Temenos.API.DTOs.Request.v1.casa
 {
     public class FundTransfer
     {

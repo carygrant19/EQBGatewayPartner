@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Temenos.API.DTOs.Response.v1
+namespace Temenos.API.DTOs.Response.v1.casa
 {
     public class AccountDetails
     {
