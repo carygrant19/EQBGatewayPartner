@@ -1,0 +1,85 @@
+{
+  "Routes": [
+    {
+      "Id": "AUTH-001",
+      "UpstreamPathTemplate": "/authenticate",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/auth/login",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "internal-auth-service.com",
+          "Port": 443
+        }
+      ],
+      "Client": [],
+      "RequireSignature": false,
+      "TimeLimit": {
+        "EnableTimeLimit": true,
+        "TimeFrom": "08:00",
+        "TimeTo": "17:00",
+        "AllowedDays": [ 1, 2, 3, 5 ]
+      },
+      "Description": "Test for bypass logic (Should log REQUEST/RESPONSE even if unauthorized)"
+    },
+    {
+      "Id": "ORD-001",
+      "UpstreamPathTemplate": "/secure/orders",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/orders/create",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "internal-orders-api.com",
+          "Port": 443
+        }
+      ],
+      "Client": [ "CARYGRANT" ],
+      "RequireSignature": false,
+      "TimeLimit": {
+        "EnableTimeLimit": true,
+        "TimeFrom": "08:00",
+        "TimeTo": "17:00",
+        "AllowedDays": [ 1, 2, 3, 4, 5 ]
+      },
+      "Description": "Test for Time Range (Mon-Fri) and Request Signature"
+    },
+    {
+      "Id": "SSL-001",
+      "UpstreamPathTemplate": "/ssl/protected-data",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/data/export",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "secure-data-backend.com",
+          "Port": 443
+        }
+      ],
+      "Client": [ "CARYGRANT" ],
+      "RequireSignature": false,
+      "EnableTimeLimit": false,
+      "Description": "Test for SSL Certificate Validation (Ensure SSLRequired is true in DB for CARYGRANT)"
+    },
+    {
+      "Id": "PAT-001",
+      "UpstreamPathTemplate": "/api/products/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/products/details/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "inventory-api.com",
+          "Port": 443
+        }
+      ],
+      "Client": [ "CARYGRANT" ],
+      "RequireSignature": false,
+      "EnableTimeLimit": false,
+      "Description": "Test for Wildcard Pattern Matching (Ensures {id} is logged correctly)"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7001"
+  }
+}

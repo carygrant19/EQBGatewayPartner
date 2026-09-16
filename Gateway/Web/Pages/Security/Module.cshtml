@@ -1,0 +1,316 @@
+﻿@page
+@model Gateway.Web.Pages.Security.ModuleModel
+@{
+    ViewData["Title"] = Model.PageTitle;
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@* @using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor *@
+<div id="controller">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><button type="button" class="btn btn-md" onclick="GoBack();"><i class="nav-icon fa fa-lg fa-arrow-circle-left text-secondary"></i></button> <b class="text-lg">@ViewData["Title"]</b> </h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-end">
+                        @foreach (var item in Model.PageUrl.Split('/'))
+                        {
+                            if (!String.IsNullOrEmpty(@item))
+                            {
+                                <li class="breadcrumb-item">@item</li>
+                            }
+                        }
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid" autocomplete="off">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-lg-6 mb-3">
+                                    <div class="input-group">
+                                        @if (Model.Permission.Contains("[SEARCH]"))
+                                        {
+                                            <input type="text" id="searchDescription" autocomplete="off" class="form-control" placeholder="Enter Code, Name or Description" v-model="search.description" ng-keypress="KeyPress_Search" data-parsley-restrict-special-characters />
+                                        }
+                                    
+                                        @if (Model.Permission.Contains("[SEARCH]"))
+                                        {
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" v-on:click="Search();">
+                                                <i class="nav-icon fas fa-search"></i> Search
+                                            </button>
+                                        }
+
+                                        @if (Model.Permission.Contains("[ADD]"))
+                                        {
+                                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Add()">
+                                                <i class="nav-icon fas fa-plus-circle"></i> Add
+                                            </button>
+                                        }
+                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 table-responsive" v-show="!show_table">
+                                    <span>No record(s) found!</span>
+                                </div>
+                                <div class="col-12 table-responsive" v-show="show_table">
+                                    <div class="row form-group pb-3">
+                                        <div class="col-auto">
+                                            Show
+                                        </div>
+                                        <div class="col-auto">
+                                            <select name="params_length"
+                                                    v-model="params.pageSize"
+                                                    class="form-control form-control-sm custom-select"
+                                                    v-on:change="ItemCountChange()"
+                                                    style="min-width: 50px;">
+                                                <option v-for="(pageSize, index) in pageSizeArray" :key="pageSize" :value="pageSize">
+                                                    {{ pageSize }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-auto">
+                                            records
+                                        </div>
+                                    </div>
+                                    <table class="table datatable fs-13">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="text-center" width="5%"></th>
+                                                <th width="10%">Code <i :class="['fas', SortClass('Code')]" style="cursor:pointer" v-on:click="Sort('Code')"></i> </th>
+                                                <th class="text-center" width="5%">Icon</th>
+                                                <th width="15%">Parent <i :class="['fas', SortClass('ParentId')]" style="cursor:pointer" v-on:click="Sort('Parent.Name')"></i> </th>
+                                                <th width="15%">Name <i :class="['fas', SortClass('Name')]" style="cursor:pointer" v-on:click="Sort('Name')"></i> </th>
+                                                <th>Description <i :class="['fas', SortClass('Description')]" style="cursor:pointer" v-on:click="Sort('Description')"></i> </th>
+                                                <th class="text-center" width="15%">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="record in records">
+
+                                                <th class="text-center align-middle" data-title="Show"><span v-if="!record.show"><i class="fas fa-eye-slash"></i></span></th>
+                                                <td class="align-middle" data-title="Code">{{record.code}}</td>
+                                                <td class="text-center align-middle" data-title="Icon"> <i :class="record.icon"></i></td>
+                                                <td class="align-middle" data-title="ParentName"> {{record.parentName}}</td>
+                                                <td class="align-middle" data-title="Name:"> {{record.name}}</td>
+                                                <td class="align-middle" data-title="Description:">{{record.description}}</td>
+                                                <td class="text-center align-middle">
+                                                    @*    <button type="button" class="btn btn-info btn-sm mr-1 mx-1" v-on:click="Delete(item);" data-tooltip="tooltip" title="Manage User">
+                                                    <i class="far fa-user"></i>
+                                                    </button> *@
+                                                    @if (Model.Permission.Contains("[EDIT]"))
+                                                    {
+                                                        <button type="button" class="btn btn-info btn-sm mr-1 mx-1" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Edit(record)" data-tooltip="tooltip" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    }
+
+                                                    @if (Model.Permission.Contains("[DELETE]"))
+                                                    {
+                                                        <button type="button" class="btn btn-danger btn-sm mr-1 mx-1" v-on:click="Delete(record);" v-if="!record.deleted" data-tooltip="tooltip" title="Delete">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    }
+                                                    @if (Model.Permission.Contains("[RESTORE]"))
+                                                    {
+                                                        <button type="button" class="btn btn-success btn-sm mr-1 mx-1" v-on:click="Restore(record);" v-if="record.deleted" data-tooltip="tooltip" title="Restore">
+                                                            <i class="fas fa-undo"></i>
+                                                        </button>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-12 table-responsive" v-show="show_table">
+                                    <ul id="sync-pagination" class="pagination-sm float-end"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (Model.Permission.Contains("[ADD]") || Model.Permission.Contains("[EDIT]"))
+            {
+                <div id="formModal" class="modal fade text-sm" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+                    <div class="modal-dialog modal-xl" role="document">
+                        <form name="formModal" id="dataForm" method="post" autocomplete="off" data-parsley-validate="">
+                            <div class="modal-content">
+                                <div class="modal-header bg-danger">
+                                    <h5 class="modal-title left"> <i :class="['fa',ActionModeIcon()]"> </i>   {{ actionMode }} @ViewData["Title"]</h5>
+                                    <a href="#" class="modal-close right"><i class="mdl2 mdl2-cancel" aria-hidden="true"></i></a>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="form-group">
+                                                <label for="code">Code</label>
+                                                <input type="text" class="form-control text-uppercase" name="code"
+                                                       v-model="formData.code"
+                                                       :disabled="disableControl.code"
+                                                       data-parsley-id="code"
+                                                       data-parsley-restrict-special-characters-no-spaces
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-required-field
+                                                       data-parsley-validate-if-empty>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="form-group">
+                                                <label for="name">Name</label>
+                                                <input type="text" class="form-control" name="name"
+                                                       v-model="formData.name"
+                                                       data-parsley-id="Name"
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-required-field
+                                                       data-parsley-restrict-alpha-only
+                                                       data-parsley-validate-if-empty>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="form-group">
+                                                <label for="description">Description</label>
+                                                <input class="form-control" placeholder="Enter Description"
+                                                       v-model="formData.description"
+                                                       data-parsley-id="description"
+                                                       data-parsley-required-field
+                                                       data-parsley-validate-if-empty
+                                                       data-parsley-trigger="change focusout" >
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="form-group">
+                                                <label for="auditContent">Audit Content</label>
+                                                <input type="text" class="form-control" name="auditContent"
+                                                       v-model="formData.auditContent"
+                                                       data-parsley-id="auditContent"
+                                                       data-parsley-required-field
+                                                       data-parsley-validate-if-empty
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-restrict-special-characters>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="form-group">
+                                                <label for="parentId">Parent</label>
+                                                <select name="parentId" class="form-control"
+                                                        v-model="formData.parentId">
+
+                                                    <option value="">Root (None)</option>
+                                                    <option v-for="parentId in parentIds" :key="parentId.id" :disabled="parentId.code === formData.code" :value="parentId.id">{{ parentId.name }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <label for="url" class="form-label me-2 mb-0">URL</label>
+                                                <div class="form-check form-switch ms-2">
+                                                    <input type="checkbox" class="form-check-input" id="showOnNav" v-model="formData.show">
+                                                    <label class="form-check-label" for="showOnNav">Show on Navigation</label>
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control" id="url" name="url" v-model="formData.url" placeholder="Enter URL">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                            <div class="form-group">
+                                                <label for="moduleType">Module Type</label>
+                                                <select name="moduleType" class="form-control" v-model="formData.moduleType"
+                                                        data-parsley-trigger="change focusout"
+                                                        data-parsley-required-message="Required field"
+                                                        required>
+                                                    <option value="">-- Please Select --</option>
+                                                    <option value="FE">Front End</option>
+                                                    <option value="BE">Back End</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                                            <div class="form-group">
+                                                <label for="icon">Icon ( <span><i :class="formData.icon"> </i></span>)</label>
+                                                <input type="text" class="form-control" name="icon"
+                                                       v-model="formData.icon"
+                                                       data-parsley-id="icon"
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-validate-if-empty>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                                            <div class="form-group">
+                                                <label for="displayOrder">Order</label>
+                                                <input type="number" class="form-control" name="displayOrder"
+                                                       v-model="formData.displayOrder"
+                                                       data-parsley-id="displayOrder"
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-required-field
+                                                       data-parsley-restrict-numeric-only
+                                                       data-parsley-validate-if-empty>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-5">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="name">Module Action: </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3" v-for="item in modulePermissions">
+                                            <div class="form-group">
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input type="checkbox"
+                                                               :id="'chk_' + item.id"
+                                                               :name="item.id" class="form-check-input"
+                                                               :value="item.id">
+                                                        {{item.description}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal"><i class="nav-icon fas fa-times-circle"></i> Close</button>
+                                    <button type="button" class="btn btn-success btn-sm" v-on:click="Save()"><i class="nav-icon fas fa-check-circle"></i> Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </section>
+</div>
+<style>
+    /*for multiple modal - fixes scrolling in first modal*/
+    .modal {
+        overflow: auto !important;
+    }
+    
+</style>
+
+@section scripts
+{
+    <script src="~/js/app/directive/common.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/module.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/permission.js" asp-append-version="true"></script>
+    <script src="~/js/app/controller/security/module.js" asp-append-version="true"></script>  
+}
+
+
+

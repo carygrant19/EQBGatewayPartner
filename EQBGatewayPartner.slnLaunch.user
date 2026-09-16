@@ -1,16 +1,44 @@
 [
   {
-    "Name": "New Profile",
+    "Name": "Proxy + Web",
     "Projects": [
       {
-        "Path": "HRAgent.Api\\HRAgent.Api.csproj",
-        "Action": "Start",
-        "DebugTarget": "https"
+        "Path": "Gateway\\Web\\Gateway.Web.csproj",
+        "Action": "Start"
       },
       {
-        "Path": "Chatbot\\Chatbot.csproj",
-        "Action": "Start",
-        "DebugTarget": "https"
+        "Path": "Gateway\\Proxy\\Gateway.Proxy\\Gateway.Proxy.csproj",
+        "Action": "Start"
+      }
+    ]
+  },
+  {
+    "Name": "Proxy + T24 API",
+    "Projects": [
+      {
+        "Path": "Temenos.API\\Temenos.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Gateway\\Proxy\\Gateway.Proxy\\Gateway.Proxy.csproj",
+        "Action": "Start"
+      }
+    ]
+  },
+  {
+    "Name": "All",
+    "Projects": [
+      {
+        "Path": "Temenos.API\\Temenos.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Gateway\\Web\\Gateway.Web.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Gateway\\Proxy\\Gateway.Proxy\\Gateway.Proxy.csproj",
+        "Action": "Start"
       }
     ]
   }

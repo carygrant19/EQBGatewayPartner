@@ -1,0 +1,59 @@
+body {
+    /*background-color: white;*/
+    background-image: url('../images/login-bg1.png');
+    background-size: cover; /* make image cover the whole screen */
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Logo Section */
+.logo-section {
+    gap: 20px;
+    text-align: center; 
+}
+
+ 
+/* Login Form */
+.login-form {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    opacity:0.9;
+}
+/* Remove design on mobile and small screens */
+@media (max-width: 991px) {
+/*    .login-form {
+        background: none;
+        padding: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }*/
+
+    #login-img {
+        content: url('../images/EQB_Banner.png');
+        width: 100%;
+        height: auto;
+    }
+
+}
+/* Divider */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+    color: black;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+     
+}
+ 
+footer {
+    color:white;
+}

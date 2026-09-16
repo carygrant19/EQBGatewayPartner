@@ -1,0 +1,260 @@
+$(function () {
+    // Updated Regex Patterns (Supports localhost, 127.0.0.1, IPv6 ::1, and Ports)  
+    var pathRegex = /^\/([a-zA-Z0-9-_.]|\{[\*a-zA-Z0-9-_?]+\})+(\/([a-zA-Z0-9-_.]|\{[\*a-zA-Z0-9-_?]+\}))*\/?$/;
+    var ipRegex = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^::1$|^localhost$/i;
+    var ipPortRegex = /^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|([a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}|::1|localhost)(?::\d{1,5})?$/i;
+    var hostRegex = /^(localhost|((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}))(?::\d{1,5})?$/i;
+    var multiHostRegex = /^((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}|localhost):\d{1,5}$/i;
+
+    var alphanumericWithNoSpaces = '^$|^[a-zA-Z0-9-]+$';
+    var nameRegex = /^[\p{L}\s.-]+$/u;
+    var entityNameRegex = /^[\p{L}0-9\s._\-\/&()]+$/u;
+
+    window.Parsley.addValidator('restrictCode', {
+        validateString: function (value) {
+            return /^$|^[a-zA-Z0-9_-]+$/.test(value);
+        },
+        messages: {
+            en: 'This field can only contain letters, numbers, dashes (-), and underscores (_) with no spaces.'
+        }
+    });
+
+    window.Parsley.addValidator('restrictEntityName', {
+        validateString: function (value) {
+            return entityNameRegex.test(value);
+        },
+        messages: {
+            en: 'This field can only contain letters, numbers, spaces, and basic symbols (- _ / & . ()).'
+        }
+    });
+
+    window.Parsley.addValidator('restrictNumericOnly', {
+        validateString: function (value) {
+            return /^\d+$/.test(value);
+        },
+        messages: {
+            en: 'This field can only contain digits (0-9).'
+        }
+    });
+
+    window.Parsley.addValidator('restrictAmountOnly', {
+        validateString: function (value) {
+            const clean = value.replace(/,/g, '');
+            const num = parseFloat(clean);
+            return /^\d{1,15}(?:\.\d{1,2})?$/.test(clean) && !isNaN(num) && num <= 50000.00;
+        },
+        messages: {
+            en: 'Please enter a valid number and max 50,000.00'
+        }
+    });
+
+    window.Parsley.addValidator('restrictAlphaOnly', {
+        validateString: function (value) {
+            return /^[A-Za-z- ]*$/.test(value);
+        },
+        messages: {
+            en: 'This field cannot contain special characters.'
+        }
+    });
+
+    window.Parsley.addValidator('restrictAlphaSpaceDash', {
+        validateString: function (value) {
+            return /^$|^[a-zA-Z\s-]+$/.test(value);
+        },
+        messages: {
+            en: 'This field can only contain letters, spaces, and dashes.'
+        }
+    });
+
+    window.Parsley.addValidator('restrictAlphanumericSpaceDash', {
+        validateString: function (value) {
+            return /^$|^[a-zA-Z0-9\s-]+$/.test(value);
+        },
+        messages: {
+            en: 'This field can only contain letters, numbers, spaces, and dashes.'
+        }
+    });
+
+    window.Parsley.addValidator('restrictAlphanumericOnly', {
+        validateString: function (value) {
+            return /^$|^[a-zA-Z0-9]+$/.test(value);
+        },
+        messages: {
+            en: 'This field cannot contain special characters.'
+        }
+    });
+
+    window.Parsley.addValidator('restrictAlphanumericDash', {
+        validateString: function (value) {
+            return /^$|^[a-zA-Z0-9-]+$/.test(value);
+        },
+        messages: {
+            en: 'This field can only contain letters, numbers, and dashes with no spaces.'
+        }
+    });
+
+    window.Parsley.addValidator('restrictName', {
+        validateString: function (value) {
+            return nameRegex.test(value);
+        },
+        messages: {
+            en: 'This field can only contain letters, spaces, dashes, and dots.'
+        }
+    });
+
+    window.Parsley.addValidator('restrictSpecialCharacters', {
+        validateString: function (value) {
+            return entityNameRegex.test(value);
+        },
+        messages: {
+            en: 'This field cannot contain restricted special characters.'
+        }
+    });
+
+    window.Parsley.addValidator('restrictSpecialCharactersNoSpaces', {
+        validateString: function (value) {
+            return new RegExp(alphanumericWithNoSpaces).test(value);
+        },
+        messages: {
+            en: 'This field can only contain letters, numbers, and dashes with no spaces.'
+        }
+    });
+
+    window.Parsley.addValidator('restrictPath', {
+        validateString: function (value) {
+            return pathRegex.test(value);
+        },
+        messages: {
+            en: 'This field must be a valid API path like "/api/auth/authenticate".'
+        }
+    });
+
+    window.Parsley.addValidator('ip', {
+        validateString: function (value) {
+            return ipRegex.test(value);
+        },
+        messages: {
+            en: 'This field must be in the format of an IP address or localhost (e.g. 10.20.0.24, localhost).'
+        }
+    });
+
+    window.Parsley.addValidator('ipPort', {
+        validateString: function (value) {
+            return ipPortRegex.test(value);
+        },
+        messages: {
+            en: 'This field must be in the format of an IP or localhost with optional port (e.g. 10.20.0.24:9999, localhost:5000).'
+        }
+    });
+
+    window.Parsley.addValidator('host', {
+        validateString: function (value) {
+            return hostRegex.test(value);
+        },
+        messages: {
+            en: 'This field must be an IP, domain, or localhost with optional port (e.g. google.com, 10.20.0.24:9999, localhost:5000).'
+        }
+    });
+
+    window.Parsley.addValidator('multihost', {
+        validateString: function (value) {
+            var hosts = value.split('|');
+            for (var i = 0; i < hosts.length; i++) {
+                if (!multiHostRegex.test(hosts[i].trim())) {
+                    return false;
+                }
+            }
+            return true;
+        },
+        messages: {
+            en: 'This field must contain hosts separated by "|" (e.g. localhost:5000|10.20.0.24:9999).'
+        }
+    });
+
+    window.Parsley.addValidator('atLeastOneChecked', {
+        validate: function (value, requirement, parsleyInstance) {
+            var $checkboxes = $(parsleyInstance.$element).find('input[name="httpMethods"]:checked');
+            return $checkboxes.length > 0;
+        },
+        messages: {
+            en: 'At least one checkbox must be checked.'
+        }
+    });
+
+    window.Parsley.addValidator('durationFormat', {
+        validateString: function (value) {
+            var durationRegex = /^[1-9][0-9]*[smhd]$/;
+            return durationRegex.test(value);
+        },
+        messages: {
+            en: 'This field must be in the format of an integer followed by "s" (seconds), "m" (minutes), "h" (hours), or "d" (days).'
+        }
+    });
+
+    window.Parsley.addValidator('militaryTime', {
+        validateString: function (value) {
+            var militaryTimeRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+            return militaryTimeRegex.test(value);
+        },
+        messages: {
+            en: 'Please enter a valid military time (e.g., 08:00, 17:01, 23:59).'
+        }
+    });
+
+    window.Parsley.addValidator('emailValidator', {
+        validateString: function (value) {
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(value);
+        },
+        messages: {
+            en: 'Please enter a valid email address.'
+        }
+    });
+
+    window.Parsley.addValidator('multiEmailValidator', {
+        validateString: function (value) {
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            var emails = value.split(';').map(email => email.trim());
+            return emails.every(email => emailRegex.test(email));
+        },
+        messages: {
+            en: 'Please enter a valid email address or multiple emails separated by a semicolon (;).'
+        }
+    });
+
+    window.Parsley.addValidator('address', {
+        validateString: function (value) {
+            var addressRegex = /^[\d\s\w\.,'-]+$/;
+            return addressRegex.test(value);
+        },
+        messages: {
+            en: 'Please enter a valid address.'
+        }
+    });
+
+    window.Parsley.addValidator('dateFormat', {
+        validateString: function (value) {
+            const regex = /^\d{4}-\d{2}-\d{2}$/;
+
+            if (!regex.test(value)) {
+                return false;
+            }
+
+            const [year, month, day] = value.split('-').map(Number);
+            const date = new Date(year, month - 1, day);
+            return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
+        },
+        messages: {
+            en: 'Please enter a valid date in the format YYYY-MM-DD.'
+        }
+    });
+
+    window.Parsley.addValidator('requiredField', {
+        validateString: function (value) {
+            return value && value.trim() !== '';
+        },
+        messages: {
+            en: 'Required field.'
+        }
+    });
+});

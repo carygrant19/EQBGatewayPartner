@@ -1,0 +1,808 @@
+﻿@page
+@model Gateway.Web.Pages.ApiManagement.IndexModel
+@{
+    ViewData["Title"] = Model.PageTitle;
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div id="controller">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>
+                        <button type="button" class="btn btn-md" onclick="GoBack();">
+                            <i class="nav-icon fa fa-lg fa-arrow-circle-left text-secondary"></i>
+                        </button>
+                        <b class="text-lg">@ViewData["Title"]</b>
+                    </h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-end">
+                        @foreach (var item in Model.PageUrl.Split('/'))
+                        {
+                            if (!String.IsNullOrEmpty(@item))
+                            {
+                                <li class="breadcrumb-item">@item</li>
+                            }
+                        }
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid" autocomplete="off">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+                            <!-- Search & Action Bar -->
+                            <div class="row mb-3">
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="input-group">
+                                        @if (Model.Permission.Contains("[SEARCH]"))
+                                        {
+                                            <input type="text" id="searchDescription" class="form-control" placeholder="Search route name, path, or code..." v-model="search.keyword" v-on:keypress="KeyPress_Search" />
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" v-on:click="Search();">
+                                                <i class="fas fa-search"></i> Search
+                                            </button>
+                                        }
+                                        @if (Model.Permission.Contains("[ADD]"))
+                                        {
+                                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Add()">
+                                                <i class="fas fa-plus-circle"></i> Add Route
+                                            </button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Records Table -->
+                            <div class="row">
+                                <div class="col-12 table-responsive" v-show="!show_table">
+                                    <span class="text-muted">No record(s) found!</span>
+                                </div>
+
+                                <div class="col-12 table-responsive" v-show="show_table">
+                                    <div class="row form-group pb-3 align-items-center">
+                                        <div class="col-auto">Show</div>
+                                        <div class="col-auto">
+                                            <select v-model="params.pageSize" class="form-control form-control-sm custom-select" v-on:change="ItemCountChange()">
+                                                <option v-for="pageSize in pageSizeArray" :key="pageSize" :value="pageSize">{{ pageSize }}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-auto">records</div>
+                                    </div>
+
+                                    <table class="table table-hover align-middle datatable fs-13">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th width="12%">Code <i v-bind:class="['fas', SortClass('Code')]" style="cursor:pointer" v-on:click="Sort('Code')"></i></th>
+                                                <th width="16%">Name <i v-bind:class="['fas', SortClass('Name')]" style="cursor:pointer" v-on:click="Sort('Name')"></i></th>
+                                                <th width="10%">Type</th>
+                                                <th width="12%">Auth / Security</th>
+                                                <th width="18%">Upstream Path</th>
+                                                <th width="18%">Downstream Target</th>
+                                                <th class="text-center" width="14%">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="record in records" :key="record.id">
+                                                <td class="fw-bold text-uppercase">{{ record.code }}</td>
+                                                <td>
+                                                    <div class="fw-bold">{{ record.name }}</div>
+                                                    <small class="text-muted" v-if="record.categoryName"><i class="fas fa-folder me-1"></i>{{ record.categoryName }}</small>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-primary" v-if="record.integrationType === 'PROXY'">PROXY</span>
+                                                    <span class="badge bg-success" v-else-if="record.integrationType === 'INTERNAL_AUTH'"><i class="fas fa-key me-1"></i>AUTH</span>
+                                                    <span class="badge bg-warning text-dark" v-else-if="record.integrationType === 'MOCK'"><i class="fas fa-vial me-1"></i>MOCK</span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-secondary me-1" v-if="record.requireApiKey"><i class="fas fa-lock me-1"></i>API Key</span>
+                                                    <span class="badge bg-info text-dark" v-if="record.authProviderId"><i class="fas fa-user-shield me-1"></i>JWT</span>
+                                                    <span class="badge bg-light text-dark border" v-if="!record.requireApiKey && !record.authProviderId">Public</span>
+                                                </td>
+                                                <td><code>{{ record.upstreamPathTemplate }}</code></td>
+                                                <td>
+                                                    <span v-if="record.integrationType === 'MOCK'" class="text-muted"><i>Mock Engine</i></span>
+                                                    <span v-else-if="record.integrationType === 'INTERNAL_AUTH'" class="text-muted"><i>Internal Token Generator</i></span>
+                                                    <code v-else>{{ record.downstreamScheme }}://{{ record.downstreamPathTemplate }}</code>
+                                                </td>
+                                                <td class="text-center">
+                                                    <!-- VIEW BUTTON -->
+                                                    <button type="button" class="btn btn-primary btn-sm mx-1" v-on:click="View(record)" title="View Details">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    @if (Model.Permission.Contains("[EDIT]"))
+                                                    {
+                                                        <button type="button" class="btn btn-info btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Edit(record)" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    }
+                                                    @if (Model.Permission.Contains("[DELETE]"))
+                                                    {
+                                                        <button type="button" class="btn btn-danger btn-sm mx-1" v-on:click="Delete(record);" v-if="record.isActive" title="Disable">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    }
+                                                    @if (Model.Permission.Contains("[RESTORE]"))
+                                                    {
+                                                        <button type="button" class="btn btn-success btn-sm mx-1" v-on:click="Restore(record);" v-if="!record.isActive" title="Restore">
+                                                            <i class="fas fa-undo"></i>
+                                                        </button>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-12 table-responsive" v-show="show_table">
+                                    <ul id="sync-pagination" class="pagination-sm float-end"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enterprise Gateway Form Modal -->
+            @if (Model.Permission.Contains("[ADD]") || Model.Permission.Contains("[EDIT]"))
+            {
+                <div id="formModal" class="modal fade text-sm" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+                    <div class="modal-dialog modal-xl" role="document">
+                        <form name="formModal" id="dataForm" method="post" autocomplete="off" data-parsley-validate="">
+                            <div class="modal-content border-0 shadow-lg">
+                                <div class="modal-header bg-dark text-white py-2">
+                                    <h5 class="modal-title fs-6 fw-bold">
+                                        <i v-bind:class="['fa', ActionModeIcon()]"></i> {{ actionMode }} Gateway Route Endpoint
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                </div>
+
+                                <div class="modal-body p-0">
+                                    <div class="row g-0">
+                                        <!-- Side Navigation Sidebar -->
+                                        <div class="col-md-3 bg-light border-end py-3 px-2">
+                                            <div class="nav flex-column nav-pills custom-side-tabs" id="v-pills-tab" role="tablist">
+                                                <button class="nav-link text-start active d-flex justify-content-between align-items-center mb-1" id="v-basic-tab" data-bs-toggle="pill" data-bs-target="#v-basic" type="button">
+                                                    <span><i class="fas fa-route me-2"></i> General & Routing</span>
+                                                    <span class="badge bg-danger rounded-pill" v-if="tabErrors.basic > 0">{{ tabErrors.basic }}</span>
+                                                </button>
+                                                <button class="nav-link text-start d-flex justify-content-between align-items-center mb-1" id="v-security-tab" data-bs-toggle="pill" data-bs-target="#v-security" type="button">
+                                                    <span><i class="fas fa-shield-alt me-2"></i> Security & Auth</span>
+                                                    <span class="badge bg-danger rounded-pill" v-if="tabErrors.security > 0">{{ tabErrors.security }}</span>
+                                                </button>
+                                                <button class="nav-link text-start d-flex justify-content-between align-items-center mb-1" id="v-target-tab" data-bs-toggle="pill" data-bs-target="#v-target" type="button" v-show="formData.integrationType === 'PROXY'">
+                                                    <span><i class="fas fa-server me-2"></i> Target Hosts</span>
+                                                    <span class="badge bg-danger rounded-pill" v-if="tabErrors.target > 0">{{ tabErrors.target }}</span>
+                                                </button>
+                                                <button class="nav-link text-start d-flex justify-content-between align-items-center mb-1" id="v-transform-tab" data-bs-toggle="pill" data-bs-target="#v-transform" type="button" v-show="formData.integrationType === 'PROXY'">
+                                                    <span><i class="fas fa-exchange-alt me-2"></i> Header Transforms</span>
+                                                    <span class="badge bg-danger rounded-pill" v-if="tabErrors.transform > 0">{{ tabErrors.transform }}</span>
+                                                </button>
+                                                <button class="nav-link text-start d-flex justify-content-between align-items-center mb-1" id="v-resilience-tab" data-bs-toggle="pill" data-bs-target="#v-resilience" type="button">
+                                                    <span><i class="fas fa-heartbeat me-2"></i> Resilience & Mocking</span>
+                                                    <span class="badge bg-danger rounded-pill" v-if="tabErrors.resilience > 0">{{ tabErrors.resilience }}</span>
+                                                </button>
+                                                <button class="nav-link text-start d-flex justify-content-between align-items-center mb-1" id="v-traffic-tab" data-bs-toggle="pill" data-bs-target="#v-traffic" type="button">
+                                                    <span><i class="fas fa-tachometer-alt me-2"></i> Traffic & Cache</span>
+                                                    <span class="badge bg-danger rounded-pill" v-if="tabErrors.traffic > 0">{{ tabErrors.traffic }}</span>
+                                                </button>
+                                            </div>
+
+                                            <div class="alert alert-warning text-xs mt-4 mx-1 p-2" v-if="totalErrors > 0">
+                                                <i class="fas fa-exclamation-triangle me-1"></i>
+                                                <b>{{ totalErrors }} required field(s)</b> remaining. Check tabs with red badges.
+                                            </div>
+                                        </div>
+
+                                        <!-- Tab Content Panel -->
+                                        <div class="col-md-9 p-3">
+                                            <div class="tab-content" id="v-pills-tabContent">
+                                                <!-- TAB 1: General & Routing -->
+                                                <div class="tab-pane fade show active" id="v-basic">
+                                                    <h6 class="fw-bold border-bottom pb-2 mb-3 text-primary"><i class="fas fa-route me-1"></i> Route Definition & Upstream Rules</h6>
+                                                    <div class="row">
+                                                        <div class="col-md-4 form-group mb-2">
+                                                            <label class="form-label required">Route Code</label>
+                                                            <input type="text" class="form-control text-uppercase" name="Code" v-model="formData.code" :disabled="disableControl.code" data-parsley-required-field />
+                                                        </div>
+                                                        <div class="col-md-5 form-group mb-2">
+                                                            <label class="form-label required">Route Name</label>
+                                                            <input type="text" class="form-control" name="Name" v-model="formData.name" data-parsley-required-field />
+                                                        </div>
+                                                        <div class="col-md-3 form-group mb-2">
+                                                            <label class="form-label required">Category</label>
+                                                            <select class="form-control custom-select" name="Category" v-model="formData.categoryId" data-parsley-required-field>
+                                                                <option :value="null" disabled>Select Category</option>
+                                                                <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-4 form-group mb-2">
+                                                            <label class="form-label required">Integration Type</label>
+                                                            <select class="form-control custom-select fw-bold" v-model="formData.integrationType">
+                                                                <option value="PROXY">PROXY (Reverse Proxy Downstream)</option>
+                                                                <option value="INTERNAL_AUTH">INTERNAL_AUTH (Embedded JWT Issuer)</option>
+                                                                <option value="MOCK">MOCK (Static JSON Response)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-8 form-group mb-2">
+                                                            <label class="form-label">API Version</label>
+                                                            <input type="text" class="form-control" v-model="formData.apiVersion" placeholder="v1" />
+                                                        </div>
+
+                                                        <!-- WILDCARD CATCH-ALL TOGGLE SWITCH -->
+                                                        <div class="col-md-12 form-group mb-3">
+                                                            <div class="form-check form-switch bg-light p-2 rounded border d-flex align-items-center">
+                                                                <input class="form-check-input ms-2 me-3 fs-5" type="checkbox" id="chkCatchAll" v-model="formData.enableCatchAll">
+                                                                <div>
+                                                                    <label class="form-check-label fw-bold text-primary mb-0" for="chkCatchAll" style="cursor: pointer;">Enable Sub-path Forwarding (Wildcard Catch-All)</label>
+                                                                    <small class="d-block text-muted">Appends <code>/{**catch-all}</code> as an uneditable visual suffix so sub-endpoints (e.g., /facts, /breeds) are forwarded safely.</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- HTTP Methods Checkbox Selector -->
+                                                        <div class="col-md-12 form-group mb-3">
+                                                            <label class="form-label required d-block fw-bold">Allowed HTTP Methods</label>
+                                                            <div class="d-flex flex-wrap gap-2 p-2 border rounded bg-light">
+                                                                <div v-for="method in availableMethods" :key="method" class="form-check form-check-inline mb-0">
+                                                                    <input class="form-check-input" type="checkbox" :id="'method_' + method" :value="method" v-model="selectedMethods">
+                                                                    <label class="form-check-label user-select-none" :for="'method_' + method">
+                                                                        <span class="badge fs-12 px-2 py-1" :class="getMethodBadgeClass(method)">{{ method }}</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <small class="text-danger" v-if="selectedMethods.length === 0"><i class="fas fa-exclamation-circle me-1"></i> At least one HTTP method must be selected.</small>
+                                                        </div>
+
+                                                        <div class="col-md-12 form-group mb-2">
+                                                            <label>Description</label>
+                                                            <input type="text" class="form-control" v-model="formData.description" />
+                                                        </div>
+
+                                                        <!-- UPSTREAM PATH INPUT WITH LOCKED BADGE -->
+                                                        <div class="col-md-6 form-group mb-2">
+                                                            <label class="form-label required">Upstream Path Template</label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" v-model="formData.upstreamBase" placeholder="/api/v1/resource" data-parsley-required-field />
+                                                                <span class="input-group-text bg-primary text-white fw-bold user-select-none" v-if="formData.enableCatchAll">/{**catch-all}</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- DOWNSTREAM PATH INPUT WITH LOCKED BADGE -->
+                                                        <div class="col-md-6 form-group mb-2" v-show="formData.integrationType === 'PROXY'">
+                                                            <label class="form-label required">Downstream Path Template</label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" v-model="formData.downstreamBase" placeholder="/target-api" :data-parsley-required-field="formData.integrationType === 'PROXY'" />
+                                                                <span class="input-group-text bg-primary text-white fw-bold user-select-none" v-if="formData.enableCatchAll">/{**catch-all}</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4 form-group mb-2" v-show="formData.integrationType === 'PROXY'">
+                                                            <label class="form-label required">Downstream Scheme</label>
+                                                            <select class="form-control custom-select" v-model="formData.downstreamScheme">
+                                                                <option value="https">https</option>
+                                                                <option value="http">http</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-8 d-flex align-items-center mt-3">
+                                                            <div class="form-check form-switch me-4" v-show="formData.integrationType === 'PROXY'">
+                                                                <input class="form-check-input" type="checkbox" id="chkStripPath" v-model="formData.stripPath">
+                                                                <label class="form-check-label fw-bold" for="chkStripPath">Strip Prefix Path</label>
+                                                            </div>
+                                                            <div class="form-check form-switch me-4" v-show="formData.integrationType === 'PROXY'">
+                                                                <input class="form-check-input" type="checkbox" id="chkPreserveHost" v-model="formData.preserveHostHeader">
+                                                                <label class="form-check-label fw-bold" for="chkPreserveHost">Preserve Host Header</label>
+                                                            </div>
+                                                            <div class="form-check form-switch me-4">
+                                                                <input class="form-check-input" type="checkbox" id="chkActive" v-model="formData.isActive">
+                                                                <label class="form-check-label fw-bold" for="chkActive">Is Active</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- TAB 2: Security & Authentication -->
+                                                <div class="tab-pane fade" id="v-security">
+                                                    <h6 class="fw-bold border-bottom pb-2 mb-3 text-primary"><i class="fas fa-shield-alt me-1"></i> Security Policies & Auth Providers</h6>
+                                                    <div class="row">
+                                                        <div class="col-md-6 form-group mb-3">
+                                                            <div class="form-check form-switch mb-2">
+                                                                <input class="form-check-input" type="checkbox" id="chkApiKey" v-model="formData.requireApiKey">
+                                                                <label class="form-check-label fw-bold" for="chkApiKey">Require API Key (X-External-Api-Key)</label>
+                                                            </div>
+                                                            <small class="text-muted d-block">Enforces client app identification at Gateway edge.</small>
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-3">
+                                                            <label class="form-label">Bind Auth Provider (JWT Token Scheme)</label>
+                                                            <select class="form-control custom-select" v-model="formData.authProviderId">
+                                                                <option :value="null">-- No JWT Token Enforcement (Public Route) --</option>
+                                                                <option v-for="provider in authProviders" :key="provider.id" :value="provider.id">{{ provider.name }} ({{ provider.code }})</option>
+                                                            </select>
+                                                            <small class="text-muted d-block">If set, Gateway validates Bearer token against this Provider's Secret Key/Issuer.</small>
+                                                        </div>
+                                                    </div>
+                                                    <hr />
+                                                    <h6 class="fw-bold mb-2">Operating Hours & Allowed Days</h6>
+                                                    <div class="row">
+                                                        <div class="col-md-6 form-group mb-2">
+                                                            <label>Operating Time From</label>
+                                                            <input type="time" class="form-control" v-model="formData.timeFrom" />
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-2">
+                                                            <label>Operating Time To</label>
+                                                            <input type="time" class="form-control" v-model="formData.timeTo" />
+                                                        </div>
+                                                        <div class="col-md-12 form-group mb-3">
+                                                            <label class="d-block">Allowed Operating Days</label>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="1" id="dMon" v-model="selectedDays"><label class="form-check-label" for="dMon">Mon</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="2" id="dTue" v-model="selectedDays"><label class="form-check-label" for="dTue">Tue</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="3" id="dWed" v-model="selectedDays"><label class="form-check-label" for="dWed">Wed</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="4" id="dThu" v-model="selectedDays"><label class="form-check-label" for="dThu">Thu</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="5" id="dFri" v-model="selectedDays"><label class="form-check-label" for="dFri">Fri</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="6" id="dSat" v-model="selectedDays"><label class="form-check-label" for="dSat">Sat</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="0" id="dSun" v-model="selectedDays"><label class="form-check-label" for="dSun">Sun</label></div>
+                                                        </div>
+                                                    </div>
+                                                    <hr />
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <span class="fw-bold">IP Security Rules</span>
+                                                        <button type="button" class="btn btn-xs btn-outline-primary" v-on:click="AddIpRule()">
+                                                            <i class="fas fa-plus me-1"></i> Add IP Rule
+                                                        </button>
+                                                    </div>
+                                                    <table class="table table-bordered text-sm">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th>IP Address / Range / localhost</th>
+                                                                <th width="25%">Rule Type</th>
+                                                                <th>Description</th>
+                                                                <th width="10%" class="text-center">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr v-for="(rule, index) in formData.ipRules" :key="index">
+                                                                <td><input type="text" class="form-control form-control-sm" v-model="rule.ipAddressOrRange" placeholder="192.168.1.1 or localhost" data-parsley-required-field /></td>
+                                                                <td>
+                                                                    <select class="form-control form-control-sm custom-select" v-model="rule.ruleType">
+                                                                        <option value="Allow">Allow</option>
+                                                                        <option value="Deny">Deny</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td><input type="text" class="form-control form-control-sm" v-model="rule.description" /></td>
+                                                                <td class="text-center">
+                                                                    <button type="button" class="btn btn-sm btn-danger" v-on:click="RemoveIpRule(index)">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <!-- TAB 3: Target Hosts -->
+                                                <div class="tab-pane fade" id="v-target">
+                                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                                                        <h6 class="fw-bold mb-0 text-primary"><i class="fas fa-server me-1"></i> Backend Target Clusters & Health Checks</h6>
+                                                        <button type="button" class="btn btn-xs btn-outline-primary" v-on:click="AddTargetHost()">
+                                                            <i class="fas fa-plus me-1"></i> Add Target Host
+                                                        </button>
+                                                    </div>
+                                                    <table class="table table-bordered text-sm">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th>Host / Domain / IP</th>
+                                                                <th width="12%">Port</th>
+                                                                <th width="12%">Weight</th>
+                                                                <th>Health Path</th>
+                                                                <th>Description</th>
+                                                                <th width="8%" class="text-center">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr v-for="(host, index) in formData.targetHosts" :key="index">
+                                                                <td>
+                                                                    <input type="text" class="form-control form-control-sm" v-model="host.host" placeholder="localhost or 10.0.0.1" :data-parsley-required-field="formData.integrationType === 'PROXY'" />
+                                                                </td>
+                                                                <td><input type="number" class="form-control form-control-sm" v-model.number="host.port" min="1" max="65535" :data-parsley-required-field="formData.integrationType === 'PROXY'" /></td>
+                                                                <td><input type="number" class="form-control form-control-sm" v-model.number="host.weight" min="1" /></td>
+                                                                <td><input type="text" class="form-control form-control-sm" v-model="host.healthCheckPath" placeholder="/health" /></td>
+                                                                <td><input type="text" class="form-control form-control-sm" v-model="host.description" /></td>
+                                                                <td class="text-center">
+                                                                    <button type="button" class="btn btn-sm btn-danger" v-on:click="RemoveTargetHost(index)">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <!-- TAB 4: Header Transformations -->
+                                                <div class="tab-pane fade" id="v-transform">
+                                                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                                                        <h6 class="fw-bold mb-0 text-primary"><i class="fas fa-exchange-alt me-1"></i> Header Transformations & Modifications</h6>
+                                                        <button type="button" class="btn btn-xs btn-outline-primary" v-on:click="AddTransform()">
+                                                            <i class="fas fa-plus me-1"></i> Add Rule
+                                                        </button>
+                                                    </div>
+                                                    <table class="table table-bordered text-sm">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th width="20%">Phase</th>
+                                                                <th width="20%">Action</th>
+                                                                <th>Header Name</th>
+                                                                <th>Header Value</th>
+                                                                <th width="8%" class="text-center">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr v-for="(trans, index) in formData.transforms" :key="index">
+                                                                <td>
+                                                                    <select class="form-control form-control-sm custom-select" v-model="trans.transformPhase">
+                                                                        <option value="Request">Request (Client -> Upstream)</option>
+                                                                        <option value="Response">Response (Upstream -> Client)</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <select class="form-control form-control-sm custom-select" v-model="trans.action">
+                                                                        <option value="Add">Add / Set</option>
+                                                                        <option value="Remove">Remove Header</option>
+                                                                        <option value="Append">Append Value</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td><input type="text" class="form-control form-control-sm" v-model="trans.headerName" placeholder="X-Gateway-Header" data-parsley-required-field /></td>
+                                                                <td><input type="text" class="form-control form-control-sm" v-model="trans.headerValue" placeholder="Value..." :disabled="trans.action === 'Remove'" /></td>
+                                                                <td class="text-center">
+                                                                    <button type="button" class="btn btn-sm btn-danger" v-on:click="RemoveTransform(index)">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                                <!-- TAB 5: Resilience & Mocking -->
+                                                <div class="tab-pane fade" id="v-resilience">
+                                                    <div v-show="formData.integrationType === 'PROXY'">
+                                                        <h6 class="fw-bold border-bottom pb-2 mb-3 text-primary"><i class="fas fa-heartbeat me-1"></i> Downstream Resilience Policies</h6>
+                                                        <div class="row">
+                                                            <div class="col-md-4 form-group mb-3">
+                                                                <label>Max Retries</label>
+                                                                <input type="number" class="form-control" v-model.number="formData.maxRetries" min="0" max="10" />
+                                                            </div>
+                                                            <div class="col-md-4 form-group mb-3">
+                                                                <label>Retry Delay (ms)</label>
+                                                                <input type="number" class="form-control" v-model.number="formData.retryDelayMs" min="100" step="100" />
+                                                            </div>
+                                                            <div class="col-md-4 d-flex align-items-center mt-3">
+                                                                <div class="form-check form-switch">
+                                                                    <input class="form-check-input" type="checkbox" id="chkCircuit" v-model="formData.enableCircuitBreaker">
+                                                                    <label class="form-check-label fw-bold" for="chkCircuit">Circuit Breaker</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div v-show="formData.integrationType === 'MOCK'">
+                                                        <h6 class="fw-bold border-bottom pb-2 mb-3 text-warning"><i class="fas fa-vial me-1"></i> Mock Service Virtualization</h6>
+                                                        <div class="row">
+                                                            <div class="col-md-4 form-group mb-3">
+                                                                <label class="form-label required">HTTP Response Code</label>
+                                                                <input type="number" class="form-control" v-model.number="formData.mockResponseCode" placeholder="200" />
+                                                            </div>
+                                                            <div class="col-md-12 form-group mb-3">
+                                                                <label class="form-label required">Mock JSON Response Body</label>
+                                                                <textarea class="form-control font-monospace" rows="8" v-model="formData.mockResponseBody" placeholder='{ "message": "Static response" }'></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- TAB 6: Traffic & Cache -->
+                                                <div class="tab-pane fade" id="v-traffic">
+                                                    <h6 class="fw-bold border-bottom pb-2 mb-3 text-primary"><i class="fas fa-tachometer-alt me-1"></i> Traffic Control & Caching</h6>
+                                                    <div class="row">
+                                                        <div class="col-md-6 form-group mb-2">
+                                                            <label>Load Balancing Policy</label>
+                                                            <select class="form-control custom-select" v-model="formData.loadBalancingPolicy">
+                                                                <option :value="null">-- System Default (RoundRobin) --</option>
+                                                                <option value="RoundRobin">RoundRobin</option>
+                                                                <option value="LeastRequests">LeastRequests</option>
+                                                                <option value="Random">Random</option>
+                                                                <option value="FirstAlphabetical">FirstAlphabetical</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-2">
+                                                            <label>Timeout (Seconds)</label>
+                                                            <input type="number" class="form-control" v-model.number="formData.timeoutSeconds" min="1" />
+                                                        </div>
+                                                        <div class="col-md-12 my-2"><hr /></div>
+                                                        <div class="col-md-12 form-group">
+                                                            <div class="form-check form-switch mb-2">
+                                                                <input class="form-check-input" type="checkbox" id="chkRateLimit" v-model="formData.enableRateLimiting">
+                                                                <label class="form-check-label fw-bold" for="chkRateLimit">Enable Rate Limiting Policy</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-2" v-if="formData.enableRateLimiting">
+                                                            <label class="form-label required">Max Request Quota</label>
+                                                            <input type="number" class="form-control" v-model.number="formData.rateLimit" min="1" placeholder="100" data-parsley-required-field />
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-2" v-if="formData.enableRateLimiting">
+                                                            <label class="form-label required">Timespan Window (Seconds)</label>
+                                                            <input type="number" class="form-control" v-model.number="formData.ratePeriodTimespan" min="1" placeholder="60" data-parsley-required-field />
+                                                        </div>
+                                                        <div class="col-md-12 my-2"><hr /></div>
+                                                        <div class="col-md-12 form-group">
+                                                            <div class="form-check form-switch mb-2">
+                                                                <input class="form-check-input" type="checkbox" id="chkCache" v-model="formData.enableCaching">
+                                                                <label class="form-check-label fw-bold" for="chkCache">Enable Response Caching</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-2" v-if="formData.enableCaching">
+                                                            <label class="form-label required">Cache TTL (Seconds)</label>
+                                                            <input type="number" class="form-control" v-model.number="formData.cacheTtlSeconds" min="1" placeholder="60" data-parsley-required-field />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer justify-content-between bg-light py-2">
+                                    <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal">
+                                        <i class="fas fa-times-circle"></i> Close
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-sm" v-on:click="Save()">
+                                        <i class="fas fa-check-circle"></i> Save Route
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+
+            <!-- Read-Only View Detail Modal -->
+            <div id="viewModal" class="modal fade text-sm" tabindex="-1" role="dialog" data-bs-backdrop="static">
+                <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content border-0 shadow-lg" v-if="viewData">
+                        <div class="modal-header bg-dark text-white py-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-primary fs-12 text-uppercase">{{ viewData.code }}</span>
+                                <h5 class="modal-title fs-6 fw-bold mb-0">{{ viewData.name }}</h5>
+                                <span class="badge bg-success ms-2" v-if="viewData.isActive"><i class="fas fa-check-circle me-1"></i>Active</span>
+                                <span class="badge bg-secondary ms-2" v-else><i class="fas fa-ban me-1"></i>Disabled</span>
+                            </div>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body bg-light p-3">
+                            <!-- Quick Metrics Bar -->
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-3">
+                                    <div class="p-2 bg-white rounded border text-center">
+                                        <small class="text-muted d-block text-xs uppercase fw-bold">Integration Mode</small>
+                                        <span class="badge bg-primary mt-1" v-if="viewData.integrationType === 'PROXY'">PROXY ROUTE</span>
+                                        <span class="badge bg-success mt-1" v-else-if="viewData.integrationType === 'INTERNAL_AUTH'">INTERNAL AUTH</span>
+                                        <span class="badge bg-warning text-dark mt-1" v-else-if="viewData.integrationType === 'MOCK'">MOCK SERVICE</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="p-2 bg-white rounded border text-center">
+                                        <small class="text-muted d-block text-xs uppercase fw-bold">Authentication</small>
+                                        <span class="badge bg-secondary mt-1 me-1" v-if="viewData.requireApiKey"><i class="fas fa-key me-1"></i>API Key</span>
+                                        <span class="badge bg-info text-dark mt-1" v-if="viewData.authProviderId"><i class="fas fa-shield-alt me-1"></i>JWT</span>
+                                        <span class="badge bg-light text-dark border mt-1" v-if="!viewData.requireApiKey && !viewData.authProviderId">Public</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="p-2 bg-white rounded border text-center">
+                                        <small class="text-muted d-block text-xs uppercase fw-bold">Target Clusters</small>
+                                        <span class="fw-bold text-dark fs-14 mt-1 d-block">{{ viewData.targetHosts ? viewData.targetHosts.length : 0 }} Host(s)</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="p-2 bg-white rounded border text-center">
+                                        <small class="text-muted d-block text-xs uppercase fw-bold">Rate Limiting</small>
+                                        <span class="badge bg-danger mt-1" v-if="viewData.enableRateLimiting">{{ viewData.rateLimit }} req / {{ viewData.ratePeriodTimespan }}s</span>
+                                        <span class="badge bg-light text-muted border mt-1" v-else>Disabled</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- View Main Tabs -->
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-white p-0 border-bottom">
+                                    <ul class="nav nav-tabs custom-view-tabs border-0 px-3 pt-2" role="tablist">
+                                        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#vtab-overview"><i class="fas fa-info-circle me-1"></i> Overview & Paths</a></li>
+                                        <li class="nav-item" v-if="viewData.integrationType === 'PROXY'"><a class="nav-link" data-bs-toggle="tab" href="#vtab-hosts"><i class="fas fa-server me-1"></i> Upstream Hosts ({{ viewData.targetHosts ? viewData.targetHosts.length : 0 }})</a></li>
+                                        <li class="nav-item" v-if="viewData.integrationType === 'PROXY'"><a class="nav-link" data-bs-toggle="tab" href="#vtab-transforms"><i class="fas fa-exchange-alt me-1"></i> Header Transforms ({{ viewData.transforms ? viewData.transforms.length : 0 }})</a></li>
+                                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#vtab-security"><i class="fas fa-user-lock me-1"></i> Security & IP Rules</a></li>
+                                        <li class="nav-item" v-if="viewData.integrationType === 'MOCK'"><a class="nav-link" data-bs-toggle="tab" href="#vtab-mock"><i class="fas fa-vial me-1"></i> Mock Engine Payload</a></li>
+                                    </ul>
+                                </div>
+
+                                <div class="card-body tab-content">
+                                    <!-- TAB 1: Overview & Routing -->
+                                    <div class="tab-pane fade show active" id="vtab-overview">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="text-muted text-xs uppercase fw-bold d-block">Upstream Path Template</label>
+                                                <div class="p-2 bg-light rounded border"><code class="fs-13 text-dark fw-bold">{{ viewData.upstreamPathTemplate }}</code></div>
+                                            </div>
+                                            <div class="col-md-6" v-if="viewData.integrationType === 'PROXY'">
+                                                <label class="text-muted text-xs uppercase fw-bold d-block">Downstream Target Path</label>
+                                                <div class="p-2 bg-light rounded border"><code class="fs-13 text-primary fw-bold">{{ viewData.downstreamScheme }}://{{ viewData.downstreamPathTemplate }}</code></div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label class="text-muted text-xs uppercase fw-bold d-block mb-1">Allowed HTTP Methods</label>
+                                                <div class="d-flex gap-1">
+                                                    <span v-for="m in parsedViewMethods" :key="m" class="badge px-2 py-1 fs-12" :class="getMethodBadgeClass(m)">{{ m }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="text-muted text-xs uppercase fw-bold d-block">Category</label>
+                                                <span class="fw-bold">{{ viewData.categoryName || 'Uncategorized' }}</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="text-muted text-xs uppercase fw-bold d-block">API Version</label>
+                                                <span class="fw-bold">{{ viewData.apiVersion || 'v1' }}</span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="text-muted text-xs uppercase fw-bold d-block">Priority Order</label>
+                                                <span class="fw-bold">{{ viewData.priority }}</span>
+                                            </div>
+                                            <div class="col-md-12" v-if="viewData.description">
+                                                <label class="text-muted text-xs uppercase fw-bold d-block">Description</label>
+                                                <p class="mb-0 text-secondary">{{ viewData.description }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- TAB 2: Target Hosts -->
+                                    <div class="tab-pane fade" id="vtab-hosts" v-if="viewData.integrationType === 'PROXY'">
+                                        <table class="table table-sm table-bordered mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Target Host / IP</th>
+                                                    <th width="15%">Port</th>
+                                                    <th width="15%">Weight</th>
+                                                    <th>Health Check Path</th>
+                                                    <th width="15%" class="text-center">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="h in viewData.targetHosts" :key="h.id">
+                                                    <td class="fw-bold">{{ h.host }}</td>
+                                                    <td><code>{{ h.port }}</code></td>
+                                                    <td>{{ h.weight }}</td>
+                                                    <td><code>{{ h.healthCheckPath || '/health' }}</code></td>
+                                                    <td class="text-center">
+                                                        <span class="badge bg-success" v-if="h.isHealthy">HEALTHY</span>
+                                                        <span class="badge bg-danger" v-else>UNHEALTHY</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- TAB 3: Transforms -->
+                                    <div class="tab-pane fade" id="vtab-transforms" v-if="viewData.integrationType === 'PROXY'">
+                                        <div v-if="!viewData.transforms || viewData.transforms.length === 0" class="text-muted py-2">
+                                            No header transformation rules registered.
+                                        </div>
+                                        <table class="table table-sm table-bordered mb-0" v-else>
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Phase</th>
+                                                    <th>Action</th>
+                                                    <th>Header Name</th>
+                                                    <th>Header Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="t in viewData.transforms" :key="t.id">
+                                                    <td><span class="badge bg-dark">{{ t.transformPhase }}</span></td>
+                                                    <td><span class="badge bg-primary">{{ t.action }}</span></td>
+                                                    <td><code>{{ t.headerName }}</code></td>
+                                                    <td><code>{{ t.headerValue || '--' }}</code></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- TAB 4: Security & IP Rules -->
+                                    <div class="tab-pane fade" id="vtab-security">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="text-muted text-xs uppercase fw-bold d-block">Bound Auth Provider</label>
+                                                <span class="fw-bold text-primary" v-if="viewData.authProviderName"><i class="fas fa-shield-alt me-1"></i>{{ viewData.authProviderName }}</span>
+                                                <span class="text-muted" v-else>None (Public Route)</span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="text-muted text-xs uppercase fw-bold d-block">Operating Hours Window</label>
+                                                <span class="fw-bold" v-if="viewData.timeFrom && viewData.timeTo">{{ viewData.timeFrom }} - {{ viewData.timeTo }}</span>
+                                                <span class="text-muted" v-else>24/7 Always Active</span>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label class="text-muted text-xs uppercase fw-bold d-block mb-1">IP Security Rules ({{ viewData.ipRules ? viewData.ipRules.length : 0 }})</label>
+                                                <div v-if="!viewData.ipRules || viewData.ipRules.length === 0" class="text-muted">No IP restriction policies applied.</div>
+                                                <table class="table table-sm table-bordered mb-0" v-else>
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>IP Address / Range</th>
+                                                            <th>Policy</th>
+                                                            <th>Description</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr v-for="r in viewData.ipRules" :key="r.id">
+                                                            <td><code>{{ r.ipAddressOrRange }}</code></td>
+                                                            <td>
+                                                                <span class="badge bg-success" v-if="r.ruleType === 'Allow'">ALLOW</span>
+                                                                <span class="badge bg-danger" v-else>DENY</span>
+                                                            </td>
+                                                            <td>{{ r.description || '--' }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- TAB 5: Mock Payload -->
+                                    <div class="tab-pane fade" id="vtab-mock" v-if="viewData.integrationType === 'MOCK'">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <span class="fw-bold me-2">Response HTTP Code:</span>
+                                            <span class="badge bg-success fs-13">{{ viewData.mockResponseCode || 200 }} OK</span>
+                                        </div>
+                                        <label class="text-muted text-xs uppercase fw-bold d-block mb-1">Static Mock JSON Response</label>
+                                        <pre class="bg-dark text-success p-3 rounded mb-0 font-monospace fs-12"><code>{{ viewData.mockResponseBody }}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer bg-light py-2">
+                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                                <i class="fas fa-times-circle"></i> Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+    .custom-side-tabs .nav-link {
+        color: #495057;
+        font-weight: 500;
+        border-radius: 4px;
+        padding: 10px 12px;
+    }
+
+        .custom-side-tabs .nav-link.active {
+            background-color: #212529;
+            color: #fff;
+        }
+
+    .modal {
+        overflow: auto !important;
+    }
+</style>
+
+@section scripts
+{
+    <script src="~/js/app/directive/common.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/apimanagement/apiendpoint.js" asp-append-version="true"></script>
+    <script src="~/js/app/controller/apimanagement/apiendpoint.js" asp-append-version="true"></script>
+}

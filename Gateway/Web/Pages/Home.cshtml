@@ -1,0 +1,163 @@
+﻿@page 
+@using Gateway.Web
+@model Gateway.Web.Pages.HomeModel
+@{
+    ViewData["Title"] = "Home";  
+}
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <span class="fs-4"> @ViewData["Title"]</span>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-end">
+                    @foreach (var item in Model.PageUrl.Split('/'))
+                    {
+                        if (!String.IsNullOrEmpty(@item))
+                        {
+                            <li class="breadcrumb-item">@item</li>
+                        }
+                    }
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid row" id="controller" autocomplete="off">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img src="@HttpContextAccessor.HttpContext!.Session.GetString("AppUrl")/Home?handler=UserProfileImage&timestamp=@DateTime.UtcNow.Ticks"
+                                 alt="Profile Picture"  style="width: 128px; height: 128px; object-fit: cover;">
+                        </div>
+                        <h3 class="profile-username text-center">@HttpContextAccessor.HttpContext!.Session.GetString("FullName")</h3>
+                        <p class="text-muted text-center">@HttpContextAccessor.HttpContext!.Session.GetString("Email")</p>
+
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <i class="iconoir-user fs-5 text-danger me-2"></i>
+                                <b>Username</b> &ensp;<a class="float-right">@HttpContextAccessor.HttpContext!.Session.GetString("Username")</a>
+                            </li>
+                            <li class="list-group-item">
+                                <i class="iconoir-building fs-5 text-danger me-2"></i>
+                                <span class="fw-semibold">Branch: </span> &ensp; @HttpContextAccessor.HttpContext!.Session.GetString("BranchCode") | @HttpContextAccessor.HttpContext!.Session.GetString("BranchDesc")
+                            </li>
+                            <li class="list-group-item">
+                                <i class="iconoir-computer fs-5 text-danger me-2"></i>
+                                <span class="fw-semibold">Terminal: </span> &ensp; @HttpContextAccessor.HttpContext!.Session.GetString("Terminal")
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Recent Activities</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row form-group">
+                            <div class="col-auto">
+                            Show
+                            </div>
+                            <div class="col-auto">
+                                <select name="params_length"
+                                        v-model="params.pageSize"
+                                        class="form-control form-control-sm custom-select"
+                                        v-on:change="ItemCountChange()"
+                                        style="min-width: 50px;">
+                                    <option v-for="(pageSize, index) in pageSizeArray" :key="pageSize" :value="pageSize">
+                                        {{ pageSize }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                records
+                            </div>
+                        </div>
+                        <div v-for="record in records">
+                            <strong><i class="fas fa-clock mr-1"></i> {{$formatDateText(record.logDate) }} {{$formatTime(record.logDate) }}</strong>
+                            <p class="text-muted">
+                                <badge class="badge bg-success">{{record.moduleName}}</badge>  <badge class="badge bg-info">{{record.action}}</badge> <br /> {{record.details}}
+                            </p>
+                            <hr>
+                        </div>
+                        <div class="col-12 table-responsive" v-show="show_table">
+                            <ul id="sync-pagination" class="pagination-sm float-end"></ul>
+                        </div>
+                        <div v-if="records.length == 0">
+                            <span>No records</span>
+                        </div>
+                    </div>
+                </div>
+                 
+            </div>
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-newspaper mr-1"></i> Fintech News Philippines</h3>
+                    </div>
+                    <div v-for="record in news.items">
+                        <div class="card-body">
+                            <h5 class="card-title">{{record.title}}</h5>
+                            <p v-html="record.description"></p>
+                            <a :href="record.link" class="btn btn-primary" target="_blank">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+      
+    </div>
+</section>
+@{
+    static string GetRemainingTime(DateTime from, DateTime to)
+    {
+        if (to <= from)
+        {
+            return "Expired";
+        }
+
+        TimeSpan difference = to - from;
+
+        int days = difference.Days;
+        int hours = difference.Hours;
+        int minutes = difference.Minutes;
+
+        string result = "";
+
+        if (days > 0)
+        {
+            result += $"{days} day{(days > 1 ? "s" : "")}";
+        }
+
+        if (hours > 0)
+        {
+            if (!string.IsNullOrEmpty(result))
+                result += " and ";
+            result += $"{hours} hour{(hours > 1 ? "s" : "")}";
+        }
+
+        if (string.IsNullOrEmpty(result) && minutes > 0)
+        {
+            result = $"{minutes} minute{(minutes > 1 ? "s" : "")}";
+        }
+
+        return string.IsNullOrEmpty(result) ? "Less than a minute" : result;
+    }
+}
+@section scripts
+  {
+    <script src="~/js/app/directive/common.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/user.js" asp-append-version="true"></script> 
+    <script src="~/js/app/services/branch.js"></script> 
+    <script src="~/js/app/services/mrc/mrc.js"></script>
+    <script src="~/js/app/controller/home.js" asp-append-version="true"></script>
+}
+

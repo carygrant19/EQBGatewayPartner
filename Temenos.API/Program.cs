@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Common.Services;
 using Common.Services.IService;
@@ -42,11 +44,21 @@ try
                   ResourceBuilder.CreateDefault()
                       .AddService(serviceName: "Temenos.API", serviceVersion: "1.0.0"))
 
-              .AddAspNetCoreInstrumentation(options =>
-              {
-                  options.RecordException = true;
-              })
-              .AddHttpClientInstrumentation()
+    var builder = WebApplication.CreateBuilder(args);
+    //JWT AUTH
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]!)),
+            ValidAudience = builder.Configuration["JWT:Audience"],
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
 
               .AddSqlClientInstrumentation(options =>
               {

@@ -1,0 +1,280 @@
+ 
+/*Theme*/
+ 
+.nav-pills .nav-link.active {
+    background-color: #dc3545 !important;
+}
+ 
+.bg-danger {
+    /*background-color: rgb(220 53 69) !important;*/
+    background-color: #dc3545 !important;
+}
+.text-danger {
+    color: #f5325c !important;
+}
+.text-light-always {
+    color:white;
+}
+/*Theme end*/
+html[data-startbar=dark] {
+    /*--bs-startbar-bg: #343a40 !important;*/
+}
+.startbar .startbar-menu .navbar-nav .nav-item.active .nav-link.active {
+    color: white !important;
+}
+.startbar .startbar-menu .navbar-nav .nav-item.active .nav-link.active .menu-icon {
+    color: white !important;
+}
+.startbar .startbar-menu .navbar-nav .nav-item .nav-link.active::before, .startbar .startbar-menu .navbar-nav .nav-item .nav-link:hover::before {
+    /*border-color: #db3545 !important;
+    background-color: #db3545 !important;*/
+    border-color: #f5325c !important;
+    background-color: #f5325c !important;
+}
+.startbar .startbar-menu .navbar-nav .nav-item .nav-link[data-bs-toggle=collapse][aria-expanded=true] {
+    color: white !important;
+}
+.startbar .startbar-menu .navbar-nav .nav-item .nav-link[data-bs-toggle=collapse][aria-expanded=true]::before {
+    /*border-color: #f5325c !important;
+    background-color: #db3545 !important;*/
+    border-color: #f5325c !important;
+    background-color: #f5325c !important;
+}
+.startbar .startbar-menu .navbar-nav .nav-item .nav-link[data-bs-toggle=collapse][aria-expanded=true] i {
+    color: white !important;
+}
+.startbar .startbar-menu .navbar-nav .nav-item .nav-link[data-bs-toggle=collapse][aria-expanded=true] span {
+    color: white !important;
+}
+.startbar .startbar-menu .navbar-nav .nav-item .nav-link[data-bs-toggle=collapse][aria-expanded=true]:after {
+    color: white !important;
+}
+.startbar .startbar-menu .navbar-nav .nav-item .nav .nav-item .nav-link:before {
+    border: 1px solid #ffffff00 !important;
+    content: none !important;
+    display: none !important;
+}
+.startbar .startbar-menu .navbar-nav .nav-item .nav .nav-item .nav-link {
+    padding: 6px 16px 6px 20px !important;
+}
+.active > .page-link {
+    background-color: #f5325c !important;
+    border-color: #f5325c !important;
+} 
+
+.parsley-errors-list {
+    /* Default styling for parsley errors */
+    color: #f5325c; /* Example text color */
+}
+
+/* Styling for .parsley-errors-list within .dark-mode body */
+.dark-mode .parsley-errors-list {
+    /* Override styles for dark mode */
+    color: #f5325c; /* Example text color for dark mode */
+}
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+    /*padding-left: 15px !important;*/
+}
+
+.menu-icon {
+    width: 5px; /* Reserve space for icons */
+    min-width: 5px;
+    text-align: center;
+}
+
+.modal-header.bg-danger .btn-close {
+    filter: invert(1) brightness(200%);
+}
+
+.tracking-item {
+    padding: 10px 30px;
+}
+
+.fa, .fa-brands, .fa-classic, .fa-regular, .fa-sharp, .fa-solid, .fab, .far, .fas {
+    line-height: unset !important;
+}
+/*  page preloader*/
+.pagePreloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1002;
+    background-color: rgba(0,0,0,0);
+    background-position: center;
+}
+
+/* -------------- loader8 -------------- */
+
+.loader8 {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    top: 28%;
+    top: -webkit-calc(50% - 43px);
+    top: calc(50% - 43px);
+    left: 35%;
+    left: -webkit-calc(50% - 43px);
+    left: calc(50% - 43px);
+    border-radius: 50px;
+    background-color: #ffffff;
+    border-width: 40px;
+    border-style: double;
+    border-color: transparent #dc3545;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    -webkit-animation: loader8 2s linear infinite;
+    animation: loader8 2s linear infinite;
+}
+
+
+
+/* preloader*/
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999999 !important;
+    background-position: center;
+}
+
+.dark-mode .loader1 {
+    position: relative;
+    height: 100px;
+    width: 100px;
+    border-radius: 80px;
+    border: 3px solid white;
+    top: 28%;
+    top: -webkit-calc(50% - 43px);
+    top: calc(50% - 43px);
+    left: 35%;
+    left: -webkit-calc(50% - 43px);
+    left: calc(50% - 43px);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    -webkit-animation: loader1 .7s linear infinite;
+    animation: loader1 .7s linear infinite;
+    z-index: 9999999 !important;
+}
+
+    .dark-mode .loader1:after {
+        content: "";
+        position: absolute;
+        top: -7px;
+        left: 20px;
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        background-color: #e74c3c;
+        z-index: 9999999 !important;
+    }
+
+.loader1 {
+    position: relative;
+    height: 100px;
+    width: 100px;
+    border-radius: 80px;
+    border: 3px solid #6c757d;
+    top: 28%;
+    top: -webkit-calc(50% - 43px);
+    top: calc(50% - 43px);
+    left: 35%;
+    left: -webkit-calc(50% - 43px);
+    left: calc(50% - 43px);
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    -webkit-animation: loader1 .7s linear infinite;
+    animation: loader1 .7s linear infinite;
+    z-index: 9999999 !important;
+}
+
+    .loader1:after {
+        content: "";
+        position: absolute;
+        top: -7px;
+        left: 20px;
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        background-color: #dc3545;
+        z-index: 9999999 !important;
+    }
+/* background of pagepreloader */
+/*.dark-mode .pagePreloader {
+    background-color: #454d55 !important;
+    color: #fff;
+}*/
+
+/* File upload button Start*/
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.btn-upload {
+}
+
+.upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+
+/*File upload button End*/
+ 
+/*DatePicker style index*/
+.air-datepicker-global-container {
+    z-index: 99999 !important;
+}
+
+@-webkit-keyframes loader8 {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes loader8 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+@-webkit-keyframes loader1 {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes loader1 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+ 

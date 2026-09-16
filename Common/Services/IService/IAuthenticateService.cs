@@ -5,6 +5,6 @@ namespace Common.Services.IService
 {
     public interface IAuthenticateService
     {
-        Task<Response.Authenticate> Authenticate(Request.Authenticate model);
+        Task<Response.Authenticate> Authenticate(Request.VendorHeaderRequest headers, Request.Authenticate model);
     }
 }

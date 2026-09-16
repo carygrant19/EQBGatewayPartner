@@ -5,7 +5,7 @@ using Request = Pesonet.API.DTOs.Request;
 
 namespace Pesonet.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TransactionController(ITransactionService transactionService) : ControllerBase
