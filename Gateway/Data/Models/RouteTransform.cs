@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gateway.Data.Models
 {
-    [Table("Map_Endpoint_Transform")]
-    public class EndpointTransform
+    [Table("Map_Route_Transform")]
+    public class RouteTransform
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public long EndpointId { get; set; }
+        public long RouteId { get; set; }
 
         [Required]
         [StringLength(20)]
@@ -27,7 +27,7 @@ namespace Gateway.Data.Models
         [StringLength(500)]
         public string? HeaderValue { get; set; }
 
-        [ForeignKey(nameof(EndpointId))]
-        public virtual ApiEndpoint? ApiEndpoint { get; set; }
+        [ForeignKey(nameof(RouteId))]
+        public virtual Route? Route{ get; set; }
     }
 }

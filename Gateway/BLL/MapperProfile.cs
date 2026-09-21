@@ -35,20 +35,22 @@ namespace Gateway.BLL
 
             CreateMap<Request.TargetHost, Model.TargetHost>();
             CreateMap<Model.TargetHost, Response.FTargetHost>()
-                .ForMember(dest => dest.EndpointId, opt => opt.MapFrom(src => src.EndpointId.ToString()));
+                .ForMember(dest => dest.EndpointId, opt => opt.MapFrom(src => src.RouteId.ToString()));
 
-            CreateMap<Request.EndpointIpRule, Model.EndpointIpRule>();
-            CreateMap<Model.EndpointIpRule, Response.FEndpointIpRule>()
-                .ForMember(dest => dest.EndpointId, opt => opt.MapFrom(src => src.EndpointId.ToString()));
+            CreateMap<Request.RouteIpRule, Model.RouteIpRule>();
+            CreateMap<Model.RouteIpRule, Response.FRouteIpRule>()
+                .ForMember(dest => dest.EndpointId, opt => opt.MapFrom(src => src.RouteId.ToString()));
 
-            CreateMap<Request.ApiEndpoint, Model.ApiEndpoint>();
-            CreateMap<Model.ApiEndpoint, Response.ApiEndpoint>()
+            CreateMap<Request.Route, Model.Route>();
+            CreateMap<Model.Route, Response.Route>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : "Uncategorized"));
-            CreateMap<Model.ApiEndpoint, Response.FApiEndpoint>()
+            CreateMap<Model.Route, Response.FRoute>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : "Uncategorized"));
 
+            CreateMap<Model.Route, Response.Route>()
+                .ForMember(dest => dest.OutboundAuthProfileName, opt => opt.MapFrom(src => src.OutboundAuthProfile != null ? src.OutboundAuthProfile.Name : null));
             CreateMap<Request.Client, Model.Client>();
         }
     }

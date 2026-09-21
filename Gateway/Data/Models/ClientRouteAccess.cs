@@ -14,7 +14,7 @@ namespace Gateway.Data.Models
         public int ClientId { get; set; }
 
         [Required]
-        public long EndpointId { get; set; }
+        public long RouteId { get; set; }
 
         public bool IsAllowed { get; set; } = true;
 
@@ -29,7 +29,7 @@ namespace Gateway.Data.Models
         [ForeignKey(nameof(ClientId))]
         public virtual Client? Client { get; set; }
 
-        [ForeignKey(nameof(EndpointId))]
-        public virtual ApiEndpoint? ApiEndpoint { get; set; }
+        [ForeignKey(nameof(RouteId))]
+        public virtual Route? Route { get; set; }
     }
 }

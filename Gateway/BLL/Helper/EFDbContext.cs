@@ -34,9 +34,12 @@ namespace Gateway.BLL.Helper
         public DbSet<Models.ClientRouteAccess> ClientRouteAccess { get; set; }
 
         public DbSet<Models.Category> Category { get; set; }
-        public DbSet<Models.ApiEndpoint> ApiEndpoint { get; set; }
+        public DbSet<Models.Route> ApiEndpoint { get; set; }
         public DbSet<Models.TargetHost> TargetHost { get; set; }
-        public DbSet<Models.EndpointIpRule> EndpointIpRule { get; set; }
+        public DbSet<Models.Route> EndpointIpRule { get; set; }
+
+        public DbSet<Models.OutboundAuthProfile> OutboundAuthProfiles { get; set; }
+        public DbSet<Models.OutboundAuthHeader> OutboundAuthHeaders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -78,7 +81,7 @@ namespace Gateway.BLL.Helper
                 .HasForeignKey(rm => rm.BranchId)
                 .HasPrincipalKey(m => m.Id);
 
-            modelBuilder.Entity<Models.ApiEndpoint>(entity =>
+            modelBuilder.Entity<Models.Route>(entity =>
             {
                 entity.HasOne(e => e.Category)
                     .WithMany()
@@ -86,13 +89,13 @@ namespace Gateway.BLL.Helper
                     .OnDelete(DeleteBehavior.SetNull);
 
                 entity.HasMany(e => e.TargetHosts)
-                    .WithOne(h => h.ApiEndpoint)
-                    .HasForeignKey(h => h.EndpointId)
+                    .WithOne(h => h.Route)
+                    .HasForeignKey(h => h.RouteId)
                     .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasMany(e => e.IpRules)
-                    .WithOne(i => i.ApiEndpoint)
-                    .HasForeignKey(i => i.EndpointId)
+                    .WithOne(i => i.Route)
+                    .HasForeignKey(i => i.RouteId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
 

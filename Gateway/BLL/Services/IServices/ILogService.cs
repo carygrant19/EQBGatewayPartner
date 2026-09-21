@@ -99,23 +99,33 @@ namespace Gateway.BLL.Services.IServices
                 {
                     _efDbContext.HttpLog!.Add(model);
                     _efDbContext.SaveChanges();
-
                 }
                 else
                 {
-                    var data = _efDbContext.HttpLog!.FirstOrDefault(l => l.TraceId!.Trim() == model.TraceId!.Trim())!;
-                    data.ResponseData = model.ResponseData;
-                    data.ResponseDate = model.ResponseDate;
-                    data.ResponseCode = model.ResponseCode;
+                    var data = _efDbContext.HttpLog!.FirstOrDefault(l => l.TraceId!.Trim() == model.TraceId!.Trim());
 
-                    _efDbContext.HttpLog!.Update(data);
-                    _efDbContext.SaveChanges();
+                    if (data != null)
+                    { 
+                        if (!string.IsNullOrEmpty(model.ClientId)) data.ClientId = model.ClientId;
+                        if (!string.IsNullOrEmpty(model.RouteId)) data.RouteId = model.RouteId;
 
+                        data.ResponseData = model.ResponseData;
+                        data.ResponseDate = model.ResponseDate;
+                        data.ResponseCode = model.ResponseCode;
+
+                        _efDbContext.HttpLog!.Update(data);
+                        _efDbContext.SaveChanges();
+                    }
+                    else
+                    { 
+                        _efDbContext.HttpLog!.Add(model);
+                        _efDbContext.SaveChanges();
+                    }
                 }
             }
-            catch (Exception exx)
+            catch (Exception ex)
             {
-
+                LogException(ex, "LogHTTP");
             }
         }
 

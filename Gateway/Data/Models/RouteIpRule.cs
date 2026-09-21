@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gateway.Data.Models
 {
-    [Table("Map_Endpoint_IpRule")]
-    public class EndpointIpRule
+    [Table("Map_Route_IpRule")]
+    public class RouteIpRule
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public long EndpointId { get; set; }
+        public long RouteId { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -23,7 +23,7 @@ namespace Gateway.Data.Models
         [StringLength(255)]
         public string? Description { get; set; }
 
-        [ForeignKey(nameof(EndpointId))]
-        public virtual ApiEndpoint? ApiEndpoint { get; set; }
+        [ForeignKey(nameof(RouteId))]
+        public virtual Route? Route{ get; set; }
     }
 }

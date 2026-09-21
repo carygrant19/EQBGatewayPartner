@@ -35,7 +35,7 @@ namespace Gateway.BLL.Services
             var dbContext = scope.ServiceProvider.GetRequiredService<EFDbContext>();
 
             // Kunin lamang ang Active endpoints na naka-set bilang PROXY (HINDI Auth o Mock)
-            var activeEndpoints = dbContext.Set<ApiEndpoint>()
+            var activeEndpoints = dbContext.Set<Route>()
                 .Include(e => e.TargetHosts)
                 .Include(e => e.Transforms)
                 .Where(e => e.IsActive && (e.IntegrationType == "PROXY" || string.IsNullOrEmpty(e.IntegrationType)))

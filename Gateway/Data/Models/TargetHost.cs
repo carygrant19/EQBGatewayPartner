@@ -10,7 +10,7 @@ namespace Gateway.Data.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public long EndpointId { get; set; }
+        public long RouteId { get; set; }
 
         [Required]
         [StringLength(255)]
@@ -29,7 +29,7 @@ namespace Gateway.Data.Models
 
         public bool IsHealthy { get; set; } = true;
 
-        [ForeignKey(nameof(EndpointId))]
-        public virtual ApiEndpoint? ApiEndpoint { get; set; }
+        [ForeignKey(nameof(RouteId))]
+        public virtual Route? Route{ get; set; }
     }
 }

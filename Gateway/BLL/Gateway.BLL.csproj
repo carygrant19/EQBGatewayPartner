@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Data\Gateway.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTO\Request\Authenticate\Temenos\" />
+  </ItemGroup>
+
 </Project>

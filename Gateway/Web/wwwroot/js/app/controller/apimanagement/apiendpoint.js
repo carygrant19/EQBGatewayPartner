@@ -5,6 +5,8 @@ const controller = createApp({
         const records = ref([]);
         const categories = ref([]);
         const authProviders = ref([]);
+        const outboundAuthProfiles = ref([]);
+        const clients = ref([]); // <-- IDINAGDAG PARA SA INBOUND CLIENTS SELECTION
         const show_table = ref(false);
         const actionMode = ref("Add");
         const viewData = ref(null);
@@ -51,6 +53,8 @@ const controller = createApp({
             description: "",
             categoryId: null,
             authProviderId: null,
+            outboundAuthProfileId: null,
+            clientIds: [], // <-- IDINAGDAG: Array para sa Multi-Select Client IDs
             isActive: true,
             isWebSocket: false,
             requireApiKey: true,
@@ -91,6 +95,8 @@ const controller = createApp({
             global.GetRecords = GetRecords;
             GetCategories();
             GetAuthProviders();
+            GetOutboundAuthProfiles();
+            GetClients(); // <-- IDINAGDAG: Fetch Clients sa Initialization
             GetRecords();
         });
 
@@ -129,6 +135,29 @@ const controller = createApp({
                 }
             } catch (error) {
                 console.error("Failed to load auth providers", error);
+            }
+        };
+
+        const GetOutboundAuthProfiles = async () => {
+            try {
+                if (typeof ApiEndpointService.OutboundAuthProfiles === 'function') {
+                    const response = await ApiEndpointService.OutboundAuthProfiles();
+                    if (response.data) outboundAuthProfiles.value = response.data;
+                }
+            } catch (error) {
+                console.error("Failed to load outbound auth profiles", error);
+            }
+        };
+
+        // IDINAGDAG: Fetch Active Inbound Clients for Dropdown
+        const GetClients = async () => {
+            try {
+                if (typeof ApiEndpointService.Clients === 'function') {
+                    const response = await ApiEndpointService.Clients();
+                    if (response.data) clients.value = response.data;
+                }
+            } catch (error) {
+                console.error("Failed to load clients", error);
             }
         };
 
@@ -209,6 +238,8 @@ const controller = createApp({
             formData.description = "";
             formData.categoryId = categories.value.length > 0 ? categories.value[0].id : null;
             formData.authProviderId = null;
+            formData.outboundAuthProfileId = null;
+            formData.clientIds = []; // <-- RESET SELECTED CLIENTS
             formData.isActive = true;
             formData.isWebSocket = false;
             formData.requireApiKey = true;
@@ -261,6 +292,7 @@ const controller = createApp({
 
             Object.assign(formData, record);
             formData.loadBalancingPolicy = record.loadBalancingPolicy || null;
+            formData.clientIds = record.clientIds ? [...record.clientIds] : []; // <-- POPULATE ASSIGNED CLIENTS
 
             const catchAllRegex = /\{\*\*(catch-all|remainder)\}/i;
             formData.enableCatchAll = catchAllRegex.test(record.upstreamPathTemplate || "");
@@ -298,7 +330,6 @@ const controller = createApp({
         };
 
         const Save = async () => {
-            // Reconstruct full paths from base inputs + catch-all flag
             let upBase = formData.upstreamBase ? formData.upstreamBase.replace(/\/$/, '') : "";
             let downBase = formData.downstreamBase ? formData.downstreamBase.replace(/\/$/, '') : "";
 
@@ -465,6 +496,8 @@ const controller = createApp({
             records,
             categories,
             authProviders,
+            outboundAuthProfiles,
+            clients, // <-- EXPORTED PARA SA UI DROPDOWN
             selectedDays,
             availableMethods,
             selectedMethods,

@@ -1,11 +1,11 @@
 ﻿namespace Gateway.BLL.DTO.Response
 {
-    public class VApiEndpoint : ListBase
+    public class VRoute : ListBase
     {
-        public List<FApiEndpoint> Data { get; set; } = [];
+        public List<FRoute> Data { get; set; } = [];
     }
 
-    public class FApiEndpoint : ApiEndpoint
+    public class FRoute : Route
     {
         public string CreatedBy { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
@@ -13,11 +13,11 @@
         public DateTime? UpdatedDate { get; set; }
 
         public List<FTargetHost> TargetHosts { get; set; } = [];
-        public List<FEndpointIpRule> IpRules { get; set; } = [];
-        public List<FEndpointTransform> Transforms { get; set; } = [];
+        public List<FRouteIpRule> IpRules { get; set; } = [];
+        public List<FRouteTransform> Transforms { get; set; } = [];
     }
 
-    public class ApiEndpoint
+    public class Route
     {
         public string Id { get; set; } = string.Empty;
         public string Code { get; set; } = string.Empty;
@@ -29,6 +29,9 @@
 
         public int? AuthProviderId { get; set; }
         public string? AuthProviderName { get; set; }
+
+        public int? OutboundAuthProfileId { get; set; } // <-- Idinagdag
+        public string? OutboundAuthProfileName { get; set; } // <-- Idinagdag para sa display sa UI
 
         public bool IsActive { get; set; }
         public bool IsWebSocket { get; set; }
@@ -83,7 +86,7 @@
         public bool IsHealthy { get; set; } = true;
     }
 
-    public class FEndpointIpRule
+    public class FRouteIpRule
     {
         public int Id { get; set; }
         public string EndpointId { get; set; } = string.Empty;
@@ -92,7 +95,7 @@
         public string? Description { get; set; }
     }
 
-    public class FEndpointTransform
+    public class FRouteTransform
     {
         public int Id { get; set; }
         public string EndpointId { get; set; } = string.Empty;

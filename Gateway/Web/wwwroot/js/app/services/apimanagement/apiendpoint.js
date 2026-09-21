@@ -3,6 +3,14 @@
 ApiEndpointService.Categories = function () {
     return axios.get(appUrl + '/ApiManagement/Index?handler=Categories');
 };
+ 
+ApiEndpointService.AuthProviders = function () {
+    return axios.get(appUrl + '/ApiManagement/Index?handler=AuthProviders');
+};
+ 
+ApiEndpointService.OutboundAuthProfiles = function () {
+    return axios.get(appUrl + '/ApiManagement/Index?handler=OutboundAuthProfiles');
+};
 
 ApiEndpointService.Search = function (params) {
     var searchOption = {

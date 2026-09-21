@@ -15,12 +15,13 @@ namespace Gateway.BLL
         {
             services.AddScoped<ILogService, LogService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IApiEndpointService, ApiEndpointService>();
+            services.AddScoped<IRouteService, RouteService>();
             services.AddSingleton<DatabaseProxyConfigProvider>();
             services.AddSingleton<IProxyConfigProvider>(sp => sp.GetRequiredService<DatabaseProxyConfigProvider>());
 
 
-
+            services.AddScoped<IAuthProviderService, AuthProviderService>();
+            services.AddScoped<IOutboundAuthProfileService, OutboundAuthProfileService>();
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICompanyService, CompanyService>();

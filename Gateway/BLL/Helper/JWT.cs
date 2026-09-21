@@ -8,11 +8,11 @@ namespace Gateway.BLL.Helper;
 
 public static class JwtHelper
 {
-    public static string GenerateToken(string clientCode, AuthProvider provider)
+    public static string GenerateToken(string clientCode, AuthProvider provider, int lifetimeSeconds)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(provider.SecretKey);
-
+         
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[]
@@ -20,7 +20,7 @@ public static class JwtHelper
                 new Claim(ClaimTypes.NameIdentifier, clientCode),
                 new Claim("client_code", clientCode)
             }),
-            Expires = DateTime.UtcNow.AddMinutes(provider.TokenLifetimeMinutes),
+            Expires = DateTime.UtcNow.AddSeconds(lifetimeSeconds),
             Issuer = provider.Issuer,
             Audience = provider.Audience,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gateway.Data.Models
 {
-    [Table("Master_ApiEndpoint")]
-    public class ApiEndpoint
+    [Table("Master_Route")]
+    public class Route
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -107,7 +107,12 @@ namespace Gateway.Data.Models
         public virtual AuthProvider? AuthProvider { get; set; }
 
         public virtual ICollection<TargetHost> TargetHosts { get; set; } = [];
-        public virtual ICollection<EndpointIpRule> IpRules { get; set; } = [];
-        public virtual ICollection<EndpointTransform> Transforms { get; set; } = [];
+        public virtual ICollection<RouteIpRule> IpRules { get; set; } = [];
+        public virtual ICollection<RouteTransform> Transforms { get; set; } = [];
+
+        public int? OutboundAuthProfileId { get; set; }
+
+        [ForeignKey("OutboundAuthProfileId")]
+        public virtual OutboundAuthProfile? OutboundAuthProfile { get; set; }
     }
 }

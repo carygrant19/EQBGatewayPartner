@@ -1,14 +1,14 @@
 ﻿using Gateway.Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
-
+using Model = Gateway.Data.Models;
 namespace Gateway.Proxy.Middleware;
 
 public class RateLimitingMiddleware(RequestDelegate next, IMemoryCache memoryCache)
 {
     public async Task InvokeAsync(HttpContext context)
     {
-        if (context.Items["MatchedEndpoint"] is ApiEndpoint endpoint && endpoint.EnableRateLimiting)
+        if (context.Items["MatchedEndpoint"] is Model.Route endpoint && endpoint.EnableRateLimiting)
         {
             var limit = endpoint.RateLimit ?? 100;
             var timeSpanSeconds = endpoint.RatePeriodTimespan ?? 60;

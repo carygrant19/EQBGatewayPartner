@@ -1,7 +1,7 @@
 ﻿using Gateway.Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
-
+using Model = Gateway.Data.Models;
 namespace Gateway.Proxy.Middleware;
 
 public class ResponseCachingMiddleware(RequestDelegate next, IMemoryCache memoryCache)
@@ -14,7 +14,7 @@ public class ResponseCachingMiddleware(RequestDelegate next, IMemoryCache memory
             return;
         }
 
-        if (context.Items["MatchedEndpoint"] is not ApiEndpoint endpoint || !endpoint.EnableCaching)
+        if (context.Items["MatchedEndpoint"] is not Model.Route endpoint || !endpoint.EnableCaching)
         {
             await next(context);
             return;

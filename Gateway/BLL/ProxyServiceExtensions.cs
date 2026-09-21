@@ -12,8 +12,8 @@ namespace Gateway.BLL
         {
             services.AddScoped<ILogService, LogService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IApiEndpointService, ApiEndpointService>();
-
+            services.AddScoped<IRouteService, RouteService>();
+            services.AddScoped<IAuthService, AuthService>();
             // SINGLETON ALIAS FIX (Dito na lang i-register para malinis)
             services.AddSingleton<DatabaseProxyConfigProvider>();
             services.AddSingleton<IProxyConfigProvider>(sp => sp.GetRequiredService<DatabaseProxyConfigProvider>());

@@ -2,7 +2,7 @@
 
 namespace Gateway.BLL.DTO.Request
 {
-    public class ApiEndpoint : Base
+    public class Route : Base
     {
         public string Id { get; set; } = "0";
 
@@ -19,6 +19,7 @@ namespace Gateway.BLL.DTO.Request
 
         public int? CategoryId { get; set; }
         public int? AuthProviderId { get; set; }
+        public int? OutboundAuthProfileId { get; set; } // <-- Idinagdag para sa Vendor Credentials
 
         public bool IsActive { get; set; } = true;
         public bool IsWebSocket { get; set; } = false;
@@ -83,8 +84,8 @@ namespace Gateway.BLL.DTO.Request
         public string? MockResponseBody { get; set; }
 
         public List<TargetHost> TargetHosts { get; set; } = [];
-        public List<EndpointIpRule> IpRules { get; set; } = [];
-        public List<EndpointTransform> Transforms { get; set; } = [];
+        public List<RouteIpRule> IpRules { get; set; } = [];
+        public List<RouteTransform> Transforms { get; set; } = [];
     }
 
     public class TargetHost
@@ -107,7 +108,7 @@ namespace Gateway.BLL.DTO.Request
         public bool IsHealthy { get; set; } = true;
     }
 
-    public class EndpointIpRule
+    public class RouteIpRule
     {
         public int Id { get; set; }
 
@@ -123,7 +124,7 @@ namespace Gateway.BLL.DTO.Request
         public string? Description { get; set; }
     }
 
-    public class EndpointTransform
+    public class RouteTransform
     {
         public int Id { get; set; }
 

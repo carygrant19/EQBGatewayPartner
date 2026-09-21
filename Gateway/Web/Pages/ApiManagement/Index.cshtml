@@ -82,8 +82,8 @@
                                                 <th width="12%">Code <i v-bind:class="['fas', SortClass('Code')]" style="cursor:pointer" v-on:click="Sort('Code')"></i></th>
                                                 <th width="16%">Name <i v-bind:class="['fas', SortClass('Name')]" style="cursor:pointer" v-on:click="Sort('Name')"></i></th>
                                                 <th width="10%">Type</th>
-                                                <th width="12%">Auth / Security</th>
-                                                <th width="18%">Upstream Path</th>
+                                                <th width="14%">Auth / Security</th>
+                                                <th width="16%">Upstream Path</th>
                                                 <th width="18%">Downstream Target</th>
                                                 <th class="text-center" width="14%">Action</th>
                                             </tr>
@@ -102,8 +102,9 @@
                                                 </td>
                                                 <td>
                                                     <span class="badge bg-secondary me-1" v-if="record.requireApiKey"><i class="fas fa-lock me-1"></i>API Key</span>
-                                                    <span class="badge bg-info text-dark" v-if="record.authProviderId"><i class="fas fa-user-shield me-1"></i>JWT</span>
-                                                    <span class="badge bg-light text-dark border" v-if="!record.requireApiKey && !record.authProviderId">Public</span>
+                                                    <span class="badge bg-info text-dark me-1" v-if="record.authProviderId"><i class="fas fa-user-shield me-1"></i>JWT</span>
+                                                    <span class="badge bg-dark me-1" v-if="record.outboundAuthProfileId"><i class="fas fa-key me-1"></i>Outbound Auth</span>
+                                                    <span class="badge bg-light text-dark border" v-if="!record.requireApiKey && !record.authProviderId && !record.outboundAuthProfileId">Public</span>
                                                 </td>
                                                 <td><code>{{ record.upstreamPathTemplate }}</code></td>
                                                 <td>
@@ -157,7 +158,7 @@
                             <div class="modal-content border-0 shadow-lg">
                                 <div class="modal-header bg-dark text-white py-2">
                                     <h5 class="modal-title fs-6 fw-bold">
-                                        <i v-bind:class="['fa', ActionModeIcon()]"></i> {{ actionMode }} Gateway Route Endpoint
+                                        <i v-bind:class="['fa', ActionModeIcon()]"></i> {{ actionMode }} Gateway Route
                                     </h5>
                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                 </div>
@@ -240,7 +241,7 @@
                                                                 <input class="form-check-input ms-2 me-3 fs-5" type="checkbox" id="chkCatchAll" v-model="formData.enableCatchAll">
                                                                 <div>
                                                                     <label class="form-check-label fw-bold text-primary mb-0" for="chkCatchAll" style="cursor: pointer;">Enable Sub-path Forwarding (Wildcard Catch-All)</label>
-                                                                    <small class="d-block text-muted">Appends <code>/{**catch-all}</code> as an uneditable visual suffix so sub-endpoints (e.g., /facts, /breeds) are forwarded safely.</small>
+                                                                    <small class="d-block text-muted">Appends <code>/{**catch-all}</code> as an uneditable visual suffix so sub-routes are forwarded safely.</small>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -308,80 +309,52 @@
 
                                                 <!-- TAB 2: Security & Authentication -->
                                                 <div class="tab-pane fade" id="v-security">
-                                                    <h6 class="fw-bold border-bottom pb-2 mb-3 text-primary"><i class="fas fa-shield-alt me-1"></i> Security Policies & Auth Providers</h6>
+                                                    <h6 class="fw-bold border-bottom pb-2 mb-3 text-primary"><i class="fas fa-shield-alt me-1"></i> Inbound & Outbound Auth Policies</h6>
                                                     <div class="row">
+                                                        <!-- INBOUND API KEY CHECK -->
                                                         <div class="col-md-6 form-group mb-3">
                                                             <div class="form-check form-switch mb-2">
                                                                 <input class="form-check-input" type="checkbox" id="chkApiKey" v-model="formData.requireApiKey">
-                                                                <label class="form-check-label fw-bold" for="chkApiKey">Require API Key (X-External-Api-Key)</label>
+                                                                <label class="form-check-label fw-bold" for="chkApiKey">Require API Key (X-Api-Key / X-Client-Id)</label>
                                                             </div>
                                                             <small class="text-muted d-block">Enforces client app identification at Gateway edge.</small>
                                                         </div>
+
+                                                        <!-- INBOUND JWT PROVIDER -->
                                                         <div class="col-md-6 form-group mb-3">
-                                                            <label class="form-label">Bind Auth Provider (JWT Token Scheme)</label>
+                                                            <label class="form-label">Inbound Auth Provider (JWT Scheme)</label>
                                                             <select class="form-control custom-select" v-model="formData.authProviderId">
                                                                 <option :value="null">-- No JWT Token Enforcement (Public Route) --</option>
                                                                 <option v-for="provider in authProviders" :key="provider.id" :value="provider.id">{{ provider.name }} ({{ provider.code }})</option>
                                                             </select>
-                                                            <small class="text-muted d-block">If set, Gateway validates Bearer token against this Provider's Secret Key/Issuer.</small>
+                                                            <small class="text-muted d-block">Validates incoming Bearer token against Provider's Secret Key/Issuer.</small>
                                                         </div>
-                                                    </div>
-                                                    <hr />
-                                                    <h6 class="fw-bold mb-2">Operating Hours & Allowed Days</h6>
-                                                    <div class="row">
-                                                        <div class="col-md-6 form-group mb-2">
-                                                            <label>Operating Time From</label>
-                                                            <input type="time" class="form-control" v-model="formData.timeFrom" />
-                                                        </div>
-                                                        <div class="col-md-6 form-group mb-2">
-                                                            <label>Operating Time To</label>
-                                                            <input type="time" class="form-control" v-model="formData.timeTo" />
-                                                        </div>
+
+                                                        <!-- BOUND INBOUND CLIENTS RESTRICTION (NEW) -->
                                                         <div class="col-md-12 form-group mb-3">
-                                                            <label class="d-block">Allowed Operating Days</label>
-                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="1" id="dMon" v-model="selectedDays"><label class="form-check-label" for="dMon">Mon</label></div>
-                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="2" id="dTue" v-model="selectedDays"><label class="form-check-label" for="dTue">Tue</label></div>
-                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="3" id="dWed" v-model="selectedDays"><label class="form-check-label" for="dWed">Wed</label></div>
-                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="4" id="dThu" v-model="selectedDays"><label class="form-check-label" for="dThu">Thu</label></div>
-                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="5" id="dFri" v-model="selectedDays"><label class="form-check-label" for="dFri">Fri</label></div>
-                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="6" id="dSat" v-model="selectedDays"><label class="form-check-label" for="dSat">Sat</label></div>
-                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="0" id="dSun" v-model="selectedDays"><label class="form-check-label" for="dSun">Sun</label></div>
+                                                            <label class="form-label fw-bold text-dark"><i class="fas fa-users me-1 text-primary"></i> Authorized Inbound Clients</label>
+                                                            <select class="form-control custom-select" v-model="formData.clientIds" multiple style="height: 110px;">
+                                                                <option v-for="client in clients" :key="client.id || client.Id" :value="client.id || client.Id">
+                                                                    {{ client.name || client.Name }} ({{ client.code || client.Code }})
+                                                                </option>
+                                                            </select>
+                                                            <small class="text-muted d-block mt-1">
+                                                                <i class="fas fa-info-circle text-info me-1"></i> Hold <kbd>Ctrl</kbd> / <kbd>Cmd</kbd> to select multiple clients. 
+                                                                <b class="text-primary">If left BLANK, ANY registered client can access this route.</b>
+                                                            </small>
+                                                        </div>
+
+                                                        <!-- OUTBOUND VENDOR AUTH PROFILE -->
+                                                        <div class="col-md-12 form-group mb-3" v-show="formData.integrationType === 'PROXY'">
+                                                            <label class="form-label fw-bold text-dark"><i class="fas fa-key me-1 text-warning"></i> Outbound Vendor Auth Profile</label>
+                                                            <select class="form-control custom-select" v-model="formData.outboundAuthProfileId">
+                                                                <option :value="null">-- No Outbound Auth Injection --</option>
+                                                                <option v-for="profile in outboundAuthProfiles" :key="profile.id" :value="profile.id">{{ profile.name }} ({{ profile.code }})</option>
+                                                            </select>
+                                                            <small class="text-muted d-block">Injects stored merchant credentials (e.g., Temenos, BayadCenter) to downstream API calls.</small>
                                                         </div>
                                                     </div>
-                                                    <hr />
-                                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                                        <span class="fw-bold">IP Security Rules</span>
-                                                        <button type="button" class="btn btn-xs btn-outline-primary" v-on:click="AddIpRule()">
-                                                            <i class="fas fa-plus me-1"></i> Add IP Rule
-                                                        </button>
-                                                    </div>
-                                                    <table class="table table-bordered text-sm">
-                                                        <thead class="table-light">
-                                                            <tr>
-                                                                <th>IP Address / Range / localhost</th>
-                                                                <th width="25%">Rule Type</th>
-                                                                <th>Description</th>
-                                                                <th width="10%" class="text-center">Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr v-for="(rule, index) in formData.ipRules" :key="index">
-                                                                <td><input type="text" class="form-control form-control-sm" v-model="rule.ipAddressOrRange" placeholder="192.168.1.1 or localhost" data-parsley-required-field /></td>
-                                                                <td>
-                                                                    <select class="form-control form-control-sm custom-select" v-model="rule.ruleType">
-                                                                        <option value="Allow">Allow</option>
-                                                                        <option value="Deny">Deny</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td><input type="text" class="form-control form-control-sm" v-model="rule.description" /></td>
-                                                                <td class="text-center">
-                                                                    <button type="button" class="btn btn-sm btn-danger" v-on:click="RemoveIpRule(index)">
-                                                                        <i class="fas fa-trash"></i>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+    
                                                 </div>
 
                                                 <!-- TAB 3: Target Hosts -->
@@ -596,7 +569,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="p-2 bg-white rounded border text-center">
-                                        <small class="text-muted d-block text-xs uppercase fw-bold">Authentication</small>
+                                        <small class="text-muted d-block text-xs uppercase fw-bold">Inbound Auth</small>
                                         <span class="badge bg-secondary mt-1 me-1" v-if="viewData.requireApiKey"><i class="fas fa-key me-1"></i>API Key</span>
                                         <span class="badge bg-info text-dark mt-1" v-if="viewData.authProviderId"><i class="fas fa-shield-alt me-1"></i>JWT</span>
                                         <span class="badge bg-light text-dark border mt-1" v-if="!viewData.requireApiKey && !viewData.authProviderId">Public</span>
@@ -604,8 +577,9 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="p-2 bg-white rounded border text-center">
-                                        <small class="text-muted d-block text-xs uppercase fw-bold">Target Clusters</small>
-                                        <span class="fw-bold text-dark fs-14 mt-1 d-block">{{ viewData.targetHosts ? viewData.targetHosts.length : 0 }} Host(s)</span>
+                                        <small class="text-muted d-block text-xs uppercase fw-bold">Outbound Auth</small>
+                                        <span class="badge bg-dark mt-1" v-if="viewData.outboundAuthProfileName"><i class="fas fa-key me-1"></i>{{ viewData.outboundAuthProfileName }}</span>
+                                        <span class="badge bg-light text-muted border mt-1" v-else>None</span>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -721,12 +695,17 @@
                                     <!-- TAB 4: Security & IP Rules -->
                                     <div class="tab-pane fade" id="vtab-security">
                                         <div class="row g-3">
-                                            <div class="col-md-6">
-                                                <label class="text-muted text-xs uppercase fw-bold d-block">Bound Auth Provider</label>
+                                            <div class="col-md-4">
+                                                <label class="text-muted text-xs uppercase fw-bold d-block">Bound Auth Provider (JWT)</label>
                                                 <span class="fw-bold text-primary" v-if="viewData.authProviderName"><i class="fas fa-shield-alt me-1"></i>{{ viewData.authProviderName }}</span>
                                                 <span class="text-muted" v-else>None (Public Route)</span>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-4" v-if="viewData.integrationType === 'PROXY'">
+                                                <label class="text-muted text-xs uppercase fw-bold d-block">Outbound Vendor Auth Profile</label>
+                                                <span class="fw-bold text-dark" v-if="viewData.outboundAuthProfileName"><i class="fas fa-key me-1 text-warning"></i>{{ viewData.outboundAuthProfileName }}</span>
+                                                <span class="text-muted" v-else>None (Direct Pass-through)</span>
+                                            </div>
+                                            <div class="col-md-4">
                                                 <label class="text-muted text-xs uppercase fw-bold d-block">Operating Hours Window</label>
                                                 <span class="fw-bold" v-if="viewData.timeFrom && viewData.timeTo">{{ viewData.timeFrom }} - {{ viewData.timeTo }}</span>
                                                 <span class="text-muted" v-else>24/7 Always Active</span>

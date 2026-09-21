@@ -1,9 +1,9 @@
-﻿using Gateway.BLL.Services.IService;
-using Gateway.BLL.Services.IServices;
+﻿using Gateway.BLL.Services.IServices;
 using Gateway.Data.Models;
 using Microsoft.AspNetCore.Http.Extensions;
 using System.Text;
 using Response = Gateway.BLL.DTO.Response;
+using Model = Gateway.Data.Models;
 
 namespace Gateway.Proxy.Middleware
 {
@@ -14,56 +14,51 @@ namespace Gateway.Proxy.Middleware
             string traceId = context.TraceIdentifier;
             context.Request.Headers["X-TraceID"] = traceId;
 
-            var endpoint = context.Items["MatchedEndpoint"] as ApiEndpoint;
-            var client = context.Items["MatchedClient"] as Response.Client;
-
+            if (!context.Response.HasStarted && !context.Response.Headers.ContainsKey("X-TraceID"))
+            {
+                context.Response.Headers["X-TraceID"] = traceId;
+            }
+             
             context.Request.EnableBuffering();
             var formattedRequest = await FormatRequest(context.Request);
-
+            var requestDate = DateTime.Now;
+             
             logService.LogHttp(new HttpLog
             {
-                ClientId = client?.Id,
-                RouteId = endpoint?.Id.ToString() ?? "",
                 TraceId = traceId,
                 HttpMethod = context.Request.Method,
                 Uri = context.Request.GetDisplayUrl(),
                 HttpVersion = context.Request.Protocol,
                 Referrer = context.Connection.RemoteIpAddress?.ToString(),
                 RequestData = formattedRequest,
-                RequestDate = DateTime.Now,
+                RequestDate = requestDate,
                 UserAgent = context.Request.Headers["User-Agent"].ToString()
             }, "REQUEST");
-
+             
             var originalBodyStream = context.Response.Body;
             using var memStream = new MemoryStream();
             context.Response.Body = memStream;
 
             try
-            {
+            { 
                 await next(context);
             }
             finally
-            {
-                endpoint ??= context.Items["MatchedEndpoint"] as ApiEndpoint;
-                client ??= context.Items["MatchedClient"] as Response.Client;
-
+            { 
+                var endpoint = context.Items["MatchedEndpoint"] as Model.Route;
+                var clientObj = context.Items["MatchedClient"];
                 var responseData = await FormatResponse(memStream);
-
+                 
                 logService.LogHttp(new HttpLog
                 {
-                    ClientId = client?.Id,
-                    TraceId = traceId,
+                    ClientId = ExtractClientId(clientObj),
                     RouteId = endpoint?.Id.ToString() ?? "",
+                    TraceId = traceId,
                     ResponseCode = context.Response.StatusCode.ToString(),
                     ResponseData = responseData,
                     ResponseDate = DateTime.Now
                 }, "RESPONSE");
-
-                if (!context.Response.Headers.ContainsKey("X-TraceID"))
-                {
-                    context.Response.Headers["X-TraceID"] = traceId;
-                }
-
+                 
                 if (memStream.CanRead && memStream.CanSeek && memStream.Length > 0)
                 {
                     memStream.Position = 0;
@@ -72,6 +67,16 @@ namespace Gateway.Proxy.Middleware
 
                 context.Response.Body = originalBodyStream;
             }
+        }
+
+        private static string? ExtractClientId(object? clientObj)
+        {
+            return clientObj switch
+            {
+                Response.Client dtoClient => dtoClient.Id,
+                Client entityClient => entityClient.Id.ToString(),
+                _ => null
+            };
         }
 
         private static async Task<string> FormatRequest(HttpRequest request)
@@ -101,9 +106,19 @@ namespace Gateway.Proxy.Middleware
             }
             else
             {
+                if (request.Body.CanSeek)
+                {
+                    request.Body.Position = 0;
+                }
+
                 using var reader = new StreamReader(request.Body, Encoding.UTF8, leaveOpen: true);
                 var body = await reader.ReadToEndAsync();
-                request.Body.Position = 0;
+
+                if (request.Body.CanSeek)
+                {
+                    request.Body.Position = 0;
+                }
+
                 builder.AppendLine("  \"Body\": " + (string.IsNullOrEmpty(body) ? "\"[Empty Body]\"" : body));
             }
             builder.AppendLine("}");

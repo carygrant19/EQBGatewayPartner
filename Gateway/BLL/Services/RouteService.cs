@@ -12,18 +12,18 @@ using Response = Gateway.BLL.DTO.Response;
 
 namespace Gateway.BLL.Services
 {
-    public class ApiEndpointService : IApiEndpointService
+    public class RouteService : IRouteService
     {
         private readonly EFDbContext _efDbContext;
-        private readonly IRepository<Model.ApiEndpoint> _repository;
+        private readonly IRepository<Model.Route> _repository;
         private readonly ILogService _logService;
         private readonly IMapper _mapper;
         private readonly DatabaseProxyConfigProvider _proxyConfigProvider;
         private readonly string _moduleName = "ApiEndpoint";
 
-        public ApiEndpointService(
+        public RouteService(
             EFDbContext efDbContext,
-            IRepository<Model.ApiEndpoint> repository,
+            IRepository<Model.Route> repository,
             ILogService logService,
             IMapper mapper,
             DatabaseProxyConfigProvider proxyConfigProvider)
@@ -35,13 +35,14 @@ namespace Gateway.BLL.Services
             _proxyConfigProvider = proxyConfigProvider;
         }
 
-        public async Task<List<Response.ApiEndpoint>> GetActiveEndpointsAsync()
+        public async Task<List<Response.Route>> GetActiveEndpointsAsync()
         {
             try
             {
-                var endpoints = await _efDbContext.Set<Model.ApiEndpoint>()
+                var endpoints = await _efDbContext.Set<Model.Route>()
                     .Include(e => e.Category)
                     .Include(e => e.AuthProvider)
+                    .Include(e => e.OutboundAuthProfile) // <-- Idinagdag ang OutboundAuthProfile Include
                     .Include(e => e.TargetHosts)
                     .Include(e => e.IpRules)
                     .Include(e => e.Transforms)
@@ -49,7 +50,7 @@ namespace Gateway.BLL.Services
                     .AsNoTracking()
                     .ToListAsync();
 
-                return _mapper.Map<List<Response.ApiEndpoint>>(endpoints);
+                return _mapper.Map<List<Response.Route>>(endpoints);
             }
             catch (Exception ex)
             {
@@ -58,16 +59,17 @@ namespace Gateway.BLL.Services
             }
         }
 
-        public async Task<Response.VApiEndpoint> FilterAsync(Request.FParam model)
+        public async Task<Response.VRoute> FilterAsync(Request.FParam model)
         {
             try
             {
-                var propertySelector = EFramework.BuildPropertySelector<Model.ApiEndpoint>(model.SortColumn);
-                Response.VApiEndpoint vData = new();
+                var propertySelector = EFramework.BuildPropertySelector<Model.Route>(model.SortColumn);
+                Response.VRoute vData = new();
 
-                var query = _efDbContext.Set<Model.ApiEndpoint>()
+                var query = _efDbContext.Set<Model.Route>()
                     .Include(e => e.Category)
                     .Include(e => e.AuthProvider)
+                    .Include(e => e.OutboundAuthProfile) // <-- Idinagdag ang OutboundAuthProfile Include
                     .Include(e => e.TargetHosts)
                     .Include(e => e.IpRules)
                     .Include(e => e.Transforms)
@@ -92,7 +94,7 @@ namespace Gateway.BLL.Services
                 int recordsToSkip = (model.PageNum - 1) * model.PageSize;
                 var pagedQuery = await query.Skip(recordsToSkip).Take(model.PageSize).ToListAsync();
 
-                vData.Data = _mapper.Map<List<Response.FApiEndpoint>>(pagedQuery);
+                vData.Data = _mapper.Map<List<Response.FRoute>>(pagedQuery);
 
                 return vData;
             }
@@ -103,7 +105,7 @@ namespace Gateway.BLL.Services
             }
         }
 
-        public async Task<Response.Result> CreateAsync(Request.ApiEndpoint model)
+        public async Task<Response.Result> CreateAsync(Request.Route model)
         {
             Response.Result result = new();
 
@@ -114,18 +116,19 @@ namespace Gateway.BLL.Services
                 using (TransactionScope transactionScope = new(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     var user = _efDbContext.User!.FirstOrDefault(d => d.Username == model.OpUser) ?? new Model.User() { Id = 0 };
-                    var exists = await _efDbContext.Set<Model.ApiEndpoint>().AnyAsync(d => d.Code == model.Code);
+                    var exists = await _efDbContext.Set<Model.Route>().AnyAsync(d => d.Code == model.Code);
 
                     if (!exists)
                     {
-                        var data = _mapper.Map<Model.ApiEndpoint>(model);
+                        var data = _mapper.Map<Model.Route>(model);
                         data.RequireApiKey = model.RequireApiKey;
+                        data.OutboundAuthProfileId = model.OutboundAuthProfileId; // <-- Set OutboundAuthProfileId
                         data.UpstreamPathTemplate = NormalizePathTemplate(data.UpstreamPathTemplate);
                         data.DownstreamPathTemplate = NormalizePathTemplate(data.DownstreamPathTemplate);
 
                         data.TargetHosts = new List<Model.TargetHost>();
-                        data.IpRules = new List<Model.EndpointIpRule>();
-                        data.Transforms = new List<Model.EndpointTransform>();
+                        data.IpRules = new List<Model.RouteIpRule>();
+                        data.Transforms = new List<Model.RouteTransform>();
 
                         data.CreatedBy = (int)user.Id;
                         data.CreatedDate = DateTime.Now;
@@ -153,7 +156,7 @@ namespace Gateway.BLL.Services
                         {
                             foreach (var i in model.IpRules)
                             {
-                                data.IpRules.Add(new Model.EndpointIpRule
+                                data.IpRules.Add(new Model.RouteIpRule
                                 {
                                     IpAddressOrRange = i.IpAddressOrRange,
                                     RuleType = i.RuleType,
@@ -166,7 +169,7 @@ namespace Gateway.BLL.Services
                         {
                             foreach (var t in model.Transforms)
                             {
-                                data.Transforms.Add(new Model.EndpointTransform
+                                data.Transforms.Add(new Model.RouteTransform
                                 {
                                     TransformPhase = t.TransformPhase,
                                     Action = t.Action,
@@ -217,7 +220,7 @@ namespace Gateway.BLL.Services
             return result;
         }
 
-        public async Task<Response.Result> UpdateAsync(Request.ApiEndpoint model)
+        public async Task<Response.Result> UpdateAsync(Request.Route model)
         {
             Response.Result result = new();
 
@@ -230,7 +233,8 @@ namespace Gateway.BLL.Services
                 {
                     var user = await _efDbContext.User!.FirstOrDefaultAsync(d => d.Username == model.OpUser) ?? new Model.User() { Id = 0 };
 
-                    var data = await _efDbContext.Set<Model.ApiEndpoint>()
+                    var data = await _efDbContext.Set<Model.Route>()
+                        .Include(e => e.OutboundAuthProfile) // <-- Include OutboundAuthProfile for audit log serialization
                         .Include(e => e.TargetHosts)
                         .Include(e => e.IpRules)
                         .Include(e => e.Transforms)
@@ -241,8 +245,8 @@ namespace Gateway.BLL.Services
                         var oldValue = JsonConvert.SerializeObject(data, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 
                         _efDbContext.Set<Model.TargetHost>().RemoveRange(data.TargetHosts);
-                        _efDbContext.Set<Model.EndpointIpRule>().RemoveRange(data.IpRules);
-                        _efDbContext.Set<Model.EndpointTransform>().RemoveRange(data.Transforms);
+                        _efDbContext.Set<Model.RouteIpRule>().RemoveRange(data.IpRules);
+                        _efDbContext.Set<Model.RouteTransform>().RemoveRange(data.Transforms);
                         data.TargetHosts.Clear();
                         data.IpRules.Clear();
                         data.Transforms.Clear();
@@ -257,6 +261,7 @@ namespace Gateway.BLL.Services
 
                         _mapper.Map(model, data);
                         data.RequireApiKey = model.RequireApiKey;
+                        data.OutboundAuthProfileId = model.OutboundAuthProfileId; // <-- Assign OutboundAuthProfileId
                         data.UpstreamPathTemplate = NormalizePathTemplate(data.UpstreamPathTemplate);
                         data.DownstreamPathTemplate = NormalizePathTemplate(data.DownstreamPathTemplate);
 
@@ -271,7 +276,7 @@ namespace Gateway.BLL.Services
                             {
                                 data.TargetHosts.Add(new Model.TargetHost
                                 {
-                                    EndpointId = data.Id,
+                                    RouteId = data.Id,
                                     Host = h.Host,
                                     Port = h.Port,
                                     Weight = h.Weight,
@@ -286,9 +291,9 @@ namespace Gateway.BLL.Services
                         {
                             foreach (var i in incomingIpRules)
                             {
-                                data.IpRules.Add(new Model.EndpointIpRule
+                                data.IpRules.Add(new Model.RouteIpRule
                                 {
-                                    EndpointId = data.Id,
+                                    RouteId = data.Id,
                                     IpAddressOrRange = i.IpAddressOrRange,
                                     RuleType = i.RuleType,
                                     Description = i.Description
@@ -300,9 +305,9 @@ namespace Gateway.BLL.Services
                         {
                             foreach (var t in incomingTransforms)
                             {
-                                data.Transforms.Add(new Model.EndpointTransform
+                                data.Transforms.Add(new Model.RouteTransform
                                 {
-                                    EndpointId = data.Id,
+                                    RouteId = data.Id,
                                     TransformPhase = t.TransformPhase,
                                     Action = t.Action,
                                     HeaderName = t.HeaderName,
@@ -358,7 +363,7 @@ namespace Gateway.BLL.Services
             return result;
         }
 
-        public async Task<Response.Result> DeleteAsync(Request.ApiEndpoint model)
+        public async Task<Response.Result> DeleteAsync(Request.Route model)
         {
             Response.Result result = new();
 
@@ -370,7 +375,7 @@ namespace Gateway.BLL.Services
                 using (TransactionScope transactionScope = new(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     var user = _efDbContext.User!.FirstOrDefault(d => d.Username == model.OpUser) ?? new Model.User() { Id = 0 };
-                    var data = await _efDbContext.Set<Model.ApiEndpoint>().FirstOrDefaultAsync(l => l.Id == Convert.ToInt64(model.Id));
+                    var data = await _efDbContext.Set<Model.Route>().FirstOrDefaultAsync(l => l.Id == Convert.ToInt64(model.Id));
 
                     if (data != null)
                     {
@@ -413,7 +418,7 @@ namespace Gateway.BLL.Services
             return result;
         }
 
-        public async Task<Response.Result> RestoreAsync(Request.ApiEndpoint model)
+        public async Task<Response.Result> RestoreAsync(Request.Route model)
         {
             Response.Result result = new();
 
@@ -425,7 +430,7 @@ namespace Gateway.BLL.Services
                 using (TransactionScope transactionScope = new(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     var user = _efDbContext.User!.FirstOrDefault(d => d.Username == model.OpUser) ?? new Model.User() { Id = 0 };
-                    var data = await _efDbContext.Set<Model.ApiEndpoint>().FirstOrDefaultAsync(l => l.Id == Convert.ToInt64(model.Id));
+                    var data = await _efDbContext.Set<Model.Route>().FirstOrDefaultAsync(l => l.Id == Convert.ToInt64(model.Id));
 
                     if (data != null)
                     {

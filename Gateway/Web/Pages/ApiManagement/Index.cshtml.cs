@@ -6,10 +6,16 @@ using Response = Gateway.BLL.DTO.Response;
 
 namespace Gateway.Web.Pages.ApiManagement
 {
-    public class IndexModel(IApiEndpointService service, ICategoryService categoryService) : PageModelExtension
+    public class IndexModel(
+        IRouteService service,
+        ICategoryService categoryService,
+        IAuthProviderService authProviderService,
+        IOutboundAuthProfileService outboundAuthProfileService) : PageModelExtension
     {
-        private readonly IApiEndpointService _service = service;
+        private readonly IRouteService _service = service;
         private readonly ICategoryService _categoryService = categoryService;
+        private readonly IAuthProviderService _authProviderService = authProviderService;
+        private readonly IOutboundAuthProfileService _outboundAuthProfileService = outboundAuthProfileService;
 
         public IActionResult OnGet()
         {
@@ -28,6 +34,46 @@ namespace Gateway.Web.Pages.ApiManagement
             try
             {
                 var data = await _categoryService.GetAllActiveAsync();
+                return new JsonResult(data);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(
+                    new Response.Result
+                    {
+                        Status = "ERROR",
+                        Message = ex.Message
+                    }
+                );
+            }
+        }
+
+        // IDINAGDAG: Handler para sa Inbound Auth Providers Dropdown
+        public async Task<JsonResult> OnGetAuthProviders()
+        {
+            try
+            {
+                var data = await _authProviderService.GetAllActiveAsync();
+                return new JsonResult(data);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(
+                    new Response.Result
+                    {
+                        Status = "ERROR",
+                        Message = ex.Message
+                    }
+                );
+            }
+        }
+
+        // IDINAGDAG: Handler para sa Outbound Vendor Auth Profiles Dropdown
+        public async Task<JsonResult> OnGetOutboundAuthProfiles()
+        {
+            try
+            {
+                var data = await _outboundAuthProfileService.GetAllActiveAsync();
                 return new JsonResult(data);
             }
             catch (Exception ex)
@@ -80,7 +126,7 @@ namespace Gateway.Web.Pages.ApiManagement
             }
         }
 
-        public async Task<JsonResult> OnPostSave([FromBody] Request.ApiEndpoint model)
+        public async Task<JsonResult> OnPostSave([FromBody] Request.Route model)
         {
             model.OpUser = HttpContext.Session.GetString("Username")!;
             model.OpUserId = HttpContext.Session.GetString("UserId");
@@ -113,7 +159,7 @@ namespace Gateway.Web.Pages.ApiManagement
         {
             try
             {
-                Request.ApiEndpoint model = new()
+                Request.Route model = new()
                 {
                     OpUser = HttpContext.Session.GetString("Username")!,
                     OpUserId = HttpContext.Session.GetString("UserId"),
@@ -139,7 +185,7 @@ namespace Gateway.Web.Pages.ApiManagement
         {
             try
             {
-                Request.ApiEndpoint model = new()
+                Request.Route model = new()
                 {
                     OpUser = HttpContext.Session.GetString("Username")!,
                     OpUserId = HttpContext.Session.GetString("UserId"),
