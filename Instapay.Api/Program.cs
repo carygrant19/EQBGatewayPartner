@@ -1,7 +1,5 @@
 using Instapay.Api.Services;
 using Instapay.Api.Services.IService;
-using Common.Services;
-using Common.Services.IService;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Serilog;
@@ -67,7 +65,7 @@ try
 
 
     builder.Host.UseSerilog();
-    builder.Services.AddScoped<IAuthenticateService, AuthenticateService>();
+    //builder.Services.AddScoped<IAuthenticateService, AuthenticateService>();
     builder.Services.AddScoped<ITransactionService, TransactionService>();
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();

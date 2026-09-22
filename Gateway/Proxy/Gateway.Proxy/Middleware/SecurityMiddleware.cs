@@ -88,7 +88,27 @@ namespace Gateway.Proxy.Middleware
             }
 
             context.Items["MatchedEndpoint"] = endpoint;
+            // =========================================================================
+            // PHASE 2.5: HTTP METHOD VALIDATION (BAGONG DAGDAG)
+            // =========================================================================
+            string incomingMethod = context.Request.Method.ToUpper();
+            string rawAllowedMethods = !string.IsNullOrWhiteSpace(endpoint.AllowedMethods)
+                ? endpoint.AllowedMethods
+                : endpoint.UpstreamHttpMethod;
 
+            if (!string.IsNullOrWhiteSpace(rawAllowedMethods))
+            {
+                var allowedMethods = rawAllowedMethods
+                    .Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(m => m.Trim().ToUpper())
+                    .ToList();
+
+                if (!allowedMethods.Contains(incomingMethod))
+                {
+                    await BlockRequest(context, 405, $"405 Method Not Allowed: HTTP {incomingMethod} request is not allowed for route '{endpoint.Code}'", traceId);
+                    return;
+                }
+            }
             // PHASE 3: EDGE SECURITY (Operating Hours & IP Restriction Rules)
             if (!Common.IsEndpointTimeValid(endpoint.DateFrom, endpoint.DateTo, endpoint.TimeFrom, endpoint.TimeTo, endpoint.AllowedDays))
             {

@@ -24,6 +24,7 @@ namespace Gateway.Data.Models
         public string? OverrideRatePeriod { get; set; }
 
         public DateTime? ExpiresAt { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
         // Foreign Key Navigations
         [ForeignKey(nameof(ClientId))]

@@ -325,15 +325,17 @@
                                                             <label class="form-label">Inbound Auth Provider (JWT Scheme)</label>
                                                             <select class="form-control custom-select" v-model="formData.authProviderId">
                                                                 <option :value="null">-- No JWT Token Enforcement (Public Route) --</option>
-                                                                <option v-for="provider in authProviders" :key="provider.id" :value="provider.id">{{ provider.name }} ({{ provider.code }})</option>
+                                                                <option v-for="provider in authProviders" :key="provider.id || provider.Id" :value="provider.id || provider.Id">
+                                                                    {{ provider.name || provider.Name }} ({{ provider.code || provider.Code }})
+                                                                </option>
                                                             </select>
                                                             <small class="text-muted d-block">Validates incoming Bearer token against Provider's Secret Key/Issuer.</small>
                                                         </div>
 
-                                                        <!-- BOUND INBOUND CLIENTS RESTRICTION (NEW) -->
+                                                        <!-- BOUND INBOUND CLIENTS RESTRICTION -->
                                                         <div class="col-md-12 form-group mb-3">
                                                             <label class="form-label fw-bold text-dark"><i class="fas fa-users me-1 text-primary"></i> Authorized Inbound Clients</label>
-                                                            <select class="form-control custom-select" v-model="formData.clientIds" multiple style="height: 110px;">
+                                                            <select class="form-control custom-select" v-model="formData.clientIds" multiple style="height: 120px;">
                                                                 <option v-for="client in clients" :key="client.id || client.Id" :value="client.id || client.Id">
                                                                     {{ client.name || client.Name }} ({{ client.code || client.Code }})
                                                                 </option>
@@ -349,12 +351,84 @@
                                                             <label class="form-label fw-bold text-dark"><i class="fas fa-key me-1 text-warning"></i> Outbound Vendor Auth Profile</label>
                                                             <select class="form-control custom-select" v-model="formData.outboundAuthProfileId">
                                                                 <option :value="null">-- No Outbound Auth Injection --</option>
-                                                                <option v-for="profile in outboundAuthProfiles" :key="profile.id" :value="profile.id">{{ profile.name }} ({{ profile.code }})</option>
+                                                                <option v-for="profile in outboundAuthProfiles" :key="profile.id || profile.Id" :value="profile.id || profile.Id">
+                                                                    {{ profile.name || profile.Name }} ({{ profile.code || profile.Code }})
+                                                                </option>
                                                             </select>
                                                             <small class="text-muted d-block">Injects stored merchant credentials (e.g., Temenos, BayadCenter) to downstream API calls.</small>
                                                         </div>
                                                     </div>
     
+                                                    <hr />
+                                                    <h6 class="fw-bold mb-2"><i class="fas fa-calendar-alt me-1 text-info"></i> Effective Dates & Operating Hours</h6>
+                                                    <div class="row">
+                                                        <!-- EFFECTIVE DATES (MATCHED TO SQL DateFrom & DateTo) -->
+                                                        <div class="col-md-6 form-group mb-2">
+                                                            <label>Effective Date From</label>
+                                                            <input type="date" class="form-control" v-model="formData.dateFrom" />
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-2">
+                                                            <label>Effective Date To</label>
+                                                            <input type="date" class="form-control" v-model="formData.dateTo" />
+                                                        </div>
+
+                                                        <!-- OPERATING HOURS (MATCHED TO SQL TimeFrom & TimeTo) -->
+                                                        <div class="col-md-6 form-group mb-2">
+                                                            <label>Operating Time From</label>
+                                                            <input type="time" class="form-control" v-model="formData.timeFrom" />
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-2">
+                                                            <label>Operating Time To</label>
+                                                            <input type="time" class="form-control" v-model="formData.timeTo" />
+                                                        </div>
+
+                                                        <!-- ALLOWED DAYS -->
+                                                        <div class="col-md-12 form-group mb-3 mt-2">
+                                                            <label class="d-block fw-bold mb-1">Allowed Operating Days</label>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="1" id="dMon" v-model="selectedDays"><label class="form-check-label" for="dMon">Mon</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="2" id="dTue" v-model="selectedDays"><label class="form-check-label" for="dTue">Tue</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="3" id="dWed" v-model="selectedDays"><label class="form-check-label" for="dWed">Wed</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="4" id="dThu" v-model="selectedDays"><label class="form-check-label" for="dThu">Thu</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="5" id="dFri" v-model="selectedDays"><label class="form-check-label" for="dFri">Fri</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="6" id="dSat" v-model="selectedDays"><label class="form-check-label" for="dSat">Sat</label></div>
+                                                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" value="0" id="dSun" v-model="selectedDays"><label class="form-check-label" for="dSun">Sun</label></div>
+                                                        </div>
+                                                    </div>
+    
+                                                    <hr />
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <span class="fw-bold">IP Security Rules</span>
+                                                        <button type="button" class="btn btn-xs btn-outline-primary" v-on:click="AddIpRule()">
+                                                            <i class="fas fa-plus me-1"></i> Add IP Rule
+                                                        </button>
+                                                    </div>
+                                                    <table class="table table-bordered text-sm">
+                                                        <thead class="table-light">
+                                                            <tr>
+                                                                <th>IP Address / Range / localhost</th>
+                                                                <th width="25%">Rule Type</th>
+                                                                <th>Description</th>
+                                                                <th width="10%" class="text-center">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr v-for="(rule, index) in formData.ipRules" :key="index">
+                                                                <td><input type="text" class="form-control form-control-sm" v-model="rule.ipAddressOrRange" placeholder="192.168.1.1 or localhost" data-parsley-required-field /></td>
+                                                                <td>
+                                                                    <select class="form-control form-control-sm custom-select" v-model="rule.ruleType">
+                                                                        <option value="Allow">Allow</option>
+                                                                        <option value="Deny">Deny</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td><input type="text" class="form-control form-control-sm" v-model="rule.description" /></td>
+                                                                <td class="text-center">
+                                                                    <button type="button" class="btn btn-sm btn-danger" v-on:click="RemoveIpRule(index)">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
 
                                                 <!-- TAB 3: Target Hosts -->
@@ -782,6 +856,7 @@
 @section scripts
 {
     <script src="~/js/app/directive/common.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/client.js" asp-append-version="true"></script>
     <script src="~/js/app/services/apimanagement/apiendpoint.js" asp-append-version="true"></script>
     <script src="~/js/app/controller/apimanagement/apiendpoint.js" asp-append-version="true"></script>
 }

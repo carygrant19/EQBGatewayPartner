@@ -1,7 +1,7 @@
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using Common.Services;
-using Common.Services.IService;
+//using Common.Services;
+//using Common.Services.IService;
 using Serilog;
 using Notification.API.Services.IService;
 using Notification.API.Services;

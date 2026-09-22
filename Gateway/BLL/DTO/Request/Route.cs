@@ -19,7 +19,9 @@ namespace Gateway.BLL.DTO.Request
 
         public int? CategoryId { get; set; }
         public int? AuthProviderId { get; set; }
-        public int? OutboundAuthProfileId { get; set; } // <-- Idinagdag para sa Vendor Credentials
+        public int? OutboundAuthProfileId { get; set; }
+
+        public List<int> ClientIds { get; set; } = []; // <-- IDINAGDAG PARA SA AUTHORIZED CLIENTS
 
         public bool IsActive { get; set; } = true;
         public bool IsWebSocket { get; set; } = false;
@@ -48,10 +50,11 @@ namespace Gateway.BLL.DTO.Request
         public string? RatePeriod { get; set; }
         public int? RatePeriodTimespan { get; set; }
 
+        // --- OPERATING HOURS & EFFECTIVE DATES ---
         public TimeSpan? TimeFrom { get; set; }
         public TimeSpan? TimeTo { get; set; }
-        public DateTime? DateFrom { get; set; }
-        public DateTime? DateTo { get; set; }
+        public DateTime? DateFrom { get; set; } // <-- IDINAGDAG
+        public DateTime? DateTo { get; set; }   // <-- IDINAGDAG
         public string? AllowedDays { get; set; }
 
         public string LoadBalancingPolicy { get; set; } = "RoundRobin";
@@ -64,7 +67,7 @@ namespace Gateway.BLL.DTO.Request
         // --- ENTERPRISE GATEWAY FEATURES ---
         [Required(AllowEmptyStrings = false)]
         [MaxLength(20)]
-        public string IntegrationType { get; set; } = "PROXY"; // PROXY, INTERNAL_AUTH, MOCK
+        public string IntegrationType { get; set; } = "PROXY";
 
         public bool StripPath { get; set; } = true;
         public bool PreserveHostHeader { get; set; } = false;
@@ -130,11 +133,11 @@ namespace Gateway.BLL.DTO.Request
 
         [Required(AllowEmptyStrings = false)]
         [MaxLength(20)]
-        public string TransformPhase { get; set; } = "Request"; // "Request" o "Response"
+        public string TransformPhase { get; set; } = "Request";
 
         [Required(AllowEmptyStrings = false)]
         [MaxLength(20)]
-        public string Action { get; set; } = "Add"; // "Add", "Remove", "Append"
+        public string Action { get; set; } = "Add";
 
         [Required(AllowEmptyStrings = false)]
         [MaxLength(100)]

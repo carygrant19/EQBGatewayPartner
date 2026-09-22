@@ -6,22 +6,16 @@ const controller = createApp({
         const categories = ref([]);
         const authProviders = ref([]);
         const outboundAuthProfiles = ref([]);
-        const clients = ref([]); // <-- IDINAGDAG PARA SA INBOUND CLIENTS SELECTION
+        const clients = ref([]);
         const show_table = ref(false);
         const actionMode = ref("Add");
         const viewData = ref(null);
 
-        // HTTP Methods State
         const availableMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
         const selectedMethods = ref([]);
 
         const tabErrors = reactive({
-            basic: 0,
-            security: 0,
-            target: 0,
-            transform: 0,
-            resilience: 0,
-            traffic: 0
+            basic: 0, security: 0, target: 0, transform: 0, resilience: 0, traffic: 0
         });
 
         const totalErrors = computed(() => {
@@ -35,11 +29,7 @@ const controller = createApp({
         });
 
         const params = reactive({
-            pageNum: 1,
-            pageSize: 10,
-            sortColumn: "Name",
-            descending: false,
-            filters: []
+            pageNum: 1, pageSize: 10, sortColumn: "Name", descending: false, filters: []
         });
 
         const search = reactive({ keyword: "" });
@@ -54,7 +44,7 @@ const controller = createApp({
             categoryId: null,
             authProviderId: null,
             outboundAuthProfileId: null,
-            clientIds: [], // <-- IDINAGDAG: Array para sa Multi-Select Client IDs
+            clientIds: [],
             isActive: true,
             isWebSocket: false,
             requireApiKey: true,
@@ -81,6 +71,8 @@ const controller = createApp({
             ratePeriodTimespan: 60,
             timeFrom: null,
             timeTo: null,
+            dateFrom: null, // <-- IDINAGDAG
+            dateTo: null,   // <-- IDINAGDAG
             allowedDays: "",
             loadBalancingPolicy: null,
             timeoutSeconds: 30,
@@ -96,7 +88,7 @@ const controller = createApp({
             GetCategories();
             GetAuthProviders();
             GetOutboundAuthProfiles();
-            GetClients(); // <-- IDINAGDAG: Fetch Clients sa Initialization
+            GetClients();
             GetRecords();
         });
 
@@ -149,11 +141,10 @@ const controller = createApp({
             }
         };
 
-        // IDINAGDAG: Fetch Active Inbound Clients for Dropdown
         const GetClients = async () => {
             try {
-                if (typeof ApiEndpointService.Clients === 'function') {
-                    const response = await ApiEndpointService.Clients();
+                if (typeof ClientService.All === 'function') {
+                    const response = await ClientService.All();
                     if (response.data) clients.value = response.data;
                 }
             } catch (error) {
@@ -236,10 +227,10 @@ const controller = createApp({
             formData.code = "";
             formData.name = "";
             formData.description = "";
-            formData.categoryId = categories.value.length > 0 ? categories.value[0].id : null;
+            formData.categoryId = categories.value.length > 0 ? (categories.value[0].id || categories.value[0].Id) : null;
             formData.authProviderId = null;
             formData.outboundAuthProfileId = null;
-            formData.clientIds = []; // <-- RESET SELECTED CLIENTS
+            formData.clientIds = [];
             formData.isActive = true;
             formData.isWebSocket = false;
             formData.requireApiKey = true;
@@ -266,6 +257,8 @@ const controller = createApp({
             formData.ratePeriodTimespan = 60;
             formData.timeFrom = null;
             formData.timeTo = null;
+            formData.dateFrom = null;
+            formData.dateTo = null;
             formData.allowedDays = "";
             formData.loadBalancingPolicy = null;
             formData.timeoutSeconds = 30;
@@ -292,7 +285,15 @@ const controller = createApp({
 
             Object.assign(formData, record);
             formData.loadBalancingPolicy = record.loadBalancingPolicy || null;
-            formData.clientIds = record.clientIds ? [...record.clientIds] : []; // <-- POPULATE ASSIGNED CLIENTS
+            formData.clientIds = record.clientIds ? [...record.clientIds] : (record.ClientIds ? [...record.ClientIds] : []);
+
+            // Parse Dates for <input type="date">
+            formData.dateFrom = record.dateFrom ? record.dateFrom.split('T')[0] : (record.DateFrom ? record.DateFrom.split('T')[0] : null);
+            formData.dateTo = record.dateTo ? record.dateTo.split('T')[0] : (record.DateTo ? record.DateTo.split('T')[0] : null);
+
+            // Parse Times for <input type="time">
+            formData.timeFrom = record.timeFrom || record.TimeFrom || null;
+            formData.timeTo = record.timeTo || record.TimeTo || null;
 
             const catchAllRegex = /\{\*\*(catch-all|remainder)\}/i;
             formData.enableCatchAll = catchAllRegex.test(record.upstreamPathTemplate || "");
@@ -497,7 +498,7 @@ const controller = createApp({
             categories,
             authProviders,
             outboundAuthProfiles,
-            clients, // <-- EXPORTED PARA SA UI DROPDOWN
+            clients,
             selectedDays,
             availableMethods,
             selectedMethods,

@@ -30,8 +30,10 @@
         public int? AuthProviderId { get; set; }
         public string? AuthProviderName { get; set; }
 
-        public int? OutboundAuthProfileId { get; set; } // <-- Idinagdag
-        public string? OutboundAuthProfileName { get; set; } // <-- Idinagdag para sa display sa UI
+        public int? OutboundAuthProfileId { get; set; }
+        public string? OutboundAuthProfileName { get; set; }
+
+        public List<int> ClientIds { get; set; } = []; // <-- IDINAGDAG FOR RESPONSE
 
         public bool IsActive { get; set; }
         public bool IsWebSocket { get; set; }
@@ -61,7 +63,6 @@
         public string AllowedOrigins { get; set; } = "*";
         public long? MaxRequestBodySize { get; set; }
 
-        // --- ENTERPRISE GATEWAY FEATURES ---
         public string IntegrationType { get; set; } = "PROXY";
         public bool StripPath { get; set; } = true;
         public bool PreserveHostHeader { get; set; } = false;

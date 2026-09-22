@@ -109,7 +109,7 @@ namespace Gateway.Data.Models
         public virtual ICollection<TargetHost> TargetHosts { get; set; } = [];
         public virtual ICollection<RouteIpRule> IpRules { get; set; } = [];
         public virtual ICollection<RouteTransform> Transforms { get; set; } = [];
-
+        public virtual ICollection<ClientRouteAccess> ClientRouteAccess { get; set; } = [];
         public int? OutboundAuthProfileId { get; set; }
 
         [ForeignKey("OutboundAuthProfileId")]

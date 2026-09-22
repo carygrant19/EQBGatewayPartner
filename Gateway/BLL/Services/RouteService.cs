@@ -42,7 +42,8 @@ namespace Gateway.BLL.Services
                 var endpoints = await _efDbContext.Set<Model.Route>()
                     .Include(e => e.Category)
                     .Include(e => e.AuthProvider)
-                    .Include(e => e.OutboundAuthProfile) // <-- Idinagdag ang OutboundAuthProfile Include
+                    .Include(e => e.OutboundAuthProfile)
+                    .Include(e => e.ClientRouteAccess) // <-- INCLUDE CLIENT ACCESS
                     .Include(e => e.TargetHosts)
                     .Include(e => e.IpRules)
                     .Include(e => e.Transforms)
@@ -50,7 +51,12 @@ namespace Gateway.BLL.Services
                     .AsNoTracking()
                     .ToListAsync();
 
-                return _mapper.Map<List<Response.Route>>(endpoints);
+                var mapped = _mapper.Map<List<Response.Route>>(endpoints);
+                for (int i = 0; i < endpoints.Count; i++)
+                {
+                    mapped[i].ClientIds = endpoints[i].ClientRouteAccess.Select(ra => ra.ClientId).ToList();
+                }
+                return mapped;
             }
             catch (Exception ex)
             {
@@ -69,7 +75,8 @@ namespace Gateway.BLL.Services
                 var query = _efDbContext.Set<Model.Route>()
                     .Include(e => e.Category)
                     .Include(e => e.AuthProvider)
-                    .Include(e => e.OutboundAuthProfile) // <-- Idinagdag ang OutboundAuthProfile Include
+                    .Include(e => e.OutboundAuthProfile)
+                    .Include(e => e.ClientRouteAccess) // <-- INCLUDE CLIENT ACCESS
                     .Include(e => e.TargetHosts)
                     .Include(e => e.IpRules)
                     .Include(e => e.Transforms)
@@ -95,6 +102,12 @@ namespace Gateway.BLL.Services
                 var pagedQuery = await query.Skip(recordsToSkip).Take(model.PageSize).ToListAsync();
 
                 vData.Data = _mapper.Map<List<Response.FRoute>>(pagedQuery);
+
+                // Populate ClientIds list for each route
+                for (int i = 0; i < pagedQuery.Count; i++)
+                {
+                    vData.Data[i].ClientIds = pagedQuery[i].ClientRouteAccess.Select(ra => ra.ClientId).ToList();
+                }
 
                 return vData;
             }
@@ -122,7 +135,7 @@ namespace Gateway.BLL.Services
                     {
                         var data = _mapper.Map<Model.Route>(model);
                         data.RequireApiKey = model.RequireApiKey;
-                        data.OutboundAuthProfileId = model.OutboundAuthProfileId; // <-- Set OutboundAuthProfileId
+                        data.OutboundAuthProfileId = model.OutboundAuthProfileId;
                         data.UpstreamPathTemplate = NormalizePathTemplate(data.UpstreamPathTemplate);
                         data.DownstreamPathTemplate = NormalizePathTemplate(data.DownstreamPathTemplate);
 
@@ -135,6 +148,10 @@ namespace Gateway.BLL.Services
                         data.IsActive = true;
 
                         await _repository.AddAsync(data);
+                        await _efDbContext.SaveChangesAsync();
+
+                        // SYNC AUTHORIZED CLIENTS
+                        await SyncClientRouteAccessAsync(data.Id, model.ClientIds);
 
                         if (model.TargetHosts != null && model.TargetHosts.Count > 0)
                         {
@@ -234,7 +251,7 @@ namespace Gateway.BLL.Services
                     var user = await _efDbContext.User!.FirstOrDefaultAsync(d => d.Username == model.OpUser) ?? new Model.User() { Id = 0 };
 
                     var data = await _efDbContext.Set<Model.Route>()
-                        .Include(e => e.OutboundAuthProfile) // <-- Include OutboundAuthProfile for audit log serialization
+                        .Include(e => e.OutboundAuthProfile)
                         .Include(e => e.TargetHosts)
                         .Include(e => e.IpRules)
                         .Include(e => e.Transforms)
@@ -261,7 +278,7 @@ namespace Gateway.BLL.Services
 
                         _mapper.Map(model, data);
                         data.RequireApiKey = model.RequireApiKey;
-                        data.OutboundAuthProfileId = model.OutboundAuthProfileId; // <-- Assign OutboundAuthProfileId
+                        data.OutboundAuthProfileId = model.OutboundAuthProfileId;
                         data.UpstreamPathTemplate = NormalizePathTemplate(data.UpstreamPathTemplate);
                         data.DownstreamPathTemplate = NormalizePathTemplate(data.DownstreamPathTemplate);
 
@@ -269,6 +286,9 @@ namespace Gateway.BLL.Services
                         data.UpdatedDate = DateTime.Now;
 
                         await _repository.UpdateAsync(data);
+
+                        // SYNC AUTHORIZED CLIENTS
+                        await SyncClientRouteAccessAsync(data.Id, model.ClientIds);
 
                         if (incomingHosts != null && incomingHosts.Count > 0)
                         {
@@ -471,6 +491,31 @@ namespace Gateway.BLL.Services
             }
 
             return result;
+        }
+
+        private async Task SyncClientRouteAccessAsync(long routeId, List<int> clientIds)
+        {
+            var existingAccess = await _efDbContext.Set<Model.ClientRouteAccess>()
+                .Where(ra => ra.RouteId == routeId)
+                .ToListAsync();
+
+            _efDbContext.Set<Model.ClientRouteAccess>().RemoveRange(existingAccess);
+
+            if (clientIds != null && clientIds.Count > 0)
+            {
+                foreach (var clientId in clientIds)
+                {
+                    _efDbContext.Set<Model.ClientRouteAccess>().Add(new Model.ClientRouteAccess
+                    {
+                        RouteId = routeId,
+                        ClientId = clientId,
+                        IsAllowed = true,
+                        CreatedDate = DateTime.Now
+                    });
+                }
+            }
+
+            await _efDbContext.SaveChangesAsync();
         }
 
         private static string NormalizePathTemplate(string? path)

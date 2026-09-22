@@ -2,8 +2,8 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Pesonet.API.Services;
 using Pesonet.API.Services.IService;
-using Common.Services;
-using Common.Services.IService;
+//using Common.Services;
+//using Common.Services.IService;
 using Serilog;
 
 
@@ -39,7 +39,7 @@ try
 
     builder.Host.UseSerilog();
 
-    builder.Services.AddScoped<IAuthenticateService, AuthenticateService>();
+    //builder.Services.AddScoped<IAuthenticateService, AuthenticateService>();
     builder.Services.AddScoped<ITransactionService, TransactionService>();
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();

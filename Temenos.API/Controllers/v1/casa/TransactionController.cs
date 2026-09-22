@@ -50,7 +50,7 @@ namespace Temenos.API.Controllers.v1.casa
         }
 
         [HttpDelete("reverse")]
-        public async Task<IActionResult> Reversal(string companyId, string referenceNo)
+        public async Task<IActionResult> Reversal([FromHeader]string companyId, [FromQuery]string referenceNo)
         {
             try
             {
