@@ -48,7 +48,6 @@ namespace Gateway.Web.Pages.ApiManagement
             }
         }
 
-        // IDINAGDAG: Handler para sa Inbound Auth Providers Dropdown
         public async Task<JsonResult> OnGetAuthProviders()
         {
             try
@@ -68,7 +67,6 @@ namespace Gateway.Web.Pages.ApiManagement
             }
         }
 
-        // IDINAGDAG: Handler para sa Outbound Vendor Auth Profiles Dropdown
         public async Task<JsonResult> OnGetOutboundAuthProfiles()
         {
             try
@@ -194,6 +192,24 @@ namespace Gateway.Web.Pages.ApiManagement
                 };
 
                 return new JsonResult(await _service.RestoreAsync(model));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(
+                    new Response.Result
+                    {
+                        Status = "ERROR",
+                        Message = ex.Message
+                    }
+                );
+            }
+        } 
+        public async Task<JsonResult> OnPostPublish()
+        {
+            try
+            {
+                string opUser = HttpContext.Session.GetString("Username")!;
+                return new JsonResult(await _service.PublishRoutesAsync(opUser));
             }
             catch (Exception ex)
             {

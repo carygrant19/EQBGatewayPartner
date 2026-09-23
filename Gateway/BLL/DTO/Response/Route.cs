@@ -11,10 +11,6 @@
         public DateTime CreatedDate { get; set; }
         public string? UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
-
-        public List<FTargetHost> TargetHosts { get; set; } = [];
-        public List<FRouteIpRule> IpRules { get; set; } = [];
-        public List<FRouteTransform> Transforms { get; set; } = [];
     }
 
     public class Route
@@ -33,7 +29,7 @@
         public int? OutboundAuthProfileId { get; set; }
         public string? OutboundAuthProfileName { get; set; }
 
-        public List<int> ClientIds { get; set; } = []; // <-- IDINAGDAG FOR RESPONSE
+        public List<int> ClientIds { get; set; } = [];
 
         public bool IsActive { get; set; }
         public bool IsWebSocket { get; set; }
@@ -73,6 +69,11 @@
         public bool EnableCircuitBreaker { get; set; } = false;
         public int? MockResponseCode { get; set; }
         public string? MockResponseBody { get; set; }
+
+        // INILIPAT SA BASE CLASS PARA ACCESSIBLE SA RESPONSE.ROUTE
+        public List<FTargetHost> TargetHosts { get; set; } = [];
+        public List<FRouteIpRule> IpRules { get; set; } = [];
+        public List<FRouteTransform> Transforms { get; set; } = [];
     }
 
     public class FTargetHost

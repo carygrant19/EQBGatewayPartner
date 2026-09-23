@@ -14,5 +14,13 @@ namespace Gateway.BLL.Services
                 .AsNoTracking()
                 .ToListAsync();
         }
+
+        public async Task<List<OutboundAuthHeader>> GetHeadersByProfileIdAsync(int profileId)
+        {
+            return await dbContext.Set<OutboundAuthHeader>()
+                .Where(h => h.ProfileId == profileId)
+                .AsNoTracking()
+                .ToListAsync();
+        }
     }
 }

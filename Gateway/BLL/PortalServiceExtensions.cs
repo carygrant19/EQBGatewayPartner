@@ -4,21 +4,19 @@ using Gateway.BLL.Services.IServices;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Yarp.ReverseProxy.Configuration;
 
 namespace Gateway.BLL
 {
     public static class PortalServiceExtensions
     {
         public static IServiceCollection PortalServices(this IServiceCollection services)
-        {
+        { 
+            services.AddHttpClient();
+
             services.AddScoped<ILogService, LogService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IRouteService, RouteService>();
-            services.AddSingleton<DatabaseProxyConfigProvider>();
-            services.AddSingleton<IProxyConfigProvider>(sp => sp.GetRequiredService<DatabaseProxyConfigProvider>());
-
+             
 
             services.AddScoped<IAuthProviderService, AuthProviderService>();
             services.AddScoped<IOutboundAuthProfileService, OutboundAuthProfileService>();
@@ -29,8 +27,9 @@ namespace Gateway.BLL
             services.AddScoped<IModuleService, ModuleService>();
             services.AddScoped<IPermissionService, PermissionService>();
             services.AddScoped<IRoleService, RoleService>();
-            services.AddScoped<IUserService, UserService>(); 
-            return services; 
+            services.AddScoped<IUserService, UserService>();
+
+            return services;
         }
     }
 }

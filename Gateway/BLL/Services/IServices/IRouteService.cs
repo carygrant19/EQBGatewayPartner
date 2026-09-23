@@ -6,6 +6,7 @@ namespace Gateway.BLL.Services.IService
 {
     public interface IRouteService
     {
+        Task<Response.Result> PublishRoutesAsync(string opUser);
         Task<List<Response.Route>> GetActiveEndpointsAsync();
         Task<Response.VRoute> FilterAsync(FParam model);
         Task<Response.Result> CreateAsync(Request.Route model);

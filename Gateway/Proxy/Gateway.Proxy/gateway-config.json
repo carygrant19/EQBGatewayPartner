@@ -1,0 +1,241 @@
+{
+  "PublishedDate": "2026-09-23T16:54:26.5225658+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 26,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}

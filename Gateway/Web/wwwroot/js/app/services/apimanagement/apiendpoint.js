@@ -3,11 +3,11 @@
 ApiEndpointService.Categories = function () {
     return axios.get(appUrl + '/ApiManagement/Index?handler=Categories');
 };
- 
+
 ApiEndpointService.AuthProviders = function () {
     return axios.get(appUrl + '/ApiManagement/Index?handler=AuthProviders');
 };
- 
+
 ApiEndpointService.OutboundAuthProfiles = function () {
     return axios.get(appUrl + '/ApiManagement/Index?handler=OutboundAuthProfiles');
 };
@@ -40,5 +40,11 @@ ApiEndpointService.Delete = function (id) {
 ApiEndpointService.Restore = function (id) {
     return axios.put(appUrl + '/ApiManagement/Index?id=' + id + '&handler=Restore',
         JSON.stringify(id),
+        { headers: headers });
+};
+ 
+ApiEndpointService.Publish = function () {
+    return axios.post(appUrl + '/ApiManagement/Index?handler=Publish',
+        {},
         { headers: headers });
 };

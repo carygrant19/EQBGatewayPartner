@@ -10,16 +10,23 @@ const controller = createApp({
         const show_table = ref(false);
         const actionMode = ref("Add");
         const viewData = ref(null);
-
         const availableMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
         const selectedMethods = ref([]);
+        const clientToAdd = ref(null);
+        const selectedDays = ref([]);
 
         const tabErrors = reactive({
-            basic: 0, security: 0, target: 0, transform: 0, resilience: 0, traffic: 0
+            basic: 0,
+            inbound: 0,
+            outbound: 0,
+            transform: 0,
+            resilience: 0,
+            traffic: 0
         });
 
         const totalErrors = computed(() => {
-            return tabErrors.basic + tabErrors.security + tabErrors.target + tabErrors.transform + tabErrors.resilience + tabErrors.traffic;
+            return tabErrors.basic + tabErrors.inbound + tabErrors.outbound +
+                tabErrors.transform + tabErrors.resilience + tabErrors.traffic;
         });
 
         const parsedViewMethods = computed(() => {
@@ -34,7 +41,6 @@ const controller = createApp({
 
         const search = reactive({ keyword: "" });
         const disableControl = reactive({ code: false });
-        const selectedDays = ref([]);
 
         const formData = reactive({
             id: "0",
@@ -71,8 +77,8 @@ const controller = createApp({
             ratePeriodTimespan: 60,
             timeFrom: null,
             timeTo: null,
-            dateFrom: null, // <-- IDINAGDAG
-            dateTo: null,   // <-- IDINAGDAG
+            dateFrom: null,
+            dateTo: null,
             allowedDays: "",
             loadBalancingPolicy: null,
             timeoutSeconds: 30,
@@ -83,6 +89,64 @@ const controller = createApp({
             transforms: []
         });
 
+        // ========== CLIENT HELPERS ==========
+        const normalizeId = (val) => {
+            if (val === null || val === undefined) return null;
+            return String(val);
+        };
+
+        const selectedClientObjects = computed(() => {
+            if (!formData.clientIds || formData.clientIds.length === 0) return [];
+            const selectedSet = new Set(formData.clientIds.map(normalizeId));
+            return clients.value
+                .filter(c => selectedSet.has(normalizeId(c.id ?? c.Id)))
+                .map(c => ({
+                    id: c.id ?? c.Id,
+                    name: c.name ?? c.Name,
+                    code: c.code ?? c.Code
+                }));
+        });
+
+        const availableClientsToAdd = computed(() => {
+            const selectedSet = new Set((formData.clientIds || []).map(normalizeId));
+            return clients.value.filter(c => !selectedSet.has(normalizeId(c.id ?? c.Id)));
+        });
+
+        const AddClient = () => {
+            if (!clientToAdd.value) return;
+            const id = normalizeId(clientToAdd.value);
+            if (!formData.clientIds.map(normalizeId).includes(id)) {
+                formData.clientIds.push(clientToAdd.value);
+            }
+            clientToAdd.value = null;
+        };
+
+        const RemoveClient = (id) => {
+            const target = normalizeId(id);
+            formData.clientIds = formData.clientIds.filter(x => normalizeId(x) !== target);
+        };
+
+        const GetClientName = (id) => {
+            if (!id) return '';
+            const target = normalizeId(id);
+            const found = clients.value.find(c => normalizeId(c.id ?? c.Id) === target);
+            return found ? `${found.name ?? found.Name} (${found.code ?? found.Code})` : `Client #${id}`;
+        };
+
+        // ========== METHOD BADGE COLORS ==========
+        const getMethodBadgeClass = (method) => {
+            switch (method) {
+                case 'GET': return 'bg-success-subtle text-success border border-success-subtle';
+                case 'POST': return 'bg-primary-subtle text-primary border border-primary-subtle';
+                case 'PUT': return 'bg-warning-subtle text-dark border border-warning-subtle';
+                case 'DELETE': return 'bg-danger-subtle text-danger border border-danger-subtle';
+                case 'PATCH': return 'bg-info-subtle text-dark border border-info-subtle';
+                case 'HEAD':
+                case 'OPTIONS': return 'bg-secondary-subtle text-secondary border';
+                default: return 'bg-light text-dark border';
+            }
+        };
+
         onMounted(() => {
             global.GetRecords = GetRecords;
             GetCategories();
@@ -91,17 +155,6 @@ const controller = createApp({
             GetClients();
             GetRecords();
         });
-
-        const getMethodBadgeClass = (method) => {
-            switch (method) {
-                case 'GET': return 'bg-success';
-                case 'POST': return 'bg-primary';
-                case 'PUT': return 'bg-warning text-dark';
-                case 'DELETE': return 'bg-danger';
-                case 'PATCH': return 'bg-info text-dark';
-                default: return 'bg-secondary';
-            }
-        };
 
         const CleanPath = (path) => {
             if (!path) return "";
@@ -159,7 +212,6 @@ const controller = createApp({
                 if (result.data && result.data.totalRecord > 0) {
                     records.value = result.data.data;
                     show_table.value = true;
-
                     if (params.pageNum > result.data.totalPage) {
                         params.pageNum = params.pageNum - 1;
                         initPages(result.data.totalPage);
@@ -182,7 +234,6 @@ const controller = createApp({
 
         const ValidateTabs = () => {
             $('#dataForm').parsley().validate();
-
             const countErrorsInTab = (tabSelector) => {
                 let errorCount = 0;
                 $(tabSelector).find('input, select, textarea').each(function () {
@@ -195,12 +246,10 @@ const controller = createApp({
             };
 
             tabErrors.basic = countErrorsInTab('#v-basic');
-            if (selectedMethods.value.length === 0) {
-                tabErrors.basic++;
-            }
+            if (selectedMethods.value.length === 0) tabErrors.basic++;
 
-            tabErrors.security = countErrorsInTab('#v-security');
-            tabErrors.target = formData.integrationType === 'PROXY' ? countErrorsInTab('#v-target') : 0;
+            tabErrors.inbound = countErrorsInTab('#v-inbound');
+            tabErrors.outbound = formData.integrationType === 'PROXY' ? countErrorsInTab('#v-outbound') : 0;
             tabErrors.transform = formData.integrationType === 'PROXY' ? countErrorsInTab('#v-transform') : 0;
             tabErrors.resilience = countErrorsInTab('#v-resilience');
             tabErrors.traffic = countErrorsInTab('#v-traffic');
@@ -210,8 +259,8 @@ const controller = createApp({
 
         const ResetTabErrors = () => {
             tabErrors.basic = 0;
-            tabErrors.security = 0;
-            tabErrors.target = 0;
+            tabErrors.inbound = 0;
+            tabErrors.outbound = 0;
             tabErrors.transform = 0;
             tabErrors.resilience = 0;
             tabErrors.traffic = 0;
@@ -245,7 +294,7 @@ const controller = createApp({
             formData.integrationType = "PROXY";
             formData.stripPath = true;
             formData.preserveHostHeader = false;
-            formData.allowedMethods = "GET,POST,PUT,DELETE";
+            formData.allowedMethods = "GET";
             formData.apiVersion = "v1";
             formData.maxRetries = 0;
             formData.retryDelayMs = 1000;
@@ -264,13 +313,12 @@ const controller = createApp({
             formData.timeoutSeconds = 30;
             formData.enableCaching = false;
             formData.cacheTtlSeconds = 60;
-
-            selectedMethods.value = ['GET', 'POST', 'PUT', 'DELETE'];
-
-            formData.targetHosts = [{ host: "localhost", port: 5000, weight: 1, description: "Primary Host", healthCheckPath: "/health", isHealthy: true }];
+            selectedMethods.value = ['GET'];
+            formData.targetHosts = [{ host: "localhost", port: null, weight: 1, description: "Primary Host", healthCheckPath: "/health", isHealthy: true }];
             formData.ipRules = [];
             formData.transforms = [];
             selectedDays.value = [];
+            clientToAdd.value = null;
 
             nextTick(() => {
                 $('#v-basic-tab').tab('show');
@@ -285,19 +333,22 @@ const controller = createApp({
 
             Object.assign(formData, record);
             formData.loadBalancingPolicy = record.loadBalancingPolicy || null;
-            formData.clientIds = record.clientIds ? [...record.clientIds] : (record.ClientIds ? [...record.ClientIds] : []);
 
-            // Parse Dates for <input type="date">
+            // Fixed clientIds handling
+            let rawClients = record.clientIds ?? record.ClientIds ?? [];
+            if (Array.isArray(rawClients) && rawClients.length > 0 && typeof rawClients[0] === 'object') {
+                formData.clientIds = rawClients.map(c => c.id ?? c.Id).filter(Boolean);
+            } else {
+                formData.clientIds = Array.isArray(rawClients) ? [...rawClients] : [];
+            }
+
             formData.dateFrom = record.dateFrom ? record.dateFrom.split('T')[0] : (record.DateFrom ? record.DateFrom.split('T')[0] : null);
             formData.dateTo = record.dateTo ? record.dateTo.split('T')[0] : (record.DateTo ? record.DateTo.split('T')[0] : null);
-
-            // Parse Times for <input type="time">
             formData.timeFrom = record.timeFrom || record.TimeFrom || null;
             formData.timeTo = record.timeTo || record.TimeTo || null;
 
             const catchAllRegex = /\{\*\*(catch-all|remainder)\}/i;
             formData.enableCatchAll = catchAllRegex.test(record.upstreamPathTemplate || "");
-
             formData.upstreamBase = CleanPath(record.upstreamPathTemplate);
             formData.downstreamBase = CleanPath(record.downstreamPathTemplate);
 
@@ -308,15 +359,12 @@ const controller = createApp({
                 .map(m => m.trim().toUpperCase())
                 .filter(m => m);
 
-            if (record.allowedDays) {
-                selectedDays.value = record.allowedDays.split(',');
-            } else {
-                selectedDays.value = [];
-            }
+            selectedDays.value = record.allowedDays ? record.allowedDays.split(',') : [];
 
             formData.targetHosts = record.targetHosts ? [...record.targetHosts] : [];
             formData.ipRules = record.ipRules ? [...record.ipRules] : [];
             formData.transforms = record.transforms ? [...record.transforms] : [];
+            clientToAdd.value = null;
 
             nextTick(() => {
                 $('#v-basic-tab').tab('show');
@@ -343,15 +391,14 @@ const controller = createApp({
             }
 
             const isValid = ValidateTabs();
-
             if (!isValid) {
                 let errorMessages = [];
                 if (tabErrors.basic > 0) errorMessages.push(`<b>General & Routing</b>: ${tabErrors.basic} field(s)`);
-                if (tabErrors.security > 0) errorMessages.push(`<b>Security & Auth</b>: ${tabErrors.security} field(s)`);
-                if (tabErrors.target > 0) errorMessages.push(`<b>Target Hosts</b>: ${tabErrors.target} field(s)`);
+                if (tabErrors.inbound > 0) errorMessages.push(`<b>Inbound Auth</b>: ${tabErrors.inbound} field(s)`);
+                if (tabErrors.outbound > 0) errorMessages.push(`<b>Outbound & Targets</b>: ${tabErrors.outbound} field(s)`);
                 if (tabErrors.transform > 0) errorMessages.push(`<b>Header Transforms</b>: ${tabErrors.transform} field(s)`);
-                if (tabErrors.resilience > 0) errorMessages.push(`<b>Resilience & Mocking</b>: ${tabErrors.resilience} field(s)`);
-                if (tabErrors.traffic > 0) errorMessages.push(`<b>Traffic & Cache</b>: ${tabErrors.traffic} field(s)`);
+                if (tabErrors.resilience > 0) errorMessages.push(`<b>Resilience & Mock</b>: ${tabErrors.resilience} field(s)`);
+                if (tabErrors.traffic > 0) errorMessages.push(`<b>Traffic & Schedule</b>: ${tabErrors.traffic} field(s)`);
 
                 swal.fire({
                     icon: 'warning',
@@ -363,31 +410,19 @@ const controller = createApp({
 
             formData.allowedMethods = selectedMethods.value.join(',');
             formData.upstreamHttpMethod = selectedMethods.value.join(',');
-            formData.allowedDays = selectedDays.value.join(',');
-
+            formData.allowedDays = selectedDays.value.join(','); 
             $(".preloader").show();
             try {
                 const result = await ApiEndpointService.Save(formData);
                 if (result.data.status === 'SUCCESS') {
                     $('#formModal').modal('hide');
-                    swal.fire({
-                        text: result.data.message,
-                        icon: "success"
-                    });
+                    swal.fire({ text: result.data.message, icon: "success" });
                     GetRecords();
                 } else {
-                    swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: result.data.message
-                    });
+                    swal.fire({ icon: 'error', title: 'Oops...', text: result.data.message });
                 }
             } catch (error) {
-                swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'An unexpected error occurred while saving route.'
-                });
+                swal.fire({ icon: 'error', title: 'Error', text: 'An unexpected error occurred while saving route.' });
             } finally {
                 $('.preloader').fadeOut('slow');
             }
@@ -401,7 +436,34 @@ const controller = createApp({
             }
             GetRecords();
         };
+        const Publish = async () => {
+            const popup = await swal.fire({
+                title: "Publish Changes to Gateway?",
+                text: "This will push all pending database configurations live to the Proxy Gateway and flush active RAM caches.",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: '#198754',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, Publish Live!'
+            });
 
+            if (popup.value) {
+                $(".preloader").show();
+                try {
+                    const result = await ApiEndpointService.Publish();
+                    if (result.data && result.data.status === 'SUCCESS') {
+                        swal.fire({ text: result.data.message, icon: "success" });
+                        GetRecords();
+                    } else {
+                        swal.fire({ icon: 'error', title: 'Publish Failed', text: result.data ? result.data.message : 'Failed to publish route configurations.' });
+                    }
+                } catch (error) {
+                    swal.fire({ icon: 'error', title: 'Error', text: 'An unexpected error occurred while publishing configuration.' });
+                } finally {
+                    $('.preloader').fadeOut('slow');
+                }
+            }
+        };
         const KeyPress_Search = (e) => { if (e.which === 13) Search(); };
 
         const Delete = async (data) => {
@@ -414,7 +476,6 @@ const controller = createApp({
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, disable it!'
             });
-
             if (popup.value) {
                 $(".preloader").show();
                 try {
@@ -439,7 +500,6 @@ const controller = createApp({
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, reactivate!'
             });
-
             if (popup.value) {
                 $(".preloader").show();
                 try {
@@ -455,30 +515,25 @@ const controller = createApp({
         };
 
         const AddTargetHost = () => {
-            formData.targetHosts.push({ host: "localhost", port: 5000, weight: 1, description: "", healthCheckPath: "/health", isHealthy: true });
+            formData.targetHosts.push({ host: "localhost", port: null, weight: 1, description: "", healthCheckPath: "/health", isHealthy: true });
             nextTick(() => ValidateTabs());
         };
-
         const RemoveTargetHost = (index) => {
             formData.targetHosts.splice(index, 1);
             nextTick(() => ValidateTabs());
         };
-
         const AddIpRule = () => {
             formData.ipRules.push({ ipAddressOrRange: "127.0.0.1", ruleType: "Allow", description: "" });
             nextTick(() => ValidateTabs());
         };
-
         const RemoveIpRule = (index) => {
             formData.ipRules.splice(index, 1);
             nextTick(() => ValidateTabs());
         };
-
         const AddTransform = () => {
             formData.transforms.push({ transformPhase: "Request", action: "Add", headerName: "", headerValue: "" });
             nextTick(() => ValidateTabs());
         };
-
         const RemoveTransform = (index) => {
             formData.transforms.splice(index, 1);
             nextTick(() => ValidateTabs());
@@ -502,6 +557,9 @@ const controller = createApp({
             selectedDays,
             availableMethods,
             selectedMethods,
+            clientToAdd,
+            selectedClientObjects,
+            availableClientsToAdd,
             getMethodBadgeClass,
             tabErrors,
             totalErrors,
@@ -519,6 +577,10 @@ const controller = createApp({
             Delete,
             Save,
             Restore,
+            Publish,
+            AddClient,
+            RemoveClient,
+            GetClientName,
             AddTargetHost,
             RemoveTargetHost,
             AddIpRule,
@@ -530,3 +592,5 @@ const controller = createApp({
 });
 
 controller.mount('#controller');
+
+

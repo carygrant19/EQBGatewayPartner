@@ -1,6 +1,7 @@
 ﻿using Gateway.BLL.Services;
 using Gateway.BLL.Services.IService;
 using Gateway.BLL.Services.IServices;
+using Gateway.Proxy.Helper;
 using Microsoft.Extensions.DependencyInjection;
 using Yarp.ReverseProxy.Configuration;
 
@@ -9,12 +10,15 @@ namespace Gateway.BLL
     public static class ProxyServiceExtensions
     {
         public static IServiceCollection ProxyServices(this IServiceCollection services)
-        {
+        { 
+            services.AddHttpClient();
+
+            services.AddMemoryCache();
             services.AddScoped<ILogService, LogService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IRouteService, RouteService>();
             services.AddScoped<IAuthService, AuthService>();
-            // SINGLETON ALIAS FIX (Dito na lang i-register para malinis)
+
             services.AddSingleton<DatabaseProxyConfigProvider>();
             services.AddSingleton<IProxyConfigProvider>(sp => sp.GetRequiredService<DatabaseProxyConfigProvider>());
 

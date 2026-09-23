@@ -5,6 +5,7 @@ using ApiResponse = Common.DTOs.Response.Api;
 
 namespace Temenos.API.Controllers.v1.casa
 {
+    [Authorize]
     [Route("api/v1/casa/[controller]")]
     [ApiController]
     public class AccountController(IAccountService accountService) : ControllerBase

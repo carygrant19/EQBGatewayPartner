@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gateway.Data.Models
 {
-    [Table("Map_TargetHost")]
+    [Table("Map_Route_TargetHost")]
     public class TargetHost
     {
         [Key]

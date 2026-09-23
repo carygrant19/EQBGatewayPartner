@@ -2,11 +2,18 @@
 using Gateway.BLL.Services;
 using Gateway.BLL.Services.IService;
 using Gateway.Data.Models;
+using Gateway.Proxy.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Yarp.ReverseProxy.Model;
 using Model = Gateway.Data.Models;
+using Response = Gateway.BLL.DTO.Response;
 
 namespace Gateway.Proxy.Middleware
 {
@@ -17,19 +24,41 @@ namespace Gateway.Proxy.Middleware
             IClientService apiClientService,
             ICertificateValidatorService certValidator,
             IAuthService authService,
-            EFDbContext dbContext)
+            IConfiguration configuration,
+            EFDbContext dbContext,
+            IMemoryCache cache)
         {
             string traceId = context.TraceIdentifier;
             var path = context.Request.Path.Value ?? "";
 
-            // PHASE 1: HEALTH CHECK EXEMPTION
-            if (path.Equals("/health", StringComparison.OrdinalIgnoreCase) || path.EndsWith("/health", StringComparison.OrdinalIgnoreCase))
+            // PHASE 1: INTERNAL EXEMPTIONS (/health, /reload)
+            if (path.Equals("/health", StringComparison.OrdinalIgnoreCase) ||
+                path.EndsWith("/health", StringComparison.OrdinalIgnoreCase) ||
+                path.Equals("/internal/gateway/reload", StringComparison.OrdinalIgnoreCase))
             {
                 await next(context);
                 return;
             }
 
-            // PHASE 2: ROUTE MATCHING (YARP Metadata or DB Fallback)
+            // PHASE 2: ROUTE CACHE WITH EAGER LOADING
+            var activeEndpoints = await cache.GetOrCreateAsync("GATEWAY_ACTIVE_ROUTES", async entry =>
+            {
+                entry.AddExpirationToken(GatewayCacheSignal.GetToken());
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
+
+                return await dbContext.Set<Model.Route>()
+                    .Include(e => e.TargetHosts)
+                    .Include(e => e.IpRules)
+                    .Include(e => e.AuthProvider)
+                    .Include(e => e.Transforms)
+                    .Include(e => e.ClientRouteAccess)
+                    .Include(e => e.OutboundAuthProfile)
+                        .ThenInclude(p => p.Headers)
+                    .Where(e => e.IsActive)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }) ?? new List<Model.Route>();
+
             var routeModel = context.GetEndpoint()?.Metadata.GetMetadata<RouteModel>();
             string? routeCode = routeModel?.Config.RouteId;
 
@@ -37,49 +66,26 @@ namespace Gateway.Proxy.Middleware
 
             if (!string.IsNullOrEmpty(routeCode))
             {
-                endpoint = await dbContext.Set<Model.Route>()
-                    .Include(e => e.IpRules)
-                    .Include(e => e.AuthProvider)
-                    .Include(e => e.Transforms)
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(e => e.Code == routeCode && e.IsActive);
+                endpoint = activeEndpoints.FirstOrDefault(e => e.Code == routeCode);
             }
 
-            if (endpoint == null)
+            endpoint ??= activeEndpoints.FirstOrDefault(e =>
             {
-                var activeEndpoints = await dbContext.Set<Model.Route>()
-                    .Include(e => e.IpRules)
-                    .Include(e => e.AuthProvider)
-                    .Include(e => e.Transforms)
-                    .Where(e => e.IsActive)
-                    .AsNoTracking()
-                    .ToListAsync();
+                bool hasCatchAll = e.UpstreamPathTemplate.Contains("{**catch-all}", StringComparison.OrdinalIgnoreCase)
+                                || e.UpstreamPathTemplate.Contains("{**remainder}", StringComparison.OrdinalIgnoreCase);
 
-                endpoint = activeEndpoints.FirstOrDefault(e =>
-                {
-                    bool hasCatchAll = e.UpstreamPathTemplate.Contains("{**catch-all}", StringComparison.OrdinalIgnoreCase)
-                                    || e.UpstreamPathTemplate.Contains("{**remainder}", StringComparison.OrdinalIgnoreCase);
+                var cleanPath = RouteTemplateHelper.StripWildcards(e.UpstreamPathTemplate).TrimEnd('/');
 
-                    var cleanPath = RouteTemplateHelper.StripWildcards(e.UpstreamPathTemplate).TrimEnd('/');
+                if (string.IsNullOrEmpty(cleanPath)) return false;
 
-                    if (string.IsNullOrEmpty(cleanPath)) return false;
+                if (path.Equals(cleanPath, StringComparison.OrdinalIgnoreCase) || path.Equals(cleanPath + "/", StringComparison.OrdinalIgnoreCase))
+                    return true;
 
-                    // 1. Exact route match
-                    if (path.Equals(cleanPath, StringComparison.OrdinalIgnoreCase) ||
-                        path.Equals(cleanPath + "/", StringComparison.OrdinalIgnoreCase))
-                    {
-                        return true;
-                    }
+                if (hasCatchAll && path.StartsWith(cleanPath + "/", StringComparison.OrdinalIgnoreCase))
+                    return true;
 
-                    // 2. Sub-path match (kailangan may '/' boundary at naka-enable ang catch-all)
-                    if (hasCatchAll && path.StartsWith(cleanPath + "/", StringComparison.OrdinalIgnoreCase))
-                    {
-                        return true;
-                    }
-
-                    return false;
-                });
-            }
+                return false;
+            });
 
             if (endpoint == null)
             {
@@ -88,9 +94,9 @@ namespace Gateway.Proxy.Middleware
             }
 
             context.Items["MatchedEndpoint"] = endpoint;
-            // =========================================================================
-            // PHASE 2.5: HTTP METHOD VALIDATION (BAGONG DAGDAG)
-            // =========================================================================
+            bool isInternalAuth = endpoint.IntegrationType.Equals("INTERNAL_AUTH", StringComparison.OrdinalIgnoreCase);
+
+            // PHASE 3: EDGE SECURITY (Methods, Operating Hours, IP)
             string incomingMethod = context.Request.Method.ToUpper();
             string rawAllowedMethods = !string.IsNullOrWhiteSpace(endpoint.AllowedMethods)
                 ? endpoint.AllowedMethods
@@ -109,7 +115,7 @@ namespace Gateway.Proxy.Middleware
                     return;
                 }
             }
-            // PHASE 3: EDGE SECURITY (Operating Hours & IP Restriction Rules)
+
             if (!Common.IsEndpointTimeValid(endpoint.DateFrom, endpoint.DateTo, endpoint.TimeFrom, endpoint.TimeTo, endpoint.AllowedDays))
             {
                 await BlockRequest(context, 403, "Access Denied: Endpoint is currently outside operating hours.", traceId);
@@ -130,20 +136,97 @@ namespace Gateway.Proxy.Middleware
                 }
             }
 
-            // PHASE 4: INTEGRATION BRANCHING
+            // PHASE 4: CLIENT IDENTIFICATION, mTLS, & ROUTE ACCESS
+            string? apiKey = GetHeaderValue(context.Request, "X-Api-Key", "X-Client-Id", "X-External-Api-Key");
 
-            // --- BRANCH A: INTERNAL AUTH (Token Generator) ---
-            if (endpoint.IntegrationType.Equals("INTERNAL_AUTH", StringComparison.OrdinalIgnoreCase))
+            if (endpoint.RequireApiKey && string.IsNullOrWhiteSpace(apiKey))
+            {
+                await BlockRequest(context, 401, "Unauthorized: X-Api-Key header is required.", traceId);
+                return;
+            }
+
+            Response.Client? client = null;
+
+            if (!string.IsNullOrWhiteSpace(apiKey))
+            {
+                client = await apiClientService.ByApiKey(apiKey);
+
+                if (client == null || string.IsNullOrEmpty(client.Code))
+                {
+                    await BlockRequest(context, 401, "Unauthorized: Invalid API Key.", traceId);
+                    return;
+                }
+
+                // SSL/mTLS Check kung SSLRequired = true at hindi INTERNAL_AUTH
+                if (client.SSLRequired && !isInternalAuth)
+                {
+                    var clientCert = await context.Connection.GetClientCertificateAsync();
+                    if (clientCert == null || !certValidator.Validate(clientCert))
+                    {
+                        await BlockRequest(context, 403, "Access Denied: Valid Client Certificate (mTLS) is required for this API Key.", traceId);
+                        return;
+                    }
+                }
+
+                if (endpoint.RequireApiKey)
+                {
+                    int parsedClientId = int.Parse(client.Id);
+                    bool hasRouteAccess = endpoint.ClientRouteAccess != null &&
+                        endpoint.ClientRouteAccess.Any(a => a.ClientId == parsedClientId && a.IsAllowed);
+
+                    if (!hasRouteAccess)
+                    {
+                        await BlockRequest(context, 403, "Forbidden: Client does not have access permission to this route.", traceId);
+                        return;
+                    }
+                }
+
+                context.Request.Headers["X-Client-Id"] = client.Id.ToString();
+                context.Items["MatchedClient"] = client;
+            }
+
+            // PHASE 5: JWT AUTHENTICATION (Exempted kung INTERNAL_AUTH)
+            if (endpoint.AuthProviderId.HasValue && !isInternalAuth)
+            {
+                if (context.Request.Headers.TryGetValue("Authorization", out var authHeader) &&
+                    authHeader.ToString().StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                {
+                    string token = authHeader.ToString().Substring("Bearer ".Length).Trim();
+                    Model.AuthProvider? targetAuthProvider = endpoint.AuthProvider;
+
+                    targetAuthProvider ??= new Model.AuthProvider
+                    {
+                        Code = "GATEWAY",
+                        Name = "Gateway",
+                        Issuer = configuration["JWT:Issuer"] ?? "",
+                        Audience = configuration["JWT:Audience"] ?? "",
+                        SecretKey = configuration["JWT:Secret"] ?? "",
+                        IsActive = true
+                    };
+
+                    if (!JwtHelper.ValidateToken(token, targetAuthProvider))
+                    {
+                        await BlockRequest(context, 401, "Unauthorized: Invalid or expired Bearer JWT token.", traceId);
+                        return;
+                    }
+                }
+                else
+                {
+                    await BlockRequest(context, 401, "Unauthorized: Authorization Bearer token is missing.", traceId);
+                    return;
+                }
+            }
+
+            // PHASE 6: INTEGRATION BRANCHING
+            if (isInternalAuth)
             {
                 var (isSuccess, jsonResponse, statusCode) = await authService.ProcessInternalAuthAsync(context, endpoint);
-
                 context.Response.StatusCode = statusCode;
                 context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(jsonResponse);
                 return;
             }
 
-            // --- BRANCH B: MOCK SERVICE ---
             if (endpoint.IntegrationType.Equals("MOCK", StringComparison.OrdinalIgnoreCase))
             {
                 context.Response.StatusCode = endpoint.MockResponseCode ?? 200;
@@ -152,72 +235,24 @@ namespace Gateway.Proxy.Middleware
                 return;
             }
 
-            // --- BRANCH C: REVERSE PROXY ---
             if (endpoint.IntegrationType.Equals("PROXY", StringComparison.OrdinalIgnoreCase))
             {
-                // 1. API Key Check
-                if (endpoint.RequireApiKey)
+                // OUTBOUND AUTH HEADERS INJECTION
+                if (endpoint.OutboundAuthProfile != null && endpoint.OutboundAuthProfile.Headers != null)
                 {
-                    string? apiKey = GetHeaderValue(context.Request, "X-Api-Key", "X-Client-Id", "X-External-Api-Key");
-
-                    if (string.IsNullOrWhiteSpace(apiKey))
+                    foreach (var authHeaderItem in endpoint.OutboundAuthProfile.Headers)
                     {
-                        await BlockRequest(context, 401, "Unauthorized: X-Api-Key header is required.", traceId);
-                        return;
-                    }
+                        string targetHeaderName = string.IsNullOrWhiteSpace(authHeaderItem.HeaderName) ? "Authorization" : authHeaderItem.HeaderName;
+                        string formattedValue = authHeaderItem.AuthType.Equals("Bearer", StringComparison.OrdinalIgnoreCase)
+                            ? $"Bearer {authHeaderItem.CredentialValue}"
+                            : authHeaderItem.CredentialValue;
 
-                    var client = await apiClientService.ByApiKey(apiKey);
-
-                    if (client == null || string.IsNullOrEmpty(client.Code))
-                    {
-                        await BlockRequest(context, 401, "Unauthorized: Invalid API Key.", traceId);
-                        return;
-                    }
-
-                    context.Request.Headers["X-Client-Id"] = client.Id.ToString();
-                    context.Items["MatchedClient"] = client;
-
-                    if (client.SSLRequired && !certValidator.Validate(context.Connection.ClientCertificate))
-                    {
-                        await BlockRequest(context, 403, "Valid Client Certificate Required.", traceId);
-                        return;
-                    }
-
-                    if (context.Request.Headers.ContainsKey("X-Signature"))
-                    {
-                        string sigResult = await ValidateRequest.SignatureAsync(context, client);
-                        if (!sigResult.Equals("Valid", StringComparison.OrdinalIgnoreCase))
-                        {
-                            await BlockRequest(context, 401, sigResult, traceId);
-                            return;
-                        }
-                    }
-                }
-
-                // 2. JWT Token Enforcement Check
-                if (endpoint.AuthProviderId.HasValue && endpoint.AuthProvider != null)
-                {
-                    if (!context.Request.Headers.TryGetValue("Authorization", out var authHeader) ||
-                        !authHeader.ToString().StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
-                    {
-                        await BlockRequest(context, 401, "Unauthorized: Bearer JWT Token is required for this endpoint.", traceId);
-                        return;
-                    }
-
-                    string token = authHeader.ToString().Substring("Bearer ".Length).Trim();
-                    bool isJwtValid = JwtHelper.ValidateToken(token, endpoint.AuthProvider);
-
-                    if (!isJwtValid)
-                    {
-                        await BlockRequest(context, 401, "Unauthorized: Invalid, expired, or signature mismatched JWT token.", traceId);
-                        return;
+                        context.Request.Headers[targetHeaderName] = formattedValue;
                     }
                 }
             }
 
-            // Remove compressed headers so Proxy response is readable in logs
             context.Request.Headers.Remove("Accept-Encoding");
-
             await next(context);
         }
 
@@ -226,9 +261,7 @@ namespace Gateway.Proxy.Middleware
             foreach (var key in possibleKeys)
             {
                 if (request.Headers.TryGetValue(key, out var val) && !string.IsNullOrWhiteSpace(val))
-                {
                     return val.ToString().Trim();
-                }
             }
             return null;
         }
@@ -236,13 +269,11 @@ namespace Gateway.Proxy.Middleware
         private static async Task BlockRequest(HttpContext context, int statusCode, string message, string traceId)
         {
             context.Response.StatusCode = statusCode;
-
             if (!context.Response.HasStarted)
             {
                 context.Response.Headers["X-TraceID"] = traceId;
                 context.Response.ContentType = "application/json";
             }
-
             await context.Response.WriteAsync($"{{\"error\": \"Blocked\", \"message\": \"{message}\"}}");
         }
     }
