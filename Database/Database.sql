@@ -1,6 +1,6 @@
 USE [EQBGatewayPartner]
 GO
-/****** Object:  Table [dbo].[Log_Activity]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Log_Activity]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -18,7 +18,7 @@ CREATE TABLE [dbo].[Log_Activity](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Log_Audit]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Log_Audit]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -39,7 +39,7 @@ CREATE TABLE [dbo].[Log_Audit](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Log_Exception]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Log_Exception]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -58,7 +58,7 @@ CREATE TABLE [dbo].[Log_Exception](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Log_Http]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Log_Http]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -84,7 +84,7 @@ CREATE TABLE [dbo].[Log_Http](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Log_Transaction]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Log_Transaction]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -106,7 +106,7 @@ CREATE TABLE [dbo].[Log_Transaction](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Map_Client_Credential]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Map_Client_Credential]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -125,7 +125,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Map_Client_Route_Access]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Map_Client_Route_Access]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -145,7 +145,7 @@ CREATE TABLE [dbo].[Map_Client_Route_Access](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Map_Module_Permission]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Map_Module_Permission]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -160,7 +160,7 @@ CREATE TABLE [dbo].[Map_Module_Permission](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Map_OutboundAuthHeader]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Map_OutboundAuthHeader]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -178,7 +178,7 @@ CREATE TABLE [dbo].[Map_OutboundAuthHeader](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Map_Role_Module_Permission]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Map_Role_Module_Permission]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -194,7 +194,7 @@ CREATE TABLE [dbo].[Map_Role_Module_Permission](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Map_Route_IpRule]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Map_Route_IpRule]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -211,7 +211,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Map_Route_TargetHost]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Map_Route_TargetHost]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -231,7 +231,7 @@ CREATE TABLE [dbo].[Map_Route_TargetHost](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Map_Route_Transform]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Map_Route_Transform]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -249,7 +249,7 @@ CREATE TABLE [dbo].[Map_Route_Transform](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Map_User_Role]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Map_User_Role]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -264,7 +264,7 @@ CREATE TABLE [dbo].[Map_User_Role](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Master_Active_User]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Master_Active_User]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -280,7 +280,7 @@ CREATE TABLE [dbo].[Master_Active_User](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Master_AuthProviders]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Master_AuthProviders]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -300,7 +300,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Master_Branch]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Master_Branch]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -321,7 +321,7 @@ CREATE TABLE [dbo].[Master_Branch](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Master_Category]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Master_Category]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -342,7 +342,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Master_Client]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Master_Client]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -366,7 +366,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Master_Company]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Master_Company]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -386,7 +386,7 @@ CREATE TABLE [dbo].[Master_Company](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Master_GatewayConfig]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Master_GatewayConfig]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -408,7 +408,7 @@ CREATE TABLE [dbo].[Master_GatewayConfig](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Master_Module]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Master_Module]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -432,7 +432,7 @@ CREATE TABLE [dbo].[Master_Module](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Master_OutboundAuthProfile]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Master_OutboundAuthProfile]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -453,7 +453,7 @@ CREATE TABLE [dbo].[Master_OutboundAuthProfile](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Master_Password_History]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Master_Password_History]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -469,7 +469,7 @@ CREATE TABLE [dbo].[Master_Password_History](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Master_Permission]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Master_Permission]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -485,7 +485,7 @@ CREATE TABLE [dbo].[Master_Permission](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Master_Role]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Master_Role]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -501,7 +501,7 @@ CREATE TABLE [dbo].[Master_Role](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Master_Route]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Master_Route]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -557,7 +557,7 @@ CREATE TABLE [dbo].[Master_Route](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Master_User]    Script Date: 9/23/2026 5:05:23 PM ******/
+/****** Object:  Table [dbo].[Master_User]    Script Date: 9/23/2026 8:30:58 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -899,6 +899,82 @@ GO
 INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (150, 1, N'User', N'LOGIN', N'Authenticated.', CAST(N'2026-09-23T16:54:11.5310000' AS DateTime2))
 GO
 INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (151, 1, N'Route', N'PUBLISH', N'All gateway proxy routes published. Backup saved to: 2026/09/yarp-config_20260923_165426.json', CAST(N'2026-09-23T16:54:28.1750000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (152, 1, N'User', N'LOGIN', N'Authenticated.', CAST(N'2026-09-23T19:20:56.5930000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (153, 1, N'User', N'LOGIN', N'Authenticated.', CAST(N'2026-09-23T19:26:01.7890000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (154, 1, N'User', N'LOGIN', N'Authenticated.', CAST(N'2026-09-23T19:29:26.6450000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (155, 1, N'Route', N'PUBLISH', N'All gateway proxy routes published. Backup saved to: 2026/09/yarp-config_20260923_192932.json', CAST(N'2026-09-23T19:29:32.3440000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (156, 1, N'User', N'LOGIN', N'Authenticated.', CAST(N'2026-09-23T19:35:28.6440000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (157, 1, N'User', N'LOGIN', N'Authenticated.', CAST(N'2026-09-23T19:44:15.2170000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (158, 1, N'Route', N'ADD', N'[Temenos Transaction] proxy path registered (Draft).', CAST(N'2026-09-23T19:48:12.8400000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (159, 1, N'Route', N'EDIT', N'[Temenos Transaction] definition updated (Draft).', CAST(N'2026-09-23T19:48:24.0030000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (160, 1, N'Route', N'EDIT', N'[Temenos Accounts] definition updated (Draft).', CAST(N'2026-09-23T19:48:34.2290000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (161, 1, N'Route', N'PUBLISH', N'All gateway proxy routes published. Backup saved to: 2026/09/yarp-config_20260923_194836.json', CAST(N'2026-09-23T19:48:36.7320000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (162, 1, N'Route', N'EDIT', N'[Temenos Accounts] definition updated (Draft).', CAST(N'2026-09-23T19:48:51.8370000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (163, 1, N'Route', N'PUBLISH', N'All gateway proxy routes published. Backup saved to: 2026/09/yarp-config_20260923_194854.json', CAST(N'2026-09-23T19:48:54.1360000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (164, 1, N'Route', N'EDIT', N'[Temenos Transaction] definition updated (Draft).', CAST(N'2026-09-23T19:49:55.4720000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (165, 1, N'Route', N'PUBLISH', N'All gateway proxy routes published. Backup saved to: 2026/09/yarp-config_20260923_195003.json', CAST(N'2026-09-23T19:50:03.4650000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (166, 1, N'User', N'LOGIN', N'Authenticated.', CAST(N'2026-09-23T19:53:28.0530000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (167, 1, N'Route', N'EDIT', N'[Temenos Transaction] definition updated (Draft).', CAST(N'2026-09-23T19:53:38.9120000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (168, 1, N'Route', N'PUBLISH', N'All gateway proxy routes published. Backup saved to: 2026/09/yarp-config_20260923_195355.json', CAST(N'2026-09-23T19:53:56.1810000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (169, 1, N'Route', N'PUBLISH', N'All gateway proxy routes published. Backup saved to: 2026/09/yarp-config_20260923_195359.json', CAST(N'2026-09-23T19:54:00.0380000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (170, 1, N'Route', N'EDIT', N'[Temenos Transaction] definition updated (Draft).', CAST(N'2026-09-23T19:54:12.7230000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (171, 1, N'Route', N'PUBLISH', N'All gateway proxy routes published. Backup saved to: 2026/09/yarp-config_20260923_195415.json', CAST(N'2026-09-23T19:54:15.9710000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (172, 1, N'User', N'LOGIN', N'Authenticated.', CAST(N'2026-09-23T20:03:20.5030000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (173, 1, N'User', N'LOGIN', N'Authenticated.', CAST(N'2026-09-23T20:09:06.6790000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (174, 1, N'Route', N'EDIT', N'[Temenos CASA Accounts] definition updated (Draft).', CAST(N'2026-09-23T20:11:22.0820000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (175, 1, N'Route', N'EDIT', N'[Temenos CASA Transaction] definition updated (Draft).', CAST(N'2026-09-23T20:11:36.6220000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (176, 1, N'User', N'LOGIN', N'Authenticated.', CAST(N'2026-09-23T20:13:30.2410000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (177, 1, N'Route', N'ADD', N'[Temenos Loans Account] proxy path registered (Draft).', CAST(N'2026-09-23T20:14:45.0940000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (178, 1, N'Route', N'EDIT', N'[Temenos Loans Account] definition updated (Draft).', CAST(N'2026-09-23T20:14:56.6040000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (179, 1, N'Route', N'EDIT', N'[Gateway Authentication] definition updated (Draft).', CAST(N'2026-09-23T20:15:02.4800000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (180, 1, N'Route', N'PUBLISH', N'All gateway proxy routes published. Backup saved to: 2026/09/yarp-config_20260923_201504.json', CAST(N'2026-09-23T20:15:05.0580000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (181, 1, N'Route', N'EDIT', N'[Gateway Authentication] definition updated (Draft).', CAST(N'2026-09-23T20:15:16.0540000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (182, 1, N'Route', N'PUBLISH', N'All gateway proxy routes published. Backup saved to: 2026/09/yarp-config_20260923_201518.json', CAST(N'2026-09-23T20:15:18.4290000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (183, 1, N'Route', N'EDIT', N'[Temenos Loans Account] definition updated (Draft).', CAST(N'2026-09-23T20:16:27.3180000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (184, 1, N'Route', N'PUBLISH', N'All gateway proxy routes published. Backup saved to: 2026/09/yarp-config_20260923_201629.json', CAST(N'2026-09-23T20:16:29.5300000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (185, 1, N'Route', N'EDIT', N'[Temenos Loans Account] definition updated (Draft).', CAST(N'2026-09-23T20:18:08.5760000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (186, 1, N'Route', N'PUBLISH', N'All gateway proxy routes published. Backup saved to: 2026/09/yarp-config_20260923_201810.json', CAST(N'2026-09-23T20:18:10.7590000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (187, 1, N'Route', N'PUBLISH', N'All gateway proxy routes published. Backup saved to: 2026/09/yarp-config_20260923_201916.json', CAST(N'2026-09-23T20:19:16.1350000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (188, 1, N'User', N'LOGIN', N'Authenticated.', CAST(N'2026-09-23T20:28:01.7140000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Activity] ([Id], [UserId], [ModuleName], [Action], [Details], [LogDate]) VALUES (189, 1, N'Route', N'EDIT', N'[Temenos Loans Account] definition updated (Draft).', CAST(N'2026-09-23T20:28:10.5650000' AS DateTime2))
 GO
 SET IDENTITY_INSERT [dbo].[Log_Activity] OFF
 GO
@@ -2530,6 +2606,8172 @@ INSERT [dbo].[Log_Audit] ([Id], [RecordId], [TableName], [Terminal], [OperationT
   }
 }')
 GO
+INSERT [dbo].[Log_Audit] ([Id], [RecordId], [TableName], [Terminal], [OperationType], [ChangeBy], [ActionDate], [OriginalData], [NewData]) VALUES (6, N'PROXY_CONFIG', N'Master_ApiEndpoint', N'SYSTEM', N'PUBLISH', 1, CAST(N'2026-09-23T19:29:32.133' AS DateTime), N'{
+  "PublishedDate": "2026-09-23T16:54:26.5225658+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 26,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}', N'{
+  "PublishedDate": "2026-09-23T19:29:32.1345461+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 26,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}')
+GO
+INSERT [dbo].[Log_Audit] ([Id], [RecordId], [TableName], [Terminal], [OperationType], [ChangeBy], [ActionDate], [OriginalData], [NewData]) VALUES (7, N'PROXY_CONFIG', N'Master_ApiEndpoint', N'SYSTEM', N'PUBLISH', 1, CAST(N'2026-09-23T19:48:36.543' AS DateTime), N'{
+  "PublishedDate": "2026-09-23T19:29:32.1345461+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 26,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}', N'{
+  "PublishedDate": "2026-09-23T19:48:36.5427913+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "ClusterId": "TEMENOS-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": null,
+        "OutboundAuthProfileName": null,
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 39,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-TRANSACTION",
+        "Name": "Temenos Transaction",
+        "Description": "Temenos Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": null,
+        "AuthProviderName": null,
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 38,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}')
+GO
+INSERT [dbo].[Log_Audit] ([Id], [RecordId], [TableName], [Terminal], [OperationType], [ChangeBy], [ActionDate], [OriginalData], [NewData]) VALUES (8, N'PROXY_CONFIG', N'Master_ApiEndpoint', N'SYSTEM', N'PUBLISH', 1, CAST(N'2026-09-23T19:48:54.050' AS DateTime), N'{
+  "PublishedDate": "2026-09-23T19:48:36.5427913+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "ClusterId": "TEMENOS-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": null,
+        "OutboundAuthProfileName": null,
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 39,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-TRANSACTION",
+        "Name": "Temenos Transaction",
+        "Description": "Temenos Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": null,
+        "AuthProviderName": null,
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 38,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}', N'{
+  "PublishedDate": "2026-09-23T19:48:54.0497649+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "ClusterId": "TEMENOS-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 40,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-TRANSACTION",
+        "Name": "Temenos Transaction",
+        "Description": "Temenos Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": null,
+        "AuthProviderName": null,
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 38,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}')
+GO
+INSERT [dbo].[Log_Audit] ([Id], [RecordId], [TableName], [Terminal], [OperationType], [ChangeBy], [ActionDate], [OriginalData], [NewData]) VALUES (9, N'PROXY_CONFIG', N'Master_ApiEndpoint', N'SYSTEM', N'PUBLISH', 1, CAST(N'2026-09-23T19:50:03.423' AS DateTime), N'{
+  "PublishedDate": "2026-09-23T19:48:54.0497649+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "ClusterId": "TEMENOS-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 40,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-TRANSACTION",
+        "Name": "Temenos Transaction",
+        "Description": "Temenos Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": null,
+        "AuthProviderName": null,
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 38,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}', N'{
+  "PublishedDate": "2026-09-23T19:50:03.4225388+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "ClusterId": "TEMENOS-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 40,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-TRANSACTION",
+        "Name": "Temenos Transaction",
+        "Description": "Temenos Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 41,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}')
+GO
+INSERT [dbo].[Log_Audit] ([Id], [RecordId], [TableName], [Terminal], [OperationType], [ChangeBy], [ActionDate], [OriginalData], [NewData]) VALUES (10, N'PROXY_CONFIG', N'Master_ApiEndpoint', N'SYSTEM', N'PUBLISH', 1, CAST(N'2026-09-23T19:53:55.983' AS DateTime), N'{
+  "PublishedDate": "2026-09-23T19:50:03.4225388+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "ClusterId": "TEMENOS-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 40,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-TRANSACTION",
+        "Name": "Temenos Transaction",
+        "Description": "Temenos Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 41,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}', N'{
+  "PublishedDate": "2026-09-23T19:53:55.9836968+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "ClusterId": "TEMENOS-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 40,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-TRANSACTION",
+        "Name": "Temenos Transaction",
+        "Description": "Temenos Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": false,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 42,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}')
+GO
+INSERT [dbo].[Log_Audit] ([Id], [RecordId], [TableName], [Terminal], [OperationType], [ChangeBy], [ActionDate], [OriginalData], [NewData]) VALUES (11, N'PROXY_CONFIG', N'Master_ApiEndpoint', N'SYSTEM', N'PUBLISH', 1, CAST(N'2026-09-23T19:53:59.973' AS DateTime), N'{
+  "PublishedDate": "2026-09-23T19:53:55.9836968+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "ClusterId": "TEMENOS-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 40,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-TRANSACTION",
+        "Name": "Temenos Transaction",
+        "Description": "Temenos Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": false,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 42,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}', N'{
+  "PublishedDate": "2026-09-23T19:53:59.9747903+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "ClusterId": "TEMENOS-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 40,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-TRANSACTION",
+        "Name": "Temenos Transaction",
+        "Description": "Temenos Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": false,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 42,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}')
+GO
+INSERT [dbo].[Log_Audit] ([Id], [RecordId], [TableName], [Terminal], [OperationType], [ChangeBy], [ActionDate], [OriginalData], [NewData]) VALUES (12, N'PROXY_CONFIG', N'Master_ApiEndpoint', N'SYSTEM', N'PUBLISH', 1, CAST(N'2026-09-23T19:54:15.947' AS DateTime), N'{
+  "PublishedDate": "2026-09-23T19:53:59.9747903+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "ClusterId": "TEMENOS-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 40,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-TRANSACTION",
+        "Name": "Temenos Transaction",
+        "Description": "Temenos Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": false,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 42,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}', N'{
+  "PublishedDate": "2026-09-23T19:54:15.9476852+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "ClusterId": "TEMENOS-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 40,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-TRANSACTION",
+        "Name": "Temenos Transaction",
+        "Description": "Temenos Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 43,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}')
+GO
+INSERT [dbo].[Log_Audit] ([Id], [RecordId], [TableName], [Terminal], [OperationType], [ChangeBy], [ActionDate], [OriginalData], [NewData]) VALUES (13, N'PROXY_CONFIG', N'Master_ApiEndpoint', N'SYSTEM', N'PUBLISH', 1, CAST(N'2026-09-23T20:15:04.873' AS DateTime), N'{
+  "PublishedDate": "2026-09-23T19:54:15.9476852+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "ClusterId": "TEMENOS-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-Gateway": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-Account": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-Gateway",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 36,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 40,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-TRANSACTION",
+        "Name": "Temenos Transaction",
+        "Description": "Temenos Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 43,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}', N'{
+  "PublishedDate": "2026-09-23T20:15:04.8732556+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-GATEWAY": {
+        "ClusterId": "AUTH-GATEWAY",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "ClusterId": "TEMENOS-CASA-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "ClusterId": "TEMENOS-CASA-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "ClusterId": "TEMENOS-LOANS-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-GATEWAY": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-GATEWAY",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "1",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 48,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-CASA-ACCOUNT",
+        "Name": "Temenos CASA Accounts",
+        "Description": "Temenos CASA Accounts",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 44,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-CASA-TRANSACTION",
+        "Name": "Temenos CASA Transaction",
+        "Description": "Temenos CASA Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 45,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "5",
+        "Code": "TEMENOS-LOANS-ACCOUNT",
+        "Name": "Temenos Loans Account",
+        "Description": "Temenos Loans Account",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 47,
+            "EndpointId": "5",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}')
+GO
+INSERT [dbo].[Log_Audit] ([Id], [RecordId], [TableName], [Terminal], [OperationType], [ChangeBy], [ActionDate], [OriginalData], [NewData]) VALUES (14, N'PROXY_CONFIG', N'Master_ApiEndpoint', N'SYSTEM', N'PUBLISH', 1, CAST(N'2026-09-23T20:15:18.403' AS DateTime), N'{
+  "PublishedDate": "2026-09-23T20:15:04.8732556+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-GATEWAY": {
+        "ClusterId": "AUTH-GATEWAY",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "ClusterId": "TEMENOS-CASA-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "ClusterId": "TEMENOS-CASA-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "ClusterId": "TEMENOS-LOANS-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-GATEWAY": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-GATEWAY",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "1",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 48,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-CASA-ACCOUNT",
+        "Name": "Temenos CASA Accounts",
+        "Description": "Temenos CASA Accounts",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 44,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-CASA-TRANSACTION",
+        "Name": "Temenos CASA Transaction",
+        "Description": "Temenos CASA Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 45,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "5",
+        "Code": "TEMENOS-LOANS-ACCOUNT",
+        "Name": "Temenos Loans Account",
+        "Description": "Temenos Loans Account",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 47,
+            "EndpointId": "5",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}', N'{
+  "PublishedDate": "2026-09-23T20:15:18.4030364+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-GATEWAY": {
+        "ClusterId": "AUTH-GATEWAY",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "ClusterId": "TEMENOS-CASA-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "ClusterId": "TEMENOS-CASA-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "ClusterId": "TEMENOS-LOANS-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-GATEWAY": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-GATEWAY",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 49,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-CASA-ACCOUNT",
+        "Name": "Temenos CASA Accounts",
+        "Description": "Temenos CASA Accounts",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 44,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-CASA-TRANSACTION",
+        "Name": "Temenos CASA Transaction",
+        "Description": "Temenos CASA Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 45,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "5",
+        "Code": "TEMENOS-LOANS-ACCOUNT",
+        "Name": "Temenos Loans Account",
+        "Description": "Temenos Loans Account",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 47,
+            "EndpointId": "5",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}')
+GO
+INSERT [dbo].[Log_Audit] ([Id], [RecordId], [TableName], [Terminal], [OperationType], [ChangeBy], [ActionDate], [OriginalData], [NewData]) VALUES (15, N'PROXY_CONFIG', N'Master_ApiEndpoint', N'SYSTEM', N'PUBLISH', 1, CAST(N'2026-09-23T20:16:29.457' AS DateTime), N'{
+  "PublishedDate": "2026-09-23T20:15:18.4030364+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-GATEWAY": {
+        "ClusterId": "AUTH-GATEWAY",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "ClusterId": "TEMENOS-CASA-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "ClusterId": "TEMENOS-CASA-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "ClusterId": "TEMENOS-LOANS-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-GATEWAY": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-GATEWAY",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 49,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-CASA-ACCOUNT",
+        "Name": "Temenos CASA Accounts",
+        "Description": "Temenos CASA Accounts",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 44,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-CASA-TRANSACTION",
+        "Name": "Temenos CASA Transaction",
+        "Description": "Temenos CASA Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 45,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "5",
+        "Code": "TEMENOS-LOANS-ACCOUNT",
+        "Name": "Temenos Loans Account",
+        "Description": "Temenos Loans Account",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 47,
+            "EndpointId": "5",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}', N'{
+  "PublishedDate": "2026-09-23T20:16:29.456664+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-GATEWAY": {
+        "ClusterId": "AUTH-GATEWAY",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "ClusterId": "TEMENOS-CASA-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "ClusterId": "TEMENOS-CASA-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "ClusterId": "TEMENOS-LOANS-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/loans/transaction/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-GATEWAY": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/loans/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-GATEWAY",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 49,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-CASA-ACCOUNT",
+        "Name": "Temenos CASA Accounts",
+        "Description": "Temenos CASA Accounts",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 44,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-CASA-TRANSACTION",
+        "Name": "Temenos CASA Transaction",
+        "Description": "Temenos CASA Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 45,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "5",
+        "Code": "TEMENOS-LOANS-ACCOUNT",
+        "Name": "Temenos Loans Account",
+        "Description": "Temenos Loans Account",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/loans/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/loans/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 50,
+            "EndpointId": "5",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}')
+GO
+INSERT [dbo].[Log_Audit] ([Id], [RecordId], [TableName], [Terminal], [OperationType], [ChangeBy], [ActionDate], [OriginalData], [NewData]) VALUES (16, N'PROXY_CONFIG', N'Master_ApiEndpoint', N'SYSTEM', N'PUBLISH', 1, CAST(N'2026-09-23T20:18:10.713' AS DateTime), N'{
+  "PublishedDate": "2026-09-23T20:16:29.456664+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-GATEWAY": {
+        "ClusterId": "AUTH-GATEWAY",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "ClusterId": "TEMENOS-CASA-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "ClusterId": "TEMENOS-CASA-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "ClusterId": "TEMENOS-LOANS-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/loans/transaction/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-GATEWAY": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/loans/transaction/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-GATEWAY",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 49,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-CASA-ACCOUNT",
+        "Name": "Temenos CASA Accounts",
+        "Description": "Temenos CASA Accounts",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 44,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-CASA-TRANSACTION",
+        "Name": "Temenos CASA Transaction",
+        "Description": "Temenos CASA Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 45,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "5",
+        "Code": "TEMENOS-LOANS-ACCOUNT",
+        "Name": "Temenos Loans Account",
+        "Description": "Temenos Loans Account",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/loans/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/loans/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 50,
+            "EndpointId": "5",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}', N'{
+  "PublishedDate": "2026-09-23T20:18:10.7130293+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-GATEWAY": {
+        "ClusterId": "AUTH-GATEWAY",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "ClusterId": "TEMENOS-CASA-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "ClusterId": "TEMENOS-CASA-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "ClusterId": "TEMENOS-LOANS-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/loans/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-GATEWAY": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/loans/account/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-GATEWAY",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 49,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-CASA-ACCOUNT",
+        "Name": "Temenos CASA Accounts",
+        "Description": "Temenos CASA Accounts",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 44,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-CASA-TRANSACTION",
+        "Name": "Temenos CASA Transaction",
+        "Description": "Temenos CASA Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 45,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "5",
+        "Code": "TEMENOS-LOANS-ACCOUNT",
+        "Name": "Temenos Loans Account",
+        "Description": "Temenos Loans Account",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/loans/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/loans/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 51,
+            "EndpointId": "5",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}')
+GO
+INSERT [dbo].[Log_Audit] ([Id], [RecordId], [TableName], [Terminal], [OperationType], [ChangeBy], [ActionDate], [OriginalData], [NewData]) VALUES (17, N'PROXY_CONFIG', N'Master_ApiEndpoint', N'SYSTEM', N'PUBLISH', 1, CAST(N'2026-09-23T20:19:16.003' AS DateTime), N'{
+  "PublishedDate": "2026-09-23T20:18:10.7130293+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-GATEWAY": {
+        "ClusterId": "AUTH-GATEWAY",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "ClusterId": "TEMENOS-CASA-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "ClusterId": "TEMENOS-CASA-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "ClusterId": "TEMENOS-LOANS-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/loans/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-GATEWAY": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/loans/account/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-GATEWAY",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 49,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-CASA-ACCOUNT",
+        "Name": "Temenos CASA Accounts",
+        "Description": "Temenos CASA Accounts",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 44,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-CASA-TRANSACTION",
+        "Name": "Temenos CASA Transaction",
+        "Description": "Temenos CASA Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 45,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "5",
+        "Code": "TEMENOS-LOANS-ACCOUNT",
+        "Name": "Temenos Loans Account",
+        "Description": "Temenos Loans Account",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/loans/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/loans/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 51,
+            "EndpointId": "5",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}', N'{
+  "PublishedDate": "2026-09-23T20:19:16.0048645+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-GATEWAY": {
+        "ClusterId": "AUTH-GATEWAY",
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "ClusterId": "TEMENOS-CASA-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "ClusterId": "TEMENOS-CASA-TRANSACTION",
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "ClusterId": "TEMENOS-LOANS-ACCOUNT",
+        "Match": {
+          "Path": "/api/v1/loans/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        }
+      }
+    },
+    "Clusters": {
+      "AUTH-GATEWAY": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
+          }
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost:7246/api/v1/loans/account/{**catch-all}"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-GATEWAY",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 2,
+        "CategoryName": "Authentication",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 49,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-CASA-ACCOUNT",
+        "Name": "Temenos CASA Accounts",
+        "Description": "Temenos CASA Accounts",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 44,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-CASA-TRANSACTION",
+        "Name": "Temenos CASA Transaction",
+        "Description": "Temenos CASA Transaction",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 45,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "5",
+        "Code": "TEMENOS-LOANS-ACCOUNT",
+        "Name": "Temenos Loans Account",
+        "Description": "Temenos Loans Account",
+        "CategoryId": 4,
+        "CategoryName": "Temenos",
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/loans/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/loans/account/{**catch-all}",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 51,
+            "EndpointId": "5",
+            "Host": "localhost",
+            "Port": 7246,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": null,
+        "UpdatedDate": null,
+        "Headers": [
+          {
+            "Id": 1,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": null
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}')
+GO
 SET IDENTITY_INSERT [dbo].[Log_Audit] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Log_Exception] ON 
@@ -3742,6 +11984,10 @@ INSERT [dbo].[Log_Exception] ([Id], [ModuleName], [Message], [Source], [InnerExc
    at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
    at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
    at Gateway.BLL.Services.RouteService.FilterAsync(FParam model) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\BLL\Services\RouteService.cs:line 102', CAST(N'2026-09-23T08:54:41.850' AS DateTime))
+GO
+INSERT [dbo].[Log_Exception] ([Id], [ModuleName], [Message], [Source], [InnerException], [StackTrace], [LogDate]) VALUES (46, N'Route', N'Access to the path ''C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy'' is denied.', N'System.Private.CoreLib', N'', N'   at System.IO.FileSystem.CreateDirectory(String fullPath, Byte[] securityDescriptor)
+   at System.IO.Directory.CreateDirectory(String path)
+   at Gateway.BLL.Services.RouteService.PublishRoutesAsync(String opUser) in C:\Users\JR\Desktop\EQB Projects\EQBGatewayPartner\Gateway\BLL\Services\RouteService.cs:line 448', CAST(N'2026-09-23T19:28:32.103' AS DateTime))
 GO
 SET IDENTITY_INSERT [dbo].[Log_Exception] OFF
 GO
@@ -6077,6 +14323,1511 @@ INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [
 }
 ', CAST(N'2026-09-23T17:04:30.7670000' AS DateTime2), N'127.0.0.1', N'PostmanRuntime/2.7.0', N'[Empty Response Body]', N'404', CAST(N'2026-09-23T17:04:30.9920000' AS DateTime2))
 GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (107, N'0HNOPCLPSUPB0:00000001', N'1', N'2', N'GET', N'https://localhost:7000/auth', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "x-api-secret": "PmPml1J21rhZaqmr3xzQz7OOdcKTwIjR",
+    "postman-token": "d0f75abe-4233-4502-8596-4651f7ee3ca3",
+    "X-TraceID": "0HNOPCLPSUPB0:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:26:03.9210000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjI3NjQsImV4cCI6MTc5MDE2MzM2NCwiaWF0IjoxNzkwMTYyNzY0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.5ee2gh5oCFZmiagA3N7WxVVI2vlGu753B9HkvCm577o","token_type":"Bearer","expires_in":600,"client_code":"ADMIN","issued_at":"2026-09-23T11:26:04.8226057Z"}', N'200', CAST(N'2026-09-23T19:26:04.8840000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (108, N'0HNOPCLPSUPB0:00000003', N'', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjI3NjQsImV4cCI6MTc5MDE2MzM2NCwiaWF0IjoxNzkwMTYyNzY0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.5ee2gh5oCFZmiagA3N7WxVVI2vlGu753B9HkvCm577o",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "postman-token": "42124b33-afef-4172-97bd-492d7cce21a6",
+    "X-TraceID": "0HNOPCLPSUPB0:00000003"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:26:16.7000000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"error": "Blocked", "message": "Unauthorized: X-Api-Key header is required."}', N'401', CAST(N'2026-09-23T19:26:16.7390000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (109, N'0HNOPCLPSUPB0:00000005', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjI3NjQsImV4cCI6MTc5MDE2MzM2NCwiaWF0IjoxNzkwMTYyNzY0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.5ee2gh5oCFZmiagA3N7WxVVI2vlGu753B9HkvCm577o",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "395ffdc9-8863-4cc8-b58f-d94e74731f5d",
+    "X-TraceID": "0HNOPCLPSUPB0:00000005"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:26:40.1550000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'404', CAST(N'2026-09-23T19:26:40.6420000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (110, N'0HNOPCLPSUPB0:00000007', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/?accountNo=asdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjI3NjQsImV4cCI6MTc5MDE2MzM2NCwiaWF0IjoxNzkwMTYyNzY0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.5ee2gh5oCFZmiagA3N7WxVVI2vlGu753B9HkvCm577o",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "977733f7-eba2-4c4b-9ef0-aca642ecde0d",
+    "X-TraceID": "0HNOPCLPSUPB0:00000007"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:27:00.4360000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'404', CAST(N'2026-09-23T19:27:00.4720000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (111, N'0HNOPCLPSUPB0:00000009', N'', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/balance?accountNo=2000001239', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "uid": "asdasdasdasdasdasd",
+    "companyid": "123123123123123123",
+    "postman-token": "620dff23-790b-4a79-b959-f36ea98c2d0f",
+    "X-TraceID": "0HNOPCLPSUPB0:00000009"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:27:11.9880000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"error": "Blocked", "message": "Unauthorized: X-Api-Key header is required."}', N'401', CAST(N'2026-09-23T19:27:12.0140000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (112, N'0HNOPCLPSUPB0:0000000B', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/balance?accountNo=2000001239', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "7b9da229-3d97-48a6-b1ba-77fd846cdc98",
+    "X-TraceID": "0HNOPCLPSUPB0:0000000B"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:27:28.3920000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"error": "Blocked", "message": "Unauthorized: Authorization Bearer token is missing."}', N'401', CAST(N'2026-09-23T19:27:28.4330000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (113, N'0HNOPCLPSUPB0:0000000D', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/balance?accountNo=2000001239', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjI3NjQsImV4cCI6MTc5MDE2MzM2NCwiaWF0IjoxNzkwMTYyNzY0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.5ee2gh5oCFZmiagA3N7WxVVI2vlGu753B9HkvCm577o",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "02a234d1-afbf-4e2d-8e3b-4b2052709712",
+    "X-TraceID": "0HNOPCLPSUPB0:0000000D"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:27:34.7820000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'404', CAST(N'2026-09-23T19:27:34.8270000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (114, N'0HNOPCNO4JT41:00000001', N'', N'', N'POST', N'https://localhost:7000/internal/gateway/reload', N'HTTP/1.1', N'{
+  "Headers": {
+    "Host": "localhost:7000",
+    "traceparent": "00-9c22beb37e843135e63c577692015514-00bf217376be61bf-00",
+    "Content-Length": "0",
+    "X-TraceID": "0HNOPCNO4JT41:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:29:32.7630000' AS DateTime2), N'::1', N'', N'{"status":"SUCCESS","message":"Gateway Proxy memory and YARP routes reloaded successfully."}', N'200', CAST(N'2026-09-23T19:29:33.2620000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (115, N'0HNOPCNO4JT43:00000001', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/balance?accountNo=2000001239', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjI3NjQsImV4cCI6MTc5MDE2MzM2NCwiaWF0IjoxNzkwMTYyNzY0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.5ee2gh5oCFZmiagA3N7WxVVI2vlGu753B9HkvCm577o",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "b2fb27d7-b800-421f-842c-aa914cc0afb3",
+    "X-TraceID": "0HNOPCNO4JT43:00000001"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:29:36.7000000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'404', CAST(N'2026-09-23T19:29:37.3670000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (116, N'0HNOPCNO4JT43:00000003', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/balance?accountNo=2000001239', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjI3NjQsImV4cCI6MTc5MDE2MzM2NCwiaWF0IjoxNzkwMTYyNzY0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.5ee2gh5oCFZmiagA3N7WxVVI2vlGu753B9HkvCm577o",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "ea416138-09e4-4b3c-93a2-3d4e65b1784b",
+    "X-TraceID": "0HNOPCNO4JT43:00000003"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:29:57.7430000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'404', CAST(N'2026-09-23T19:29:57.7900000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (117, N'0HNOPCNO4JT43:00000005', N'1', N'2', N'GET', N'https://localhost:7000/auth', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "x-api-secret": "PmPml1J21rhZaqmr3xzQz7OOdcKTwIjR",
+    "postman-token": "6cc418ad-a043-4972-8ad3-662f5bf3f4c4",
+    "X-TraceID": "0HNOPCNO4JT43:00000005"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:30:01.3040000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjMwMDEsImV4cCI6MTc5MDE2MzYwMSwiaWF0IjoxNzkwMTYzMDAxLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.YrzeYCSbLZuMUb0nYERU8weY4b51xHXn1eGyXGPUbGE","token_type":"Bearer","expires_in":600,"client_code":"ADMIN","issued_at":"2026-09-23T11:30:01.4072866Z"}', N'200', CAST(N'2026-09-23T19:30:01.4720000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (118, N'0HNOPCNO4JT43:00000007', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/?accountNo=asdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjMwMDEsImV4cCI6MTc5MDE2MzYwMSwiaWF0IjoxNzkwMTYzMDAxLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.YrzeYCSbLZuMUb0nYERU8weY4b51xHXn1eGyXGPUbGE",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "85431bdd-ef68-4a45-8137-f2a647a1926d",
+    "X-TraceID": "0HNOPCNO4JT43:00000007"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:30:06.3850000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'404', CAST(N'2026-09-23T19:30:06.4180000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (119, N'0HNOPCNO4JT43:00000009', N'', N'', N'GET', N'https://localhost:7000/api/v1/casa/account/?accountNo=asdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjMwMDEsImV4cCI6MTc5MDE2MzYwMSwiaWF0IjoxNzkwMTYzMDAxLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.YrzeYCSbLZuMUb0nYERU8weY4b51xHXn1eGyXGPUbGE",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "d301bfd4-6773-4879-bcfd-f35046e1d5a9",
+    "X-TraceID": "0HNOPCNO4JT43:00000009"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:30:19.4370000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'', N'', NULL)
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (120, N'0HNOPCR3TAG39:00000001', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/?accountNo=asdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjMwMDEsImV4cCI6MTc5MDE2MzYwMSwiaWF0IjoxNzkwMTYzMDAxLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.YrzeYCSbLZuMUb0nYERU8weY4b51xHXn1eGyXGPUbGE",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "02f74d1c-885e-41fa-a8c5-071a2f07ab5f",
+    "X-TraceID": "0HNOPCR3TAG39:00000001"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:35:34.4020000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'404', CAST(N'2026-09-23T19:35:42.7820000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (121, N'0HNOPCR3TAG39:00000003', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/?accountNo=asdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjMwMDEsImV4cCI6MTc5MDE2MzYwMSwiaWF0IjoxNzkwMTYzMDAxLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.YrzeYCSbLZuMUb0nYERU8weY4b51xHXn1eGyXGPUbGE",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "b435b2f0-e3dd-4815-b1f0-bf03e7c18d2b",
+    "X-TraceID": "0HNOPCR3TAG39:00000003"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:35:53.0530000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'404', CAST(N'2026-09-23T19:36:05.3320000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (122, N'0HNOPCR3TAG39:00000005', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/details?accountNo=asdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjMwMDEsImV4cCI6MTc5MDE2MzYwMSwiaWF0IjoxNzkwMTYzMDAxLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.YrzeYCSbLZuMUb0nYERU8weY4b51xHXn1eGyXGPUbGE",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "a87a3ed3-ca5e-4464-b36c-41dbf41857d2",
+    "X-TraceID": "0HNOPCR3TAG39:00000005"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:36:12.8550000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'400', CAST(N'2026-09-23T19:36:37.6940000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (123, N'0HNOPCR3TAG39:00000007', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/details?accountNo=asdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjMwMDEsImV4cCI6MTc5MDE2MzYwMSwiaWF0IjoxNzkwMTYzMDAxLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.YrzeYCSbLZuMUb0nYERU8weY4b51xHXn1eGyXGPUbGE",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "d9ec3ee6-d99d-4c4f-93a2-3d6fed030534",
+    "X-TraceID": "0HNOPCR3TAG39:00000007"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:36:38.9210000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"success":false,"message":"An unexpected system error occurred while processing the request.","errors":[{"code":null,"message":"A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)"}]}', N'500', CAST(N'2026-09-23T19:36:53.7730000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (124, N'0HNOPCR3TAG39:00000009', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/balance?accountNo=2000001239', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjI3NjQsImV4cCI6MTc5MDE2MzM2NCwiaWF0IjoxNzkwMTYyNzY0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.5ee2gh5oCFZmiagA3N7WxVVI2vlGu753B9HkvCm577o",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "d9de9d0f-e47e-4277-baeb-ed18d0cd2139",
+    "X-TraceID": "0HNOPCR3TAG39:00000009"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:36:46.1230000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'404', CAST(N'2026-09-23T19:36:46.1690000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (125, N'0HNOPCR3TAG39:0000000B', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/inquirebalance?accountNo=2000001239', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjI3NjQsImV4cCI6MTc5MDE2MzM2NCwiaWF0IjoxNzkwMTYyNzY0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.5ee2gh5oCFZmiagA3N7WxVVI2vlGu753B9HkvCm577o",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "1106c061-0ec0-4750-bbb6-4c84b9982555",
+    "X-TraceID": "0HNOPCR3TAG39:0000000B"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:36:53.5120000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'400', CAST(N'2026-09-23T19:36:59.9660000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (126, N'0HNOPCR3TAG39:0000000D', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/inquirebalance?accountNo=2000001239', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjI3NjQsImV4cCI6MTc5MDE2MzM2NCwiaWF0IjoxNzkwMTYyNzY0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.5ee2gh5oCFZmiagA3N7WxVVI2vlGu753B9HkvCm577o",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "b9209e1d-265f-41fd-a9d1-abe45a990249",
+    "X-TraceID": "0HNOPCR3TAG39:0000000D"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:37:00.8690000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"success":false,"message":"An unexpected system error occurred while processing the request.","errors":[{"code":null,"message":"A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond. (10.30.1.100:9089)"}]}', N'500', CAST(N'2026-09-23T19:37:24.1220000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (127, N'0HNOPD0A7F9OD:00000001', N'', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/inquirebalance?accountNo=2000001239', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjI3NjQsImV4cCI6MTc5MDE2MzM2NCwiaWF0IjoxNzkwMTYyNzY0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.5ee2gh5oCFZmiagA3N7WxVVI2vlGu753B9HkvCm577o",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "6c24282c-7a5e-4407-90ab-41873d4e5794",
+    "X-TraceID": "0HNOPD0A7F9OD:00000001"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:44:52.4820000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"error": "Blocked", "message": "Access Denied: Valid Client Certificate (mTLS) is required for this API Key."}', N'403', CAST(N'2026-09-23T19:44:53.1230000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (128, N'0HNOPD0A7F9OD:00000003', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/inquirebalance?accountNo=2000001239', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjI3NjQsImV4cCI6MTc5MDE2MzM2NCwiaWF0IjoxNzkwMTYyNzY0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.5ee2gh5oCFZmiagA3N7WxVVI2vlGu753B9HkvCm577o",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "b20c7311-e6f0-4ea0-8b38-dbad3c77c9f1",
+    "X-TraceID": "0HNOPD0A7F9OD:00000003"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:45:00.8690000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"error": "Blocked", "message": "Unauthorized: Invalid or expired Bearer JWT token."}', N'401', CAST(N'2026-09-23T19:45:00.9720000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (129, N'0HNOPD0A7F9OE:00000001', N'', N'', N'POST', N'https://localhost:7000/internal/gateway/reload', N'HTTP/1.1', N'{
+  "Headers": {
+    "Host": "localhost:7000",
+    "traceparent": "00-8d24551cc14fdc011f0b5748efd53748-b2b7fdaa688fe6a8-00",
+    "Content-Length": "0",
+    "X-TraceID": "0HNOPD0A7F9OE:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:48:36.7580000' AS DateTime2), N'::1', N'', N'{"status":"SUCCESS","message":"Gateway Proxy memory and YARP routes reloaded successfully."}', N'200', CAST(N'2026-09-23T19:48:36.8470000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (130, N'0HNOPD0A7F9OG:00000001', N'1', N'2', N'GET', N'https://localhost:7000/auth', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "x-api-secret": "PmPml1J21rhZaqmr3xzQz7OOdcKTwIjR",
+    "postman-token": "cd7c847f-2bc5-4fa2-bafd-24aa6f05475b",
+    "X-TraceID": "0HNOPD0A7F9OG:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:48:41.0160000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQxMjEsImV4cCI6MTc5MDE2NDcyMSwiaWF0IjoxNzkwMTY0MTIxLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.cB33kro6ib8BcPjBzVTECW3mxAKh0JELfcxL6qi37SQ","token_type":"Bearer","expires_in":600,"client_code":"ADMIN","issued_at":"2026-09-23T11:48:41.2081288Z"}', N'200', CAST(N'2026-09-23T19:48:41.2700000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (131, N'0HNOPD0A7F9OG:00000003', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/details?accountNo=asdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQxMjEsImV4cCI6MTc5MDE2NDcyMSwiaWF0IjoxNzkwMTY0MTIxLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.cB33kro6ib8BcPjBzVTECW3mxAKh0JELfcxL6qi37SQ",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "e64f8bc5-c44e-428f-bd73-101287d56311",
+    "X-TraceID": "0HNOPD0A7F9OG:00000003"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:48:45.3830000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'401', CAST(N'2026-09-23T19:48:45.7850000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (132, N'0HNOPD0A7F9OG:00000005', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/details?accountNo=asdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQxMjEsImV4cCI6MTc5MDE2NDcyMSwiaWF0IjoxNzkwMTY0MTIxLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.cB33kro6ib8BcPjBzVTECW3mxAKh0JELfcxL6qi37SQ",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "15e3345c-abcd-4290-8050-955d3fe97953",
+    "X-TraceID": "0HNOPD0A7F9OG:00000005"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:48:47.6460000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'401', CAST(N'2026-09-23T19:48:47.6890000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (133, N'0HNOPD0A7F9OE:00000002', N'', N'', N'POST', N'https://localhost:7000/internal/gateway/reload', N'HTTP/1.1', N'{
+  "Headers": {
+    "Host": "localhost:7000",
+    "traceparent": "00-bb46e5ddb62eee87a0e33580a0d6ca32-6a47e71c36c40190-00",
+    "Content-Length": "0",
+    "X-TraceID": "0HNOPD0A7F9OE:00000002"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:48:54.1410000' AS DateTime2), N'::1', N'', N'{"status":"SUCCESS","message":"Gateway Proxy memory and YARP routes reloaded successfully."}', N'200', CAST(N'2026-09-23T19:48:54.1670000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (134, N'0HNOPD0A7F9OG:00000007', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/details?accountNo=asdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQxMjEsImV4cCI6MTc5MDE2NDcyMSwiaWF0IjoxNzkwMTY0MTIxLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.cB33kro6ib8BcPjBzVTECW3mxAKh0JELfcxL6qi37SQ",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "f570816d-3628-4391-9995-419bc6e012e4",
+    "X-TraceID": "0HNOPD0A7F9OG:00000007"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:48:56.9100000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"success":false,"message":"An unexpected system error occurred while processing the request.","errors":[{"code":null,"message":"A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)"}]}', N'500', CAST(N'2026-09-23T19:49:33.2460000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (135, N'0HNOPD0A7F9OE:00000003', N'', N'', N'POST', N'https://localhost:7000/internal/gateway/reload', N'HTTP/1.1', N'{
+  "Headers": {
+    "Host": "localhost:7000",
+    "traceparent": "00-e57aea400aa1f23af629f0c5f143c0a5-2832934c890f06f3-00",
+    "Content-Length": "0",
+    "X-TraceID": "0HNOPD0A7F9OE:00000003"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:50:03.4690000' AS DateTime2), N'::1', N'', N'{"status":"SUCCESS","message":"Gateway Proxy memory and YARP routes reloaded successfully."}', N'200', CAST(N'2026-09-23T19:50:03.5070000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (136, N'0HNOPD0A7F9OI:00000001', N'1', N'2', N'GET', N'https://localhost:7000/auth', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "x-api-secret": "PmPml1J21rhZaqmr3xzQz7OOdcKTwIjR",
+    "postman-token": "de2da532-8914-401f-9924-270933ee32be",
+    "X-TraceID": "0HNOPD0A7F9OI:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:50:08.3470000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQyMDgsImV4cCI6MTc5MDE2NDgwOCwiaWF0IjoxNzkwMTY0MjA4LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.YRedH3kDdMP9Cg5zDXde3BXagyQftfGVFTmI87vK_Zs","token_type":"Bearer","expires_in":600,"client_code":"ADMIN","issued_at":"2026-09-23T11:50:08.409776Z"}', N'200', CAST(N'2026-09-23T19:50:08.4100000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (137, N'0HNOPD0A7F9OI:00000003', N'1', N'4', N'POST', N'https://localhost:7000/api/v1/casa/transaction/fundtransfer', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQyMDgsImV4cCI6MTc5MDE2NDgwOCwiaWF0IjoxNzkwMTY0MjA4LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.YRedH3kDdMP9Cg5zDXde3BXagyQftfGVFTmI87vK_Zs",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "673011ed-fc5b-4094-8b93-c8cce7c01903",
+    "X-TraceID": "0HNOPD0A7F9OI:00000003"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:50:15.6380000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"One or more validation errors occurred.","status":400,"errors":{"uId":["The uId field is required."],"Amount":["The Amount field is required."],"companyId":["The companyId field is required."]},"traceId":"00-701f5716459b84ac7c0b032b659c061c-1870e8c350acc835-00"}', N'400', CAST(N'2026-09-23T19:50:15.7450000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (138, N'0HNOPD0A7F9OI:00000005', N'1', N'4', N'POST', N'https://localhost:7000/api/v1/casa/transaction/fundtransfer', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQyMDgsImV4cCI6MTc5MDE2NDgwOCwiaWF0IjoxNzkwMTY0MjA4LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.YRedH3kDdMP9Cg5zDXde3BXagyQftfGVFTmI87vK_Zs",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "uid": "asdasdasdasdasdasd",
+    "companyid": "123123123123123123",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "87823611-5099-4560-b444-4572ad5fa827",
+    "X-TraceID": "0HNOPD0A7F9OI:00000005"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:50:31.2770000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"One or more validation errors occurred.","status":400,"errors":{"uId":["The uId field is required."],"Amount":["The Amount field is required."],"companyId":["The companyId field is required."]},"traceId":"00-3e480672f7ec488a00bd593e748edd88-88233f867f109b1b-00"}', N'400', CAST(N'2026-09-23T19:50:31.3300000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (139, N'0HNOPD0A7F9OI:00000007', N'1', N'4', N'POST', N'https://localhost:7000/api/v1/casa/transaction/fundtransfer', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQyMDgsImV4cCI6MTc5MDE2NDgwOCwiaWF0IjoxNzkwMTY0MjA4LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.YRedH3kDdMP9Cg5zDXde3BXagyQftfGVFTmI87vK_Zs",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "uid": "asdasdasdasdasdasd",
+    "companyid": "123123123123123123",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "c0aeb3b5-d3b3-4ca9-9566-a2d2f50c1271",
+    "X-TraceID": "0HNOPD0A7F9OI:00000007"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:50:32.8050000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"One or more validation errors occurred.","status":400,"errors":{"uId":["The uId field is required."],"Amount":["The Amount field is required."],"companyId":["The companyId field is required."]},"traceId":"00-4d4f20731ec31cb2a5e3dd40cfc9e988-099690857c36468a-00"}', N'400', CAST(N'2026-09-23T19:50:32.8780000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (140, N'0HNOPD0A7F9OI:00000009', N'1', N'4', N'POST', N'https://localhost:7000/api/v1/casa/transaction/fundtransfer', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQyMDgsImV4cCI6MTc5MDE2NDgwOCwiaWF0IjoxNzkwMTY0MjA4LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.YRedH3kDdMP9Cg5zDXde3BXagyQftfGVFTmI87vK_Zs",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "uid": "asdasdasdasdasdasd",
+    "companyid": "123123123123123123",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "36e75899-9bb3-4d58-ac22-581b452a5f8a",
+    "X-TraceID": "0HNOPD0A7F9OI:00000009"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:50:34.0540000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"One or more validation errors occurred.","status":400,"errors":{"uId":["The uId field is required."],"Amount":["The Amount field is required."],"companyId":["The companyId field is required."]},"traceId":"00-41ede6735a01768ed81c89487e4ba9c7-881a965192eb59c4-00"}', N'400', CAST(N'2026-09-23T19:50:34.1040000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (141, N'0HNOPD3P0L2D0:00000001', N'1', N'4', N'POST', N'https://localhost:7000/api/v1/casa/transaction/fundtransfer', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQyMDgsImV4cCI6MTc5MDE2NDgwOCwiaWF0IjoxNzkwMTY0MjA4LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.YRedH3kDdMP9Cg5zDXde3BXagyQftfGVFTmI87vK_Zs",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "uid": "asdasdasdasdasdasd",
+    "companyid": "123123123123123123",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "4d670c54-3f38-400b-84ae-3de357cd8447",
+    "X-TraceID": "0HNOPD3P0L2D0:00000001"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:51:04.1890000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"type":"https://tools.ietf.org/html/rfc9110#section-15.5.1","title":"One or more validation errors occurred.","status":400,"errors":{"Amount":["The Amount field is required."]},"traceId":"00-6c5aafcb96eb50b583aaf2dea67b13e3-d972e06efb80cf3f-00"}', N'400', CAST(N'2026-09-23T19:51:05.2920000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (142, N'0HNOPD3P0L2D0:00000003', N'1', N'4', N'POST', N'https://localhost:7000/api/v1/casa/transaction/fundtransfer', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQyMDgsImV4cCI6MTc5MDE2NDgwOCwiaWF0IjoxNzkwMTY0MjA4LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.YRedH3kDdMP9Cg5zDXde3BXagyQftfGVFTmI87vK_Zs",
+    "Content-Type": "application/json",
+    "Content-Length": "368",
+    "uid": "asdasdasdasdasdasd",
+    "companyid": "123123123123123123",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "1049500a-3f76-4bb9-9213-7d684f9a8f85",
+    "X-TraceID": "0HNOPD3P0L2D0:00000003"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "amount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T19:51:37.2340000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"success":false,"message":"An unexpected system error occurred while processing the request.","errors":[{"code":null,"message":"A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond. (10.30.1.100:9089)"}]}', N'500', CAST(N'2026-09-23T19:52:02.3830000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (143, N'0HNOPD3P0L2D2:00000001', N'', N'4', N'DELETE', N'https://localhost:7000/api/v1/casa/transaction/reverse?referenceNo=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "companyid": "123123123123123123",
+    "postman-token": "2e085916-42b2-41cc-a3db-fcb132e73821",
+    "X-TraceID": "0HNOPD3P0L2D2:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:52:53.2510000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"error": "Blocked", "message": "Unauthorized: X-Api-Key header is required."}', N'401', CAST(N'2026-09-23T19:52:53.2980000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (144, N'0HNOPD3P0L2D2:00000003', N'1', N'4', N'DELETE', N'https://localhost:7000/api/v1/casa/transaction/reverse?referenceNo=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "companyid": "123123123123123123",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "306cc8b3-f25f-44b0-8d01-8ad7e16997d0",
+    "X-TraceID": "0HNOPD3P0L2D2:00000003"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:53:07.4000000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"error": "Blocked", "message": "Unauthorized: Authorization Bearer token is missing."}', N'401', CAST(N'2026-09-23T19:53:07.4410000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (145, N'0HNOPD3P0L2D2:00000005', N'1', N'2', N'GET', N'https://localhost:7000/auth', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "x-api-secret": "PmPml1J21rhZaqmr3xzQz7OOdcKTwIjR",
+    "postman-token": "a3dd7ad4-a759-491e-a14f-34f5525a95a7",
+    "X-TraceID": "0HNOPD3P0L2D2:00000005"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:53:14.5110000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQzOTQsImV4cCI6MTc5MDE2NDk5NCwiaWF0IjoxNzkwMTY0Mzk0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0._m8WBJQ1M3a3Ljzeyi6cCHlgWi44iuDQfnKWFyWo72k","token_type":"Bearer","expires_in":600,"client_code":"ADMIN","issued_at":"2026-09-23T11:53:14.6263883Z"}', N'200', CAST(N'2026-09-23T19:53:14.6910000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (146, N'0HNOPD3P0L2D2:00000007', N'1', N'4', N'DELETE', N'https://localhost:7000/api/v1/casa/transaction/reverse?referenceNo=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQzOTQsImV4cCI6MTc5MDE2NDk5NCwiaWF0IjoxNzkwMTY0Mzk0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0._m8WBJQ1M3a3Ljzeyi6cCHlgWi44iuDQfnKWFyWo72k",
+    "companyid": "123123123123123123",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "41396714-1e63-4508-9223-1b1eb3d1ecc5",
+    "X-TraceID": "0HNOPD3P0L2D2:00000007"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:53:21.3580000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"success":false,"message":"An unexpected system error occurred while processing the request.","errors":[{"code":null,"message":"A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond. (10.30.1.100:9089)"}]}', N'500', CAST(N'2026-09-23T19:53:45.0240000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (147, N'0HNOPD3P0L2D2:00000009', N'', N'4', N'DELETE', N'https://localhost:7000/api/v1/casa/transaction/reverse?referenceNo=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQzOTQsImV4cCI6MTc5MDE2NDk5NCwiaWF0IjoxNzkwMTY0Mzk0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0._m8WBJQ1M3a3Ljzeyi6cCHlgWi44iuDQfnKWFyWo72k",
+    "companyid": "123123123123123123",
+    "postman-token": "82bee621-a17d-4e8a-99e3-ed067f39edac",
+    "X-TraceID": "0HNOPD3P0L2D2:00000009"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:53:51.3500000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"error": "Blocked", "message": "Unauthorized: X-Api-Key header is required."}', N'401', CAST(N'2026-09-23T19:53:51.3920000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (148, N'0HNOPD3P0L2D3:00000001', N'', N'', N'POST', N'https://localhost:7000/internal/gateway/reload', N'HTTP/1.1', N'{
+  "Headers": {
+    "Host": "localhost:7000",
+    "traceparent": "00-000f82384fd5b59981c404e9f677f663-0abc134aa8f0e1ed-00",
+    "Content-Length": "0",
+    "X-TraceID": "0HNOPD3P0L2D3:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:53:56.2040000' AS DateTime2), N'::1', N'', N'{"status":"SUCCESS","message":"Gateway Proxy memory and YARP routes reloaded successfully."}', N'200', CAST(N'2026-09-23T19:53:56.2490000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (149, N'0HNOPD3P0L2D3:00000002', N'', N'', N'POST', N'https://localhost:7000/internal/gateway/reload', N'HTTP/1.1', N'{
+  "Headers": {
+    "Host": "localhost:7000",
+    "traceparent": "00-01df5a4bd00d05f6b273b4dd72cd140e-b3ecb75f0ee40f51-00",
+    "Content-Length": "0",
+    "X-TraceID": "0HNOPD3P0L2D3:00000002"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:54:00.0430000' AS DateTime2), N'::1', N'', N'{"status":"SUCCESS","message":"Gateway Proxy memory and YARP routes reloaded successfully."}', N'200', CAST(N'2026-09-23T19:54:00.0740000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (150, N'0HNOPD3P0L2D2:0000000B', N'', N'4', N'DELETE', N'https://localhost:7000/api/v1/casa/transaction/reverse?referenceNo=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQzOTQsImV4cCI6MTc5MDE2NDk5NCwiaWF0IjoxNzkwMTY0Mzk0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0._m8WBJQ1M3a3Ljzeyi6cCHlgWi44iuDQfnKWFyWo72k",
+    "companyid": "123123123123123123",
+    "postman-token": "0e7a7eb7-fbf0-4c0a-bce4-581e1153d103",
+    "X-TraceID": "0HNOPD3P0L2D2:0000000B"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:54:04.1940000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'400', CAST(N'2026-09-23T19:54:07.4350000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (151, N'0HNOPD3P0L2D3:00000003', N'', N'', N'POST', N'https://localhost:7000/internal/gateway/reload', N'HTTP/1.1', N'{
+  "Headers": {
+    "Host": "localhost:7000",
+    "traceparent": "00-9d62e4e0824fc736dc68c60078b9a4d2-a5ce6c9c04b91a81-00",
+    "Content-Length": "0",
+    "X-TraceID": "0HNOPD3P0L2D3:00000003"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T19:54:15.9740000' AS DateTime2), N'::1', N'', N'{"status":"SUCCESS","message":"Gateway Proxy memory and YARP routes reloaded successfully."}', N'200', CAST(N'2026-09-23T19:54:16.0000000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (152, N'0HNOPD3P0L2D5:00000001', N'', N'4', N'DELETE', N'https://localhost:7000/api/v1/casa/transaction/reverse?referenceNo=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQzOTQsImV4cCI6MTc5MDE2NDk5NCwiaWF0IjoxNzkwMTY0Mzk0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0._m8WBJQ1M3a3Ljzeyi6cCHlgWi44iuDQfnKWFyWo72k",
+    "companyid": "123123123123123123",
+    "postman-token": "aadd0828-f819-4324-98ca-d24d691f8fd1",
+    "X-TraceID": "0HNOPD3P0L2D5:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:00:26.0580000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"error": "Blocked", "message": "Unauthorized: X-Api-Key header is required."}', N'401', CAST(N'2026-09-23T20:00:26.1120000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (153, N'0HNOPD3P0L2D5:00000003', N'1', N'4', N'DELETE', N'https://localhost:7000/api/v1/casa/transaction/reverse?referenceNo=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjQzOTQsImV4cCI6MTc5MDE2NDk5NCwiaWF0IjoxNzkwMTY0Mzk0LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0._m8WBJQ1M3a3Ljzeyi6cCHlgWi44iuDQfnKWFyWo72k",
+    "companyid": "123123123123123123",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "81dbd73f-955d-489c-b927-b36217726a7b",
+    "X-TraceID": "0HNOPD3P0L2D5:00000003"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:00:29.6610000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'400', CAST(N'2026-09-23T20:00:38.0810000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (154, N'0HNOPDANICNB9:00000001', N'1', N'2', N'GET', N'https://localhost:7000/auth', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "x-api-secret": "PmPml1J21rhZaqmr3xzQz7OOdcKTwIjR",
+    "postman-token": "b67df36a-2ab4-4a4f-b1d2-909539632ca6",
+    "X-TraceID": "0HNOPDANICNB9:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:03:30.9400000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjUwMTEsImV4cCI6MTc5MDE2NTYxMSwiaWF0IjoxNzkwMTY1MDExLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.jjV8UoRpEw9iv954NoyfdEU9W7MbHgXsOVVLP44hf94","token_type":"Bearer","expires_in":600,"client_code":"ADMIN","issued_at":"2026-09-23T12:03:31.7229668Z"}', N'200', CAST(N'2026-09-23T20:03:31.7880000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (155, N'0HNOPDANICNB9:00000003', N'1', N'4', N'GET', N'https://localhost:7000/api/v1/casa/transaction/status', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjUwMTEsImV4cCI6MTc5MDE2NTYxMSwiaWF0IjoxNzkwMTY1MDExLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.jjV8UoRpEw9iv954NoyfdEU9W7MbHgXsOVVLP44hf94",
+    "uid": "asdasdasdasdasdasd",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "ea8806a2-1859-47fb-8aff-384101ecb3ce",
+    "X-TraceID": "0HNOPDANICNB9:00000003"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:03:39.5420000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'400', CAST(N'2026-09-23T20:03:44.4770000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (156, N'0HNOPDANICNB9:00000005', N'1', N'4', N'GET', N'https://localhost:7000/api/v1/casa/transaction/closingBalance?referenceNo=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjUwMTEsImV4cCI6MTc5MDE2NTYxMSwiaWF0IjoxNzkwMTY1MDExLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.jjV8UoRpEw9iv954NoyfdEU9W7MbHgXsOVVLP44hf94",
+    "uid": "asdasdasdasdasdasd",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "153638c0-3f52-4821-9009-d05377c62677",
+    "X-TraceID": "0HNOPDANICNB9:00000005"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:03:48.8960000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"success":false,"message":"An unexpected system error occurred while processing the request.","errors":[{"code":null,"message":"Could not find file ''C:\\Users\\JR\\Desktop\\EQB Projects\\EQBGatewayPartner\\Temenos.API\\scripts\\closing_balance_v1.sql''."}]}', N'500', CAST(N'2026-09-23T20:03:53.5890000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (157, N'0HNOPDANICNBB:00000001', N'1', N'4', N'GET', N'https://localhost:7000/api/v1/casa/transaction/closingBalance?referenceNo=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjUwMTEsImV4cCI6MTc5MDE2NTYxMSwiaWF0IjoxNzkwMTY1MDExLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.jjV8UoRpEw9iv954NoyfdEU9W7MbHgXsOVVLP44hf94",
+    "uid": "asdasdasdasdasdasd",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "897b105f-d48c-48b7-a8cf-e5e5a33f0e8a",
+    "X-TraceID": "0HNOPDANICNBB:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:04:52.2290000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"success":false,"message":"An unexpected system error occurred while processing the request.","errors":[{"code":null,"message":"Could not find file ''C:\\Users\\JR\\Desktop\\EQB Projects\\EQBGatewayPartner\\Temenos.API\\scripts\\closing_balance_v1.sql''."}]}', N'500', CAST(N'2026-09-23T20:04:54.2650000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (158, N'0HNOPDANICNBB:00000003', N'', N'', N'GET', N'https://localhost:7000/api/v1/casa/transaction/closingBalance?referenceNo=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjUwMTEsImV4cCI6MTc5MDE2NTYxMSwiaWF0IjoxNzkwMTY1MDExLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.jjV8UoRpEw9iv954NoyfdEU9W7MbHgXsOVVLP44hf94",
+    "uid": "asdasdasdasdasdasd",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "52596a87-7cfe-407e-8242-fd1bbf317e4f",
+    "X-TraceID": "0HNOPDANICNBB:00000003"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:05:09.0240000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'', N'', NULL)
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (159, N'0HNOPDC7MK8PE:00000001', N'1', N'4', N'GET', N'https://localhost:7000/api/v1/casa/transaction/closingBalance?referenceNo=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjUwMTEsImV4cCI6MTc5MDE2NTYxMSwiaWF0IjoxNzkwMTY1MDExLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.jjV8UoRpEw9iv954NoyfdEU9W7MbHgXsOVVLP44hf94",
+    "uid": "asdasdasdasdasdasd",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "7e50c27e-181d-4cf6-8c06-64fdaefd2489",
+    "X-TraceID": "0HNOPDC7MK8PE:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:06:12.4760000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"success":false,"message":"An unexpected system error occurred while processing the request.","errors":[{"code":null,"message":"Could not find file ''C:\\Users\\JR\\Desktop\\EQB Projects\\EQBGatewayPartner\\Temenos.API\\scripts\\closing_balance_v1.sql''."}]}', N'500', CAST(N'2026-09-23T20:06:19.0180000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (160, N'0HNOPDC7MK8PE:00000003', N'1', N'4', N'GET', N'https://localhost:7000/api/v1/casa/transaction/closingBalance?referenceNo=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjUwMTEsImV4cCI6MTc5MDE2NTYxMSwiaWF0IjoxNzkwMTY1MDExLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.jjV8UoRpEw9iv954NoyfdEU9W7MbHgXsOVVLP44hf94",
+    "uid": "asdasdasdasdasdasd",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "bdbf99b4-9e35-498f-8b7c-7f175a1e96f8",
+    "X-TraceID": "0HNOPDC7MK8PE:00000003"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:06:44.9660000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"success":false,"message":"An unexpected system error occurred while processing the request.","errors":[{"code":null,"message":"Could not find file ''C:\\Users\\JR\\Desktop\\EQB Projects\\EQBGatewayPartner\\Temenos.API\\scripts\\closing _balance_v1.sql''."}]}', N'500', CAST(N'2026-09-23T20:07:29.4610000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (161, N'0HNOPDDA435L5:00000001', N'1', N'4', N'GET', N'https://localhost:7000/api/v1/casa/transaction/closingBalance?referenceNo=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjUwMTEsImV4cCI6MTc5MDE2NTYxMSwiaWF0IjoxNzkwMTY1MDExLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.jjV8UoRpEw9iv954NoyfdEU9W7MbHgXsOVVLP44hf94",
+    "uid": "asdasdasdasdasdasd",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "ab3878df-4be7-44f1-918d-f61155df65fb",
+    "X-TraceID": "0HNOPDDA435L5:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:08:07.9340000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'[Empty Response Body]', N'400', CAST(N'2026-09-23T20:08:26.3360000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (162, N'0HNOPDH6HOTK2:00000001', N'', N'', N'POST', N'https://localhost:7000/internal/gateway/reload', N'HTTP/1.1', N'{
+  "Headers": {
+    "Host": "localhost:7000",
+    "traceparent": "00-7251b196bd0d12ed3448bf64ab2c0c95-f3cdadf0321bd3b4-00",
+    "Content-Length": "0",
+    "X-TraceID": "0HNOPDH6HOTK2:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:15:05.4620000' AS DateTime2), N'::1', N'', N'{"status":"SUCCESS","message":"Gateway Proxy memory and YARP routes reloaded successfully."}', N'200', CAST(N'2026-09-23T20:15:05.9730000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (163, N'0HNOPDH6HOTK4:00000001', N'', N'2', N'GET', N'https://localhost:7000/auth', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "x-api-secret": "PmPml1J21rhZaqmr3xzQz7OOdcKTwIjR",
+    "postman-token": "54b51ab9-9eb0-4a79-aa56-20034d6d3335",
+    "X-TraceID": "0HNOPDH6HOTK4:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:15:09.9840000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"error": "Blocked", "message": "Access Denied: Endpoint is currently outside operating hours."}', N'403', CAST(N'2026-09-23T20:15:10.1650000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (164, N'0HNOPDH6HOTK2:00000002', N'', N'', N'POST', N'https://localhost:7000/internal/gateway/reload', N'HTTP/1.1', N'{
+  "Headers": {
+    "Host": "localhost:7000",
+    "traceparent": "00-23ffa68c7d78b002640dc42d73a243b4-3e56513ee9b9832c-00",
+    "Content-Length": "0",
+    "X-TraceID": "0HNOPDH6HOTK2:00000002"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:15:18.4360000' AS DateTime2), N'::1', N'', N'{"status":"SUCCESS","message":"Gateway Proxy memory and YARP routes reloaded successfully."}', N'200', CAST(N'2026-09-23T20:15:18.4670000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (165, N'0HNOPDH6HOTK4:00000003', N'1', N'2', N'GET', N'https://localhost:7000/auth', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "x-api-secret": "PmPml1J21rhZaqmr3xzQz7OOdcKTwIjR",
+    "postman-token": "63b86c27-6881-4873-9096-2f71cae640b5",
+    "X-TraceID": "0HNOPDH6HOTK4:00000003"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:15:25.0900000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjU3MjUsImV4cCI6MTc5MDE2NjMyNSwiaWF0IjoxNzkwMTY1NzI1LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.-t27rkNU5A5Ij_tyUvMfIj0_6MOLHxbHpto5LTY1Gj8","token_type":"Bearer","expires_in":600,"client_code":"ADMIN","issued_at":"2026-09-23T12:15:25.3417788Z"}', N'200', CAST(N'2026-09-23T20:15:25.4290000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (166, N'0HNOPDH6HOTK5:00000001', N'', N'', N'POST', N'https://localhost:7000/internal/gateway/reload', N'HTTP/1.1', N'{
+  "Headers": {
+    "Host": "localhost:7000",
+    "traceparent": "00-515c0dd16cd722e59db84e9e664ad165-4e91250cb9a6afcd-00",
+    "Content-Length": "0",
+    "X-TraceID": "0HNOPDH6HOTK5:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:16:29.5400000' AS DateTime2), N'::1', N'', N'{"status":"SUCCESS","message":"Gateway Proxy memory and YARP routes reloaded successfully."}', N'200', CAST(N'2026-09-23T20:16:29.5830000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (167, N'0HNOPDH6HOTK7:00000001', N'', N'', N'GET', N'https://localhost:7000/api/v1/loans/account/amortizationSchedule?arrangementId=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjU3MjUsImV4cCI6MTc5MDE2NjMyNSwiaWF0IjoxNzkwMTY1NzI1LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.-t27rkNU5A5Ij_tyUvMfIj0_6MOLHxbHpto5LTY1Gj8",
+    "uid": "asdasdasdasdasdasd",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "7b24f804-f348-412e-8dd8-e74def7a09fe",
+    "X-TraceID": "0HNOPDH6HOTK7:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:17:48.7040000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"error": "Blocked", "message": "Not Found: Unregistered or inactive API route."}', N'404', CAST(N'2026-09-23T20:17:48.7570000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (168, N'0HNOPDH6HOTK8:00000001', N'', N'', N'POST', N'https://localhost:7000/internal/gateway/reload', N'HTTP/1.1', N'{
+  "Headers": {
+    "Host": "localhost:7000",
+    "traceparent": "00-efd95307bca0c19558c5a24f5c76b771-5f8d6c3f897f800c-00",
+    "Content-Length": "0",
+    "X-TraceID": "0HNOPDH6HOTK8:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:18:10.7710000' AS DateTime2), N'::1', N'', N'{"status":"SUCCESS","message":"Gateway Proxy memory and YARP routes reloaded successfully."}', N'200', CAST(N'2026-09-23T20:18:10.8040000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (169, N'0HNOPDH6HOTK7:00000003', N'1', N'5', N'GET', N'https://localhost:7000/api/v1/loans/account/amortizationSchedule?arrangementId=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjU3MjUsImV4cCI6MTc5MDE2NjMyNSwiaWF0IjoxNzkwMTY1NzI1LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.-t27rkNU5A5Ij_tyUvMfIj0_6MOLHxbHpto5LTY1Gj8",
+    "uid": "asdasdasdasdasdasd",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "92e595ae-3440-498d-94c6-a743302b14d8",
+    "X-TraceID": "0HNOPDH6HOTK7:00000003"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:18:13.3560000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'System.InvalidOperationException: Unable to resolve service for type ''Temenos.API.Services.IService.v1.loans.IAccountService'' while attempting to activate ''Temenos.API.Controllers.v1.loans.AccountController''.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.ThrowHelperUnableToResolveService(Type type, Type requiredBy)
+   at lambda_method9(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass6_0.<CreateControllerFactory>g__CreateController|0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+
+HEADERS
+=======
+Accept: */*
+Host: localhost:7246
+User-Agent: PostmanRuntime/7.56.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q
+traceparent: 00-36e24fcc02f6c30f5b705b7ab221f304-61a6b16be72232a1-00
+uid: asdasdasdasdasdasd
+x-api-key: FU9DNPkdJ15Z8fIg
+postman-token: 92e595ae-3440-498d-94c6-a743302b14d8
+x-traceid: 0HNOPDH6HOTK7:00000003
+x-client-id: 1
+x-forwarded-for: ::1
+x-forwarded-host: localhost:7000
+x-forwarded-proto: https
+', N'500', CAST(N'2026-09-23T20:18:13.8080000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (170, N'0HNOPDH6HOTK9:00000001', N'', N'', N'POST', N'https://localhost:7000/internal/gateway/reload', N'HTTP/1.1', N'{
+  "Headers": {
+    "Host": "localhost:7000",
+    "traceparent": "00-06d6687c63dc05496b8191551e0eeb06-d137bb7d75a37c3d-00",
+    "Content-Length": "0",
+    "X-TraceID": "0HNOPDH6HOTK9:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:19:16.1470000' AS DateTime2), N'::1', N'', N'{"status":"SUCCESS","message":"Gateway Proxy memory and YARP routes reloaded successfully."}', N'200', CAST(N'2026-09-23T20:19:16.1800000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (171, N'0HNOPDH6HOTKB:00000001', N'1', N'5', N'GET', N'https://localhost:7000/api/v1/loans/account/amortizationSchedule?arrangementId=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjU3MjUsImV4cCI6MTc5MDE2NjMyNSwiaWF0IjoxNzkwMTY1NzI1LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.-t27rkNU5A5Ij_tyUvMfIj0_6MOLHxbHpto5LTY1Gj8",
+    "uid": "asdasdasdasdasdasd",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "c0d3b7b2-c2ed-4280-9c8c-60b4a0d1cee1",
+    "X-TraceID": "0HNOPDH6HOTKB:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:19:19.8120000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'System.InvalidOperationException: Unable to resolve service for type ''Temenos.API.Services.IService.v1.loans.IAccountService'' while attempting to activate ''Temenos.API.Controllers.v1.loans.AccountController''.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.ThrowHelperUnableToResolveService(Type type, Type requiredBy)
+   at lambda_method9(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass6_0.<CreateControllerFactory>g__CreateController|0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+
+HEADERS
+=======
+Accept: */*
+Host: localhost:7246
+User-Agent: PostmanRuntime/7.56.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q
+traceparent: 00-eb066e0acaec346e7ae8f40a311fa600-3eb004583fa190b6-00
+uid: asdasdasdasdasdasd
+x-api-key: FU9DNPkdJ15Z8fIg
+postman-token: c0d3b7b2-c2ed-4280-9c8c-60b4a0d1cee1
+x-traceid: 0HNOPDH6HOTKB:00000001
+x-client-id: 1
+x-forwarded-for: ::1
+x-forwarded-host: localhost:7000
+x-forwarded-proto: https
+', N'500', CAST(N'2026-09-23T20:19:19.9080000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (172, N'0HNOPDKN2GMHM:00000001', N'1', N'2', N'GET', N'https://localhost:7000/auth', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "x-api-secret": "PmPml1J21rhZaqmr3xzQz7OOdcKTwIjR",
+    "postman-token": "bfb22ef2-99aa-4058-abda-934dd485bd23",
+    "X-TraceID": "0HNOPDKN2GMHM:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:21:22.9920000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjYwODMsImV4cCI6MTc5MDE2NjY4MywiaWF0IjoxNzkwMTY2MDgzLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.WQOwCwx0xVLFkTGY9c_AOj1x3TY7R3KRBCeCfuKCtxw","token_type":"Bearer","expires_in":600,"client_code":"ADMIN","issued_at":"2026-09-23T12:21:23.7620277Z"}', N'200', CAST(N'2026-09-23T20:21:23.8280000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (173, N'0HNOPDKN2GMHM:00000003', N'1', N'5', N'GET', N'https://localhost:7000/api/v1/loans/account/amortizationSchedule?arrangementId=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjYwODMsImV4cCI6MTc5MDE2NjY4MywiaWF0IjoxNzkwMTY2MDgzLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.WQOwCwx0xVLFkTGY9c_AOj1x3TY7R3KRBCeCfuKCtxw",
+    "uid": "asdasdasdasdasdasd",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "8d5a6155-6eca-40f3-97eb-94fc7c089f8d",
+    "X-TraceID": "0HNOPDKN2GMHM:00000003"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:21:31.5540000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"success":false,"message":"An unexpected system error occurred while processing the request.","errors":[{"code":null,"message":"An invalid request URI was provided. Either the request URI must be an absolute URI or BaseAddress must be set."}]}', N'500', CAST(N'2026-09-23T20:21:32.0540000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (174, N'0HNOPDL1P8ANR:00000001', N'1', N'5', N'GET', N'https://localhost:7000/api/v1/loans/account/amortizationSchedule?arrangementId=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjYwODMsImV4cCI6MTc5MDE2NjY4MywiaWF0IjoxNzkwMTY2MDgzLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.WQOwCwx0xVLFkTGY9c_AOj1x3TY7R3KRBCeCfuKCtxw",
+    "uid": "asdasdasdasdasdasd",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "27ec5bb3-1539-4c5a-be58-6b93e75ae58e",
+    "X-TraceID": "0HNOPDL1P8ANR:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:21:58.9470000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"success":false,"message":"An unexpected system error occurred while processing the request.","errors":[{"code":null,"message":"An invalid request URI was provided. Either the request URI must be an absolute URI or BaseAddress must be set."}]}', N'500', CAST(N'2026-09-23T20:22:05.8380000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (175, N'0HNOPDL1P8ANR:00000003', N'1', N'5', N'GET', N'https://localhost:7000/api/v1/loans/account/amortizationSchedule?arrangementId=asdasdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjYwODMsImV4cCI6MTc5MDE2NjY4MywiaWF0IjoxNzkwMTY2MDgzLCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.WQOwCwx0xVLFkTGY9c_AOj1x3TY7R3KRBCeCfuKCtxw",
+    "uid": "asdasdasdasdasdasd",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "d94da0e2-7275-4c2a-8137-dcddd32a79e6",
+    "X-TraceID": "0HNOPDL1P8ANR:00000003"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:22:37.4130000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"success":false,"message":"An unexpected system error occurred while processing the request.","errors":[{"code":null,"message":"An invalid request URI was provided. Either the request URI must be an absolute URI or BaseAddress must be set."}]}', N'500', CAST(N'2026-09-23T20:22:45.5430000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (176, N'0HNOPDL1P8ANT:00000001', N'1', N'2', N'GET', N'https://localhost:7000/auth', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "x-api-secret": "PmPml1J21rhZaqmr3xzQz7OOdcKTwIjR",
+    "postman-token": "20443372-f0ea-4c74-b1ec-71faf4c2f6a9",
+    "X-TraceID": "0HNOPDL1P8ANT:00000001"
+  },
+  "Body": "[Empty Body]"
+}
+', CAST(N'2026-09-23T20:24:55.2520000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjYyOTUsImV4cCI6MTc5MDE2Njg5NSwiaWF0IjoxNzkwMTY2Mjk1LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.LP6gq8IRmJ9T1rQRCb--jVfHOTvMWR4C0_ZBIohX23A","token_type":"Bearer","expires_in":600,"client_code":"ADMIN","issued_at":"2026-09-23T12:24:55.3929713Z"}', N'200', CAST(N'2026-09-23T20:24:55.4620000' AS DateTime2))
+GO
+INSERT [dbo].[Log_Http] ([Id], [TraceId], [ClientId], [RouteId], [HttpMethod], [Uri], [HttpVersion], [RequestData], [RequestDate], [Referrer], [UserAgent], [ResponseData], [ResponseCode], [ResponseDate]) VALUES (177, N'0HNOPDL1P8ANT:00000003', N'1', N'3', N'GET', N'https://localhost:7000/api/v1/casa/account/details?accountNo=asdasdasd', N'HTTP/2', N'{
+  "Headers": {
+    "Accept": "*/*",
+    "Host": "localhost:7000",
+    "User-Agent": "PostmanRuntime/7.56.1",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJBRE1JTiIsImNsaWVudF9jb2RlIjoiQURNSU4iLCJuYmYiOjE3OTAxNjYyOTUsImV4cCI6MTc5MDE2Njg5NSwiaWF0IjoxNzkwMTY2Mjk1LCJpc3MiOiJnYXRld2F5LnByb3h5LmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6ImdhdGV3YXkucHJveHkuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.LP6gq8IRmJ9T1rQRCb--jVfHOTvMWR4C0_ZBIohX23A",
+    "Content-Type": "application/json",
+    "Content-Length": "373",
+    "x-api-key": "FU9DNPkdJ15Z8fIg",
+    "postman-token": "6f8d9478-f28d-47e1-8cfc-f629e0fe16f3",
+    "X-TraceID": "0HNOPDL1P8ANT:00000003"
+  },
+  "Body": {
+  "transactionType": "BILLS_PAYMENT",
+  "debitAmount": "1500.00",
+  "debitValueDate": "2026-09-01",
+  "debitAccountNumber": "1000101521900",
+  "debitCurrency": "PHP",
+  "creditValueDate": "2026-09-01",
+  "creditAccountNumber": "1265000011",
+  "creditCurrency": "PHP",
+  "orderingCust": "PAYMENT",
+  "orderingBank": "EQB",
+  "referenceNo": "BP20260901100120"
+}
+}
+', CAST(N'2026-09-23T20:24:59.8210000' AS DateTime2), N'::1', N'PostmanRuntime/7.56.1', N'{"success":false,"message":"An unexpected system error occurred while processing the request.","errors":[{"code":null,"message":"A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)"}]}', N'500', CAST(N'2026-09-23T20:25:36.1120000' AS DateTime2))
+GO
 SET IDENTITY_INSERT [dbo].[Log_Http] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Map_Client_Credential] ON 
@@ -6087,9 +15838,13 @@ SET IDENTITY_INSERT [dbo].[Map_Client_Credential] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Map_Client_Route_Access] ON 
 GO
-INSERT [dbo].[Map_Client_Route_Access] ([Id], [ClientId], [RouteId], [IsAllowed], [OverrideRateLimit], [OverrideRatePeriod], [ExpiresAt], [CreatedDate]) VALUES (18, 1, 3, 1, NULL, NULL, NULL, CAST(N'2026-09-23T15:14:23.7190190' AS DateTime2))
+INSERT [dbo].[Map_Client_Route_Access] ([Id], [ClientId], [RouteId], [IsAllowed], [OverrideRateLimit], [OverrideRatePeriod], [ExpiresAt], [CreatedDate]) VALUES (36, 1, 3, 1, NULL, NULL, NULL, CAST(N'2026-09-23T20:11:22.0504807' AS DateTime2))
 GO
-INSERT [dbo].[Map_Client_Route_Access] ([Id], [ClientId], [RouteId], [IsAllowed], [OverrideRateLimit], [OverrideRatePeriod], [ExpiresAt], [CreatedDate]) VALUES (28, 1, 2, 1, NULL, NULL, NULL, CAST(N'2026-09-23T16:24:04.8419852' AS DateTime2))
+INSERT [dbo].[Map_Client_Route_Access] ([Id], [ClientId], [RouteId], [IsAllowed], [OverrideRateLimit], [OverrideRatePeriod], [ExpiresAt], [CreatedDate]) VALUES (37, 1, 4, 1, NULL, NULL, NULL, CAST(N'2026-09-23T20:11:36.6189149' AS DateTime2))
+GO
+INSERT [dbo].[Map_Client_Route_Access] ([Id], [ClientId], [RouteId], [IsAllowed], [OverrideRateLimit], [OverrideRatePeriod], [ExpiresAt], [CreatedDate]) VALUES (41, 1, 2, 1, NULL, NULL, NULL, CAST(N'2026-09-23T20:15:16.0518905' AS DateTime2))
+GO
+INSERT [dbo].[Map_Client_Route_Access] ([Id], [ClientId], [RouteId], [IsAllowed], [OverrideRateLimit], [OverrideRatePeriod], [ExpiresAt], [CreatedDate]) VALUES (44, 1, 5, 1, NULL, NULL, NULL, CAST(N'2026-09-23T20:28:10.5312545' AS DateTime2))
 GO
 SET IDENTITY_INSERT [dbo].[Map_Client_Route_Access] OFF
 GO
@@ -6241,9 +15996,13 @@ SET IDENTITY_INSERT [dbo].[Map_Role_Module_Permission] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Map_Route_TargetHost] ON 
 GO
-INSERT [dbo].[Map_Route_TargetHost] ([Id], [RouteId], [Host], [Port], [Weight], [Description], [HealthCheckPath], [IsHealthy]) VALUES (26, 3, N'localhost', 7246, 1, N'Primary Host', N'/health', 1)
+INSERT [dbo].[Map_Route_TargetHost] ([Id], [RouteId], [Host], [Port], [Weight], [Description], [HealthCheckPath], [IsHealthy]) VALUES (44, 3, N'localhost', 7246, 1, N'Primary Host', N'/health', 1)
 GO
-INSERT [dbo].[Map_Route_TargetHost] ([Id], [RouteId], [Host], [Port], [Weight], [Description], [HealthCheckPath], [IsHealthy]) VALUES (36, 2, N'localhost', 0, 1, N'Primary Host', N'/health', 1)
+INSERT [dbo].[Map_Route_TargetHost] ([Id], [RouteId], [Host], [Port], [Weight], [Description], [HealthCheckPath], [IsHealthy]) VALUES (45, 4, N'localhost', 7246, 1, N'Primary Host', N'/health', 1)
+GO
+INSERT [dbo].[Map_Route_TargetHost] ([Id], [RouteId], [Host], [Port], [Weight], [Description], [HealthCheckPath], [IsHealthy]) VALUES (49, 2, N'localhost', 0, 1, N'Primary Host', N'/health', 1)
+GO
+INSERT [dbo].[Map_Route_TargetHost] ([Id], [RouteId], [Host], [Port], [Weight], [Description], [HealthCheckPath], [IsHealthy]) VALUES (52, 5, N'localhost', 7246, 1, N'Primary Host', N'/health', 1)
 GO
 SET IDENTITY_INSERT [dbo].[Map_Route_TargetHost] OFF
 GO
@@ -6463,6 +16222,26 @@ INSERT [dbo].[Master_Active_User] ([Id], [UserId], [Terminal], [ActivityDate]) V
 GO
 INSERT [dbo].[Master_Active_User] ([Id], [UserId], [Terminal], [ActivityDate]) VALUES (3774, 1, N'::1', CAST(N'2026-09-23T16:54:11.5350000' AS DateTime2))
 GO
+INSERT [dbo].[Master_Active_User] ([Id], [UserId], [Terminal], [ActivityDate]) VALUES (3775, 1, N'::1', CAST(N'2026-09-23T19:20:56.5940000' AS DateTime2))
+GO
+INSERT [dbo].[Master_Active_User] ([Id], [UserId], [Terminal], [ActivityDate]) VALUES (3776, 1, N'::1', CAST(N'2026-09-23T19:26:01.7900000' AS DateTime2))
+GO
+INSERT [dbo].[Master_Active_User] ([Id], [UserId], [Terminal], [ActivityDate]) VALUES (3777, 1, N'::1', CAST(N'2026-09-23T19:29:26.6460000' AS DateTime2))
+GO
+INSERT [dbo].[Master_Active_User] ([Id], [UserId], [Terminal], [ActivityDate]) VALUES (3778, 1, N'::1', CAST(N'2026-09-23T19:35:28.6450000' AS DateTime2))
+GO
+INSERT [dbo].[Master_Active_User] ([Id], [UserId], [Terminal], [ActivityDate]) VALUES (3779, 1, N'::1', CAST(N'2026-09-23T19:44:15.2180000' AS DateTime2))
+GO
+INSERT [dbo].[Master_Active_User] ([Id], [UserId], [Terminal], [ActivityDate]) VALUES (3780, 1, N'::1', CAST(N'2026-09-23T19:53:28.0530000' AS DateTime2))
+GO
+INSERT [dbo].[Master_Active_User] ([Id], [UserId], [Terminal], [ActivityDate]) VALUES (3781, 1, N'::1', CAST(N'2026-09-23T20:03:20.5030000' AS DateTime2))
+GO
+INSERT [dbo].[Master_Active_User] ([Id], [UserId], [Terminal], [ActivityDate]) VALUES (3782, 1, N'::1', CAST(N'2026-09-23T20:09:06.6800000' AS DateTime2))
+GO
+INSERT [dbo].[Master_Active_User] ([Id], [UserId], [Terminal], [ActivityDate]) VALUES (3783, 1, N'::1', CAST(N'2026-09-23T20:13:30.2410000' AS DateTime2))
+GO
+INSERT [dbo].[Master_Active_User] ([Id], [UserId], [Terminal], [ActivityDate]) VALUES (3784, 1, N'::1', CAST(N'2026-09-23T20:28:01.7150000' AS DateTime2))
+GO
 SET IDENTITY_INSERT [dbo].[Master_Active_User] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Master_AuthProviders] ON 
@@ -6623,13 +16402,21 @@ SET IDENTITY_INSERT [dbo].[Master_Role] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Master_Route] ON 
 GO
-INSERT [dbo].[Master_Route] ([Id], [Code], [IntegrationType], [Name], [Description], [IsActive], [IsWebSocket], [RequireApiKey], [UpstreamPathTemplate], [UpstreamHttpMethod], [DownstreamPathTemplate], [DownstreamScheme], [Priority], [EnableRateLimiting], [RateLimit], [RatePeriod], [RatePeriodTimespan], [TimeFrom], [TimeTo], [DateFrom], [DateTo], [AllowedDays], [LoadBalancingPolicy], [TimeoutSeconds], [EnableCaching], [CacheTtlSeconds], [AllowedOrigins], [MaxRequestBodySize], [CategoryId], [AuthProviderId], [OutboundAuthProfileId], [StripPath], [PreserveHostHeader], [AllowedMethods], [ApiVersion], [MaxRetries], [RetryDelayMs], [EnableCircuitBreaker], [MockResponseCode], [MockResponseBody], [CreatedBy], [CreatedDate], [UpdatedBy], [UpdatedDate]) VALUES (2, N'AUTH-Gateway', N'INTERNAL_AUTH', N'Gateway Authentication', N'Gateway Authentication', 1, 0, 1, N'/auth', N'GET', N'', N'https', 1, 0, 100, NULL, 60, NULL, NULL, NULL, NULL, N'', N'RoundRobin', 30, 0, 60, N'*', NULL, 2, 1, 2, 1, 0, N'GET', N'v1', 0, 1000, 0, 200, N'{
+INSERT [dbo].[Master_Route] ([Id], [Code], [IntegrationType], [Name], [Description], [IsActive], [IsWebSocket], [RequireApiKey], [UpstreamPathTemplate], [UpstreamHttpMethod], [DownstreamPathTemplate], [DownstreamScheme], [Priority], [EnableRateLimiting], [RateLimit], [RatePeriod], [RatePeriodTimespan], [TimeFrom], [TimeTo], [DateFrom], [DateTo], [AllowedDays], [LoadBalancingPolicy], [TimeoutSeconds], [EnableCaching], [CacheTtlSeconds], [AllowedOrigins], [MaxRequestBodySize], [CategoryId], [AuthProviderId], [OutboundAuthProfileId], [StripPath], [PreserveHostHeader], [AllowedMethods], [ApiVersion], [MaxRetries], [RetryDelayMs], [EnableCircuitBreaker], [MockResponseCode], [MockResponseBody], [CreatedBy], [CreatedDate], [UpdatedBy], [UpdatedDate]) VALUES (2, N'AUTH-GATEWAY', N'INTERNAL_AUTH', N'Gateway Authentication', N'Gateway Authentication', 1, 0, 1, N'/auth', N'GET', N'', N'https', 1, 0, 100, NULL, 60, NULL, NULL, NULL, NULL, N'', N'RoundRobin', 30, 0, 60, N'*', NULL, 2, 1, 2, 1, 0, N'GET', N'v1', 0, 1000, 0, 200, N'{
   "message": "Mock Response Success"
-}', 1, CAST(N'2026-09-23T08:57:46.6896864' AS DateTime2), 1, CAST(N'2026-09-23T16:24:04.7141727' AS DateTime2))
+}', 1, CAST(N'2026-09-23T08:57:46.6896864' AS DateTime2), 1, CAST(N'2026-09-23T20:15:16.0478236' AS DateTime2))
 GO
-INSERT [dbo].[Master_Route] ([Id], [Code], [IntegrationType], [Name], [Description], [IsActive], [IsWebSocket], [RequireApiKey], [UpstreamPathTemplate], [UpstreamHttpMethod], [DownstreamPathTemplate], [DownstreamScheme], [Priority], [EnableRateLimiting], [RateLimit], [RatePeriod], [RatePeriodTimespan], [TimeFrom], [TimeTo], [DateFrom], [DateTo], [AllowedDays], [LoadBalancingPolicy], [TimeoutSeconds], [EnableCaching], [CacheTtlSeconds], [AllowedOrigins], [MaxRequestBodySize], [CategoryId], [AuthProviderId], [OutboundAuthProfileId], [StripPath], [PreserveHostHeader], [AllowedMethods], [ApiVersion], [MaxRetries], [RetryDelayMs], [EnableCircuitBreaker], [MockResponseCode], [MockResponseBody], [CreatedBy], [CreatedDate], [UpdatedBy], [UpdatedDate]) VALUES (3, N'TEMENOS-Account', N'PROXY', N'Temenos Accounts', N'', 1, 0, 1, N'/api/v1/casa/account/{**catch-all}', N'GET', N'/api/v1/casa/account/{**catch-all}', N'https', 1, 0, 100, NULL, 60, NULL, NULL, NULL, NULL, N'', N'RoundRobin', 30, 0, 60, N'*', NULL, 4, 1, 2, 1, 0, N'GET', N'v1', 0, 1000, 0, 200, N'{
+INSERT [dbo].[Master_Route] ([Id], [Code], [IntegrationType], [Name], [Description], [IsActive], [IsWebSocket], [RequireApiKey], [UpstreamPathTemplate], [UpstreamHttpMethod], [DownstreamPathTemplate], [DownstreamScheme], [Priority], [EnableRateLimiting], [RateLimit], [RatePeriod], [RatePeriodTimespan], [TimeFrom], [TimeTo], [DateFrom], [DateTo], [AllowedDays], [LoadBalancingPolicy], [TimeoutSeconds], [EnableCaching], [CacheTtlSeconds], [AllowedOrigins], [MaxRequestBodySize], [CategoryId], [AuthProviderId], [OutboundAuthProfileId], [StripPath], [PreserveHostHeader], [AllowedMethods], [ApiVersion], [MaxRetries], [RetryDelayMs], [EnableCircuitBreaker], [MockResponseCode], [MockResponseBody], [CreatedBy], [CreatedDate], [UpdatedBy], [UpdatedDate]) VALUES (3, N'TEMENOS-CASA-ACCOUNT', N'PROXY', N'Temenos CASA Accounts', N'Temenos CASA Accounts', 1, 0, 1, N'/api/v1/casa/account/{**catch-all}', N'GET', N'/api/v1/casa/account/{**catch-all}', N'https', 1, 0, 100, NULL, 60, NULL, NULL, NULL, NULL, N'', N'RoundRobin', 30, 0, 60, N'*', NULL, 4, 1, 2, 1, 0, N'GET', N'v1', 0, 1000, 0, 200, N'{
   "message": "Mock Response Success"
-}', 1, CAST(N'2026-09-23T13:42:45.5153478' AS DateTime2), 1, CAST(N'2026-09-23T15:14:23.5816466' AS DateTime2))
+}', 1, CAST(N'2026-09-23T13:42:45.5153478' AS DateTime2), 1, CAST(N'2026-09-23T20:11:21.9695296' AS DateTime2))
+GO
+INSERT [dbo].[Master_Route] ([Id], [Code], [IntegrationType], [Name], [Description], [IsActive], [IsWebSocket], [RequireApiKey], [UpstreamPathTemplate], [UpstreamHttpMethod], [DownstreamPathTemplate], [DownstreamScheme], [Priority], [EnableRateLimiting], [RateLimit], [RatePeriod], [RatePeriodTimespan], [TimeFrom], [TimeTo], [DateFrom], [DateTo], [AllowedDays], [LoadBalancingPolicy], [TimeoutSeconds], [EnableCaching], [CacheTtlSeconds], [AllowedOrigins], [MaxRequestBodySize], [CategoryId], [AuthProviderId], [OutboundAuthProfileId], [StripPath], [PreserveHostHeader], [AllowedMethods], [ApiVersion], [MaxRetries], [RetryDelayMs], [EnableCircuitBreaker], [MockResponseCode], [MockResponseBody], [CreatedBy], [CreatedDate], [UpdatedBy], [UpdatedDate]) VALUES (4, N'TEMENOS-CASA-TRANSACTION', N'PROXY', N'Temenos CASA Transaction', N'Temenos CASA Transaction', 1, 0, 1, N'/api/v1/casa/transaction/{**catch-all}', N'GET,POST,DELETE', N'/api/v1/casa/transaction/{**catch-all}', N'https', 1, 0, 100, NULL, 60, NULL, NULL, NULL, NULL, N'', N'RoundRobin', 30, 0, 60, N'*', NULL, 4, 1, 2, 1, 0, N'GET,POST,DELETE', N'v1', 0, 1000, 0, 200, N'{
+  "message": "Mock Response Success"
+}', 1, CAST(N'2026-09-23T19:48:12.7476118' AS DateTime2), 1, CAST(N'2026-09-23T20:11:36.6141500' AS DateTime2))
+GO
+INSERT [dbo].[Master_Route] ([Id], [Code], [IntegrationType], [Name], [Description], [IsActive], [IsWebSocket], [RequireApiKey], [UpstreamPathTemplate], [UpstreamHttpMethod], [DownstreamPathTemplate], [DownstreamScheme], [Priority], [EnableRateLimiting], [RateLimit], [RatePeriod], [RatePeriodTimespan], [TimeFrom], [TimeTo], [DateFrom], [DateTo], [AllowedDays], [LoadBalancingPolicy], [TimeoutSeconds], [EnableCaching], [CacheTtlSeconds], [AllowedOrigins], [MaxRequestBodySize], [CategoryId], [AuthProviderId], [OutboundAuthProfileId], [StripPath], [PreserveHostHeader], [AllowedMethods], [ApiVersion], [MaxRetries], [RetryDelayMs], [EnableCircuitBreaker], [MockResponseCode], [MockResponseBody], [CreatedBy], [CreatedDate], [UpdatedBy], [UpdatedDate]) VALUES (5, N'TEMENOS-LOANS-ACCOUNT', N'PROXY', N'Temenos Loans Account', N'Temenos Loans Account', 1, 0, 1, N'/api/v1/loans/account/{**catch-all}', N'GET', N'/api/v1/loans/account/{**catch-all}', N'https', 1, 0, 100, NULL, 60, NULL, NULL, NULL, NULL, N'', N'RoundRobin', 30, 0, 60, N'*', NULL, 4, 1, 2, 1, 0, N'GET', N'v1', 0, 1000, 0, 200, N'{
+  "message": "Mock Response Success"
+}', 1, CAST(N'2026-09-23T20:14:44.9877365' AS DateTime2), 1, CAST(N'2026-09-23T20:28:10.4489877' AS DateTime2))
 GO
 SET IDENTITY_INSERT [dbo].[Master_Route] OFF
 GO
@@ -6641,7 +16428,7 @@ SET IDENTITY_INSERT [dbo].[Master_User] OFF
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Map_Clie__A4E6E1866225C107]    Script Date: 9/23/2026 5:05:26 PM ******/
+/****** Object:  Index [UQ__Map_Clie__A4E6E186F8A9DE38]    Script Date: 9/23/2026 8:30:58 PM ******/
 ALTER TABLE [dbo].[Map_Client_Credential] ADD UNIQUE NONCLUSTERED 
 (
 	[ApiKey] ASC
@@ -6649,7 +16436,7 @@ ALTER TABLE [dbo].[Map_Client_Credential] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__AuthProv__A25C5AA7A5975DB6]    Script Date: 9/23/2026 5:05:26 PM ******/
+/****** Object:  Index [UQ__Master_A__A25C5AA75544FBC7]    Script Date: 9/23/2026 8:30:58 PM ******/
 ALTER TABLE [dbo].[Master_AuthProviders] ADD UNIQUE NONCLUSTERED 
 (
 	[Code] ASC
@@ -6657,7 +16444,7 @@ ALTER TABLE [dbo].[Master_AuthProviders] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Master_C__A25C5AA77C8F8EB5]    Script Date: 9/23/2026 5:05:26 PM ******/
+/****** Object:  Index [UQ__Master_C__A25C5AA73B0B945E]    Script Date: 9/23/2026 8:30:58 PM ******/
 ALTER TABLE [dbo].[Master_Category] ADD UNIQUE NONCLUSTERED 
 (
 	[Code] ASC
@@ -6665,7 +16452,7 @@ ALTER TABLE [dbo].[Master_Category] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Master_C__A25C5AA7F5A30CAC]    Script Date: 9/23/2026 5:05:26 PM ******/
+/****** Object:  Index [UQ__Master_C__A25C5AA70900354B]    Script Date: 9/23/2026 8:30:58 PM ******/
 ALTER TABLE [dbo].[Master_Client] ADD UNIQUE NONCLUSTERED 
 (
 	[Code] ASC
@@ -6673,7 +16460,7 @@ ALTER TABLE [dbo].[Master_Client] ADD UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ_OutboundAuthProfile_Code]    Script Date: 9/23/2026 5:05:26 PM ******/
+/****** Object:  Index [UQ_OutboundAuthProfile_Code]    Script Date: 9/23/2026 8:30:58 PM ******/
 ALTER TABLE [dbo].[Master_OutboundAuthProfile] ADD  CONSTRAINT [UQ_OutboundAuthProfile_Code] UNIQUE NONCLUSTERED 
 (
 	[Code] ASC
@@ -6681,7 +16468,7 @@ ALTER TABLE [dbo].[Master_OutboundAuthProfile] ADD  CONSTRAINT [UQ_OutboundAuthP
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [UQ__Master_A__A25C5AA7736E9F8A]    Script Date: 9/23/2026 5:05:26 PM ******/
+/****** Object:  Index [UQ__Master_A__A25C5AA7736E9F8A]    Script Date: 9/23/2026 8:30:58 PM ******/
 ALTER TABLE [dbo].[Master_Route] ADD  CONSTRAINT [UQ__Master_A__A25C5AA7736E9F8A] UNIQUE NONCLUSTERED 
 (
 	[Code] ASC

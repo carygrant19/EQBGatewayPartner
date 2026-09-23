@@ -1,10 +1,10 @@
 {
-  "PublishedDate": "2026-09-23T20:19:16.0048645+08:00",
+  "PublishedDate": "2026-09-23T19:50:03.4225388+08:00",
   "PublishedBy": "JALEMANIA",
   "ReverseProxy": {
     "Routes": {
-      "AUTH-GATEWAY": {
-        "ClusterId": "AUTH-GATEWAY",
+      "AUTH-Gateway": {
+        "ClusterId": "AUTH-Gateway",
         "Match": {
           "Path": "/auth",
           "Methods": [
@@ -12,8 +12,8 @@
           ]
         }
       },
-      "TEMENOS-CASA-ACCOUNT": {
-        "ClusterId": "TEMENOS-CASA-ACCOUNT",
+      "TEMENOS-Account": {
+        "ClusterId": "TEMENOS-Account",
         "Match": {
           "Path": "/api/v1/casa/account/{**catch-all}",
           "Methods": [
@@ -21,8 +21,8 @@
           ]
         }
       },
-      "TEMENOS-CASA-TRANSACTION": {
-        "ClusterId": "TEMENOS-CASA-TRANSACTION",
+      "TEMENOS-TRANSACTION": {
+        "ClusterId": "TEMENOS-TRANSACTION",
         "Match": {
           "Path": "/api/v1/casa/transaction/{**catch-all}",
           "Methods": [
@@ -31,43 +31,27 @@
             "DELETE"
           ]
         }
-      },
-      "TEMENOS-LOANS-ACCOUNT": {
-        "ClusterId": "TEMENOS-LOANS-ACCOUNT",
-        "Match": {
-          "Path": "/api/v1/loans/account/{**catch-all}",
-          "Methods": [
-            "GET"
-          ]
-        }
       }
     },
     "Clusters": {
-      "AUTH-GATEWAY": {
+      "AUTH-Gateway": {
         "Destinations": {
           "destination_1": {
             "Address": "https://localhost"
           }
         }
       },
-      "TEMENOS-CASA-ACCOUNT": {
+      "TEMENOS-Account": {
         "Destinations": {
           "destination_1": {
             "Address": "https://localhost:7246/api/v1/casa/account/{**catch-all}"
           }
         }
       },
-      "TEMENOS-CASA-TRANSACTION": {
+      "TEMENOS-TRANSACTION": {
         "Destinations": {
           "destination_1": {
             "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
-          }
-        }
-      },
-      "TEMENOS-LOANS-ACCOUNT": {
-        "Destinations": {
-          "destination_1": {
-            "Address": "https://localhost:7246/api/v1/loans/account/{**catch-all}"
           }
         }
       }
@@ -77,7 +61,7 @@
     "RawRoutes": [
       {
         "Id": "2",
-        "Code": "AUTH-GATEWAY",
+        "Code": "AUTH-Gateway",
         "Name": "Gateway Authentication",
         "Description": "Gateway Authentication",
         "CategoryId": 2,
@@ -124,7 +108,7 @@
         "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
         "TargetHosts": [
           {
-            "Id": 49,
+            "Id": 36,
             "EndpointId": "2",
             "Host": "localhost",
             "Port": 0,
@@ -139,9 +123,9 @@
       },
       {
         "Id": "3",
-        "Code": "TEMENOS-CASA-ACCOUNT",
-        "Name": "Temenos CASA Accounts",
-        "Description": "Temenos CASA Accounts",
+        "Code": "TEMENOS-Account",
+        "Name": "Temenos Accounts",
+        "Description": "",
         "CategoryId": 4,
         "CategoryName": "Temenos",
         "AuthProviderId": 1,
@@ -186,7 +170,7 @@
         "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
         "TargetHosts": [
           {
-            "Id": 44,
+            "Id": 40,
             "EndpointId": "3",
             "Host": "localhost",
             "Port": 7246,
@@ -201,9 +185,9 @@
       },
       {
         "Id": "4",
-        "Code": "TEMENOS-CASA-TRANSACTION",
-        "Name": "Temenos CASA Transaction",
-        "Description": "Temenos CASA Transaction",
+        "Code": "TEMENOS-TRANSACTION",
+        "Name": "Temenos Transaction",
+        "Description": "Temenos Transaction",
         "CategoryId": 4,
         "CategoryName": "Temenos",
         "AuthProviderId": 1,
@@ -248,70 +232,8 @@
         "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
         "TargetHosts": [
           {
-            "Id": 45,
+            "Id": 41,
             "EndpointId": "4",
-            "Host": "localhost",
-            "Port": 7246,
-            "Weight": 1,
-            "Description": "Primary Host",
-            "HealthCheckPath": "/health",
-            "IsHealthy": true
-          }
-        ],
-        "IpRules": [],
-        "Transforms": []
-      },
-      {
-        "Id": "5",
-        "Code": "TEMENOS-LOANS-ACCOUNT",
-        "Name": "Temenos Loans Account",
-        "Description": "Temenos Loans Account",
-        "CategoryId": 4,
-        "CategoryName": "Temenos",
-        "AuthProviderId": 1,
-        "AuthProviderName": "Gateway",
-        "OutboundAuthProfileId": 2,
-        "OutboundAuthProfileName": "Temenos Bearer Token",
-        "ClientIds": [
-          1
-        ],
-        "IsActive": true,
-        "IsWebSocket": false,
-        "RequireApiKey": true,
-        "UpstreamPathTemplate": "/api/v1/loans/account/{**catch-all}",
-        "UpstreamHttpMethod": "GET",
-        "DownstreamPathTemplate": "/api/v1/loans/account/{**catch-all}",
-        "DownstreamScheme": "https",
-        "Priority": 1,
-        "EnableRateLimiting": false,
-        "RateLimit": 100,
-        "RatePeriod": null,
-        "RatePeriodTimespan": 60,
-        "TimeFrom": null,
-        "TimeTo": null,
-        "DateFrom": null,
-        "DateTo": null,
-        "AllowedDays": "",
-        "LoadBalancingPolicy": "RoundRobin",
-        "TimeoutSeconds": 30,
-        "EnableCaching": false,
-        "CacheTtlSeconds": 60,
-        "AllowedOrigins": "*",
-        "MaxRequestBodySize": null,
-        "IntegrationType": "PROXY",
-        "StripPath": true,
-        "PreserveHostHeader": false,
-        "AllowedMethods": "GET",
-        "ApiVersion": "v1",
-        "MaxRetries": 0,
-        "RetryDelayMs": 1000,
-        "EnableCircuitBreaker": false,
-        "MockResponseCode": 200,
-        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
-        "TargetHosts": [
-          {
-            "Id": 51,
-            "EndpointId": "5",
             "Host": "localhost",
             "Port": 7246,
             "Weight": 1,

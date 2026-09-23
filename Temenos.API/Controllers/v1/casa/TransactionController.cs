@@ -13,7 +13,7 @@ namespace Temenos.API.Controllers.v1.casa
         private readonly ITransactionService _transactionService = transactionService;
 
         [HttpPost("fundTransfer")]
-        public async Task<IActionResult> FundTransfer(string uId, string companyId, Request.FundTransfer request)
+        public async Task<IActionResult> FundTransfer([FromHeader]string uId, [FromHeader] string companyId, [FromBody]Request.FundTransfer request)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace Temenos.API.Controllers.v1.casa
         }
 
         [HttpGet("status")]
-        public async Task<IActionResult> Status(string uId)
+        public async Task<IActionResult> Status([FromHeader]string uId)
         {
             try
             {

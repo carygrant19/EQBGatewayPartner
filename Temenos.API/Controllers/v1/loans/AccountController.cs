@@ -12,7 +12,7 @@ namespace Temenos.API.Controllers.v1.loans
         private readonly IAccountService _accountService = accountService;
 
         [HttpGet("amortizationSchedule")]
-        public async Task<IActionResult> AmortizationSchedule(string arrangementId)
+        public async Task<IActionResult> AmortizationSchedule([FromQuery]string arrangementId)
         {
             try
             {

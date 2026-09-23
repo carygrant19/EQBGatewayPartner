@@ -6,7 +6,8 @@ using OpenTelemetry.Trace;
 using Serilog;
 using casaV1 = Temenos.API.Services.v1.casa;
 using icasaV1 = Temenos.API.Services.IService.v1.casa;
-
+using loansV1 = Temenos.API.Services.v1.loans;
+using iloansV1 = Temenos.API.Services.IService.v1.loans;
 var basePath = AppContext.BaseDirectory;
 var logFilePath = Path.Combine(basePath, "Logs", "TemenosService-.txt");
 
@@ -73,7 +74,8 @@ try
     // Service Dependency Injection
     builder.Services.AddScoped<icasaV1.ITransactionService, casaV1.TransactionService>();
     builder.Services.AddScoped<icasaV1.IAccountService, casaV1.AccountService>();
-
+    builder.Services.AddScoped<icasaV1.IAccountService, casaV1.AccountService>();
+    builder.Services.AddScoped<iloansV1.IAccountService, loansV1.AccountService>();
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddOpenApi();

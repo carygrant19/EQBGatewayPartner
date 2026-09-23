@@ -125,6 +125,25 @@ namespace Gateway.BLL.Services
             Response.Result result = new();
             try
             {
+                string normPath = NormalizePathTemplate(model.UpstreamPathTemplate);
+                string methods = string.IsNullOrWhiteSpace(model.AllowedMethods) ? (model.UpstreamHttpMethod ?? "GET") : model.AllowedMethods;
+
+                // LEVEL 1 VALIDATION: Tinitiyak na walang eksaktong kapareho ng Path + Method + Priority
+                bool isDuplicate = await _efDbContext.Set<Model.Route>().AnyAsync(d =>
+                    d.IsActive &&
+                    d.UpstreamPathTemplate == normPath &&
+                    d.AllowedMethods == methods &&
+                    d.Priority == model.Priority);
+
+                if (isDuplicate)
+                {
+                    return new Response.Result
+                    {
+                        Status = "FAILED",
+                        Message = $"Route conflict: An active endpoint with the path '{normPath}', methods '{methods}', and Priority '{model.Priority}' already exists."
+                    };
+                }
+
                 bool isSuccess = false;
                 using (TransactionScope transactionScope = new(TransactionScopeAsyncFlowOption.Enabled))
                 {
@@ -134,9 +153,10 @@ namespace Gateway.BLL.Services
                     if (!exists)
                     {
                         var data = _mapper.Map<Model.Route>(model);
+                        data.Code = data.Code.ToUpper();
                         data.RequireApiKey = model.RequireApiKey;
                         data.OutboundAuthProfileId = model.OutboundAuthProfileId;
-                        data.UpstreamPathTemplate = NormalizePathTemplate(data.UpstreamPathTemplate);
+                        data.UpstreamPathTemplate = normPath;
                         data.DownstreamPathTemplate = NormalizePathTemplate(data.DownstreamPathTemplate);
 
                         data.TargetHosts = new List<Model.TargetHost>();
@@ -191,6 +211,27 @@ namespace Gateway.BLL.Services
             Response.Result result = new();
             try
             {
+                string normPath = NormalizePathTemplate(model.UpstreamPathTemplate);
+                string methods = string.IsNullOrWhiteSpace(model.AllowedMethods) ? (model.UpstreamHttpMethod ?? "GET") : model.AllowedMethods;
+
+                // LEVEL 1 VALIDATION FOR UPDATE: Siguraduhing hindi babangga sa ibang active route
+                long currentId = Convert.ToInt64(model.Id);
+                bool isDuplicate = await _efDbContext.Set<Model.Route>().AnyAsync(d =>
+                    d.Id != currentId &&
+                    d.IsActive &&
+                    d.UpstreamPathTemplate == normPath &&
+                    d.AllowedMethods == methods &&
+                    d.Priority == model.Priority);
+
+                if (isDuplicate)
+                {
+                    return new Response.Result
+                    {
+                        Status = "FAILED",
+                        Message = $"Route conflict: Another active endpoint with path '{normPath}', methods '{methods}', and Priority '{model.Priority}' already exists."
+                    };
+                }
+
                 bool isSuccess = false; bool isNotFound = false;
                 using (TransactionScope transactionScope = new(TransactionScopeAsyncFlowOption.Enabled))
                 {
@@ -201,7 +242,7 @@ namespace Gateway.BLL.Services
                         .Include(e => e.TargetHosts)
                         .Include(e => e.IpRules)
                         .Include(e => e.Transforms)
-                        .FirstOrDefaultAsync(l => l.Id == Convert.ToInt64(model.Id));
+                        .FirstOrDefaultAsync(l => l.Id == currentId);
 
                     if (data != null)
                     {
@@ -219,7 +260,7 @@ namespace Gateway.BLL.Services
                         _mapper.Map(model, data);
                         data.RequireApiKey = model.RequireApiKey;
                         data.OutboundAuthProfileId = model.OutboundAuthProfileId;
-                        data.UpstreamPathTemplate = NormalizePathTemplate(data.UpstreamPathTemplate);
+                        data.UpstreamPathTemplate = normPath;
                         data.DownstreamPathTemplate = NormalizePathTemplate(data.DownstreamPathTemplate);
 
                         data.UpdatedBy = (int)user.Id;
@@ -354,9 +395,6 @@ namespace Gateway.BLL.Services
             return result;
         }
 
-        // ====================================================================
-        // PUBLISH METHOD WITH YARP OFFICIAL FORMAT & YEAR/MONTH BACKUP FOLDERS
-        // ====================================================================
         public async Task<Response.Result> PublishRoutesAsync(string opUser)
         {
             Response.Result result = new();
@@ -365,7 +403,6 @@ namespace Gateway.BLL.Services
                 DateTime now = DateTime.Now;
                 var user = await _efDbContext.User!.FirstOrDefaultAsync(d => d.Username == opUser) ?? new Model.User() { Id = 0 };
 
-                // 1. Kuhanin ang buong gateway configuration mula sa DB
                 var activeRoutes = await GetActiveEndpointsAsync();
                 var authProviders = await _efDbContext.Set<Model.AuthProvider>().AsNoTracking().ToListAsync();
                 var outboundProfiles = await _efDbContext.Set<Model.OutboundAuthProfile>()
@@ -374,7 +411,6 @@ namespace Gateway.BLL.Services
                     .ToListAsync();
                 var categories = await _efDbContext.Set<Model.Category>().AsNoTracking().ToListAsync();
 
-                // 2. I-build ang YARP Official format (Routes at Clusters)
                 var yarpRoutes = new Dictionary<string, object>();
                 var yarpClusters = new Dictionary<string, object>();
 
@@ -386,14 +422,23 @@ namespace Gateway.BLL.Services
                                           .Select(m => m.Trim().ToUpper())
                                           .ToArray();
 
+                    var transforms = new List<object>();
+                    if (!string.IsNullOrWhiteSpace(r.DownstreamPathTemplate))
+                    {
+                        transforms.Add(new { PathPattern = r.DownstreamPathTemplate });
+                    }
+
+                    // LEVEL 2 YARP DISAMBIGUATION: Priority as Order
                     yarpRoutes[r.Code] = new
                     {
                         ClusterId = r.Code,
+                        Order = r.Priority,
                         Match = new
                         {
                             Path = r.UpstreamPathTemplate,
                             Methods = methods
-                        }
+                        },
+                        Transforms = transforms.Count > 0 ? transforms : null
                     };
 
                     var destinations = new Dictionary<string, object>();
@@ -402,11 +447,10 @@ namespace Gateway.BLL.Services
                         for (int i = 0; i < r.TargetHosts.Count; i++)
                         {
                             var host = r.TargetHosts[i];
-                            string addressUrl = $"{r.DownstreamScheme}://{host.Host}";
-                            if (host.Port > 0) addressUrl += $":{host.Port}";
-                            addressUrl += r.DownstreamPathTemplate;
+                            string baseUrl = $"{r.DownstreamScheme}://{host.Host}";
+                            if (host.Port > 0) baseUrl += $":{host.Port}";
 
-                            destinations[$"destination_{i + 1}"] = new { Address = addressUrl };
+                            destinations[$"destination_{i + 1}"] = new { Address = baseUrl };
                         }
                     }
 
@@ -416,7 +460,6 @@ namespace Gateway.BLL.Services
                     };
                 }
 
-                // 3. I-compile ang Final YARP Snapshot
                 var fullYarpConfigFile = new
                 {
                     PublishedDate = now,
@@ -437,11 +480,9 @@ namespace Gateway.BLL.Services
 
                 var newConfigJson = JsonConvert.SerializeObject(fullYarpConfigFile, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 
-                // 4. FILE PATHS & YEAR/MONTH FOLDER CREATION
                 string filePath = _configuration["YarpConfigFile:FilePath"] ?? @"C:\Gateway\gateway-config.json";
                 string baseBackupPath = _configuration["YarpConfigFile:BackupPath"] ?? @"C:\Gateway\YARPBackup";
 
-                // Save Main Gateway File
                 string? fileDir = Path.GetDirectoryName(filePath);
                 if (!string.IsNullOrEmpty(fileDir) && !Directory.Exists(fileDir))
                 {
@@ -449,7 +490,6 @@ namespace Gateway.BLL.Services
                 }
                 await File.WriteAllTextAsync(filePath, newConfigJson);
 
-                // Dynamically build: YARPBackup / YYYY / MM
                 string yearFolder = now.ToString("yyyy");
                 string monthFolder = now.ToString("MM");
                 string targetBackupDir = Path.Combine(baseBackupPath, yearFolder, monthFolder);
@@ -463,7 +503,6 @@ namespace Gateway.BLL.Services
                 string backupFilePath = Path.Combine(targetBackupDir, $"yarp-config_{timestamp}.json");
                 await File.WriteAllTextAsync(backupFilePath, newConfigJson);
 
-                // 5. Save Audit Log
                 var lastPublishLog = await _efDbContext.Set<Model.AuditLog>()
                     .Where(a => a.RecordId == "PROXY_CONFIG" && a.OperationType == "PUBLISH")
                     .OrderByDescending(a => a.ActionDate)
@@ -486,14 +525,13 @@ namespace Gateway.BLL.Services
                 _logService.LogAudit(auditLog);
                 _logService.LogActivity(new Model.ActivityLog { UserId = user.Id, ModuleName = _moduleName, Action = "PUBLISH", Details = $"All gateway proxy routes published. Backup saved to: {yearFolder}/{monthFolder}/{Path.GetFileName(backupFilePath)}" });
 
-                // 6. Signal Gateway Proxy Reload
                 var reloadUrl = $"{_gatewayProxyUrl.TrimEnd('/')}/internal/gateway/reload";
                 var response = await _httpClient.PostAsync(reloadUrl, null);
 
                 if (response.IsSuccessStatusCode)
                 {
                     result.Status = "SUCCESS";
-                    result.Message = "Gateway Proxy configuration successfully published, backed up by Year/Month, and live!";
+                    result.Message = "Gateway Proxy configuration successfully published and live!";
                 }
                 else
                 {

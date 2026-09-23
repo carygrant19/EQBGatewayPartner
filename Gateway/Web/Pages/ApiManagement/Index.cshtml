@@ -119,7 +119,12 @@
                                                     <td>
                                                         <span v-if="record.integrationType === 'MOCK'" class="text-muted small">Mock Engine</span>
                                                         <span v-else-if="record.integrationType === 'INTERNAL_AUTH'" class="text-muted small">Internal Token</span>
-                                                        <code class="small" v-else>{{ record.downstreamScheme }}://{{ record.downstreamPathTemplate }}</code>
+                                                        <code class="small" v-else>
+                                                            <template v-for="targetHost in record.targetHosts">
+                                                                {{ record.downstreamScheme }}://{{targetHost.host}}:{{targetHost.port}}//{{ record.downstreamPathTemplate }}
+                                                            </template>
+
+                                                        </code>
                                                     </td>
                                                     <td class="text-center">
                                                         <div class="btn-group btn-group-sm">

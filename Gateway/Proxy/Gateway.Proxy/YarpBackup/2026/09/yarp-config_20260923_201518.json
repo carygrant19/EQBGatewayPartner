@@ -1,5 +1,5 @@
 {
-  "PublishedDate": "2026-09-23T20:19:16.0048645+08:00",
+  "PublishedDate": "2026-09-23T20:15:18.4030364+08:00",
   "PublishedBy": "JALEMANIA",
   "ReverseProxy": {
     "Routes": {
@@ -35,7 +35,7 @@
       "TEMENOS-LOANS-ACCOUNT": {
         "ClusterId": "TEMENOS-LOANS-ACCOUNT",
         "Match": {
-          "Path": "/api/v1/loans/account/{**catch-all}",
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
           "Methods": [
             "GET"
           ]
@@ -67,7 +67,7 @@
       "TEMENOS-LOANS-ACCOUNT": {
         "Destinations": {
           "destination_1": {
-            "Address": "https://localhost:7246/api/v1/loans/account/{**catch-all}"
+            "Address": "https://localhost:7246/api/v1/casa/transaction/{**catch-all}"
           }
         }
       }
@@ -278,9 +278,9 @@
         "IsActive": true,
         "IsWebSocket": false,
         "RequireApiKey": true,
-        "UpstreamPathTemplate": "/api/v1/loans/account/{**catch-all}",
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
         "UpstreamHttpMethod": "GET",
-        "DownstreamPathTemplate": "/api/v1/loans/account/{**catch-all}",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
         "DownstreamScheme": "https",
         "Priority": 1,
         "EnableRateLimiting": false,
@@ -310,7 +310,7 @@
         "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
         "TargetHosts": [
           {
-            "Id": 51,
+            "Id": 47,
             "EndpointId": "5",
             "Host": "localhost",
             "Port": 7246,

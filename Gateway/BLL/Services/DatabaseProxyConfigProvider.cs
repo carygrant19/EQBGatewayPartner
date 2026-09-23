@@ -29,7 +29,7 @@ namespace Gateway.Proxy.Helper
             var oldConfig = _config;
             _config = LoadConfigFromDatabase();
 
-            // IISIPAIN NI YARP NA MAY BAGO AT I-RE-BUILD ANG ROUTING ENGINE
+            // Sinasabihan si YARP na mag-reload sa memory
             oldConfig.SignalChange();
         }
 
@@ -49,7 +49,7 @@ namespace Gateway.Proxy.Helper
 
             foreach (var r in dbRoutes)
             {
-                // Parse Allowed Methods (GET, POST, etc.)
+                // Parse Allowed Methods
                 var rawMethods = !string.IsNullOrWhiteSpace(r.AllowedMethods) ? r.AllowedMethods : r.UpstreamHttpMethod;
                 var methods = string.IsNullOrWhiteSpace(rawMethods)
                     ? null
@@ -57,37 +57,42 @@ namespace Gateway.Proxy.Helper
                                 .Select(m => m.Trim().ToUpper())
                                 .ToList();
 
-                // 1. YARP ROUTE MATCH CONFIG
+                // 1. YARP PATH TRANSFORMS (Pinapasa ang {**catch-all} sa Downstream Path)
+                var transforms = new List<IReadOnlyDictionary<string, string>>();
+                if (!string.IsNullOrWhiteSpace(r.DownstreamPathTemplate))
+                {
+                    transforms.Add(new Dictionary<string, string>
+                    {
+                        { "PathPattern", r.DownstreamPathTemplate }
+                    });
+                }
+
+                // 2. YARP ROUTE CONFIG
                 routes.Add(new RouteConfig
                 {
                     RouteId = r.Code,
                     ClusterId = r.Code,
                     Match = new RouteMatch
                     {
-                        Path = r.UpstreamPathTemplate,
+                        Path = r.UpstreamPathTemplate, // e.g. "/api/v1/casa/account/{**catch-all}"
                         Methods = methods
-                    }
+                    },
+                    Transforms = transforms.Count > 0 ? transforms : null
                 });
 
-                // 2. YARP CLUSTER CONFIG
+                // 3. YARP CLUSTER CONFIG
                 var destinations = new Dictionary<string, DestinationConfig>();
                 if (r.TargetHosts != null && r.TargetHosts.Count > 0)
                 {
                     int index = 1;
                     foreach (var host in r.TargetHosts)
                     {
-                        // SANITIZE: Tanggalin ang wildcards sa downstream path address
-                        string cleanDownstreamPath = (r.DownstreamPathTemplate ?? "")
-                            .Replace("/{**catch-all}", "")
-                            .Replace("{**catch-all}", "")
-                            .Replace("/{**remainder}", "")
-                            .Replace("{**remainder}", "");
+                        // KRITIKAL: Base URL lang dapat ang Address (Base Scheme + Host + Port)
+                        // Halimbawa: "https://localhost:7246"
+                        string baseUrl = $"{r.DownstreamScheme}://{host.Host}";
+                        if (host.Port > 0) baseUrl += $":{host.Port}";
 
-                        string addressUrl = $"{r.DownstreamScheme}://{host.Host}";
-                        if (host.Port > 0) addressUrl += $":{host.Port}";
-                        addressUrl += cleanDownstreamPath;
-
-                        destinations[$"destination_{index}"] = new DestinationConfig { Address = addressUrl };
+                        destinations[$"destination_{index}"] = new DestinationConfig { Address = baseUrl };
                         index++;
                     }
                 }
