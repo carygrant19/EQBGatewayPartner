@@ -93,7 +93,7 @@ namespace Temenos.API.Services.v1.casa
             _logger.LogInformation("Retrieving balance inquiry for AccountNo: {accountNo}", accountNo);
 
             try
-            {
+            { 
                 using HttpClient? _client = new();
                 _client.Timeout = Timeout.InfiniteTimeSpan;
      
@@ -107,7 +107,7 @@ namespace Temenos.API.Services.v1.casa
 
                 _logger.LogInformation("Balance Inquiry {Status} | Account No: {accountNo} | Response: {response}", response, accountNo, result);
 
-                if (response.Error == null)
+                if (response.Error.Code == string.Empty)
                 {
                     dtoResponse = new ApiResponse.Response<DTOResponse.BalanceInquiry>
                     {

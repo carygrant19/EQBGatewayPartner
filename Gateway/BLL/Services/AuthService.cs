@@ -40,7 +40,7 @@ namespace Gateway.BLL.Services
                     return (false, JsonConvert.SerializeObject(new
                     {
                         error = "Invalid Request",
-                        message = "Missing client headers. Please provide X-Api-Key and X-Api-Secret (or X-Client-Id and X-Client-Secret)."
+                        message = "Missing client headers. Please provide X-Api-Key and X-Api-Secret"
                     }), 400);
                 }
 
@@ -59,7 +59,7 @@ namespace Gateway.BLL.Services
                 }
 
                 // 4. Verify Secret Hash
-                bool isValidSecret = VerifySecret(apiSecret, clientCredential.ApiSecretHash);
+                bool isValidSecret = VerifySecret(apiSecret, clientCredential.ApiSecret);
                 if (!isValidSecret)
                 {
                     return (false, JsonConvert.SerializeObject(new { error = "Invalid API Key", message = "Invalid API Secret." }), 401);

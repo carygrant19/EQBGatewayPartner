@@ -86,7 +86,7 @@ namespace Temenos.API.Controllers.v1.casa
         }
 
         [HttpGet("status")]
-        public async Task<IActionResult> Status([FromHeader]string uId)
+        public async Task<IActionResult> Status([FromQuery]string uId)
         {
             try
             {

@@ -47,25 +47,7 @@ namespace Gateway.Web.Pages.ApiManagement
                 );
             }
         }
-
-        public async Task<JsonResult> OnGetAuthProviders()
-        {
-            try
-            {
-                var data = await _authProviderService.GetAllActiveAsync();
-                return new JsonResult(data);
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult(
-                    new Response.Result
-                    {
-                        Status = "ERROR",
-                        Message = ex.Message
-                    }
-                );
-            }
-        }
+         
 
         public async Task<JsonResult> OnGetOutboundAuthProfiles()
         {

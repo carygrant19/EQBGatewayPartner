@@ -22,7 +22,7 @@ namespace Gateway.Data.Models
 
         [Required]
         [StringLength(255)]
-        public string ApiSecretHash { get; set; } = string.Empty;
+        public string ApiSecret { get; set; } = string.Empty;
 
         public bool IsActive { get; set; } = true;
 

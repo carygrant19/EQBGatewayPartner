@@ -104,7 +104,7 @@ builder.Services.ProxyServices();
 builder.Services.AddReverseProxy();
 
 var app = builder.Build();
-
+app.UseSerilogRequestLogging();
 app.UseForwardedHeaders(new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.All });
 
 // [ CRITICAL FIX ] UseRouting bago ang Middlewares

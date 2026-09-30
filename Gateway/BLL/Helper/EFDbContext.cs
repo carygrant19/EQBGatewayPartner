@@ -18,6 +18,7 @@ namespace Gateway.BLL.Helper
         public DbSet<Models.TransactionLog> TransactionLog { get; set; }
 
         public DbSet<Models.ActiveUser> ActiveUser { get; set; }
+        public DbSet<Models.AuthProvider> AuthProvider{ get; set; }
         public DbSet<Models.Branch> Branch { get; set; }
         public DbSet<Models.Company> Company { get; set; }
         public DbSet<Models.Module> Module { get; set; }

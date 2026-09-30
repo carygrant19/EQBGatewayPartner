@@ -5,6 +5,10 @@ using Gateway.BLL.Services.IServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Transactions;
 using Models = Gateway.Data.Models;
 using Request = Gateway.BLL.DTO.Request;
@@ -24,7 +28,7 @@ namespace Gateway.BLL.Services
         private readonly ILogService _logService = logService;
         private readonly IMapper _mapper = mapper;
         private readonly string _moduleName = "Client";
-        private readonly string _encryptionKey = configuration["AppContext:EncryptionKey"]!;
+        private readonly string _encryptionKey = configuration["AppContext:EncryptionKey"] ?? "";
 
         public async Task<Response.Client> Authenticate(string username, string password)
         {
@@ -37,12 +41,14 @@ namespace Gateway.BLL.Services
             {
                 if (string.IsNullOrWhiteSpace(key)) return new();
 
+                string cleanKey = key.Trim().ToUpper();
+
                 var result = await _efDbContext.Client
                     .Include(c => c.Company)
                     .Include(c => c.Credentials)
                     .FirstOrDefaultAsync(c => !c.Deleted
                         && c.Status == "Active"
-                        && c.Credentials.Any(cr => cr.ApiKey.ToUpper() == key.ToUpper() && cr.IsActive));
+                        && c.Credentials.Any(cr => cr.ApiKey.ToUpper() == cleanKey && cr.IsActive));
 
                 return _mapper.Map<Response.Client>(result);
             }
@@ -55,18 +61,19 @@ namespace Gateway.BLL.Services
 
         public async Task<Response.Client> ByUsernameAndPassword(string username, string password)
         {
-            // Sa B2B architecture, ang 'username' ay Client Code at ang 'password' ay API Key/Secret
             try
             {
                 if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password)) return new();
 
+                string cleanUser = username.Trim().ToUpper();
+
                 var result = await _efDbContext.Client
                     .Include(c => c.Company)
                     .Include(c => c.Credentials)
-                    .FirstOrDefaultAsync(c => c.Code.ToUpper() == username.ToUpper()
+                    .FirstOrDefaultAsync(c => c.Code.ToUpper() == cleanUser
                         && !c.Deleted
                         && c.Status == "Active"
-                        && c.Credentials.Any(cr => (cr.ApiKey == password || cr.ApiSecretHash == password) && cr.IsActive));
+                        && c.Credentials.Any(cr => (cr.ApiKey == password || cr.ApiSecret == password) && cr.IsActive));
 
                 return _mapper.Map<Response.Client>(result);
             }
@@ -144,15 +151,15 @@ namespace Gateway.BLL.Services
 
                 var clientList = _efDbContext.Client
                     .Include(c => c.Company)
-                    .Include(c => c.Credentials)
+                    .Include(c => c.Credentials) 
                     .AsQueryable();
 
                 if (model.Filters != null && model.Filters.Count != 0)
                     clientList = clientList.Where(ExpressionBuilder.GetExpression<Models.Client>(model.Filters));
-
+                 
                 clientList = model.Descending
-                    ? clientList.OrderByDescending(propertySelector)
-                    : clientList.OrderBy(propertySelector);
+                    ? clientList.OrderBy(m => m.Deleted).ThenByDescending(propertySelector)
+                    : clientList.OrderBy(m => m.Deleted).ThenBy(propertySelector);
 
                 data.CurrentPage = model.PageNum;
                 data.TotalRecord = await clientList.CountAsync();
@@ -172,6 +179,7 @@ namespace Gateway.BLL.Services
                     Description = u.Description ?? string.Empty,
                     Status = u.Status,
                     ApiKey = u.Credentials.FirstOrDefault(cr => cr.IsActive)?.ApiKey ?? string.Empty,
+                    ApiSecret = u.Credentials.FirstOrDefault(cr => cr.IsActive)?.ApiSecret ?? string.Empty,
                     SSLRequired = u.SSLRequired,
                     Deleted = u.Deleted
                 }).ToList();
@@ -196,14 +204,15 @@ namespace Gateway.BLL.Services
                 var user = await _efDbContext.User.FirstOrDefaultAsync(u => u.Username == model.OpUser);
                 int userId = user?.Id ?? 0;
 
-                var exists = await _efDbContext.Client.AnyAsync(u => u.Code == model.Code);
+                string cleanCode = model.Code.Trim().ToUpper();
+                var exists = await _efDbContext.Client.AnyAsync(u => u.Code.ToUpper() == cleanCode && !u.Deleted);
 
                 if (!exists)
                 {
                     var data = new Models.Client
                     {
-                        Code = model.Code,
-                        Name = model.Name,
+                        Code = cleanCode,
+                        Name = model.Name.Trim(),
                         CompanyId = Convert.ToInt32(model.CompanyId),
                         Description = model.Description ?? string.Empty,
                         Status = "Active",
@@ -215,14 +224,17 @@ namespace Gateway.BLL.Services
                     await _clientRepository.AddAsync(data);
                     await _efDbContext.SaveChangesAsync();
 
-                    // Otomatikong gawa ng Primary API Credential
+                    string generatedKey = StringManipulation.Random(16);
+                    string generatedSecret = StringManipulation.Random(16);
+
                     var credential = new Models.ClientCredential
                     {
                         ClientId = data.Id,
                         KeyType = "Primary",
-                        ApiKey = StringManipulation.Random(16),
-                        ApiSecretHash = StringManipulation.Random(16),
-                        IsActive = true
+                        ApiKey = generatedKey,
+                        ApiSecret = generatedSecret,
+                        IsActive = true,
+                        CreatedDate = DateTime.Now
                     };
 
                     _efDbContext.Set<Models.ClientCredential>().Add(credential);
@@ -243,11 +255,15 @@ namespace Gateway.BLL.Services
                     _logService.LogActivity(new Models.ActivityLog { UserId = userId, ModuleName = _moduleName, Action = action, Details = $"[Client Code: {data.Code}] created." });
                     _logService.LogAudit(auditLog);
 
-                    result = new Response.Result { Status = "SUCCESS", Message = $"{_moduleName} created successfully." };
+                    result = new Response.Result
+                    {
+                        Status = "SUCCESS",
+                        Message = $"{_moduleName} created successfully.|Key:{generatedKey}|Secret:{generatedSecret}"
+                    };
                 }
                 else
                 {
-                    result = new Response.Result { Status = "FAILED", Message = $"Client Code: {model.Code} already exists." };
+                    result = new Response.Result { Status = "FAILED", Message = $"Client Code: '{cleanCode}' already exists." };
                 }
 
                 transactionScope.Complete();
@@ -255,7 +271,7 @@ namespace Gateway.BLL.Services
             catch (Exception ex)
             {
                 _logService.LogException(ex, _moduleName);
-                result = new Response.Result { Status = "ERROR", Message = "Error encountered" };
+                result = new Response.Result { Status = "ERROR", Message = "Error encountered during creation." };
             }
 
             return result;
@@ -279,16 +295,18 @@ namespace Gateway.BLL.Services
 
                 if (data != null)
                 {
-                    var isCodeTaken = await _efDbContext.Client.AnyAsync(d => d.Code == model.Code && d.Id != clientId);
+                    string cleanCode = model.Code.Trim().ToUpper();
+                    var isCodeTaken = await _efDbContext.Client.AnyAsync(d => d.Code.ToUpper() == cleanCode && d.Id != clientId && !d.Deleted);
+
                     if (isCodeTaken)
                     {
-                        return new Response.Result { Status = "FAILED", Message = $"{_moduleName} [Code: {model.Code}] already exists." };
+                        return new Response.Result { Status = "FAILED", Message = $"{_moduleName} [Code: {cleanCode}] already exists." };
                     }
 
                     var oldValue = JsonConvert.SerializeObject(data, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 
-                    data.Code = model.Code;
-                    data.Name = model.Name;
+                    data.Code = cleanCode;
+                    data.Name = model.Name.Trim();
                     data.CompanyId = Convert.ToInt32(model.CompanyId);
                     data.Description = model.Description ?? string.Empty;
                     data.SSLRequired = model.SSLRequired;
@@ -310,7 +328,7 @@ namespace Gateway.BLL.Services
                         NewData = JsonConvert.SerializeObject(data, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })
                     };
 
-                    _logService.LogActivity(new Models.ActivityLog { UserId = userId, ModuleName = _moduleName, Action = action, Details = $"[Code: {model.Code}] updated." });
+                    _logService.LogActivity(new Models.ActivityLog { UserId = userId, ModuleName = _moduleName, Action = action, Details = $"[Code: {cleanCode}] updated." });
                     _logService.LogAudit(auditLog);
 
                     result = new Response.Result { Status = "SUCCESS", Message = $"{_moduleName} updated successfully." };
@@ -325,7 +343,7 @@ namespace Gateway.BLL.Services
             catch (Exception ex)
             {
                 _logService.LogException(ex, _moduleName);
-                result = new Response.Result { Status = "ERROR", Message = "Error encountered" };
+                result = new Response.Result { Status = "ERROR", Message = "Error encountered during update." };
             }
 
             return result;
@@ -342,7 +360,8 @@ namespace Gateway.BLL.Services
                 var user = await _efDbContext.User.FirstOrDefaultAsync(u => u.Username == model.OpUser);
                 int userId = user?.Id ?? 0;
 
-                var data = await _efDbContext.Client.FirstOrDefaultAsync(u => u.Code == model.Code);
+                string cleanCode = model.Code.Trim().ToUpper();
+                var data = await _efDbContext.Client.FirstOrDefaultAsync(u => u.Code.ToUpper() == cleanCode);
 
                 if (data != null)
                 {
@@ -380,7 +399,7 @@ namespace Gateway.BLL.Services
             catch (Exception ex)
             {
                 _logService.LogException(ex, _moduleName);
-                result = new Response.Result { Status = "ERROR", Message = "Error encountered" };
+                result = new Response.Result { Status = "ERROR", Message = "Error encountered during delete." };
             }
 
             return result;
@@ -397,7 +416,8 @@ namespace Gateway.BLL.Services
                 var user = await _efDbContext.User.FirstOrDefaultAsync(u => u.Username == model.OpUser);
                 int userId = user?.Id ?? 0;
 
-                var data = await _efDbContext.Client.FirstOrDefaultAsync(u => u.Code == model.Code);
+                string cleanCode = model.Code.Trim().ToUpper();
+                var data = await _efDbContext.Client.FirstOrDefaultAsync(u => u.Code.ToUpper() == cleanCode);
 
                 if (data != null)
                 {
@@ -435,7 +455,7 @@ namespace Gateway.BLL.Services
             catch (Exception ex)
             {
                 _logService.LogException(ex, _moduleName);
-                result = new Response.Result { Status = "ERROR", Message = "Error encountered" };
+                result = new Response.Result { Status = "ERROR", Message = "Error encountered during restore." };
             }
 
             return result;
@@ -457,7 +477,7 @@ namespace Gateway.BLL.Services
                 if (credential != null)
                 {
                     credential.ApiKey = newKey;
-                    credential.ApiSecretHash = newSecret;
+                    credential.ApiSecret = newSecret;
                     _efDbContext.Set<Models.ClientCredential>().Update(credential);
                     await _efDbContext.SaveChangesAsync();
 
@@ -485,7 +505,6 @@ namespace Gateway.BLL.Services
 
         public async Task<Response.APISecurityResult> ResetPassword(Request.Client model)
         {
-            // B2B Alias para sa Reset Secret
             return await ResetAPIKeySecret(model);
         }
     }

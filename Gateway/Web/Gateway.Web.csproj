@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <Folder Include="Scripts\app\controller\" />
-    <Folder Include="wwwroot\js\app\controller\maintenance\" />
   </ItemGroup>
 
 </Project>

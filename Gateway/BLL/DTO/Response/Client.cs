@@ -31,6 +31,7 @@
         public string Description { get; set; } = string.Empty;
         public string Status { get; set; } = "Active";
         public string ApiKey { get; set; } = string.Empty;
+        public string ApiSecret { get; set; } = string.Empty;
         public bool SSLRequired { get; set; } = false;
         public bool Deleted { get; set; } = false;
     }

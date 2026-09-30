@@ -40,9 +40,7 @@
                                     @if (Model.Permission.Contains("[SEARCH]"))
                                     {
                                         <input type="text" id="searchDescription" autocomplete="off" class="form-control" placeholder="Enter Description" v-model="search.description" v-on:keypress="KeyPress_Search" data-parsley-restrict-special-characters />
-                                    } 
-                                    @if (Model.Permission.Contains("[SEARCH]"))
-                                    {
+                                     
                                         <button type="button" class="btn btn-outline-secondary btn-sm" v-on:click="Search();">
                                             <i class="nav-icon fas fa-search"></i> Search
                                         </button>

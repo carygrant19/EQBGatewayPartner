@@ -33,4 +33,5 @@ public class AuthProvider
     public int TokenLifetimeMinutes { get; set; } = 60;
 
     public bool IsActive { get; set; } = true;
+    public bool Deleted { get; set; } = false;
 }

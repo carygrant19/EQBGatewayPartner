@@ -9,9 +9,9 @@ using Response = Gateway.BLL.DTO.Response;
 
 namespace Gateway.Web.Pages.Maintenance
 {
-    public class ClientModel(IClientService service) : PageModelExtension
+    public class AuthProviderModel(IAuthProviderService service) : PageModelExtension
     {
-        private readonly IClientService _service = service;
+        private readonly IAuthProviderService _service = service;
 
         public IActionResult OnGet()
         {
@@ -31,7 +31,7 @@ namespace Gateway.Web.Pages.Maintenance
         {
             try
             {
-                var data = await _service.GetAll(false);
+                var data = await _service.Get("");
                 return new JsonResult(data);
             }
             catch (Exception ex)
@@ -61,7 +61,7 @@ namespace Gateway.Web.Pages.Maintenance
             }
         }
 
-        public async Task<JsonResult> OnPostSave([FromBody] Request.Client model)
+        public async Task<JsonResult> OnPostSave([FromBody] Request.AuthProvider model)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace Gateway.Web.Pages.Maintenance
             }
         }
 
-        public async Task<JsonResult> OnPutDelete([FromBody] Request.Client model)
+        public async Task<JsonResult> OnPutDelete([FromBody] Request.AuthProvider model)
         {
             try
             {
@@ -103,7 +103,7 @@ namespace Gateway.Web.Pages.Maintenance
             }
         }
 
-        public async Task<JsonResult> OnPutRestore([FromBody] Request.Client model)
+        public async Task<JsonResult> OnPutRestore([FromBody] Request.AuthProvider model)
         {
             try
             {
@@ -120,26 +120,7 @@ namespace Gateway.Web.Pages.Maintenance
             }
         }
 
-        public async Task<JsonResult> OnPostResetCredentials([FromBody] Request.Client model)
-        {
-            try
-            {
-                PopulateAuditFields(model);
-                var result = await _service.ResetAPIKeySecret(model);
-                return new JsonResult(result);
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult(new Response.APISecurityResult
-                {
-                    Status = "ERROR",
-                    Key = "",
-                    Secret = ""
-                });
-            }
-        }
-
-        private void PopulateAuditFields(Request.Client model)
+        private void PopulateAuditFields(Request.AuthProvider model)
         {
             model.OpUser = HttpContext.Session.GetString("Username") ?? "SYSTEM";
             model.OpUserId = HttpContext.Session.GetString("UserId") ?? "0";
