@@ -1,15 +1,10 @@
 ﻿var ApiEndpointService = {};
 
 ApiEndpointService.Categories = function () {
-    return axios.get(appUrl + '/ApiManagement/Index?handler=Categories');
-};
-
-ApiEndpointService.AuthProviders = function () {
-    return axios.get(appUrl + '/ApiManagement/Index?handler=AuthProviders');
-};
-
+    return axios.get(appUrl + '/RouteManagement/Index?handler=Categories');
+}; 
 ApiEndpointService.OutboundAuthProfiles = function () {
-    return axios.get(appUrl + '/ApiManagement/Index?handler=OutboundAuthProfiles');
+    return axios.get(appUrl + '/RouteManagement/Index?handler=OutboundAuthProfiles');
 };
 
 ApiEndpointService.Search = function (params) {
@@ -20,31 +15,31 @@ ApiEndpointService.Search = function (params) {
         SortColumn: params.sortColumn,
         Descending: params.descending
     };
-    return axios.post(appUrl + '/ApiManagement/Index?handler=Filter',
+    return axios.post(appUrl + '/RouteManagement/Index?handler=Filter',
         JSON.stringify(searchOption),
         { headers: headers });
 };
 
 ApiEndpointService.Save = function (data) {
-    return axios.post(appUrl + '/ApiManagement/Index?handler=Save',
+    return axios.post(appUrl + '/RouteManagement/Index?handler=Save',
         JSON.stringify(data),
         { headers: headers });
 };
 
 ApiEndpointService.Delete = function (id) {
-    return axios.put(appUrl + '/ApiManagement/Index?id=' + id + '&handler=Delete',
+    return axios.put(appUrl + '/RouteManagement/Index?id=' + id + '&handler=Delete',
         JSON.stringify(id),
         { headers: headers });
 };
 
 ApiEndpointService.Restore = function (id) {
-    return axios.put(appUrl + '/ApiManagement/Index?id=' + id + '&handler=Restore',
+    return axios.put(appUrl + '/RouteManagement/Index?id=' + id + '&handler=Restore',
         JSON.stringify(id),
         { headers: headers });
 };
  
 ApiEndpointService.Publish = function () {
-    return axios.post(appUrl + '/ApiManagement/Index?handler=Publish',
+    return axios.post(appUrl + '/RouteManagement/Index?handler=Publish',
         {},
         { headers: headers });
 };

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Gateway.Data.Models
 {
     [Table("Master_Branch")]
-    public class Branch : Base
+    public class Branch  
     {
         [Key]
         public int Id { get; set; }

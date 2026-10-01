@@ -53,13 +53,15 @@ namespace Gateway.BLL.Services
             try
             {
                 var endpoints = await _efDbContext.Set<Model.Route>()
-                    .Include(e => e.Category)
-                    .Include(e => e.AuthProvider)
-                    .Include(e => e.OutboundAuthProfile)
-                    .Include(e => e.ClientRouteAccess)
-                    .Include(e => e.TargetHosts)
+                   .Include(e => e.TargetHosts)
                     .Include(e => e.IpRules)
+                    .Include(e => e.AuthProvider)
                     .Include(e => e.Transforms)
+                    .Include(e => e.ClientRouteAccess)
+                        .ThenInclude(e => e.Client)
+                            .ThenInclude(c => c.Credentials)
+                    .Include(e => e.OutboundAuthProfile)
+                        .ThenInclude(p => p.Headers)
                     .Where(e => e.IsActive)
                     .AsNoTracking()
                     .ToListAsync();
@@ -526,7 +528,17 @@ namespace Gateway.BLL.Services
                 _logService.LogActivity(new Model.ActivityLog { UserId = user.Id, ModuleName = _moduleName, Action = "PUBLISH", Details = $"All gateway proxy routes published. Backup saved to: {yearFolder}/{monthFolder}/{Path.GetFileName(backupFilePath)}" });
 
                 var reloadUrl = $"{_gatewayProxyUrl.TrimEnd('/')}/internal/gateway/reload";
-                var response = await _httpClient.PostAsync(reloadUrl, null);
+
+                // =========================================================================
+                // SSL BYPASS: Hahayaan nitong makatagos ang internal HTTPS call sa IIS
+                // =========================================================================
+                var handler = new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                };
+
+                using var client = new HttpClient(handler);
+                var response = await client.PostAsync(reloadUrl, null);
 
                 if (response.IsSuccessStatusCode)
                 {

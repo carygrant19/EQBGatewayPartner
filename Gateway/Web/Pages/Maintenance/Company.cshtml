@@ -88,26 +88,28 @@
                                                 <td class="align-middle fw-bold">{{ record.code }}</td>
                                                 <td class="align-middle">{{ record.description }}</td>
                                                 <td class="text-center align-middle">
+                                                    <div class="btn-group btn-group-sm">
                                                     @if (Model.Permission.Contains("[EDIT]"))
                                                     {
-                                                        <button type="button" class="btn btn-info btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Edit(record)" data-tooltip="tooltip" title="Edit">
+                                                        <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Edit(record)" data-tooltip="tooltip" title="Edit">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                     }
 
                                                     @if (Model.Permission.Contains("[DELETE]"))
                                                     {
-                                                        <button type="button" class="btn btn-danger btn-sm mx-1" v-on:click="Delete(record);" v-if="!record.deleted" data-tooltip="tooltip" title="Delete">
+                                                        <button type="button" class="btn btn-outline-danger" v-on:click="Delete(record);" v-if="!record.deleted" data-tooltip="tooltip" title="Delete">
                                                             <i class="far fa-trash-alt"></i>
                                                         </button>
                                                     }
 
                                                     @if (Model.Permission.Contains("[RESTORE]"))
                                                     {
-                                                        <button type="button" class="btn btn-success btn-sm mx-1" v-on:click="Restore(record);" v-if="record.deleted" data-tooltip="tooltip" title="Restore">
+                                                        <button type="button" class="btn btn-outline-success" v-on:click="Restore(record);" v-if="record.deleted" data-tooltip="tooltip" title="Restore">
                                                             <i class="fas fa-undo"></i>
                                                         </button>
                                                     }
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>

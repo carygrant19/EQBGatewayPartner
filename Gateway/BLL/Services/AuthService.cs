@@ -4,25 +4,28 @@ using Gateway.BLL.Services.IService;
 using Gateway.BLL.Services.IServices;
 using Gateway.Data.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Model = Gateway.Data.Models;
 
 namespace Gateway.BLL.Services
 {
     public class AuthService : IAuthService
-    {
-        private readonly EFDbContext _efDbContext;
+    { 
         private readonly ILogService _logService;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
         private readonly string _moduleName = "AuthenticationService";
 
-        public AuthService(EFDbContext efDbContext, ILogService logService, IMapper mapper)
-        {
-            _efDbContext = efDbContext;
+        public AuthService(ILogService logService, IMapper mapper, IConfiguration configuration)
+        { 
             _logService = logService;
             _mapper = mapper;
+            _configuration = configuration;
         }
 
         public async Task<(bool IsSuccess, string JsonResponse, int StatusCode)> ProcessInternalAuthAsync(HttpContext context, Model.Route endpoint)
@@ -31,7 +34,7 @@ namespace Gateway.BLL.Services
             {
                 var request = context.Request;
 
-                // 1. Extract Inbound Credentials directly from HTTP Headers
+                // 1. Extract Inbound Credentials directly from HTTP Headers / Basic Auth
                 var (apiKey, apiSecret) = ExtractCredentialsFromHeaders(request);
 
                 // 2. Strict Validation: Requires both API Key and Secret
@@ -44,78 +47,101 @@ namespace Gateway.BLL.Services
                     }), 400);
                 }
 
-                // 3. Query Map_Client_Credential joined with Master_Client
-                var clientCredential = await _efDbContext.Set<Model.ClientCredential>()
-                    .Include(cc => cc.Client)
-                    .FirstOrDefaultAsync(cc => cc.IsActive
-                        && cc.ApiKey == apiKey
-                        && cc.Client != null
-                        && !cc.Client.Deleted
-                        && cc.Client.Status == "Active");
-
-                if (clientCredential == null || clientCredential.Client == null)
+                // 3. IN-MEMORY VALIDATION: Hanapin ang Client at Credentials sa RAM (endpoint.ClientRouteAccess)
+                if (endpoint.ClientRouteAccess == null || !endpoint.ClientRouteAccess.Any())
                 {
-                    return (false, JsonConvert.SerializeObject(new { error = "Invalid Client", message = "Client credentials not found or account is inactive." }), 401);
+                    return (false, JsonConvert.SerializeObject(new
+                    {
+                        error = "Unauthorized Client",
+                        message = "No client access configured for this route."
+                    }), 403);
                 }
 
-                // 4. Verify Secret Hash
-                bool isValidSecret = VerifySecret(apiSecret, clientCredential.ApiSecret);
+                Model.ClientCredential? matchedCredential = null;
+                Model.Client? matchedClient = null;
+
+                foreach (var routeAccess in endpoint.ClientRouteAccess)
+                {
+                    // Filter: Allowed route access at hindi pa expired
+                    if (!routeAccess.IsAllowed) continue;
+                    if (routeAccess.ExpiresAt.HasValue && routeAccess.ExpiresAt.Value <= DateTime.UtcNow) continue;
+
+                    var client = routeAccess.Client;
+                    if (client == null || client.Deleted || !string.Equals(client.Status, "Active", StringComparison.OrdinalIgnoreCase)) continue;
+
+                    // Match API Key laban sa Credentials collection sa RAM
+                    var cred = client.Credentials?.FirstOrDefault(c => c.IsActive && c.ApiKey == apiKey);
+                    if (cred != null)
+                    {
+                        matchedCredential = cred;
+                        matchedClient = client;
+                        break;
+                    }
+                }
+
+                if (matchedCredential == null || matchedClient == null)
+                {
+                    return (false, JsonConvert.SerializeObject(new
+                    {
+                        error = "Invalid Client",
+                        message = "Client credentials not found or account is not authorized for this route."
+                    }), 401);
+                }
+
+                // 4. Verify Secret Hash (In-Memory)
+                bool isValidSecret = VerifySecret(apiSecret, matchedCredential.ApiSecret);
                 if (!isValidSecret)
                 {
-                    return (false, JsonConvert.SerializeObject(new { error = "Invalid API Key", message = "Invalid API Secret." }), 401);
+                    return (false, JsonConvert.SerializeObject(new
+                    {
+                        error = "Invalid API Key",
+                        message = "Invalid API Secret."
+                    }), 401);
                 }
 
-                // 5. Validate Client Route Access (Map_Client_Route_Access)
-                var routeAccess = await _efDbContext.Set<Model.ClientRouteAccess>()
-                    .FirstOrDefaultAsync(ra => ra.ClientId == clientCredential.ClientId
-                        && ra.RouteId == endpoint.Id
-                        && ra.IsAllowed
-                        && (ra.ExpiresAt == null || ra.ExpiresAt > DateTime.UtcNow));
+                // 5. IN-MEMORY AUTH PROVIDER RESOLUTION
+                Model.AuthProvider? provider = endpoint.AuthProvider;
 
-                if (routeAccess == null)
+                // Fallback kung walang naka-bind na AuthProvider ID sa Route
+                provider ??= new Model.AuthProvider
                 {
-                    return (false, JsonConvert.SerializeObject(new { error = "Unauthorized Client", message = "Client is not authorized to access this route." }), 403);
-                }
+                    Code = "GATEWAY",
+                    Name = "Gateway",
+                    Issuer = _configuration["JWT:Issuer"] ?? "Gateway",
+                    Audience = _configuration["JWT:Audience"] ?? "Gateway",
+                    SecretKey = _configuration["JWT:Secret"] ?? "",
+                    TokenLifetimeMinutes = 60,
+                    IsActive = true
+                };
 
-                // 6. Fetch Master_AuthProviders configuration
-                Model.AuthProvider? provider = null;
-                if (endpoint.AuthProviderId.HasValue && endpoint.AuthProviderId.Value > 0)
-                {
-                    provider = await _efDbContext.Set<Model.AuthProvider>()
-                        .FirstOrDefaultAsync(p => p.Id == endpoint.AuthProviderId.Value && p.IsActive);
-                }
+                // 6. Save Matched Client to HttpContext for Audit Logs
+                context.Items["MatchedClient"] = matchedClient;
 
-                provider ??= await _efDbContext.Set<Model.AuthProvider>().FirstOrDefaultAsync(p => p.IsActive);
-
-                if (provider == null)
-                {
-                    return (false, JsonConvert.SerializeObject(new { error = "Server Error", message = "No active AuthProvider scheme configured." }), 500);
-                }
-
-                // 7. Save Matched Client to HttpContext for Audit Logs
-                context.Items["MatchedClient"] = clientCredential.Client;
-
-                // 8. Generate Signed JWT Token
+                // 7. Generate Signed JWT Token (Pure In-Memory)
                 int lifetimeMinutes = provider.TokenLifetimeMinutes > 0 ? provider.TokenLifetimeMinutes : 60;
                 int lifetimeSeconds = lifetimeMinutes * 60;
 
-                string jwtToken = JwtHelper.GenerateToken(clientCredential.Client.Code, provider, lifetimeSeconds);
+                string jwtToken = JwtHelper.GenerateToken(matchedClient.Code, provider, lifetimeSeconds);
 
                 var successPayload = new
                 {
                     access_token = jwtToken,
                     token_type = "Bearer",
                     expires_in = lifetimeSeconds,
-                    client_code = clientCredential.Client.Code,
+                    client_code = matchedClient.Code,
                     issued_at = DateTime.UtcNow
                 };
 
-                return (true, JsonConvert.SerializeObject(successPayload), 200);
+                return await Task.FromResult((true, JsonConvert.SerializeObject(successPayload), 200));
             }
             catch (Exception ex)
             {
                 _logService.LogException(ex, _moduleName);
-                return (false, JsonConvert.SerializeObject(new { error = "Server Error", message = "An error occurred during authentication processing." }), 500);
+                return (false, JsonConvert.SerializeObject(new
+                {
+                    error = "Server Error",
+                    message = "An error occurred during authentication processing."
+                }), 500);
             }
         }
 
@@ -124,9 +150,9 @@ namespace Gateway.BLL.Services
             string? apiKey = GetHeaderValue(request, "X-Api-Key", "X-Client-Id", "client_id");
             string? apiSecret = GetHeaderValue(request, "X-Api-Secret", "X-Client-Secret", "client_secret");
 
-            // Option: Support standard Authorization: Basic Base64(ApiKey:ApiSecret)
             if ((string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(apiSecret)) &&
                 request.Headers.TryGetValue("Authorization", out var authHeader) &&
+                authHeader.ToString().StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase) == false &&
                 authHeader.ToString().StartsWith("Basic ", StringComparison.OrdinalIgnoreCase))
             {
                 try

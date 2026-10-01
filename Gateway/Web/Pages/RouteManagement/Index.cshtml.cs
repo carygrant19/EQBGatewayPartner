@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Request = Gateway.BLL.DTO.Request;
 using Response = Gateway.BLL.DTO.Response;
 
-namespace Gateway.Web.Pages.ApiManagement
+namespace Gateway.Web.Pages.RouteManagement
 {
     public class IndexModel(
         IRouteService service,
@@ -13,8 +13,7 @@ namespace Gateway.Web.Pages.ApiManagement
         IOutboundAuthProfileService outboundAuthProfileService) : PageModelExtension
     {
         private readonly IRouteService _service = service;
-        private readonly ICategoryService _categoryService = categoryService;
-        private readonly IAuthProviderService _authProviderService = authProviderService;
+        private readonly ICategoryService _categoryService = categoryService; 
         private readonly IOutboundAuthProfileService _outboundAuthProfileService = outboundAuthProfileService;
 
         public IActionResult OnGet()

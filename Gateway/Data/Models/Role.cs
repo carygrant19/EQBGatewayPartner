@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Gateway.Data.Models
 {
     [Table("Master_Role")]
-    public class Role : Base
+    public class Role
     {
         [Key]
         public int Id { get; set; } = 0;

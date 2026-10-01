@@ -1,0 +1,15 @@
+2026-10-01 10:03:51.764 +08:00 [INF] Now listening on: https://localhost:7000
+2026-10-01 10:03:51.935 +08:00 [INF] Now listening on: http://localhost:9012
+2026-10-01 10:03:52.269 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-01 10:03:52.307 +08:00 [INF] Hosting environment: Development
+2026-10-01 10:03:52.328 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-10-01 10:53:15.647 +08:00 [INF] Now listening on: https://localhost:7000
+2026-10-01 10:53:15.860 +08:00 [INF] Now listening on: http://localhost:9012
+2026-10-01 10:53:16.138 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-01 10:53:16.142 +08:00 [INF] Hosting environment: Development
+2026-10-01 10:53:16.158 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-10-01 14:46:40.588 +08:00 [INF] Now listening on: https://localhost:7000
+2026-10-01 14:46:40.764 +08:00 [INF] Now listening on: http://localhost:9012
+2026-10-01 14:46:40.943 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-01 14:46:40.947 +08:00 [INF] Hosting environment: Development
+2026-10-01 14:46:40.950 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy

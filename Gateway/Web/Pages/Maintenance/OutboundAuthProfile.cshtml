@@ -1,11 +1,11 @@
 ﻿@page
-@model Gateway.Web.Pages.Maintenance.AuthProviderModel
+@model Gateway.Web.Pages.Maintenance.OutboundAuthProfileModel
 @{
     ViewData["Title"] = Model.PageTitle;
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<div id="AuthProviderController">
+<div id="OutboundAuthProfileController">
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -43,7 +43,7 @@
                                     <div class="input-group">
                                         @if (Model.Permission.Contains("[SEARCH]"))
                                         {
-                                            <input type="text" id="searchDescription" autocomplete="off" class="form-control" placeholder="Search Provider Name" v-model="search.description" v-on:keypress.enter="Search();" />
+                                            <input type="text" id="searchDescription" autocomplete="off" class="form-control" placeholder="Search Profile Name or Code" v-model="search.description" v-on:keypress.enter="Search();" />
                                             <button type="button" class="btn btn-outline-secondary btn-sm" v-on:click="Search();">
                                                 <i class="nav-icon fas fa-search"></i> Search
                                             </button>
@@ -52,7 +52,7 @@
                                         @if (Model.Permission.Contains("[ADD]"))
                                         {
                                             <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Add()">
-                                                <i class="nav-icon fas fa-plus-circle"></i> Add Auth Provider
+                                                <i class="nav-icon fas fa-plus-circle"></i> Add Outbound Profile
                                             </button>
                                         }
                                     </div>
@@ -61,7 +61,7 @@
 
                             <div class="row">
                                 <div class="col-12 table-responsive" v-show="!show_table">
-                                    <span>No provider record(s) found!</span>
+                                    <span>No outbound profile record(s) found!</span>
                                 </div>
 
                                 <div class="col-12 table-responsive" v-show="show_table">
@@ -79,21 +79,21 @@
                                         <thead class="table-light">
                                             <tr>
                                                 <th width="15%">Code <i :class="['fas', SortClass('Code')]" style="cursor:pointer" v-on:click="Sort('Code')"></i></th>
-                                                <th width="20%">Name <i :class="['fas', SortClass('Name')]" style="cursor:pointer" v-on:click="Sort('Name')"></i></th>
-                                                <th width="20%">Issuer</th>
-                                                <th width="15%">Audience</th>
-                                                <th width="10%" class="text-center">Lifetime (Mins)</th>
+                                                <th width="25%">Profile Name <i :class="['fas', SortClass('Name')]" style="cursor:pointer" v-on:click="Sort('Name')"></i></th>
+                                                <th width="25%">Description</th>
+                                                <th width="10%" class="text-center">Headers Count</th>
                                                 <th width="10%" class="text-center">Status</th>
-                                                <th class="text-center" width="10%">Action</th>
+                                                <th class="text-center" width="15%">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="record in records" :key="record.id">
                                                 <td class="align-middle fw-bold">{{ record.code }}</td>
                                                 <td class="align-middle">{{ record.name }}</td>
-                                                <td class="align-middle"><code>{{ record.issuer }}</code></td>
-                                                <td class="align-middle"><code>{{ record.audience }}</code></td>
-                                                <td class="text-center align-middle">{{ record.tokenLifetimeMinutes }}</td>
+                                                <td class="align-middle">{{ record.description }}</td>
+                                                <td class="text-center align-middle">
+                                                    <span class="badge bg-info text-dark">{{ record.headers ? record.headers.length : 0 }} Header(s)</span>
+                                                </td>
                                                 <td class="text-center align-middle">
                                                     <span class="badge bg-success" v-if="record.isActive">Active</span>
                                                     <span class="badge bg-secondary" v-else>Inactive</span>
@@ -109,14 +109,14 @@
 
                                                     @if (Model.Permission.Contains("[DELETE]"))
                                                     {
-                                                        <button type="button" class="btn btn-outline-danger" v-on:click="Delete(record);" v-if="!record.deleted" data-tooltip="tooltip" title="Delete">
+                                                        <button type="button" class="btn btn-outline-danger" v-on:click="Delete(record);" v-if="record.isActive" data-tooltip="tooltip" title="Deactivate">
                                                             <i class="far fa-trash-alt"></i>
                                                         </button>
                                                     }
 
                                                     @if (Model.Permission.Contains("[RESTORE]"))
                                                     {
-                                                        <button type="button" class="btn btn-outline-success" v-on:click="Restore(record);" v-if="record.deleted" data-tooltip="tooltip" title="Restore">
+                                                        <button type="button" class="btn btn-outline-success" v-on:click="Restore(record);" v-if="!record.isActive" data-tooltip="tooltip" title="Restore">
                                                             <i class="fas fa-undo"></i>
                                                         </button>
                                                     }
@@ -139,7 +139,7 @@
             @if (Model.Permission.Contains("[ADD]") || Model.Permission.Contains("[EDIT]"))
             {
                 <div id="formModal" class="modal fade text-sm" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
-                    <div class="modal-dialog modal-md" role="document">
+                    <div class="modal-dialog modal-lg" role="document">
                         <form name="formModal" id="form" method="post" autocomplete="off" data-parsley-validate="">
                             <div class="modal-content">
                                 <div class="modal-header bg-danger text-white">
@@ -148,79 +148,103 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="col-sm-12 mb-2">
+                                        <div class="col-sm-6 mb-2">
                                             <div class="form-group">
-                                                <label for="Code">Provider Code <span class="text-danger">*</span></label>
+                                                <label for="Code">Profile Code <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control text-uppercase" name="Code"
                                                        v-model="formData.code"
                                                        :disabled="disableControl.code"
                                                        data-parsley-required="true"
                                                        data-parsley-trigger="change focusout"
-                                                       placeholder="e.g. JWT_EQB_INTERNAL" />
+                                                       placeholder="e.g. TEMENOS_CASA_AUTH" />
                                             </div>
                                         </div>
 
-                                        <div class="col-sm-12 mb-2">
+                                        <div class="col-sm-6 mb-2">
                                             <div class="form-group">
-                                                <label for="Name">Provider Name <span class="text-danger">*</span></label>
+                                                <label for="Name">Profile Name <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" name="Name"
                                                        v-model="formData.name"
                                                        data-parsley-required="true"
                                                        data-parsley-trigger="change focusout"
-                                                       placeholder="e.g. Equicom Gateway Token Issuer" />
+                                                       placeholder="e.g. Temenos Core Banking Credentials" />
                                             </div>
                                         </div>
 
                                         <div class="col-sm-12 mb-2">
                                             <div class="form-group">
-                                                <label for="Issuer">JWT Issuer <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="Issuer"
-                                                       v-model="formData.issuer"
-                                                       data-parsley-required="true"
-                                                       data-parsley-trigger="change focusout"
-                                                       placeholder="e.g. https://gateway.equicom.com" />
+                                                <label for="Description">Description</label>
+                                                <textarea class="form-control" name="Description" rows="2"
+                                                          v-model="formData.description"
+                                                          placeholder="Optional profile details"></textarea>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-12 mb-2">
-                                            <div class="form-group">
-                                                <label for="Audience">JWT Audience <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="Audience"
-                                                       v-model="formData.audience"
-                                                       data-parsley-required="true"
-                                                       data-parsley-trigger="change focusout"
-                                                       placeholder="e.g. EQB_Microservices" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-12 mb-2">
-                                            <div class="form-group">
-                                                <label for="SecretKey">Secret Key <span class="text-danger">*</span></label>
-                                                <input type="password" class="form-control" name="SecretKey"
-                                                       v-model="formData.secretKey"
-                                                       data-parsley-required="true"
-                                                       data-parsley-trigger="change focusout"
-                                                       placeholder="HMAC SHA256 Secret (At least 32 characters)" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-12 mb-2">
-                                            <div class="form-group">
-                                                <label for="TokenLifetimeMinutes">Token Lifetime (Minutes) <span class="text-danger">*</span></label>
-                                                <input type="number" class="form-control" name="TokenLifetimeMinutes"
-                                                       v-model="formData.tokenLifetimeMinutes"
-                                                       min="1" max="1440"
-                                                       data-parsley-required="true"
-                                                       data-parsley-trigger="change focusout" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-12 mb-2">
-                                            <div class="form-check form-switch mt-2">
+                                            <div class="form-check form-switch mt-1">
                                                 <input class="form-check-input" type="checkbox" id="isActive" v-model="formData.isActive">
                                                 <label class="form-check-label fw-bold" for="isActive">Is Active</label>
                                             </div>
                                         </div>
+
+                                        <hr class="my-3" />
+
+                                        <!-- Dynamic Multi-Header List Section -->
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 class="fw-bold text-secondary mb-0">Outbound Headers List</h6>
+                                            
+                                        </div>
+                                        <div class="align-items-center mb-2">
+                                            <button type="button" class="btn btn-outline-primary btn-sm" v-on:click="AddHeader()">
+                                                <i class="fas fa-plus-circle"></i> Add Header
+                                            </button>
+                                        </div>
+                                        <div v-if="formData.headers.length === 0" class="text-center text-muted my-3">
+                                            <small>No headers added yet. Click "Add Header" to configure credentials.</small>
+                                        </div>
+
+                                        <div v-for="(header, index) in formData.headers" :key="index" class="card mb-2 bg-light border">
+                                            <div class="card-body p-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <span class="badge bg-secondary">Header #{{ index + 1 }}</span>
+                                                    <button type="button" class="btn btn-link text-danger btn-sm p-0 text-decoration-none" v-on:click="RemoveHeader(index)" v-if="formData.headers.length > 1">
+                                                        <i class="fas fa-trash-alt"></i> Remove
+                                                    </button>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4 mb-2">
+                                                        <div class="form-group">
+                                                            <label class="form-label fs-12 mb-1">Auth Type <span class="text-danger">*</span></label>
+                                                            <select class="form-control form-control-sm custom-select" v-model="header.authType">
+                                                                <option value="APIKey">API Key</option>
+                                                                <option value="Bearer">Bearer Token</option>
+                                                                <option value="Basic">Basic Auth</option>
+                                                                <option value="CustomHeader">Custom Header</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8 mb-2">
+                                                        <div class="form-group">
+                                                            <label class="form-label fs-12 mb-1">Header Name <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm" v-model="header.headerName" placeholder="e.g. X-Api-Key or Authorization" data-parsley-required="true" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mb-2">
+                                                        <div class="form-group">
+                                                            <label class="form-label fs-12 mb-1">Credential Value <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control form-control-sm" v-model="header.credentialValue" placeholder="API Key, Token, or Password" data-parsley-required="true" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mb-1" v-if="header.authType === 'Basic' || header.authType === 'CustomHeader'">
+                                                        <div class="form-group">
+                                                            <label class="form-label fs-12 mb-1">Secondary Credential (Username / Secret)</label>
+                                                            <input type="text" class="form-control form-control-sm" v-model="header.secondaryCredentialValue" placeholder="Optional secondary value" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="modal-footer justify-content-between">
@@ -240,13 +264,17 @@
     .modal {
         overflow: auto !important;
     }
+
+    .fs-12 {
+        font-size: 12px;
+    }
 </style>
 
 @section scripts
 {
     <script src="~/js/app/directive/common.js" asp-append-version="true"></script>
-    <script src="~/js/app/services/authProvider.js" asp-append-version="true"></script>
-    <script src="~/js/app/controller/maintenance/authProvider.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/outboundAuthProfile.js" asp-append-version="true"></script>
+    <script src="~/js/app/controller/maintenance/outboundAuthProfile.js" asp-append-version="true"></script>
 }
 
 

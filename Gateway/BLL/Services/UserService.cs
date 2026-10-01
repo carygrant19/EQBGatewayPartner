@@ -840,9 +840,7 @@ namespace Gateway.BLL.Services
                     var oldValue = EFramework.GetEntityProperties(user!);
                     user.ImageContent = model.ImageContent;
                     user.ImageContentThumbnail = model.ImageContent != null ? ResizeImageToThumbnail(model.ImageContent, 100, 100) : null;
-                    user.ImageType = model.ImageType;
-                    user.UpdatedBy = operatorId;
-                    user.UpdatedDate = DateTime.Now;
+                    user.ImageType = model.ImageType; 
 
 
                     await _repository.UpdateAsync(user);
@@ -853,7 +851,7 @@ namespace Gateway.BLL.Services
                         Terminal = model.Terminal!,
                         OperationType = _action,
                         ChangeBy = operatorId!,
-                        ActionDate = (DateTime)user.UpdatedDate,
+                        ActionDate = DateTime.Now,
                         TableName = _moduleName,
                         OriginalData = oldValue,
                         NewData = EFramework.GetEntityProperties(user)
@@ -1056,9 +1054,7 @@ namespace Gateway.BLL.Services
                     user.PasswordExpirationDate = DateTime.Now.AddDays((int)_systemParameters.AccountDormancyDays!); // Add dormancy date as expiration date
                     user.PasswordAttempt = 0;
                     user.Status = 0;
-                    user.DefaultPassword = false;
-                    user.UpdatedBy = user.Id;
-                    user.UpdatedDate = DateTime.Now;
+                    user.DefaultPassword = false; 
 
                     await _repository.UpdateAsync(user);
 
@@ -1159,9 +1155,7 @@ namespace Gateway.BLL.Services
                     user.PasswordExpirationDate = DateTime.Now.AddDays(1);
                     user.Status = 0;
                     user.PasswordAttempt = 0;
-                    user.DefaultPassword = true;
-                    user.UpdatedBy = user.Id;
-                    user.UpdatedDate = DateTime.Now;
+                    user.DefaultPassword = true; 
 
 
                     await _repository.UpdateAsync(user);
@@ -1247,9 +1241,7 @@ namespace Gateway.BLL.Services
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     });
                     user.PasswordAttempt = 0;
-                    user.Status = 0;
-                    user.UpdatedBy = user.Id;
-                    user.UpdatedDate = DateTime.Now;
+                    user.Status = 0; 
 
                     await _repository.UpdateAsync(user);
                     //mailer 

@@ -20,6 +20,7 @@ namespace Gateway.BLL
 
             services.AddScoped<IAuthProviderService, AuthProviderService>();
             services.AddScoped<IOutboundAuthProfileService, OutboundAuthProfileService>();
+            services.AddScoped<IBranchService, BranchService>();
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICompanyService, CompanyService>();

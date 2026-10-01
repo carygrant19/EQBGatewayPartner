@@ -1,5 +1,5 @@
 ﻿@page
-@model Gateway.Web.Pages.ApiManagement.IndexModel
+@model Gateway.Web.Pages.RouteManagement.IndexModel
 @{
     ViewData["Title"] = Model.PageTitle;
     Layout = "~/Pages/Shared/_Layout.cshtml";
@@ -39,9 +39,15 @@
                                     <div class="input-group input-group-sm">
                                         @if (Model.Permission.Contains("[SEARCH]"))
                                         {
-                                            <input type="text" id="searchDescription" class="form-control" placeholder="Search route name, path, or code..." v-model="search.keyword" v-on:keypress="KeyPress_Search" />
-                                            <button type="button" class="btn btn-dark" v-on:click="Search()">
+                                            <input type="text" id="searchDescription" class="form-control" placeholder="Search route name" v-model="search.keyword" v-on:keypress="KeyPress_Search" />
+                                            <button type="button" class="btn btn-outline-secondary" v-on:click="Search()">
                                                 <i class="fas fa-search me-1"></i> Search
+                                            </button>
+                                        }
+                                        @if (Model.Permission.Contains("[ADD]"))
+                                        {
+                                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Add()">
+                                               Add Route
                                             </button>
                                         }
                                     </div>
@@ -53,12 +59,7 @@
                                             <i class="fas fa-paper-plane me-1"></i> Publish Changes
                                         </button>
                                     }
-                                    @if (Model.Permission.Contains("[ADD]"))
-                                    {
-                                        <button type="button" class="btn btn-dark btn-sm fw-medium px-3" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Add()">
-                                            <i class="fas fa-plus me-1"></i> Add Route
-                                        </button>
-                                    }
+                                    
                                 </div>
                             </div>
 
@@ -95,17 +96,17 @@
                                             </thead>
                                             <tbody>
                                                 <tr v-for="record in records" :key="record.id">
-                                                    <td><code class="fw-semibold text-dark">{{ record.code }}</code></td>
+                                                    <td><small class="fw-semibold text-dark">{{ record.code }}</small></td>
                                                     <td>
                                                         <div class="fw-medium">{{ record.name }}</div>
-                                                        <small class="text-muted" v-if="record.categoryName">
+                                                        <small class="fw-semibold text-dark" v-if="record.categoryName">
                                                             <i class="fas fa-folder me-1 opacity-75"></i>{{ record.categoryName }}
                                                         </small>
                                                     </td>
                                                     <td>
-                                                        <span class="badge rounded-pill bg-light text-dark border" v-if="record.integrationType === 'PROXY'">PROXY</span>
-                                                        <span class="badge rounded-pill bg-light text-dark border" v-else-if="record.integrationType === 'INTERNAL_AUTH'">AUTH</span>
-                                                        <span class="badge rounded-pill bg-light text-dark border" v-else-if="record.integrationType === 'MOCK'">MOCK</span>
+                                                        <span class="badge rounded-pill bg-info text-light border" v-if="record.integrationType === 'PROXY'">PROXY</span>
+                                                        <span class="badge rounded-pill bg-primary text-light border" v-else-if="record.integrationType === 'INTERNAL_AUTH'">AUTH</span>
+                                                        <span class="badge rounded-pill bg-warning text-light border" v-else-if="record.integrationType === 'MOCK'">MOCK</span>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex flex-wrap gap-1">
@@ -128,12 +129,12 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <div class="btn-group btn-group-sm">
-                                                            <button type="button" class="btn btn-outline-secondary" v-on:click="View(record)" title="View">
+                                                            <button type="button" class="btn btn-outline-primary" v-on:click="View(record)" title="View">
                                                                 <i class="fas fa-eye"></i>
                                                             </button>
                                                             @if (Model.Permission.Contains("[EDIT]"))
                                                             {
-                                                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Edit(record)" title="Edit">
+                                                                <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Edit(record)" title="Edit">
                                                                     <i class="fas fa-pen"></i>
                                                                 </button>
                                                             }
@@ -145,8 +146,8 @@
                                                             }
                                                             @if (Model.Permission.Contains("[RESTORE]"))
                                                             {
-                                                                <button type="button" class="btn btn-outline-success" v-on:click="Restore(record)" v-if="!record.isActive" title="Restore">
-                                                                    <i class="fas fa-undo"></i>
+                                                                <button type="button" class="btn btn-outline-success" v-on:click="Restore(record)" v-if="!record.isActive" title="Reactivate">
+                                                                    <i class="fas fa-check"></i>
                                                                 </button>
                                                             }
                                                         </div>
@@ -409,6 +410,9 @@
                                                     <!-- IP Rules -->
                                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                                         <span class="fw-semibold small mb-0">IP Security Rules</span>
+                                                        
+                                                    </div>
+                                                    <div class="align-items-center mb-2">
                                                         <button type="button" class="btn btn-sm btn-outline-primary flex-shrink-0" v-on:click="AddIpRule()">
                                                             <i class="fas fa-plus me-1"></i>Add Rule
                                                         </button>
@@ -468,6 +472,9 @@
 
                                                     <div class="d-flex justify-content-between align-items-center mb-2" v-if="formData.integrationType === 'PROXY'">
                                                         <span class="fw-semibold small mb-0">Backend Target Hosts</span>
+                                                        
+                                                    </div>
+                                                    <div class="align-items-center mb-2">
                                                         <button type="button" class="btn btn-sm btn-outline-primary flex-shrink-0" v-on:click="AddTargetHost()">
                                                             <i class="fas fa-plus me-1"></i>Add Host
                                                         </button>
@@ -509,6 +516,9 @@
                                                 <div class="tab-pane fade" id="v-transform">
                                                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                                                         <h6 class="fw-semibold text-dark mb-0">Header Transformations</h6>
+                                                        
+                                                    </div>
+                                                    <div class="align-items-center mb-2">
                                                         <button type="button" class="btn btn-sm btn-outline-primary flex-shrink-0" v-on:click="AddTransform()">
                                                             <i class="fas fa-plus me-1"></i>Add Rule
                                                         </button>
@@ -978,6 +988,8 @@
 {
     <script src="~/js/app/directive/common.js" asp-append-version="true"></script>
     <script src="~/js/app/services/client.js" asp-append-version="true"></script>
-    <script src="~/js/app/services/apimanagement/apiendpoint.js" asp-append-version="true"></script>
-    <script src="~/js/app/controller/apimanagement/apiendpoint.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/authprovider.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/outboundauthprofile.js" asp-append-version="true"></script>
+    <script src="~/js/app/services/routemanagement/routes.js" asp-append-version="true"></script>
+    <script src="~/js/app/controller/routemanagement/routes.js" asp-append-version="true"></script>
 }

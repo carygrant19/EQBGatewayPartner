@@ -9,7 +9,7 @@
     {
         public bool Deleted { get; set; }
     }
-    public class Role : Base
+    public class Role
     {
         public string Id { get; set; } = string.Empty;
         public string Code { get; set; } = string.Empty;

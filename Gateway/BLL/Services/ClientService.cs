@@ -225,7 +225,7 @@ namespace Gateway.BLL.Services
                     await _efDbContext.SaveChangesAsync();
 
                     string generatedKey = StringManipulation.Random(16);
-                    string generatedSecret = StringManipulation.Random(16);
+                    string generatedSecret = StringManipulation.Random(32);
 
                     var credential = new Models.ClientCredential
                     {
@@ -465,7 +465,7 @@ namespace Gateway.BLL.Services
         {
             Response.APISecurityResult result = new();
             string newKey = StringManipulation.Random(16);
-            string newSecret = StringManipulation.Random(16);
+            string newSecret = StringManipulation.Random(32);
 
             try
             {

@@ -9,7 +9,7 @@ namespace Gateway.BLL.DTO.Response
     }
 
     public class FUser : User { }
-    public class User : Base
+    public class User
     {
         public string Id { get; set; } = string.Empty;
         public bool? LDAPAuthentication { get; set; } = false;

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Yarp.ReverseProxy.Model;
 using Model = Gateway.Data.Models;
@@ -40,7 +41,7 @@ namespace Gateway.Proxy.Middleware
                 return;
             }
 
-            // PHASE 2: ROUTE CACHE WITH EAGER LOADING
+            // PHASE 2: ROUTE CACHE WITH EAGER LOADING (KASAMA ANG CLIENT & CREDENTIALS)
             var activeEndpoints = await cache.GetOrCreateAsync("GATEWAY_ACTIVE_ROUTES", async entry =>
             {
                 entry.AddExpirationToken(GatewayCacheSignal.GetToken());
@@ -52,6 +53,8 @@ namespace Gateway.Proxy.Middleware
                     .Include(e => e.AuthProvider)
                     .Include(e => e.Transforms)
                     .Include(e => e.ClientRouteAccess)
+                        .ThenInclude(e => e.Client)
+                            .ThenInclude(c => c.Credentials)
                     .Include(e => e.OutboundAuthProfile)
                         .ThenInclude(p => p.Headers)
                     .Where(e => e.IsActive)
@@ -217,7 +220,7 @@ namespace Gateway.Proxy.Middleware
                 }
             }
 
-            // PHASE 6: INTEGRATION BRANCHING
+            // PHASE 6: INTEGRATION BRANCHING & OUTBOUND AUTH
             if (isInternalAuth)
             {
                 var (isSuccess, jsonResponse, statusCode) = await authService.ProcessInternalAuthAsync(context, endpoint);
@@ -237,15 +240,34 @@ namespace Gateway.Proxy.Middleware
 
             if (endpoint.IntegrationType.Equals("PROXY", StringComparison.OrdinalIgnoreCase))
             {
-                // OUTBOUND AUTH HEADERS INJECTION
-                if (endpoint.OutboundAuthProfile != null && endpoint.OutboundAuthProfile.Headers != null)
+                // DYNAMIC MULTI-HEADER OUTBOUND INJECTION
+                if (endpoint.OutboundAuthProfile?.Headers != null && endpoint.OutboundAuthProfile.Headers.Count > 0)
                 {
                     foreach (var authHeaderItem in endpoint.OutboundAuthProfile.Headers)
                     {
-                        string targetHeaderName = string.IsNullOrWhiteSpace(authHeaderItem.HeaderName) ? "Authorization" : authHeaderItem.HeaderName;
-                        string formattedValue = authHeaderItem.AuthType.Equals("Bearer", StringComparison.OrdinalIgnoreCase)
-                            ? $"Bearer {authHeaderItem.CredentialValue}"
-                            : authHeaderItem.CredentialValue;
+                        string targetHeaderName = string.IsNullOrWhiteSpace(authHeaderItem.HeaderName)
+                            ? "Authorization"
+                            : authHeaderItem.HeaderName;
+
+                        string formattedValue = authHeaderItem.CredentialValue ?? string.Empty;
+
+                        if (authHeaderItem.AuthType.Equals("Bearer", StringComparison.OrdinalIgnoreCase))
+                        {
+                            formattedValue = $"Bearer {authHeaderItem.CredentialValue}";
+                        }
+                        else if (authHeaderItem.AuthType.Equals("Basic", StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (!string.IsNullOrWhiteSpace(authHeaderItem.SecondaryCredentialValue))
+                            {
+                                string rawCredentials = $"{authHeaderItem.CredentialValue}:{authHeaderItem.SecondaryCredentialValue}";
+                                string base64Credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes(rawCredentials));
+                                formattedValue = $"Basic {base64Credentials}";
+                            }
+                            else if (!authHeaderItem.CredentialValue.StartsWith("Basic ", StringComparison.OrdinalIgnoreCase))
+                            {
+                                formattedValue = $"Basic {authHeaderItem.CredentialValue}";
+                            }
+                        }
 
                         context.Request.Headers[targetHeaderName] = formattedValue;
                     }

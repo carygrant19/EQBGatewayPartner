@@ -1,0 +1,313 @@
+2026-09-30 10:00:19.577 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 10:00:19.723 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 10:00:20.033 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 10:00:20.045 +08:00 [INF] Hosting environment: Development
+2026-09-30 10:00:20.067 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 10:00:24.193 +08:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-09-30 10:00:24.957 +08:00 [ERR] HTTP GET /auth responded 500 in 2124.1851 ms
+System.Security.Cryptography.CryptographicException: The system cannot find the file specified.
+   at System.Security.Cryptography.X509Certificates.CertificatePal.FromBlobOrFile(ReadOnlySpan`1 rawData, String fileName, SafePasswordHandle password, X509KeyStorageFlags keyStorageFlags)
+   at System.Security.Cryptography.X509Certificates.X509Certificate..ctor(String fileName, String password, X509KeyStorageFlags keyStorageFlags)
+   at Gateway.BLL.Services.CertificateValidatorService..ctor(IOptions`1 options) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\BLL\Services\CertificateValidatorService.cs:line 14
+   at InvokeStub_CertificateValidatorService..ctor(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at lambda_method100(Closure, Object, HttpContext, IServiceProvider)
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 44
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 69
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-09-30 10:00:25.154 +08:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Security.Cryptography.CryptographicException: The system cannot find the file specified.
+   at System.Security.Cryptography.X509Certificates.CertificatePal.FromBlobOrFile(ReadOnlySpan`1 rawData, String fileName, SafePasswordHandle password, X509KeyStorageFlags keyStorageFlags)
+   at System.Security.Cryptography.X509Certificates.X509Certificate..ctor(String fileName, String password, X509KeyStorageFlags keyStorageFlags)
+   at Gateway.BLL.Services.CertificateValidatorService..ctor(IOptions`1 options) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\BLL\Services\CertificateValidatorService.cs:line 14
+   at InvokeStub_CertificateValidatorService..ctor(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at lambda_method100(Closure, Object, HttpContext, IServiceProvider)
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 44
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 69
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-09-30 10:01:42.937 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 10:01:43.082 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 10:01:43.331 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 10:01:43.335 +08:00 [INF] Hosting environment: Development
+2026-09-30 10:01:43.340 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 10:01:50.761 +08:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-09-30 10:01:51.356 +08:00 [ERR] HTTP GET /auth responded 500 in 1698.6521 ms
+System.Security.Cryptography.CryptographicException: The system cannot find the file specified.
+   at System.Security.Cryptography.X509Certificates.CertificatePal.FromBlobOrFile(ReadOnlySpan`1 rawData, String fileName, SafePasswordHandle password, X509KeyStorageFlags keyStorageFlags)
+   at System.Security.Cryptography.X509Certificates.X509Certificate..ctor(String fileName, String password, X509KeyStorageFlags keyStorageFlags)
+   at Gateway.BLL.Services.CertificateValidatorService..ctor(IOptions`1 options) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\BLL\Services\CertificateValidatorService.cs:line 14
+   at InvokeStub_CertificateValidatorService..ctor(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at lambda_method100(Closure, Object, HttpContext, IServiceProvider)
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 44
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 69
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-09-30 10:01:51.464 +08:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Security.Cryptography.CryptographicException: The system cannot find the file specified.
+   at System.Security.Cryptography.X509Certificates.CertificatePal.FromBlobOrFile(ReadOnlySpan`1 rawData, String fileName, SafePasswordHandle password, X509KeyStorageFlags keyStorageFlags)
+   at System.Security.Cryptography.X509Certificates.X509Certificate..ctor(String fileName, String password, X509KeyStorageFlags keyStorageFlags)
+   at Gateway.BLL.Services.CertificateValidatorService..ctor(IOptions`1 options) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\BLL\Services\CertificateValidatorService.cs:line 14
+   at InvokeStub_CertificateValidatorService..ctor(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at lambda_method100(Closure, Object, HttpContext, IServiceProvider)
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 44
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 69
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-09-30 10:02:17.862 +08:00 [ERR] HTTP GET /auth responded 500 in 13759.4626 ms
+System.Security.Cryptography.CryptographicException: The system cannot find the file specified.
+   at System.Security.Cryptography.X509Certificates.CertificatePal.FromBlobOrFile(ReadOnlySpan`1 rawData, String fileName, SafePasswordHandle password, X509KeyStorageFlags keyStorageFlags)
+   at System.Security.Cryptography.X509Certificates.X509Certificate..ctor(String fileName, String password, X509KeyStorageFlags keyStorageFlags)
+   at Gateway.BLL.Services.CertificateValidatorService..ctor(IOptions`1 options) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\BLL\Services\CertificateValidatorService.cs:line 14
+   at InvokeStub_CertificateValidatorService..ctor(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at lambda_method100(Closure, Object, HttpContext, IServiceProvider)
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 44
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 69
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-09-30 10:02:17.898 +08:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Security.Cryptography.CryptographicException: The system cannot find the file specified.
+   at System.Security.Cryptography.X509Certificates.CertificatePal.FromBlobOrFile(ReadOnlySpan`1 rawData, String fileName, SafePasswordHandle password, X509KeyStorageFlags keyStorageFlags)
+   at System.Security.Cryptography.X509Certificates.X509Certificate..ctor(String fileName, String password, X509KeyStorageFlags keyStorageFlags)
+   at Gateway.BLL.Services.CertificateValidatorService..ctor(IOptions`1 options) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\BLL\Services\CertificateValidatorService.cs:line 14
+   at InvokeStub_CertificateValidatorService..ctor(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at lambda_method100(Closure, Object, HttpContext, IServiceProvider)
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 44
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 69
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-09-30 10:03:30.520 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 10:03:30.717 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 10:03:30.853 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 10:03:30.858 +08:00 [INF] Hosting environment: Development
+2026-09-30 10:03:30.861 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 10:03:47.616 +08:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-09-30 10:03:48.269 +08:00 [ERR] HTTP GET /auth responded 500 in 1930.4529 ms
+System.Security.Cryptography.CryptographicException: The system cannot find the file specified.
+   at System.Security.Cryptography.X509Certificates.CertificatePal.FromBlobOrFile(ReadOnlySpan`1 rawData, String fileName, SafePasswordHandle password, X509KeyStorageFlags keyStorageFlags)
+   at System.Security.Cryptography.X509Certificates.X509Certificate..ctor(String fileName, String password, X509KeyStorageFlags keyStorageFlags)
+   at Gateway.BLL.Services.CertificateValidatorService..ctor(IOptions`1 options) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\BLL\Services\CertificateValidatorService.cs:line 14
+   at InvokeStub_CertificateValidatorService..ctor(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at lambda_method100(Closure, Object, HttpContext, IServiceProvider)
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 44
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 69
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-09-30 10:03:48.381 +08:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Security.Cryptography.CryptographicException: The system cannot find the file specified.
+   at System.Security.Cryptography.X509Certificates.CertificatePal.FromBlobOrFile(ReadOnlySpan`1 rawData, String fileName, SafePasswordHandle password, X509KeyStorageFlags keyStorageFlags)
+   at System.Security.Cryptography.X509Certificates.X509Certificate..ctor(String fileName, String password, X509KeyStorageFlags keyStorageFlags)
+   at Gateway.BLL.Services.CertificateValidatorService..ctor(IOptions`1 options) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\BLL\Services\CertificateValidatorService.cs:line 14
+   at InvokeStub_CertificateValidatorService..ctor(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at lambda_method100(Closure, Object, HttpContext, IServiceProvider)
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 44
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 69
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-09-30 10:06:29.843 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 10:06:29.937 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 10:06:30.015 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 10:06:30.017 +08:00 [INF] Hosting environment: Development
+2026-09-30 10:06:30.019 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 10:07:37.711 +08:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-09-30 10:07:38.235 +08:00 [ERR] HTTP GET /auth responded 500 in 1321.6105 ms
+System.Security.Cryptography.CryptographicException: The system cannot find the file specified.
+   at System.Security.Cryptography.X509Certificates.CertificatePal.FromBlobOrFile(ReadOnlySpan`1 rawData, String fileName, SafePasswordHandle password, X509KeyStorageFlags keyStorageFlags)
+   at System.Security.Cryptography.X509Certificates.X509Certificate..ctor(String fileName, String password, X509KeyStorageFlags keyStorageFlags)
+   at Gateway.BLL.Services.CertificateValidatorService..ctor(IOptions`1 options) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\BLL\Services\CertificateValidatorService.cs:line 14
+   at InvokeStub_CertificateValidatorService..ctor(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at lambda_method100(Closure, Object, HttpContext, IServiceProvider)
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 44
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 69
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2026-09-30 10:07:38.291 +08:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Security.Cryptography.CryptographicException: The system cannot find the file specified.
+   at System.Security.Cryptography.X509Certificates.CertificatePal.FromBlobOrFile(ReadOnlySpan`1 rawData, String fileName, SafePasswordHandle password, X509KeyStorageFlags keyStorageFlags)
+   at System.Security.Cryptography.X509Certificates.X509Certificate..ctor(String fileName, String password, X509KeyStorageFlags keyStorageFlags)
+   at Gateway.BLL.Services.CertificateValidatorService..ctor(IOptions`1 options) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\BLL\Services\CertificateValidatorService.cs:line 14
+   at InvokeStub_CertificateValidatorService..ctor(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at lambda_method100(Closure, Object, HttpContext, IServiceProvider)
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 44
+   at Gateway.Proxy.Middleware.AuditMiddleware.InvokeAsync(HttpContext context, ILogService logService) in C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy\Middleware\AuditMiddleware.cs:line 69
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2026-09-30 10:08:58.403 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 10:08:58.515 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 10:08:58.619 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 10:08:58.622 +08:00 [INF] Hosting environment: Development
+2026-09-30 10:08:58.625 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 10:15:40.454 +08:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-09-30 10:15:44.849 +08:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-30 10:15:46.469 +08:00 [INF] HTTP GET /auth responded 200 in 7070.7463 ms
+2026-09-30 10:21:50.591 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 10:21:50.886 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 10:21:51.293 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 10:21:51.296 +08:00 [INF] Hosting environment: Development
+2026-09-30 10:21:51.303 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 10:25:05.638 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 10:25:05.758 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 10:25:06.038 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 10:25:06.047 +08:00 [INF] Hosting environment: Development
+2026-09-30 10:25:06.057 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 10:26:51.979 +08:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-09-30 10:26:53.227 +08:00 [INF] HTTP POST /internal/gateway/reload responded 200 in 4173.2660 ms
+2026-09-30 10:29:30.267 +08:00 [WRN] Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-09-30 10:29:32.942 +08:00 [INF] HTTP GET /auth responded 200 in 3145.4979 ms
+2026-09-30 10:31:24.702 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 10:31:24.828 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 10:31:25.013 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 10:31:25.018 +08:00 [INF] Hosting environment: Development
+2026-09-30 10:31:25.021 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 13:40:02.108 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 13:40:02.479 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 13:40:02.815 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 13:40:02.819 +08:00 [INF] Hosting environment: Development
+2026-09-30 13:40:02.834 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 13:57:07.660 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 13:57:07.779 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 13:57:07.945 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 13:57:07.948 +08:00 [INF] Hosting environment: Development
+2026-09-30 13:57:07.952 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 14:00:41.669 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 14:00:41.995 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 14:00:42.285 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 14:00:42.294 +08:00 [INF] Hosting environment: Development
+2026-09-30 14:00:42.301 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 14:03:08.140 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 14:03:08.312 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 14:03:08.504 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 14:03:08.510 +08:00 [INF] Hosting environment: Development
+2026-09-30 14:03:08.514 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 14:04:56.425 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 14:04:56.557 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 14:04:56.704 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 14:04:56.709 +08:00 [INF] Hosting environment: Development
+2026-09-30 14:04:56.714 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 14:08:08.714 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 14:08:08.823 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 14:08:08.984 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 14:08:08.987 +08:00 [INF] Hosting environment: Development
+2026-09-30 14:08:08.990 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 14:10:58.454 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 14:10:58.553 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 14:10:58.693 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 14:10:58.696 +08:00 [INF] Hosting environment: Development
+2026-09-30 14:10:58.700 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 14:13:00.256 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 14:13:00.368 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 14:13:00.510 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 14:13:00.514 +08:00 [INF] Hosting environment: Development
+2026-09-30 14:13:00.517 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 14:14:56.135 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 14:14:56.230 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 14:14:56.406 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 14:14:56.411 +08:00 [INF] Hosting environment: Development
+2026-09-30 14:14:56.416 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 14:26:01.008 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 14:26:01.165 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 14:26:01.392 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 14:26:01.396 +08:00 [INF] Hosting environment: Development
+2026-09-30 14:26:01.408 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 14:31:39.728 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 14:31:39.925 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 14:31:40.181 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 14:31:40.196 +08:00 [INF] Hosting environment: Development
+2026-09-30 14:31:40.203 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 15:10:58.680 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 15:10:58.975 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 15:10:59.312 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 15:10:59.336 +08:00 [INF] Hosting environment: Development
+2026-09-30 15:10:59.346 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-09-30 15:16:53.964 +08:00 [INF] Now listening on: https://localhost:7000
+2026-09-30 15:16:54.077 +08:00 [INF] Now listening on: http://localhost:5225
+2026-09-30 15:16:54.267 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-09-30 15:16:54.271 +08:00 [INF] Hosting environment: Development
+2026-09-30 15:16:54.277 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy

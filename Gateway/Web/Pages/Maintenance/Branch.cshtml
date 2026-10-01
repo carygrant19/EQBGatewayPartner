@@ -1,5 +1,5 @@
 ﻿@page
-@model Gateway.Web.Pages.Security.PermissionModel
+@model Gateway.Web.Pages.Maintenance.BranchModel
 @{
     ViewData["Title"] = Model.PageTitle;
     Layout = "~/Pages/Shared/_Layout.cshtml";
@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
-                        @foreach (var item in Model.PageUrl.Split('/'))
+                         @foreach (var item in Model.PageUrl.Split('/'))
                         {
                             if (!String.IsNullOrEmpty(@item))
                             {
@@ -40,7 +40,9 @@
                                     @if (Model.Permission.Contains("[SEARCH]"))
                                     {
                                         <input type="text" id="searchDescription" autocomplete="off" class="form-control" placeholder="Enter Description" v-model="search.description" v-on:keypress="KeyPress_Search" data-parsley-restrict-special-characters />
-                                     
+                                    } 
+                                    @if (Model.Permission.Contains("[SEARCH]"))
+                                    {
                                         <button type="button" class="btn btn-outline-secondary btn-sm" v-on:click="Search();">
                                             <i class="nav-icon fas fa-search"></i> Search
                                         </button>
@@ -51,7 +53,7 @@
                                         <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Add()">
                                             <i class="nav-icon fas fa-plus-circle"></i> Add
                                         </button>
-                                    } 
+                                    }
                                     </div>
                                 </div>
                             </div>
@@ -82,8 +84,13 @@
                                     <table class="table datatable fs-13">
                                         <thead class="table-light">
                                             <tr>
-                                                <th width="30%">Code <i :class="['fas', SortClass('Code')]" style="cursor:pointer" v-on:click="Sort('Code')"></i></th>
-                                                <th width="30%">Description <i :class="['fas', SortClass('Description')]" style="cursor:pointer" v-on:click="Sort('Description')"></i></th>
+                                                <th width="10%">Code <i :class="['fas', SortClass('Code')]" style="cursor:pointer" v-on:click="Sort('Code')"></i></th>
+                                                <th width="10%">Description <i :class="['fas', SortClass('Description')]" style="cursor:pointer" v-on:click="Sort('Description')"></i></th>
+                                                <th width="10%">Banking Hour <i :class="['fas', SortClass('BankingHour')]" style="cursor:pointer" v-on:click="Sort('BankingHour')"></i></th>
+                                                <th width="10%">Officer <i :class="['fas', SortClass('Officer')]" style="cursor:pointer" v-on:click="Sort('Officer')"></i></th>
+                                                <th width="10%">Address <i :class="['fas', SortClass('Address')]" style="cursor:pointer" v-on:click="Sort('Address')"></i></th>
+                                                <th width="10%">Contact No <i :class="['fas', SortClass('ContactNo')]" style="cursor:pointer" v-on:click="Sort('ContactNo')"></i></th>
+                                                <th width="10%">Email <i :class="['fas', SortClass('Email')]" style="cursor:pointer" v-on:click="Sort('Email')"></i></th>
                                                 <th class="text-center" width="10%">Action</th>
                                             </tr>
                                         </thead>
@@ -92,6 +99,11 @@
 
                                                 <td class="align-middle" data-title="Code">{{ record.code }}</td>
                                                 <td class="align-middle" data-title="Description">{{ record.description }}</td>
+                                                <td class="align-middle" data-title="BankingHour">{{ record.bankingHour }}</td>
+                                                <td class="align-middle" data-title="Officer">{{ record.officer }}</td>
+                                                <td class="align-middle" data-title="Address">{{ record.address }}</td>
+                                                <td class="align-middle" data-title="ContactNo">{{ record.contactNo }}</td>
+                                                <td class="align-middle" data-title="Email">{{ record.email }}</td>
                                                 <td class="text-center align-middle">
                                                     <div class="btn-group btn-group-sm">
                                                     @if (Model.Permission.Contains("[EDIT]"))
@@ -151,7 +163,7 @@
                                                        data-parsley-trigger="change focusout"
                                                        data-parsley-restrict-special-characters-no-spaces>
                                             </div>
-                                        </div>
+                                        </div> 
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label for="Description">Description</label>
@@ -164,7 +176,67 @@
                                                        data-parsley-restrict-special-characters>
                                             </div>
                                         </div>
-                                    </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="Description">Banking Hour</label>
+                                                <input type="text" class="form-control" name="Banking Hour"
+                                                       v-model="formData.bankingHour"
+                                                       data-parsley-id="bankingHour"
+                                                       data-parsley-required-field
+                                                       data-parsley-validate-if-empty
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-restrict-special-characters>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="Description">Officer</label>
+                                                <input type="text" class="form-control" name="Officer"
+                                                       v-model="formData.officer"
+                                                       data-parsley-id="officer"
+                                                       data-parsley-required-field
+                                                       data-parsley-validate-if-empty
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-restrict-special-characters>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="Description">Address</label>
+                                                <input type="text" class="form-control" name="Address"
+                                                       v-model="formData.address"
+                                                       data-parsley-id="address"
+                                                       data-parsley-required-field
+                                                       data-parsley-validate-if-empty
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-address>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="Description">Contact No</label>
+                                                <input type="text" class="form-control" name="ContactNo"
+                                                       v-model="formData.contactNo"
+                                                       data-parsley-id="contactNo"
+                                                       data-parsley-required-field
+                                                       data-parsley-validate-if-empty
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-restrict-alphanumeric-only>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="Description">Email</label>
+                                                <input type="text" class="form-control" name="Email"
+                                                       v-model="formData.email"
+                                                       data-parsley-id="email"
+                                                       data-parsley-required-field
+                                                       data-parsley-validate-if-empty
+                                                       data-parsley-trigger="change focusout"
+                                                       data-parsley-email-validator>
+                                            </div>
+                                        </div>
+                                    </div> 
                                 </div>
                                 <div class="modal-footer justify-content-between">
                                     <button type="button" class="btn btn-default btn-sm" data-bs-dismiss="modal"><i class="nav-icon fas fa-times-circle"></i> Close</button>
@@ -189,8 +261,8 @@
 @section scripts
 {
     <script src="~/js/app/directive/common.js" asp-append-version="true"></script>
-    <script src="~/js/app/services/permission.js" asp-append-version="true"></script> 
-    <script src="~/js/app/controller/security/permission.js" asp-append-version="true"></script>  
+    <script src="~/js/app/services/branch.js" asp-append-version="true"></script>
+    <script src="~/js/app/controller/maintenance/branch.js" asp-append-version="true"></script> 
 }
 
 

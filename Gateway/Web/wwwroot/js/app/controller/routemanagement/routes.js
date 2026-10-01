@@ -174,8 +174,8 @@ const controller = createApp({
 
         const GetAuthProviders = async () => {
             try {
-                if (typeof ApiEndpointService.AuthProviders === 'function') {
-                    const response = await ApiEndpointService.AuthProviders();
+                if (typeof AuthProviderService.All === 'function') {
+                    const response = await AuthProviderService.All();
                     if (response.data) authProviders.value = response.data;
                 }
             } catch (error) {
@@ -185,8 +185,8 @@ const controller = createApp({
 
         const GetOutboundAuthProfiles = async () => {
             try {
-                if (typeof ApiEndpointService.OutboundAuthProfiles === 'function') {
-                    const response = await ApiEndpointService.OutboundAuthProfiles();
+                if (typeof OutboundAuthProfileService.All === 'function') {
+                    const response = await OutboundAuthProfileService.All();
                     if (response.data) outboundAuthProfiles.value = response.data;
                 }
             } catch (error) {
