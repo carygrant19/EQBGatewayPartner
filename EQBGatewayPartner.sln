@@ -47,7 +47,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.Proxy", "Gateway\Pr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityVerification.API", "IdentityVerification.API\IdentityVerification.API.csproj", "{4757D289-7B58-0A3B-A913-F50ACE89E283}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityMicroService", "IdentityMicroService", "{3619C86B-718A-4302-87DA-AA3FF310E351}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityVerificationService", "IdentityVerificationService", "{3619C86B-718A-4302-87DA-AA3FF310E351}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
