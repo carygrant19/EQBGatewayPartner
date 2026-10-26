@@ -54,7 +54,6 @@ namespace Gateway.BLL.Services
                     int totalErrors = summary.Status4xxCount + summary.Status5xxCount;
                     summary.SuccessRatePercentage = Math.Round(((double)(summary.TotalRequestsToday - totalErrors) / summary.TotalRequestsToday) * 100, 2);
 
-                    // Average Latency
                     var avgDuration = await todayLogsQuery
                         .Where(l => l.ResponseDate.HasValue)
                         .Select(l => (double?)EF.Functions.DateDiffMillisecond(l.RequestDate, l.ResponseDate!.Value))
@@ -62,7 +61,6 @@ namespace Gateway.BLL.Services
 
                     summary.AverageLatencyMs = Math.Round(avgDuration ?? 0, 2);
 
-                    // Hourly Traffic Grouping
                     var rawHourly = await todayLogsQuery
                         .GroupBy(l => l.RequestDate.Hour)
                         .Select(g => new
@@ -81,7 +79,6 @@ namespace Gateway.BLL.Services
                         Errors = g.Errors
                     }).ToList();
 
-                    // Top 5 Endpoints
                     var topRouteGroups = await todayLogsQuery
                         .Where(l => !string.IsNullOrEmpty(l.RouteId))
                         .GroupBy(l => l.RouteId)
@@ -115,7 +112,6 @@ namespace Gateway.BLL.Services
                         }
                     }
 
-                    // Recent 10 HTTP Logs
                     var recentHttpLogs = await todayLogsQuery
                         .OrderByDescending(l => l.RequestDate)
                         .Take(10)
@@ -131,7 +127,6 @@ namespace Gateway.BLL.Services
                         })
                         .ToListAsync(cancellationToken);
 
-                    // I-correlate ang TransactionId mula sa Log_Transaction gamit ang TraceId
                     var traceIds = recentHttpLogs
                         .Where(l => !string.IsNullOrEmpty(l.TraceId))
                         .Select(l => l.TraceId!)
@@ -160,8 +155,7 @@ namespace Gateway.BLL.Services
                         RequestDate = l.RequestDate.ToString("HH:mm:ss")
                     }).ToList();
                 }
-
-                // 3. Recent 5 Exceptions mula sa Log_Exception gamit ang Model.ExceptionLog
+                 
                 summary.RecentExceptions = await _dbContext.Set<Model.ExceptionLog>()
                     .OrderByDescending(e => e.LogDate)
                     .Take(5)
@@ -170,7 +164,11 @@ namespace Gateway.BLL.Services
                         Id = e.Id,
                         ModuleName = e.ModuleName ?? "UNKNOWN",
                         Message = e.Message ?? string.Empty,
-                        Time = e.LogDate.ToString("HH:mm:ss")
+                        Source = e.Source,
+                        StackTrace = e.StackTrace,
+                        InnerException = e.InnerException,
+                        Time = e.LogDate.ToString("HH:mm:ss"),
+                        FullDate = e.LogDate.ToString("yyyy-MM-dd HH:mm:ss")
                     })
                     .ToListAsync(cancellationToken);
             }
@@ -179,6 +177,106 @@ namespace Gateway.BLL.Services
             }
 
             return summary;
+        }
+
+        public async Task<TraceDetailDto?> GetTraceTimelineAsync(string traceId, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(traceId)) return null;
+
+            var httpLogs = await _dbContext.Set<Model.HttpLog>()
+                .Where(h => h.TraceId == traceId)
+                .AsNoTracking()
+                .OrderBy(h => h.RequestDate)
+                .ToListAsync(cancellationToken);
+
+            var tranLogs = await _dbContext.Set<Model.TransactionLog>()
+                .Where(t => t.TraceId == traceId)
+                .AsNoTracking()
+                .OrderBy(t => t.RequestDate)
+                .ToListAsync(cancellationToken);
+
+            if (httpLogs.Count == 0 && tranLogs.Count == 0) return null;
+
+            var firstHttp = httpLogs.FirstOrDefault();
+            var firstTran = tranLogs.FirstOrDefault();
+
+            var detail = new TraceDetailDto
+            {
+                TraceId = traceId,
+                TransactionId = tranLogs.FirstOrDefault(t => !string.IsNullOrEmpty(t.TransactionId))?.TransactionId,
+                StartTime = (firstHttp?.RequestDate ?? firstTran?.RequestDate ?? DateTime.Now).ToString("yyyy-MM-dd HH:mm:ss.fff")
+            };
+
+            int step = 1;
+
+            // 1. Gateway Entry Hop
+            if (firstHttp != null)
+            {
+                double ingressLatency = firstHttp.ResponseDate.HasValue
+                    ? Math.Max((firstHttp.ResponseDate.Value - firstHttp.RequestDate).TotalMilliseconds, 0)
+                    : 0;
+
+                bool isErr = firstHttp.ResponseCode != null && (firstHttp.ResponseCode.StartsWith("4") || firstHttp.ResponseCode.StartsWith("5"));
+
+                detail.Hops.Add(new TraceTimelineHopDto
+                {
+                    Step = step++,
+                    HopType = "GATEWAY_INGRESS",
+                    Title = "Gateway Proxy Ingress",
+                    Endpoint = firstHttp.Uri ?? "/unknown",
+                    HttpMethod = firstHttp.HttpMethod ?? "GET",
+                    Status = firstHttp.ResponseCode ?? "200",
+                    DurationMs = Math.Round(ingressLatency, 2),
+                    Timestamp = firstHttp.RequestDate.ToString("HH:mm:ss.fff"),
+                    RequestPayload = firstHttp.RequestData,
+                    ResponsePayload = firstHttp.ResponseData,
+                    IsError = isErr
+                });
+
+                detail.TotalDurationMs = Math.Round(ingressLatency, 2);
+                if (isErr) detail.OverallStatus = "FAILED";
+            }
+
+            // 2. Microservice Hops (Temenos, InstaPay, PESONet, etc.)
+            foreach (var tran in tranLogs)
+            {
+                double tranLatency = (tran.RequestDate.HasValue && tran.ResponseDate.HasValue)
+                    ? Math.Max((tran.ResponseDate.Value - tran.RequestDate.Value).TotalMilliseconds, 0)
+                    : 0;
+
+                bool isTranErr = tran.Status != "SUCCESS";
+
+                detail.Hops.Add(new TraceTimelineHopDto
+                {
+                    Step = step++,
+                    HopType = "MICROSERVICE_CALL",
+                    Title = ResolveServiceTitle(tran.UrlEndpoint),
+                    Endpoint = tran.UrlEndpoint ?? "Downstream Service",
+                    HttpMethod = "POST",
+                    Status = tran.Status ?? "PENDING",
+                    DurationMs = Math.Round(tranLatency, 2),
+                    Timestamp = (tran.RequestDate ?? DateTime.Now).ToString("HH:mm:ss.fff"),
+                    RequestPayload = tran.Request,
+                    ResponsePayload = tran.Response,
+                    IsError = isTranErr
+                });
+
+                if (isTranErr) detail.OverallStatus = "FAILED";
+            }
+
+            return detail;
+        }
+
+        private static string ResolveServiceTitle(string? endpoint)
+        {
+            if (string.IsNullOrEmpty(endpoint)) return "Downstream Microservice";
+            if (endpoint.Contains("/casa/") || endpoint.Contains("/loans/") || endpoint.StartsWith("SQL:")) return "Temenos Core Banking Service";
+            if (endpoint.Contains("/nidas/") || endpoint.Contains("/everify")) return "Nidas Identity Verification";
+            if (endpoint.Contains("/instapay")) return "InstaPay Microservice";
+            if (endpoint.Contains("/pesonet")) return "PESONet Microservice";
+            if (endpoint.Contains("/cards")) return "Cards Microservice";
+            if (endpoint.Contains("/bayad")) return "BayadCenter Microservice";
+            return "Internal Gateway Service";
         }
     }
 }

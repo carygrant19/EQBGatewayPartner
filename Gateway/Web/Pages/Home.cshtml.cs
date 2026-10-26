@@ -61,6 +61,18 @@ namespace Gateway.Web.Pages
             return new JsonResult(data);
         }
 
+        public async Task<IActionResult> OnGetTraceDetails(string traceId, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(traceId))
+                return BadRequest("TraceId is required.");
+
+            var trace = await _dashboardService.GetTraceTimelineAsync(traceId, cancellationToken);
+            if (trace == null)
+                return NotFound("Trace timeline not found in audit logs.");
+
+            return new JsonResult(trace);
+        }
+
         public async Task<JsonResult> OnPostFilterActivityLog([FromBody] Request.FParam param)
         {
             try

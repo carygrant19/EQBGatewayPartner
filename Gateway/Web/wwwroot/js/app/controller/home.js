@@ -6,9 +6,9 @@ const controller = createApp({
         // 1. SIGNALR & TELEMETRY DASHBOARD STATE
         // ==========================================
         const isConnected = ref(false);
-        const container = document.getElementById('controller');
-        const rawAspireBase = container ? container.getAttribute('data-aspire-base') : 'http://localhost:18888';
-        const aspireDashboardBase = (rawAspireBase || 'http://localhost:18888').replace(/\/$/, '');
+        const selectedTrace = ref(null);
+        const isTraceLoading = ref(false);
+        const selectedException = ref(null);
 
         const metrics = ref({
             activeRoutesCount: 0,
@@ -40,11 +40,6 @@ const controller = createApp({
             return metrics.value.recentExceptions ? metrics.value.recentExceptions.length : 0;
         });
 
-        const getAspireTraceUrl = (traceId) => {
-            if (!traceId) return '#';
-            return `${aspireDashboardBase}/traces/${traceId}`;
-        };
-
         const getStatusBadge = (code) => {
             const strCode = String(code || '');
             if (strCode.startsWith('2') || strCode === 'SUCCESS') {
@@ -63,7 +58,63 @@ const controller = createApp({
             return Math.max(calculated, 8);
         };
 
-        // Diretsong tawag sa Razor Page handler (/Home?handler=Metrics)
+        const formatJson = (val) => {
+            if (!val) return 'No Payload Recorded';
+            try {
+                const parsed = typeof val === 'object' ? val : JSON.parse(val);
+                return JSON.stringify(parsed, null, 2);
+            } catch {
+                return val;
+            }
+        };
+
+        // ==========================================
+        // 2. MODAL INSPECTIONS (TRACE & EXCEPTION)
+        // ==========================================
+        const OpenTraceModal = async (traceId) => {
+            if (!traceId) return;
+
+            selectedTrace.value = null;
+            isTraceLoading.value = true;
+            $('#traceModal').modal('show');
+
+            try {
+                const response = await axios.get('/Home?handler=TraceDetails&traceId=' + encodeURIComponent(traceId));
+                if (response && response.data) {
+                    selectedTrace.value = response.data;
+                }
+            } catch (err) {
+                console.error("Failed to load trace details:", err);
+            } finally {
+                isTraceLoading.value = false;
+            }
+        };
+
+        const OpenExceptionModal = (ex) => {
+            if (!ex) return;
+            selectedException.value = ex;
+            $('#exceptionModal').modal('show');
+        };
+
+        const CopyStackTrace = () => {
+            if (!selectedException.value || !selectedException.value.stackTrace) return;
+            navigator.clipboard.writeText(selectedException.value.stackTrace).then(() => {
+                if (typeof swal !== 'undefined') {
+                    swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Stack trace copied to clipboard',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        };
+
+        // ==========================================
+        // 3. TELEMETRY INITIAL FETCH & SIGNALR
+        // ==========================================
         const LoadInitialMetrics = async () => {
             try {
                 const response = await axios.get('/Home?handler=Metrics');
@@ -71,7 +122,7 @@ const controller = createApp({
                     metrics.value = response.data;
                 }
             } catch (err) {
-                console.warn("Initial HTTP fetch fallback, awaiting SignalR connection...", err);
+                console.warn("Initial dashboard fetch failed, waiting for SignalR...", err);
             }
         };
 
@@ -119,7 +170,7 @@ const controller = createApp({
         };
 
         // ==========================================
-        // 2. USER PERSONAL ACTIVITY LOGS & TABLE STATE
+        // 4. USER PERSONAL ACTIVITY LOGS & TABLE STATE
         // ==========================================
         const records = ref([]);
         const show_table = ref(false);
@@ -218,7 +269,6 @@ const controller = createApp({
         });
 
         return {
-            // Activity log props
             records,
             show_table,
             pageSizeArray,
@@ -227,15 +277,21 @@ const controller = createApp({
             Sort,
             SortClass,
             Search,
-            // Telemetry props
             metrics,
             isConnected,
             connectionStatusBadge,
             connectionStatusText,
             recentExceptionsCount,
-            getAspireTraceUrl,
             getStatusBadge,
-            getBarHeight
+            getBarHeight,
+            selectedTrace,
+            isTraceLoading,
+            OpenTraceModal,
+            formatJson,
+            // Exception Modal Props & Methods
+            selectedException,
+            OpenExceptionModal,
+            CopyStackTrace
         };
     }
 });

@@ -7,5 +7,6 @@ namespace Gateway.BLL.Services.IServices
     public interface IDashboardService
     {
         Task<DashboardSummaryDto> GetDashboardMetricsAsync(CancellationToken cancellationToken = default);
+        Task<TraceDetailDto?> GetTraceTimelineAsync(string traceId, CancellationToken cancellationToken = default);
     }
 }

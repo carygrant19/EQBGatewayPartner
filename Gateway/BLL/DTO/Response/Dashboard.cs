@@ -22,14 +22,14 @@ namespace Gateway.BLL.DTO.Response
         public List<HourlyTrafficDto> HourlyTraffic { get; set; } = [];
         public List<TopRouteMetricDto> TopRoutes { get; set; } = [];
 
-        // 4. Correlated Telemetry Feed (Pinagsamang Log_Http at Log_Transaction)
+        // 4. Correlated Telemetry Feed & Exceptions
         public List<RecentAuditLogDto> RecentLogs { get; set; } = [];
         public List<RecentExceptionDto> RecentExceptions { get; set; } = [];
     }
 
     public class HourlyTrafficDto
     {
-        public string Hour { get; set; } = string.Empty; // Hal. "08:00"
+        public string Hour { get; set; } = string.Empty;
         public int Requests { get; set; }
         public int Errors { get; set; }
     }
@@ -58,6 +58,10 @@ namespace Gateway.BLL.DTO.Response
         public long Id { get; set; }
         public string ModuleName { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
+        public string? Source { get; set; }
+        public string? StackTrace { get; set; }
+        public string? InnerException { get; set; }
         public string Time { get; set; } = string.Empty;
+        public string FullDate { get; set; } = string.Empty;
     }
 }
