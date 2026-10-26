@@ -89,7 +89,6 @@ const controller = createApp({
             transforms: []
         });
 
-        // ========== CLIENT HELPERS ==========
         const normalizeId = (val) => {
             if (val === null || val === undefined) return null;
             return String(val);
@@ -133,7 +132,6 @@ const controller = createApp({
             return found ? `${found.name ?? found.Name} (${found.code ?? found.Code})` : `Client #${id}`;
         };
 
-        // ========== METHOD BADGE COLORS ==========
         const getMethodBadgeClass = (method) => {
             switch (method) {
                 case 'GET': return 'bg-success-subtle text-success border border-success-subtle';
@@ -234,6 +232,7 @@ const controller = createApp({
 
         const ValidateTabs = () => {
             $('#dataForm').parsley().validate();
+
             const countErrorsInTab = (tabSelector) => {
                 let errorCount = 0;
                 $(tabSelector).find('input, select, textarea').each(function () {
@@ -314,6 +313,7 @@ const controller = createApp({
             formData.enableCaching = false;
             formData.cacheTtlSeconds = 60;
             selectedMethods.value = ['GET'];
+
             formData.targetHosts = [{ host: "localhost", port: null, weight: 1, description: "Primary Host", healthCheckPath: "/health", isHealthy: true }];
             formData.ipRules = [];
             formData.transforms = [];
@@ -334,7 +334,6 @@ const controller = createApp({
             Object.assign(formData, record);
             formData.loadBalancingPolicy = record.loadBalancingPolicy || null;
 
-            // Fixed clientIds handling
             let rawClients = record.clientIds ?? record.ClientIds ?? [];
             if (Array.isArray(rawClients) && rawClients.length > 0 && typeof rawClients[0] === 'object') {
                 formData.clientIds = rawClients.map(c => c.id ?? c.Id).filter(Boolean);
@@ -361,7 +360,11 @@ const controller = createApp({
 
             selectedDays.value = record.allowedDays ? record.allowedDays.split(',') : [];
 
-            formData.targetHosts = record.targetHosts ? [...record.targetHosts] : [];
+            formData.targetHosts = (record.targetHosts ? [...record.targetHosts] : []).map(h => ({
+                ...h,
+                port: (!h.port || h.port === 0) ? null : h.port
+            }));
+
             formData.ipRules = record.ipRules ? [...record.ipRules] : [];
             formData.transforms = record.transforms ? [...record.transforms] : [];
             clientToAdd.value = null;
@@ -410,7 +413,7 @@ const controller = createApp({
 
             formData.allowedMethods = selectedMethods.value.join(',');
             formData.upstreamHttpMethod = selectedMethods.value.join(',');
-            formData.allowedDays = selectedDays.value.join(','); 
+            formData.allowedDays = selectedDays.value.join(',');
             $(".preloader").show();
             try {
                 const result = await ApiEndpointService.Save(formData);
@@ -436,6 +439,7 @@ const controller = createApp({
             }
             GetRecords();
         };
+
         const Publish = async () => {
             const popup = await swal.fire({
                 title: "Publish Changes to Gateway?",
@@ -464,6 +468,7 @@ const controller = createApp({
                 }
             }
         };
+
         const KeyPress_Search = (e) => { if (e.which === 13) Search(); };
 
         const Delete = async (data) => {
@@ -518,22 +523,27 @@ const controller = createApp({
             formData.targetHosts.push({ host: "localhost", port: null, weight: 1, description: "", healthCheckPath: "/health", isHealthy: true });
             nextTick(() => ValidateTabs());
         };
+
         const RemoveTargetHost = (index) => {
             formData.targetHosts.splice(index, 1);
             nextTick(() => ValidateTabs());
         };
+
         const AddIpRule = () => {
             formData.ipRules.push({ ipAddressOrRange: "127.0.0.1", ruleType: "Allow", description: "" });
             nextTick(() => ValidateTabs());
         };
+
         const RemoveIpRule = (index) => {
             formData.ipRules.splice(index, 1);
             nextTick(() => ValidateTabs());
         };
+
         const AddTransform = () => {
             formData.transforms.push({ transformPhase: "Request", action: "Add", headerName: "", headerValue: "" });
             nextTick(() => ValidateTabs());
         };
+
         const RemoveTransform = (index) => {
             formData.transforms.splice(index, 1);
             nextTick(() => ValidateTabs());
@@ -592,5 +602,3 @@ const controller = createApp({
 });
 
 controller.mount('#controller');
-
-

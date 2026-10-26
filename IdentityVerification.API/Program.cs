@@ -1,12 +1,16 @@
+using Common.Handlers;
+using Common.Services;
 using IdentityVerification.API.Services;
 using IdentityVerification.API.Services.IService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using Serilog;
-using System.Security.Principal;
+using Scalar.AspNetCore;
+using Serilog; 
 using System.Text;
+using System.Text.Json;
 
 var basePath = AppContext.BaseDirectory;
 var logFilePath = Path.Combine(basePath, "Logs", "IdentityService-.txt");
@@ -73,14 +77,46 @@ try
             };
         });
 
-    // Service Dependency Injection
-    //builder.Services.AddScoped<icasaV1.ITransactionService, casaV1.TransactionService>();
-    //builder.Services.AddScoped<icasaV1.IAccountService, casaV1.AccountService>();
-    //builder.Services.AddScoped<icasaV1.IAccountService, casaV1.AccountService>();
+    // Service Dependency Injection 
     builder.Services.AddScoped<INidasService, NidasService>();
-    builder.Services.AddControllers();
+
+    builder.Services.AddHttpContextAccessor();
+
+    builder.Services.AddOutboundTransactionLogging();
+
+    builder.Services.AddHttpClient("ExternalClient")
+        .AddHttpMessageHandler<OutboundLoggingHandler>();
+
+
+    builder.Services.AddControllers().AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
+    });
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddOpenApi();
+    builder.Services.AddOpenApi(options =>
+    {
+        options.AddDocumentTransformer((document, context, cancellationToken) =>
+        {
+            document.Info.Title = "Gateway Partner API";
+            document.Info.Version = "v1";
+
+            var securityScheme = new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Description = "Enter JWT Bearer token",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT"
+            };
+
+            document.Components ??= new OpenApiComponents();
+            document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
+            document.Components.SecuritySchemes["Bearer"] = securityScheme;
+
+            return Task.CompletedTask;
+        });
+    });
     builder.Services.AddHealthChecks();
 
     var app = builder.Build();
@@ -88,6 +124,11 @@ try
     if (app.Environment.IsDevelopment())
     {
         app.MapOpenApi();
+        app.MapScalarApiReference(options =>
+        {
+            options.WithTitle("Gateway Partner API Reference")
+                   .WithTheme(ScalarTheme.Purple);
+        });
     }
 
     app.UseHealthChecks("/health");

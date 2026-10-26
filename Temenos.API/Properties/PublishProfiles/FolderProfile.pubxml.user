@@ -3,7 +3,7 @@
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Temenos.API\bin\Release\net10.0\publish\</_PublishTargetUrl>
-    <History>True|2026-09-30T08:31:55.2205200Z||;True|2026-09-02T14:33:52.9957332+08:00||;</History>
+    <History>True|2026-10-23T03:33:39.6973004Z||;True|2026-10-23T10:18:20.4849148+08:00||;True|2026-10-23T10:09:09.8491339+08:00||;True|2026-10-23T10:02:59.9699835+08:00||;False|2026-10-23T10:00:26.0858007+08:00||;False|2026-10-23T09:59:58.2568881+08:00||;True|2026-10-23T09:46:36.5512344+08:00||;False|2026-10-23T09:44:44.6262072+08:00||;False|2026-10-23T09:35:48.8644908+08:00||;True|2026-10-22T10:34:55.1626841+08:00||;True|2026-10-22T10:29:18.5522706+08:00||;True|2026-09-30T16:31:55.2205200+08:00||;True|2026-09-02T14:33:52.9957332+08:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

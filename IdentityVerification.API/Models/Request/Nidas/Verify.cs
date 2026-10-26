@@ -88,4 +88,4 @@ namespace IdentityVerification.API.Models.Request.Nidas
         [JsonProperty("errorInfo")]
         public string ErrorInfo { get; set; } = string.Empty;
     }
-}
+} 

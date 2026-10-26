@@ -1,19 +1,33 @@
-﻿using Newtonsoft.Json;
-using System.Data;
+﻿using Common.Services.IService;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using Temenos.API.Services.IService.v1.loans;
 using ApiResponse = Common.DTOs.Response.Api;
 using DTOResponse = Temenos.API.DTOs.Response.v1.loans;
 using ModelResponse = Temenos.API.Models.v1.Response.loans;
-using Temenos.API.Services.IService.v1.loans;
 
 namespace Temenos.API.Services.v1.loans
 {
-    public class AccountService(IConfiguration configuration, ILogger<AccountService> logger) : IAccountService
+    public class AccountService(
+        IConfiguration configuration,
+        ILogger<AccountService> logger,
+        IHttpClientFactory httpClientFactory,
+        ITransactionLogService transactionLogService) : IAccountService
     {
         private readonly ILogger<AccountService> _logger = logger;
+        private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
+        private readonly ITransactionLogService _transactionLogService = transactionLogService;
         private readonly string _conString = configuration["ConnectionStrings:Temenos"]!;
         private readonly string _amortizationSchedule = configuration["Endpoints:v1_AmortizationSchedule"]!;
-        private readonly string _scriptPath = Path.Combine($"{Directory.GetCurrentDirectory()}{"\\scripts"}");
-
+        private readonly string _scriptPath = Path.Combine($"{Directory.GetCurrentDirectory()}\\scripts");
 
         public async Task<ApiResponse.Response<List<DTOResponse.AmortizationSchedule>>> AmortizationSchedule(string arrangementId)
         {
@@ -21,24 +35,25 @@ namespace Temenos.API.Services.v1.loans
             string pageSize = "999";
             ApiResponse.Response<List<DTOResponse.AmortizationSchedule>> dtoResponse = new();
 
-            _logger.LogInformation("Retrieving balance inquiry for AccountNo: {accountNo}", arrangementId);
+            _logger.LogInformation("Retrieving amortization schedule for ArrangementId: {arrangementId}", arrangementId);
 
             try
             {
-                using HttpClient? _client = new();
-                _client.Timeout = Timeout.InfiniteTimeSpan;
+                var client = _httpClientFactory.CreateClient("ExternalClient");
+                client.Timeout = Timeout.InfiniteTimeSpan;
+                client.DefaultRequestHeaders.Add("uniqueIdentifier", arrangementId);
 
-                HttpResponseMessage httpResponse = await _client.GetAsync($"{_amortizationSchedule}?page_start={pageStart}&arrangementId={arrangementId}&page_size={pageSize}");
+                string targetUrl = $"{_amortizationSchedule}?page_start={pageStart}&arrangementId={arrangementId}&page_size={pageSize}";
+                HttpResponseMessage httpResponse = await client.GetAsync(targetUrl);
 
-                var result = httpResponse.Content.ReadAsStringAsync().Result;
-                result = JsonConvert.DeserializeObject(httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult())!.ToString()!;
+                var result = await httpResponse.Content.ReadAsStringAsync();
+                var cleanedResult = JsonConvert.DeserializeObject(result)?.ToString() ?? result;
 
-                ModelResponse.amortizationSchedule response = JsonConvert.DeserializeObject<ModelResponse.amortizationSchedule>(result)!;
+                ModelResponse.amortizationSchedule? response = JsonConvert.DeserializeObject<ModelResponse.amortizationSchedule>(cleanedResult);
 
+                _logger.LogInformation("Amortization Schedule {Status} | Arrangement Id {arrangementId} | Response: {response}", response?.Error == null ? "SUCCESS" : "FAILED", arrangementId, result);
 
-                _logger.LogInformation("Amortization Schedule {Status} | Arrangement Id {arrangementId} | Response: {response}", response, arrangementId, result);
-
-                if (response.Error == null)
+                if (response?.Error == null && response?.Body != null)
                 {
                     dtoResponse = new ApiResponse.Response<List<DTOResponse.AmortizationSchedule>>
                     {
@@ -64,34 +79,33 @@ namespace Temenos.API.Services.v1.loans
                         [
                             new ApiResponse.Error
                             {
-                                Code = response.Error.Code.ToString(),
-                                Message =  response.Error.Message.ToString()
+                                Code = response?.Error?.Code?.ToString() ?? "T24-ERR",
+                                Message = response?.Error?.Message?.ToString() ?? "Unable to retrieve amortization schedule."
                             }
                         ]
                     };
                 }
-
             }
             catch (TaskCanceledException ex)
             {
-                _logger.LogError(ex, "Balance Inquiry Socket Exception | Arrangement Id: {UniqueIdentifier} | Response: {@Response}", arrangementId, ex.Message);
+                _logger.LogError(ex, "Amortization Schedule Socket Exception | Arrangement Id: {arrangementId} | Response: {Response}", arrangementId, ex.Message);
+                await _transactionLogService.LogExceptionAsync("Loans.AccountService.AmortizationSchedule.Timeout", ex);
                 throw;
             }
             catch (System.Net.Sockets.SocketException ex) when (ex.ErrorCode == 995)
             {
-                _logger.LogError(ex, "Balance Inquiry  Socket Exception | Arrangement Id: {UniqueIdentifier} | Response: {@Response}", arrangementId, ex.Message);
-
+                _logger.LogError(ex, "Amortization Schedule Socket Exception | Arrangement Id: {arrangementId} | Response: {Response}", arrangementId, ex.Message);
+                await _transactionLogService.LogExceptionAsync("Loans.AccountService.AmortizationSchedule.Socket", ex);
                 throw;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Balance Inquiry  Unexpected Error | Arrangement Id: {UniqueIdentifier} | Response: {@Response}", arrangementId, ex.Message);
+                _logger.LogError(ex, "Amortization Schedule Unexpected Error | Arrangement Id: {arrangementId} | Response: {Response}", arrangementId, ex.Message);
+                await _transactionLogService.LogExceptionAsync("Loans.AccountService.AmortizationSchedule", ex);
                 throw;
             }
 
             return dtoResponse;
         }
-
-
     }
 }

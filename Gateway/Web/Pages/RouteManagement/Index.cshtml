@@ -33,7 +33,6 @@
                 <div class="col-12">
                     <div class="card border-0 shadow-sm rounded-3">
                         <div class="card-body p-3">
-                            <!-- Search & Action Bar -->
                             <div class="row mb-3 g-2 align-items-center justify-content-between">
                                 <div class="col-12 col-md-5">
                                     <div class="input-group input-group-sm">
@@ -47,7 +46,7 @@
                                         @if (Model.Permission.Contains("[ADD]"))
                                         {
                                             <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#formModal" v-on:click="Add()">
-                                               Add Route
+                                                Add Route
                                             </button>
                                         }
                                     </div>
@@ -59,11 +58,9 @@
                                             <i class="fas fa-paper-plane me-1"></i> Publish Changes
                                         </button>
                                     }
-                                    
                                 </div>
                             </div>
 
-                            <!-- Records Table -->
                             <div class="row">
                                 <div class="col-12" v-show="!show_table">
                                     <div class="text-center text-muted py-5">
@@ -124,7 +121,6 @@
                                                             <template v-for="targetHost in record.targetHosts">
                                                                 {{ record.downstreamScheme }}://{{targetHost.host}}:{{targetHost.port}}//{{ record.downstreamPathTemplate }}
                                                             </template>
-
                                                         </code>
                                                     </td>
                                                     <td class="text-center">
@@ -167,12 +163,12 @@
                 </div>
             </div>
 
-            <!-- ==================== FORM MODAL (6 SEPARATE TABS) ==================== -->
+            <!-- ==================== FORM MODAL ==================== -->
             @if (Model.Permission.Contains("[ADD]") || Model.Permission.Contains("[EDIT]"))
             {
                 <div id="formModal" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
-                    <div class="modal-dialog modal-xl modal-dialog-scrollable">
-                        <form name="formModal" id="dataForm" method="post" autocomplete="off" data-parsley-validate="">
+                    <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 92vw; width: 1400px;">
+                        <form name="formModal" id="dataForm" method="post" autocomplete="off" data-parsley-validate="" data-parsley-excluded="input[type=button], input[type=submit], input[type=reset], input[type=hidden], :disabled">
                             <div class="modal-content border-0 shadow">
                                 <div class="modal-header border-bottom py-3 bg-dark text-white">
                                     <h5 class="modal-title fw-semibold">
@@ -184,7 +180,6 @@
 
                                 <div class="modal-body p-0">
                                     <div class="row g-0">
-                                        <!-- Side Navigation Sidebar (6 Tabs) -->
                                         <div class="col-md-3 border-end bg-light">
                                             <div class="nav flex-column nav-pills p-3 gap-1" id="v-pills-tab" role="tablist">
                                                 <button class="nav-link text-start active d-flex justify-content-between align-items-center"
@@ -232,7 +227,6 @@
                                             </div>
                                         </div>
 
-                                        <!-- Tab Content Panes (6 Tab Panes) -->
                                         <div class="col-md-9 p-4">
                                             <div class="tab-content" id="v-pills-tabContent">
 
@@ -242,15 +236,15 @@
                                                     <div class="row g-3">
                                                         <div class="col-md-4">
                                                             <label class="form-label required small fw-medium">Route Code</label>
-                                                            <input type="text" class="form-control form-control-sm text-uppercase" name="Code" v-model="formData.code" :disabled="disableControl.code" data-parsley-required-field />
+                                                            <input type="text" class="form-control form-control-sm text-uppercase" name="Code" v-model="formData.code" :disabled="disableControl.code" data-parsley-required="true" />
                                                         </div>
                                                         <div class="col-md-5">
                                                             <label class="form-label required small fw-medium">Route Name</label>
-                                                            <input type="text" class="form-control form-control-sm" name="Name" v-model="formData.name" data-parsley-required-field />
+                                                            <input type="text" class="form-control form-control-sm" name="Name" v-model="formData.name" data-parsley-required="true" />
                                                         </div>
                                                         <div class="col-md-3">
                                                             <label class="form-label required small fw-medium">Category</label>
-                                                            <select class="form-select form-select-sm" name="Category" v-model="formData.categoryId" data-parsley-required-field>
+                                                            <select class="form-select form-select-sm" name="Category" v-model="formData.categoryId" data-parsley-required="true">
                                                                 <option :value="null" disabled>Select Category</option>
                                                                 <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
                                                             </select>
@@ -275,7 +269,6 @@
                                                             </div>
                                                         </div>
 
-                                                        <!-- Wildcard Switch -->
                                                         <div class="col-12">
                                                             <div class="border rounded bg-light p-3">
                                                                 <div class="form-check form-switch mb-0">
@@ -290,7 +283,6 @@
                                                             </div>
                                                         </div>
 
-                                                        <!-- HTTP Methods -->
                                                         <div class="col-12">
                                                             <label class="form-label required small fw-medium d-block">Allowed HTTP Methods</label>
                                                             <div class="d-flex flex-wrap gap-2 p-2 border rounded bg-light">
@@ -314,7 +306,7 @@
                                                         <div class="col-md-6">
                                                             <label class="form-label required small fw-medium">Upstream Path Template</label>
                                                             <div class="input-group input-group-sm">
-                                                                <input type="text" class="form-control" v-model="formData.upstreamBase" placeholder="/api/v1/resource" data-parsley-required-field />
+                                                                <input type="text" class="form-control" v-model="formData.upstreamBase" placeholder="/api/v1/resource" data-parsley-required="true" />
                                                                 <span class="input-group-text bg-white text-muted border" v-if="formData.enableCatchAll">/{**catch-all}</span>
                                                             </div>
                                                         </div>
@@ -322,7 +314,7 @@
                                                         <div class="col-md-6" v-show="formData.integrationType === 'PROXY'">
                                                             <label class="form-label required small fw-medium">Downstream Path Template</label>
                                                             <div class="input-group input-group-sm">
-                                                                <input type="text" class="form-control" v-model="formData.downstreamBase" placeholder="/target-api" :data-parsley-required-field="formData.integrationType === 'PROXY'" />
+                                                                <input type="text" class="form-control" v-model="formData.downstreamBase" placeholder="/target-api" :data-parsley-required="formData.integrationType === 'PROXY'" />
                                                                 <span class="input-group-text bg-white text-muted border" v-if="formData.enableCatchAll">/{**catch-all}</span>
                                                             </div>
                                                         </div>
@@ -372,7 +364,6 @@
                                                             </select>
                                                         </div>
 
-                                                        <!-- Clients -->
                                                         <div class="col-12">
                                                             <label class="form-label small fw-medium">
                                                                 <i class="fas fa-users me-1 text-muted"></i> Authorized Inbound Clients
@@ -407,10 +398,8 @@
 
                                                     <hr class="my-4" />
 
-                                                    <!-- IP Rules -->
                                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                                         <span class="fw-semibold small mb-0">IP Security Rules</span>
-                                                        
                                                     </div>
                                                     <div class="align-items-center mb-2">
                                                         <button type="button" class="btn btn-sm btn-outline-primary flex-shrink-0" v-on:click="AddIpRule()">
@@ -429,7 +418,7 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr v-for="(rule, index) in formData.ipRules" :key="index">
-                                                                    <td><input type="text" class="form-control form-control-sm" v-model="rule.ipAddressOrRange" placeholder="192.168.1.1 or localhost" data-parsley-required-field /></td>
+                                                                    <td><input type="text" class="form-control form-control-sm" v-model="rule.ipAddressOrRange" placeholder="192.168.1.1 or localhost" data-parsley-required="true" /></td>
                                                                     <td>
                                                                         <select class="form-select form-select-sm" v-model="rule.ruleType">
                                                                             <option value="Allow">Allow</option>
@@ -451,7 +440,7 @@
                                                     </div>
                                                 </div>
 
-                                                <!-- TAB 3: Outbound & Targets (PROXY only) -->
+                                                <!-- TAB 3: Outbound & Targets -->
                                                 <div class="tab-pane fade" id="v-outbound">
                                                     <h6 class="fw-semibold text-dark mb-3 pb-2 border-bottom">Outbound Auth & Target Hosts</h6>
 
@@ -472,29 +461,41 @@
 
                                                     <div class="d-flex justify-content-between align-items-center mb-2" v-if="formData.integrationType === 'PROXY'">
                                                         <span class="fw-semibold small mb-0">Backend Target Hosts</span>
-                                                        
                                                     </div>
                                                     <div class="align-items-center mb-2">
                                                         <button type="button" class="btn btn-sm btn-outline-primary flex-shrink-0" v-on:click="AddTargetHost()">
                                                             <i class="fas fa-plus me-1"></i>Add Host
                                                         </button>
                                                     </div>
+
                                                     <div class="table-responsive" v-show="formData.integrationType === 'PROXY'">
-                                                        <table class="table table-sm table-bordered mb-0">
+                                                        <table class="table table-sm table-bordered mb-0 align-middle" style="min-width: 820px;">
                                                             <thead class="table-light">
                                                                 <tr class="small text-muted">
-                                                                    <th>Host / Domain / IP</th>
-                                                                    <th style="width:12%">Port</th>
-                                                                    <th style="width:12%">Weight</th>
-                                                                    <th>Health Path</th>
-                                                                    <th>Description</th>
+                                                                    <th style="width:25%">Host / Domain / IP</th>
+                                                                    <th style="width:18%; min-width:140px;">Port</th>
+                                                                    <th style="width:10%">Weight</th>
+                                                                    <th style="width:18%">Health Path</th>
+                                                                    <th style="width:21%">Description</th>
                                                                     <th style="width:8%" class="text-center"></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr v-for="(host, index) in formData.targetHosts" :key="index">
-                                                                    <td><input type="text" class="form-control form-control-sm" v-model="host.host" placeholder="localhost or 10.0.0.1" :data-parsley-required-field="formData.integrationType === 'PROXY'" /></td>
-                                                                    <td><input type="number" class="form-control form-control-sm" v-model.number="host.port" min="1" max="65535" :data-parsley-required-field="formData.integrationType === 'PROXY'" /></td>
+                                                                    <td>
+                                                                        <input type="text" class="form-control form-control-sm" v-model="host.host" placeholder="localhost or 10.0.0.1" :data-parsley-required="formData.integrationType === 'PROXY'" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number"
+                                                                               class="form-control form-control-sm"
+                                                                               v-model.number="host.port"
+                                                                               min="1"
+                                                                               max="65535"
+                                                                               placeholder="Port"
+                                                                               data-parsley-range="[1, 65535]"
+                                                                               data-parsley-range-message="Must be 1 to 65535"
+                                                                               :data-parsley-required="formData.integrationType === 'PROXY'" />
+                                                                    </td>
                                                                     <td><input type="number" class="form-control form-control-sm" v-model.number="host.weight" min="1" /></td>
                                                                     <td><input type="text" class="form-control form-control-sm" v-model="host.healthCheckPath" placeholder="/health" /></td>
                                                                     <td><input type="text" class="form-control form-control-sm" v-model="host.description" /></td>
@@ -516,7 +517,6 @@
                                                 <div class="tab-pane fade" id="v-transform">
                                                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                                                         <h6 class="fw-semibold text-dark mb-0">Header Transformations</h6>
-                                                        
                                                     </div>
                                                     <div class="align-items-center mb-2">
                                                         <button type="button" class="btn btn-sm btn-outline-primary flex-shrink-0" v-on:click="AddTransform()">
@@ -549,7 +549,7 @@
                                                                             <option value="Append">Append</option>
                                                                         </select>
                                                                     </td>
-                                                                    <td><input type="text" class="form-control form-control-sm" v-model="trans.headerName" placeholder="X-Gateway-Header" data-parsley-required-field /></td>
+                                                                    <td><input type="text" class="form-control form-control-sm" v-model="trans.headerName" placeholder="X-Gateway-Header" data-parsley-required="true" /></td>
                                                                     <td><input type="text" class="form-control form-control-sm" v-model="trans.headerValue" placeholder="Value…" :disabled="trans.action === 'Remove'" /></td>
                                                                     <td class="text-center">
                                                                         <button type="button" class="btn btn-sm btn-outline-danger" v-on:click="RemoveTransform(index)">
@@ -635,11 +635,11 @@
                                                         </div>
                                                         <div class="col-md-6" v-if="formData.enableRateLimiting">
                                                             <label class="form-label required small fw-medium">Max Request Quota</label>
-                                                            <input type="number" class="form-control form-control-sm" v-model.number="formData.rateLimit" min="1" placeholder="100" data-parsley-required-field />
+                                                            <input type="number" class="form-control form-control-sm" v-model.number="formData.rateLimit" min="1" placeholder="100" data-parsley-required="true" />
                                                         </div>
                                                         <div class="col-md-6" v-if="formData.enableRateLimiting">
                                                             <label class="form-label required small fw-medium">Window (Seconds)</label>
-                                                            <input type="number" class="form-control form-control-sm" v-model.number="formData.ratePeriodTimespan" min="1" placeholder="60" data-parsley-required-field />
+                                                            <input type="number" class="form-control form-control-sm" v-model.number="formData.ratePeriodTimespan" min="1" placeholder="60" data-parsley-required="true" />
                                                         </div>
 
                                                         <div class="col-12"><hr class="my-1" /></div>
@@ -652,7 +652,7 @@
                                                         </div>
                                                         <div class="col-md-6" v-if="formData.enableCaching">
                                                             <label class="form-label required small fw-medium">Cache TTL (Seconds)</label>
-                                                            <input type="number" class="form-control form-control-sm" v-model.number="formData.cacheTtlSeconds" min="1" placeholder="60" data-parsley-required-field />
+                                                            <input type="number" class="form-control form-control-sm" v-model.number="formData.cacheTtlSeconds" min="1" placeholder="60" data-parsley-required="true" />
                                                         </div>
                                                     </div>
 
@@ -708,7 +708,6 @@
                 </div>
             }
 
-            <!-- ==================== VIEW MODAL ==================== -->
             <div id="viewModal" class="modal fade" tabindex="-1" data-bs-backdrop="static">
                 <div class="modal-dialog modal-xl modal-dialog-scrollable">
                     <div class="modal-content border-0 shadow" v-if="viewData">
@@ -721,9 +720,7 @@
                             </div>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                         </div>
-
                         <div class="modal-body bg-light p-3">
-                            <!-- Quick Stats -->
                             <div class="row g-2 mb-3">
                                 <div class="col-6 col-md-3">
                                     <div class="p-2 bg-white rounded border text-center h-100">
@@ -757,161 +754,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-header bg-white p-0 border-bottom">
-                                    <ul class="nav nav-tabs border-0 px-3 pt-2" role="tablist">
-                                        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#vtab-overview">Overview</a></li>
-                                        <li class="nav-item" v-if="viewData.integrationType === 'PROXY'"><a class="nav-link" data-bs-toggle="tab" href="#vtab-hosts">Hosts ({{ viewData.targetHosts ? viewData.targetHosts.length : 0 }})</a></li>
-                                        <li class="nav-item" v-if="viewData.integrationType === 'PROXY'"><a class="nav-link" data-bs-toggle="tab" href="#vtab-transforms">Transforms ({{ viewData.transforms ? viewData.transforms.length : 0 }})</a></li>
-                                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#vtab-security">Security</a></li>
-                                        <li class="nav-item" v-if="viewData.integrationType === 'MOCK'"><a class="nav-link" data-bs-toggle="tab" href="#vtab-mock">Mock Payload</a></li>
-                                    </ul>
-                                </div>
-                                <div class="card-body tab-content">
-                                    <!-- Overview -->
-                                    <div class="tab-pane fade show active" id="vtab-overview">
-                                        <div class="row g-3">
-                                            <div class="col-md-6">
-                                                <label class="text-muted small text-uppercase fw-medium d-block">Upstream Path</label>
-                                                <code class="d-block p-2 bg-light rounded border">{{ viewData.upstreamPathTemplate }}</code>
-                                            </div>
-                                            <div class="col-md-6" v-if="viewData.integrationType === 'PROXY'">
-                                                <label class="text-muted small text-uppercase fw-medium d-block">Downstream</label>
-                                                <code class="d-block p-2 bg-light rounded border">{{ viewData.downstreamScheme }}://{{ viewData.downstreamPathTemplate }}</code>
-                                            </div>
-                                            <div class="col-12">
-                                                <label class="text-muted small text-uppercase fw-medium d-block mb-1">HTTP Methods</label>
-                                                <div class="d-flex gap-1 flex-wrap">
-                                                    <span v-for="m in parsedViewMethods" :key="m" class="badge rounded-pill px-2 py-1" :class="getMethodBadgeClass(m)">{{ m }}</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="text-muted small text-uppercase fw-medium d-block">Category</label>
-                                                <span>{{ viewData.categoryName || '—' }}</span>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="text-muted small text-uppercase fw-medium d-block">API Version</label>
-                                                <span>{{ viewData.apiVersion || 'v1' }}</span>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="text-muted small text-uppercase fw-medium d-block">Priority</label>
-                                                <span>{{ viewData.priority }}</span>
-                                            </div>
-                                            <div class="col-12" v-if="viewData.description">
-                                                <label class="text-muted small text-uppercase fw-medium d-block">Description</label>
-                                                <p class="mb-0 text-secondary">{{ viewData.description }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Hosts -->
-                                    <div class="tab-pane fade" id="vtab-hosts" v-if="viewData.integrationType === 'PROXY'">
-                                        <table class="table table-sm table-bordered mb-0">
-                                            <thead class="table-light">
-                                                <tr class="small text-muted">
-                                                    <th>Host</th>
-                                                    <th style="width:12%">Port</th>
-                                                    <th style="width:12%">Weight</th>
-                                                    <th>Health Path</th>
-                                                    <th style="width:14%" class="text-center">Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr v-for="h in viewData.targetHosts" :key="h.id">
-                                                    <td class="fw-medium">{{ h.host }}</td>
-                                                    <td><code>{{ h.port }}</code></td>
-                                                    <td>{{ h.weight }}</td>
-                                                    <td><code>{{ h.healthCheckPath || '/health' }}</code></td>
-                                                    <td class="text-center">
-                                                        <span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle" v-if="h.isHealthy">Healthy</span>
-                                                        <span class="badge rounded-pill bg-danger-subtle text-danger border border-danger-subtle" v-else>Unhealthy</span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <!-- Transforms -->
-                                    <div class="tab-pane fade" id="vtab-transforms" v-if="viewData.integrationType === 'PROXY'">
-                                        <div v-if="!viewData.transforms || viewData.transforms.length === 0" class="text-muted py-3 text-center">No header transformation rules.</div>
-                                        <table class="table table-sm table-bordered mb-0" v-else>
-                                            <thead class="table-light">
-                                                <tr class="small text-muted">
-                                                    <th>Phase</th>
-                                                    <th>Action</th>
-                                                    <th>Header</th>
-                                                    <th>Value</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr v-for="t in viewData.transforms" :key="t.id">
-                                                    <td>{{ t.transformPhase }}</td>
-                                                    <td>{{ t.action }}</td>
-                                                    <td><code>{{ t.headerName }}</code></td>
-                                                    <td><code>{{ t.headerValue || '—' }}</code></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <!-- Security -->
-                                    <div class="tab-pane fade" id="vtab-security">
-                                        <div class="row g-3">
-                                            <div class="col-md-4">
-                                                <label class="text-muted small text-uppercase fw-medium d-block">JWT Provider</label>
-                                                <span v-if="viewData.authProviderName">{{ viewData.authProviderName }}</span>
-                                                <span v-else class="text-muted">None</span>
-                                            </div>
-                                            <div class="col-md-4" v-if="viewData.integrationType === 'PROXY'">
-                                                <label class="text-muted small text-uppercase fw-medium d-block">Outbound Profile</label>
-                                                <span v-if="viewData.outboundAuthProfileName">{{ viewData.outboundAuthProfileName }}</span>
-                                                <span v-else class="text-muted">None</span>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="text-muted small text-uppercase fw-medium d-block">Operating Hours</label>
-                                                <span v-if="viewData.timeFrom && viewData.timeTo">{{ viewData.timeFrom }} – {{ viewData.timeTo }}</span>
-                                                <span v-else class="text-muted">24/7</span>
-                                            </div>
-                                            <div class="col-12">
-                                                <label class="text-muted small text-uppercase fw-medium d-block mb-1">IP Rules ({{ viewData.ipRules ? viewData.ipRules.length : 0 }})</label>
-                                                <div v-if="!viewData.ipRules || viewData.ipRules.length === 0" class="text-muted">No IP restrictions.</div>
-                                                <table class="table table-sm table-bordered mb-0" v-else>
-                                                    <thead class="table-light">
-                                                        <tr class="small text-muted">
-                                                            <th>IP / Range</th>
-                                                            <th>Policy</th>
-                                                            <th>Description</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr v-for="r in viewData.ipRules" :key="r.id">
-                                                            <td><code>{{ r.ipAddressOrRange }}</code></td>
-                                                            <td>
-                                                                <span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle" v-if="r.ruleType === 'Allow'">Allow</span>
-                                                                <span class="badge rounded-pill bg-danger-subtle text-danger border border-danger-subtle" v-else>Deny</span>
-                                                            </td>
-                                                            <td>{{ r.description || '—' }}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Mock -->
-                                    <div class="tab-pane fade" id="vtab-mock" v-if="viewData.integrationType === 'MOCK'">
-                                        <div class="mb-2">
-                                            <span class="fw-medium me-2">HTTP Status:</span>
-                                            <code>{{ viewData.mockResponseCode || 200 }}</code>
-                                        </div>
-                                        <label class="text-muted small text-uppercase fw-medium d-block mb-1">Response Body</label>
-                                        <pre class="bg-dark text-success p-3 rounded mb-0 font-monospace small"><code>{{ viewData.mockResponseBody }}</code></pre>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-
                         <div class="modal-footer border-top py-2">
                             <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Close</button>
                         </div>
@@ -959,31 +802,22 @@
         color: #dc3545;
     }
 
-    .bg-success-subtle {
-        background-color: #d1e7dd !important;
+    .parsley-errors-list {
+        list-style: none !important;
+        padding-left: 0 !important;
+        margin: 4px 0 0 0 !important;
+        color: #dc3545 !important;
+        font-size: 0.73rem !important;
+        font-weight: 500 !important;
+        line-height: 1.25 !important;
+        white-space: normal !important;
+        display: block !important;
     }
 
-    .bg-primary-subtle {
-        background-color: #cfe2ff !important;
-    }
-
-    .bg-warning-subtle {
-        background-color: #fff3cd !important;
-    }
-
-    .bg-danger-subtle {
-        background-color: #f8d7da !important;
-    }
-
-    .bg-info-subtle {
-        background-color: #cff4fc !important;
-    }
-
-    .bg-secondary-subtle {
-        background-color: #e2e3e5 !important;
-    }
+        .parsley-errors-list li {
+            margin-bottom: 2px;
+        }
 </style>
-
 @section scripts
 {
     <script src="~/js/app/directive/common.js" asp-append-version="true"></script>

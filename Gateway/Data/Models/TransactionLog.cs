@@ -9,7 +9,7 @@ namespace Gateway.Data.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        public string? Traceid { get; set; } = string.Empty;
+        public string? TraceId { get; set; } = string.Empty;
         public string? TransactionId { get; set; } = string.Empty;
         public string? UrlEndpoint { get; set; } = string.Empty;
         public string? Request { get; set; } = string.Empty;

@@ -2,7 +2,7 @@
 
 namespace IdentityVerification.API.Models.Request.Nidas
 {
-    public class Auth
+    internal class Auth
     {
         [JsonPropertyName("client_id")]
         public string ClientId { get; set; } = string.Empty;

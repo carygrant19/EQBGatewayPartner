@@ -8,6 +8,9 @@ using casaV1 = Temenos.API.Services.v1.casa;
 using icasaV1 = Temenos.API.Services.IService.v1.casa;
 using loansV1 = Temenos.API.Services.v1.loans;
 using iloansV1 = Temenos.API.Services.IService.v1.loans;
+using Common.Services.IService;
+using Common.Services;
+using Common.Handlers;
 var basePath = AppContext.BaseDirectory;
 var logFilePath = Path.Combine(basePath, "Logs", "TemenosService-.txt");
 
@@ -45,10 +48,12 @@ try
             tracing
                 .SetResourceBuilder(
                     ResourceBuilder.CreateDefault()
-                        .AddService(serviceName: "Temenos.API", serviceVersion: "1.0.0"));
+                        .AddService(serviceName: "Temenos.Microservice", serviceVersion: "1.0.0"));
 
             // Uncomment as needed:
-            tracing.AddSqlClientInstrumentation(options => options.RecordException = true);
+            tracing.AddAspNetCoreInstrumentation(options => options.RecordException = true);
+            tracing.AddHttpClientInstrumentation();
+
             tracing.AddOtlpExporter(options =>
             {
                 options.Endpoint = new Uri("http://localhost:4317");
@@ -76,6 +81,13 @@ try
     builder.Services.AddScoped<icasaV1.IAccountService, casaV1.AccountService>();
     builder.Services.AddScoped<icasaV1.IAccountService, casaV1.AccountService>();
     builder.Services.AddScoped<iloansV1.IAccountService, loansV1.AccountService>();
+    builder.Services.AddHttpContextAccessor();
+     
+    builder.Services.AddOutboundTransactionLogging();
+     
+    builder.Services.AddHttpClient("ExternalClient")
+        .AddHttpMessageHandler<OutboundLoggingHandler>();
+
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddOpenApi();

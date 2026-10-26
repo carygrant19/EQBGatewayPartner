@@ -1,7 +1,7 @@
 ﻿using Model = IdentityVerification.API.Models.Request.Nidas;
 
-namespace IdentityVerification.API.DTO.Request.Nidas
+namespace IdentityVerification.API.DTO.Request
 {
-    public class Verify : Model.Verify  { }
+    public class VerifyRequest : Model.Verify  { }
 
 }

@@ -1,12 +1,11 @@
 ﻿using Request = IdentityVerification.API.DTO.Request;
-using Response = IdentityVerification.API.DTO.Response;
-using ApiResponse = Common.DTOs.Response.Api;
 
 namespace IdentityVerification.API.Services.IService
 {
     public interface INidasService
     {
-        Task<object> Verify(Request.Nidas.Verify request);
-
+        Task<(int StatusCode, string ResponseBody, Dictionary<string, string[]> Headers)> Verify(Request.VerifyRequest dtoRequest);
+        Task<(int StatusCode, string ResponseBody, Dictionary<string, string[]> Headers)> QRQueryCheck(Request.QrCheckRequest dtoRequest);
+        Task<(int StatusCode, string ResponseBody, Dictionary<string, string[]> Headers)> QRQueryVerify(Request.QrVerifyRequest dtoRequest);
     }
 }

@@ -13,9 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using System.Text;
-using System.Text.Json;
-using Yarp.ReverseProxy.Configuration;
+using System.Text; 
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
@@ -97,7 +97,25 @@ builder.Services.AddAutoMapper(cfg =>
 {
     cfg.AddProfile(new MappingProfile(builder.Configuration));
 });
+// OpenTelemetry Tracing Configuration
+builder.Services.AddOpenTelemetry()
+    .WithTracing(tracing =>
+    {
+        tracing
+            .SetResourceBuilder(
+                ResourceBuilder.CreateDefault()
+                    .AddService(serviceName: "Gateway.Microservice", serviceVersion: "1.0.0"));
 
+        // Uncomment as needed:
+        tracing.AddAspNetCoreInstrumentation(options => options.RecordException = true);
+        tracing.AddHttpClientInstrumentation();
+
+        tracing.AddOtlpExporter(options =>
+        {
+            options.Endpoint = new Uri("http://localhost:4317");
+            options.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.Grpc;
+        });
+    });
 builder.Services.AddControllers();
 builder.Services.AddHealthChecks();
 builder.Services.ProxyServices();

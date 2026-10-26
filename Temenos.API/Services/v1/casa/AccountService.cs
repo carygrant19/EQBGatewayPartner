@@ -1,29 +1,48 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Common.Services.IService;
+using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
+using System;
 using System.Data;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 using ApiResponse = Common.DTOs.Response.Api;
 using DTOResponse = Temenos.API.DTOs.Response.v1.casa;
-using ModelResponse= Temenos.API.Models.v1.Response.casa;
+using ModelResponse = Temenos.API.Models.v1.Response.casa;
 using Temenos.API.Services.IService.v1.casa;
 
 namespace Temenos.API.Services.v1.casa
 {
-    public class AccountService(IConfiguration configuration, ILogger<AccountService> logger) : IAccountService
+    public class AccountService(
+        IConfiguration configuration,
+        ILogger<AccountService> logger,
+        IHttpClientFactory httpClientFactory,
+        ITransactionLogService transactionLogService) : IAccountService
     {
         private readonly ILogger<AccountService> _logger = logger;
+        private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
+        private readonly ITransactionLogService _transactionLogService = transactionLogService;
         private readonly string _conString = configuration["ConnectionStrings:Temenos"]!;
         private readonly string _balanceInquiry = configuration["Endpoints:v1_BalanceInquiry"]!;
-        private readonly string _scriptPath = Path.Combine($"{Directory.GetCurrentDirectory()}{"\\scripts"}");
+        private readonly string _scriptPath = Path.Combine($"{Directory.GetCurrentDirectory()}\\scripts");
 
         public async Task<ApiResponse.Response<DTOResponse.AccountDetails>> Details(string accountNo)
         {
             string script1 = File.ReadAllText(Path.Combine(_scriptPath, "account_details_v1.sql"));
-
             ApiResponse.Response<DTOResponse.AccountDetails> dtoResponse = new();
+            DateTime requestDate = DateTime.Now;
+            string query = string.Format(script1, accountNo);
+            string transactionStatus = "FAILED";
+            string rawResponse = string.Empty;
+
+            long logId = await _transactionLogService.LogRequestAsync(
+                accountNo,
+                "SQL:account_details_v1.sql",
+                query,
+                requestDate
+            );
 
             _logger.LogInformation("Retrieving account details for AccountNo: {accountNo}", accountNo);
-
-            string query = string.Format(script1, accountNo);
 
             try
             {
@@ -32,38 +51,30 @@ namespace Temenos.API.Services.v1.casa
                 cmd.CommandType = CommandType.Text;
 
                 await con.OpenAsync();
-
                 using SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
-                var statusResponse = new DTOResponse.AccountDetails();
-
-                if (await reader.ReadAsync())
+                if (await reader.ReadAsync() && !string.IsNullOrEmpty(reader["ACCOUNT_NUMBER"].ToString()))
                 {
+                    _logger.LogInformation("Account details successfully retrieved for AccountNo: {accountNo}", accountNo);
 
-                    if (!string.IsNullOrEmpty(reader["ACCOUNT_NUMBER"].ToString()!))
+                    dtoResponse = new ApiResponse.Response<DTOResponse.AccountDetails>
                     {
-                        _logger.LogInformation("Account details successfully retrieved for AccountNo: {accountNo}", accountNo);
-
-                        dtoResponse = new ApiResponse.Response<DTOResponse.AccountDetails>
+                        Success = true,
+                        Message = "Account details retrieved.",
+                        Data = new DTOResponse.AccountDetails
                         {
-                            Success = true,
-                            Message = "Account details retrieved.",
-                            Data = new DTOResponse.AccountDetails
-                            {
-                                AccountNo = reader["ACCOUNT_NUMBER"].ToString()!,
-                                Description = reader["DESCRIPTION"].ToString()!,
-                                BirthDate = string.IsNullOrWhiteSpace(reader["DATE_OF_BIRTH"].ToString()!) ? null : reader["DATE_OF_BIRTH"].ToString()!,
-                                BirthPlace = string.IsNullOrWhiteSpace(reader["PLACE_OF_BIRTH"].ToString()!) ? null : reader["PLACE_OF_BIRTH"].ToString()!,
-                                InCorpDate = string.IsNullOrWhiteSpace(reader["BIRTH_INCORP_DATE"].ToString()!) ? null : reader["BIRTH_INCORP_DATE"].ToString()!,
-                                InCorpPlace = string.IsNullOrWhiteSpace(reader["PLACE_OF_INCORP"].ToString()!) ? null : reader["PLACE_OF_INCORP"].ToString()!,
-                                Nationality = reader["PLACE_OF_INCORP"].ToString()!,
-                                Phone = reader["PHONE_1"].ToString()!,
-                                Sms = reader["SMS_1"].ToString()!,
-                            }
-                        };
-
-                    }
-
+                            AccountNo = reader["ACCOUNT_NUMBER"].ToString()!,
+                            Description = reader["DESCRIPTION"].ToString()!,
+                            BirthDate = string.IsNullOrWhiteSpace(reader["DATE_OF_BIRTH"].ToString()) ? null : reader["DATE_OF_BIRTH"].ToString(),
+                            BirthPlace = string.IsNullOrWhiteSpace(reader["PLACE_OF_BIRTH"].ToString()) ? null : reader["PLACE_OF_BIRTH"].ToString(),
+                            InCorpDate = string.IsNullOrWhiteSpace(reader["BIRTH_INCORP_DATE"].ToString()) ? null : reader["BIRTH_INCORP_DATE"].ToString(),
+                            InCorpPlace = string.IsNullOrWhiteSpace(reader["PLACE_OF_INCORP"].ToString()) ? null : reader["PLACE_OF_INCORP"].ToString(),
+                            Nationality = reader["PLACE_OF_INCORP"].ToString()!,
+                            Phone = reader["PHONE_1"].ToString()!,
+                            Sms = reader["SMS_1"].ToString()!,
+                        }
+                    };
+                    transactionStatus = "SUCCESS";
                 }
                 else
                 {
@@ -72,15 +83,24 @@ namespace Temenos.API.Services.v1.casa
                         Success = false,
                         Message = $"The requested account details (Account No: {accountNo}) could not be found.",
                     };
-
-                    _logger.LogWarning("Failed ro retrieved account details for Account No: {accountNo}", accountNo);
+                    transactionStatus = "NOT_FOUND";
+                    _logger.LogWarning("Failed to retrieve account details for Account No: {accountNo}", accountNo);
                 }
 
+                rawResponse = JsonConvert.SerializeObject(dtoResponse);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Account details unexpected Error | Account No: {accountNo} | Response: {@Response}", accountNo, ex.Message);
+                transactionStatus = "ERROR";
+                rawResponse = ex.Message;
+                _logger.LogError(ex, "Account details unexpected Error | Account No: {accountNo} | Response: {Response}", accountNo, ex.Message);
+
+                await _transactionLogService.LogExceptionAsync("AccountService.Details", ex);
                 throw;
+            }
+            finally
+            {
+                await _transactionLogService.LogResponseAsync(logId, rawResponse, DateTime.Now, transactionStatus);
             }
 
             return dtoResponse;
@@ -89,25 +109,24 @@ namespace Temenos.API.Services.v1.casa
         public async Task<ApiResponse.Response<DTOResponse.BalanceInquiry>> InquireBalance(string accountNo)
         {
             ApiResponse.Response<DTOResponse.BalanceInquiry> dtoResponse = new();
-
             _logger.LogInformation("Retrieving balance inquiry for AccountNo: {accountNo}", accountNo);
 
             try
-            { 
-                using HttpClient? _client = new();
-                _client.Timeout = Timeout.InfiniteTimeSpan;
-     
-                HttpResponseMessage httpResponse = await _client.GetAsync($"{_balanceInquiry}/{accountNo}");
+            {
+                var client = _httpClientFactory.CreateClient("ExternalClient");
+                client.Timeout = Timeout.InfiniteTimeSpan;
+                client.DefaultRequestHeaders.Add("uniqueIdentifier", accountNo);
 
-                var result = httpResponse.Content.ReadAsStringAsync().Result;
-                result = JsonConvert.DeserializeObject(httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult())!.ToString()!;
+                HttpResponseMessage httpResponse = await client.GetAsync($"{_balanceInquiry}/{accountNo}");
 
-                ModelResponse.balanceInquiry response = JsonConvert.DeserializeObject<ModelResponse.balanceInquiry>(result)!;
+                var result = await httpResponse.Content.ReadAsStringAsync();
+                var cleanedResult = JsonConvert.DeserializeObject(result)?.ToString() ?? result;
 
+                ModelResponse.balanceInquiry response = JsonConvert.DeserializeObject<ModelResponse.balanceInquiry>(cleanedResult)!;
 
                 _logger.LogInformation("Balance Inquiry {Status} | Account No: {accountNo} | Response: {response}", response, accountNo, result);
 
-                if (response.Error.Code == string.Empty)
+                if (string.IsNullOrEmpty(response.Error.Code))
                 {
                     dtoResponse = new ApiResponse.Response<DTOResponse.BalanceInquiry>
                     {
@@ -135,27 +154,28 @@ namespace Temenos.API.Services.v1.casa
                             new ApiResponse.Error
                             {
                                 Code = response.Error.Code.ToString(),
-                                Message =  response.Error.Message.ToString()
+                                Message = response.Error.Message.ToString()
                             }
                         ]
                     };
                 }
-
             }
             catch (TaskCanceledException ex)
             {
-                _logger.LogError(ex, "Balance Inquiry Socket Exception | Account No: {UniqueIdentifier} | Response: {@Response}", accountNo, ex.Message);
+                _logger.LogError(ex, "Balance Inquiry Socket Exception | Account No: {accountNo} | Response: {Response}", accountNo, ex.Message);
+                await _transactionLogService.LogExceptionAsync("AccountService.InquireBalance.Timeout", ex);
                 throw;
             }
             catch (System.Net.Sockets.SocketException ex) when (ex.ErrorCode == 995)
             {
-                _logger.LogError(ex, "Balance Inquiry  Socket Exception | Account No: {UniqueIdentifier} | Response: {@Response}", accountNo, ex.Message);
-
+                _logger.LogError(ex, "Balance Inquiry Socket Exception | Account No: {accountNo} | Response: {Response}", accountNo, ex.Message);
+                await _transactionLogService.LogExceptionAsync("AccountService.InquireBalance.Socket", ex);
                 throw;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Balance Inquiry  Unexpected Error | Account No: {UniqueIdentifier} | Response: {@Response}", accountNo, ex.Message);
+                _logger.LogError(ex, "Balance Inquiry Unexpected Error | Account No: {accountNo} | Response: {Response}", accountNo, ex.Message);
+                await _transactionLogService.LogExceptionAsync("AccountService.InquireBalance", ex);
                 throw;
             }
 

@@ -1,46 +1,46 @@
-﻿using Newtonsoft.Json;
+﻿
+using System.Text.Json.Serialization;
 
 namespace IdentityVerification.API.Models.Response.Nidas
 {
     public class Auth
     {
-        [JsonProperty("data")]
-        public AuthData Data { get; set; } 
+        [JsonPropertyName("data")]
+        public AuthData Data { get; set; } = new();
     }
 
     public class AuthData
     {
-        [JsonProperty("access_token")]
+        [JsonPropertyName("access_token")]
         public string AccessToken { get; set; } = string.Empty;
 
-        [JsonProperty("token_type")]
+        [JsonPropertyName("token_type")]
         public string TokenType { get; set; } = string.Empty;
 
-        [JsonProperty("expires_at")]
+        [JsonPropertyName("expires_at")]
         public string ExpiresAt { get; set; } = string.Empty;
     }
 
-    //422
+    // 422 Unprocessable Content
     public class AuthValidationErrorResponse
     {
-        [JsonProperty("message")]
+        [JsonPropertyName("message")]
         public string Message { get; set; } = string.Empty;
-        
-        [JsonProperty("errors")]
-        public Dictionary<string, List<string>> Errors { get; set; }
+
+        [JsonPropertyName("errors")]
+        public Dictionary<string, List<string>> Errors { get; set; } = [];
     }
 
-    //403
+    // 403 Forbidden
     public class AuthErrorResponse
     {
-        [JsonProperty("error")]
+        [JsonPropertyName("error")]
         public string Error { get; set; } = string.Empty;
 
-        [JsonProperty("message")]
+        [JsonPropertyName("message")]
         public string Message { get; set; } = string.Empty;
 
-        [JsonProperty("error_description")]
-        public string ErrorDescription { get; set; } = string.Empty;
+        [JsonPropertyName("error_description")]
+        public string? ErrorDescription { get; set; }
     }
-
 }

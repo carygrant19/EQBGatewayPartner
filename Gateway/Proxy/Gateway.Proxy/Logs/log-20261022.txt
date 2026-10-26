@@ -1,0 +1,5 @@
+2026-10-22 10:31:02.461 +08:00 [INF] Now listening on: https://localhost:7000
+2026-10-22 10:31:02.569 +08:00 [INF] Now listening on: http://localhost:9012
+2026-10-22 10:31:02.745 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-10-22 10:31:02.749 +08:00 [INF] Hosting environment: Development
+2026-10-22 10:31:02.753 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
