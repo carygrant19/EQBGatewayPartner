@@ -200,16 +200,16 @@ namespace Gateway.BLL.Services
             var firstHttp = httpLogs.FirstOrDefault();
             var firstTran = tranLogs.FirstOrDefault();
 
+            // 1. Inalis na rito ang TransactionId para sa TraceDetailDto
             var detail = new TraceDetailDto
             {
                 TraceId = traceId,
-                TransactionId = tranLogs.FirstOrDefault(t => !string.IsNullOrEmpty(t.TransactionId))?.TransactionId,
                 StartTime = (firstHttp?.RequestDate ?? firstTran?.RequestDate ?? DateTime.Now).ToString("yyyy-MM-dd HH:mm:ss.fff")
             };
 
             int step = 1;
 
-            // 1. Gateway Entry Hop
+            // 2. Gateway Ingress Hop
             if (firstHttp != null)
             {
                 double ingressLatency = firstHttp.ResponseDate.HasValue
@@ -223,6 +223,7 @@ namespace Gateway.BLL.Services
                     Step = step++,
                     HopType = "GATEWAY_INGRESS",
                     Title = "Gateway Proxy Ingress",
+                    TransactionId = null, // Walang transaction id ang gateway ingress
                     Endpoint = firstHttp.Uri ?? "/unknown",
                     HttpMethod = firstHttp.HttpMethod ?? "GET",
                     Status = firstHttp.ResponseCode ?? "200",
@@ -237,7 +238,7 @@ namespace Gateway.BLL.Services
                 if (isErr) detail.OverallStatus = "FAILED";
             }
 
-            // 2. Microservice Hops (Temenos, InstaPay, PESONet, etc.)
+            // 3. Downstream Microservice Hops (Dito nakakabit ang kani-kanyang TransactionId)
             foreach (var tran in tranLogs)
             {
                 double tranLatency = (tran.RequestDate.HasValue && tran.ResponseDate.HasValue)
@@ -251,6 +252,7 @@ namespace Gateway.BLL.Services
                     Step = step++,
                     HopType = "MICROSERVICE_CALL",
                     Title = ResolveServiceTitle(tran.UrlEndpoint),
+                    TransactionId = tran.TransactionId, // Bawat hop may hawak ng sariling Transaction ID
                     Endpoint = tran.UrlEndpoint ?? "Downstream Service",
                     HttpMethod = "POST",
                     Status = tran.Status ?? "PENDING",
