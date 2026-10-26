@@ -1,3 +1,4 @@
+using Azure.Core;
 using Gateway.BLL.Helper;
 using Gateway.BLL.Services.IService;
 using Gateway.BLL.Services.IServices;
@@ -138,6 +139,70 @@ namespace Gateway.Web.Pages
             catch
             {
                 return new JsonResult("error");
+            }
+        }
+
+        public async Task<IActionResult> OnGetUserProfileImage()
+        {
+            try
+            {
+                var username = Convert.ToString(HttpContext.Session.GetString("Username"));
+                var user = await _userService.ByUsername(username!);
+
+                if (user != null)
+                    return File(user.ImageContent!, user.ImageType!);
+                else
+                    return File("~/images/default-user.png", "image/png");
+            }
+            catch (Exception ex)
+            {
+                return File("~/images/default-user.png", "image/png");
+            }
+        }
+        public async Task<IActionResult> OnGetUserProfileImageThumbnail()
+        {
+            try
+            {
+                var username = Convert.ToString(HttpContext.Session.GetString("Username"));
+                var user = await _userService.ByUsername(username!);
+
+                //if (user != null)
+                //    return File(user.ImageContent!, user.ImageType!);
+                if (user != null)
+                    return File(user.ImageContentThumbnail!, user.ImageType!);
+                else
+                    return File("~/images/default-user.png", "image/png");
+            }
+            catch (Exception ex)
+            {
+                return File("~/images/default-user.png", "image/png");
+            }
+
+        }
+        public async Task<JsonResult> OnPostChangeProfileImage(List<IFormFile> images)
+        {
+
+            try
+            {
+                var user = new Request.User();
+                if (images.Count > 0)
+                {
+                    MemoryStream imageMS = new();
+                    images[0].CopyTo(imageMS);
+
+                    user.Id = Convert.ToString(HttpContext.Session.GetString("UserId"))!;
+                    user.Username = HttpContext.Session.GetString("Username")!;
+                    user.OpUser = HttpContext.Session.GetString("Username");
+                    user.OpUserId = Convert.ToString(HttpContext.Session.GetString("UserId"));
+                    user.ImageContent = imageMS.ToArray();
+                    user.ImageType = images[0].ContentType;
+                }
+                var result = await _userService.ChangeProfileImage(user);
+                return new JsonResult(result);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.ToString());
             }
         }
     }
