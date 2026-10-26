@@ -10,7 +10,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Model = Gateway.Data.Models;
-
+using Request = Gateway.BLL.DTO.Request;
 namespace Gateway.Web.Pages
 {
     public class HomeModel(
