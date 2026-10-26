@@ -1,26 +1,35 @@
+using Gateway.BLL.Helper;
+using Gateway.BLL.Services.IService;
+using Gateway.BLL.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Gateway.BLL.Services.IService; 
-using System.Data;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Model = Gateway.Data.Models;
 using Request = Gateway.BLL.DTO.Request;
 using Response = Gateway.BLL.DTO.Response;
-using Gateway.BLL.Helper;
+
 namespace Gateway.Web.Pages
 {
-    public class HomeModel(IConfiguration configuration, IUserService userService) : PageModelExtension
+    public class HomeModel(
+        IConfiguration configuration,
+        IUserService userService,
+        IDashboardService dashboardService) : PageModelExtension
     {
-        //readonly IConfiguration _configuration = configuration;
-        readonly IUserService _userService = userService; 
+        private readonly IUserService _userService = userService;
+        private readonly IDashboardService _dashboardService = dashboardService;
         private readonly Model.SystemParameters _systemParameters = configuration.GetSection("SystemParameters").Get<Model.SystemParameters>()!;
-        private readonly string _token = configuration["APITokens:BulkUpload"]!;
-        //private readonly Model.AppConfig _appConfig = configuration.GetSection("AppSettings").Get<Model.AppConfig>()!;
 
-        //readonly AppConfig _appConfig = configuration.GetSection("AppSettings").Get<AppConfig>()!;
         [BindProperty]
-        public string JavascriptToRun { get; set; }
+        public string JavascriptToRun { get; set; } = string.Empty;
         public double SessionTimeoutMinutes { get; set; }
         public double WarningBeforeMinutes { get; set; }
+        public string AspireDashboardUrl { get; set; } = string.Empty;
 
         public async Task<IActionResult> OnGet()
         {
@@ -28,29 +37,38 @@ namespace Gateway.Web.Pages
 
             if (page == "")
             {
+                AspireDashboardUrl = configuration["Telemetry:AspireDashboardUrl"] ?? "http://localhost:18888";
+
                 if (!Convert.ToBoolean(HttpContext.Session.GetObject<bool>("LDAPAuthentication")))
                 {
-                    var remainingDays = await userService.GetRemainingDaysPasswordExpiry(Convert.ToString(HttpContext.Session.GetString("Username")!));
+                    var remainingDays = await _userService.GetRemainingDaysPasswordExpiry(Convert.ToString(HttpContext.Session.GetString("Username")!));
                     if (remainingDays >= 0 && _systemParameters.NotifyPasswordExpiryDays >= remainingDays)
                     {
                         JavascriptToRun = "PasswordExpiryNotification(" + remainingDays + ")";
                     }
-
                 }
                 return Page();
             }
             else
+            {
                 return Redirect(page);
-        } 
+            }
+        }
+
+        public async Task<IActionResult> OnGetMetrics(CancellationToken cancellationToken)
+        {
+            var data = await _dashboardService.GetDashboardMetricsAsync(cancellationToken);
+            return new JsonResult(data);
+        }
+
         public async Task<JsonResult> OnPostFilterActivityLog([FromBody] Request.FParam param)
         {
             try
             {
                 param.Filters.Add(
-                       new() { Property = "UserId", Value = Convert.ToInt32(HttpContext.Session.GetString("UserId")), Operator = "EQUALS" }
-                  );
+                    new() { Property = "UserId", Value = Convert.ToInt32(HttpContext.Session.GetString("UserId")), Operator = "EQUALS" }
+                );
                 var data = await _userService.FilterActivityLog(param);
-
                 return new JsonResult(data);
             }
             catch (Exception ex)
@@ -63,23 +81,20 @@ namespace Gateway.Web.Pages
                     }
                 );
             }
+        }
 
-        } 
         public async Task<JsonResult> OnGetSessionConfig()
         {
-            // Read from appsettings
             SessionTimeoutMinutes = (double)_systemParameters.SessionTimeOutMinutes;
-
-            // Set warning 2 minutes before timeout
             WarningBeforeMinutes = 2;
 
-            // Return as JSON
             return new JsonResult(new
             {
                 TimeoutMinutes = SessionTimeoutMinutes,
                 WarningBeforeMinutes = WarningBeforeMinutes
             });
-        } 
+        }
+
         public async Task<IActionResult> OnGetUserProfileImage()
         {
             try
@@ -87,16 +102,17 @@ namespace Gateway.Web.Pages
                 var username = Convert.ToString(HttpContext.Session.GetString("Username"));
                 var user = await _userService.ByUsername(username!);
 
-                if (user != null)
-                    return File(user.ImageContent!, user.ImageType!);
+                if (user?.ImageContent != null && user.ImageType != null)
+                    return File(user.ImageContent, user.ImageType);
                 else
                     return File("~/images/default-user.png", "image/png");
             }
-            catch (Exception ex)
+            catch
             {
                 return File("~/images/default-user.png", "image/png");
             }
         }
+
         public async Task<IActionResult> OnGetUserProfileImageThumbnail()
         {
             try
@@ -104,28 +120,25 @@ namespace Gateway.Web.Pages
                 var username = Convert.ToString(HttpContext.Session.GetString("Username"));
                 var user = await _userService.ByUsername(username!);
 
-                //if (user != null)
-                //    return File(user.ImageContent!, user.ImageType!);
-                if (user != null)
-                    return File(user.ImageContentThumbnail!, user.ImageType!);
+                if (user?.ImageContentThumbnail != null && user.ImageType != null)
+                    return File(user.ImageContentThumbnail, user.ImageType);
                 else
                     return File("~/images/default-user.png", "image/png");
             }
-            catch (Exception ex)
+            catch
             {
                 return File("~/images/default-user.png", "image/png");
             }
-
         }
+
         public async Task<JsonResult> OnPostChangeProfileImage(List<IFormFile> images)
         {
-
             try
             {
                 var user = new Request.User();
                 if (images.Count > 0)
                 {
-                    MemoryStream imageMS = new();
+                    using MemoryStream imageMS = new();
                     images[0].CopyTo(imageMS);
 
                     user.Id = Convert.ToString(HttpContext.Session.GetString("UserId"))!;
@@ -164,15 +177,17 @@ namespace Gateway.Web.Pages
                     return new JsonResult("true");
                 }
                 else
+                {
                     return new JsonResult("false");
+                }
             }
-            catch //(Exception ex)
+            catch
             {
                 HttpContext.Session.Clear();
                 return new JsonResult("true");
             }
-
         }
+
         public async Task<JsonResult> OnGetLogout()
         {
             await HttpContext.SignOutAsync("CookieAuth");
@@ -188,7 +203,6 @@ namespace Gateway.Web.Pages
                 var userId = HttpContext.Session.GetString("Username");
                 if (!string.IsNullOrEmpty(userId))
                 {
-                    // Touch the session to extend timeout
                     HttpContext.Session.SetString("LastActivity", DateTime.Now.ToString());
                     return new JsonResult("refreshed");
                 }
@@ -202,7 +216,5 @@ namespace Gateway.Web.Pages
                 return new JsonResult("error");
             }
         }
-
-
     }
 }

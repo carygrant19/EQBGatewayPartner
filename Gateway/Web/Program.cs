@@ -1,9 +1,11 @@
+using Gateway.BLL;
+using Gateway.BLL.Helper;
 using Gateway.Data.Models;
+using Gateway.Web.Hubs;
+using Gateway.Web.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Text.Json.Serialization;
-using Gateway.BLL;
-using Gateway.BLL.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
@@ -36,8 +38,9 @@ builder.Services.AddDbContext<EFDbContext>(options =>
 });
  
 builder.Services.HelperServices(configuration);
-builder.Services.PortalServices();
- 
+builder.Services.PortalServices(); 
+builder.Services.AddSignalR();
+builder.Services.AddHostedService<DashboardMetricsWorker>();
 builder.Services.AddRazorPages();
 builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 builder.Services.AddHttpContextAccessor();
@@ -125,8 +128,8 @@ app.Use(async (context, next) =>
 });
  
 app.MapRazorPages()
-   .WithStaticAssets();  
- 
+   .WithStaticAssets();
+app.MapHub<DashboardHub>("/dashboardHub");
 app.MapFallbackToPage("/Login");
 
 app.Run();

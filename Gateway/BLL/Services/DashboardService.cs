@@ -1,125 +1,184 @@
 ﻿using Gateway.BLL.DTO.Response;
 using Gateway.BLL.Helper;
-using Gateway.BLL.Services.IService;
 using Gateway.BLL.Services.IServices;
-using Model = Gateway.Data.Models;
+using Gateway.Data;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Model = Gateway.Data.Models;
 
 namespace Gateway.BLL.Services
 {
-    public class DashboardService(EFDbContext dbContext, ILogService logService) //: IDashboardService
+    public class DashboardService(EFDbContext dbContext) : IDashboardService
     {
         private readonly EFDbContext _dbContext = dbContext;
-        private readonly ILogService _logService = logService;
 
-        //public async Task<DashboardSummary> GetDashboardMetricsAsync()
-        //{
-        //    var summary = new DashboardSummary();
-        //    var today = DateTime.Today;
+        public async Task<DashboardSummaryDto> GetDashboardMetricsAsync(CancellationToken cancellationToken = default)
+        {
+            var summary = new DashboardSummaryDto();
+            var today = DateTime.Today;
 
-        //    try
-        //    {
-        //        // 1. Basic Gateway Counts
-        //        summary.ActiveRoutesCount = await _dbContext.Set<Model.Route>().CountAsync(r => r.IsActive);
-        //        summary.ActiveClientsCount = await _dbContext.Set<Client>().CountAsync(c => !c.Deleted && c.Status == "Active");
-        //        summary.UnhealthyHostsCount = await _dbContext.Set<TargetHost>().CountAsync(h => !h.IsHealthy);
+            try
+            {
+                // 1. Gateway Infrastructure State
+                summary.ActiveRoutesCount = await _dbContext.Set<Model.Route>()
+                    .CountAsync(r => r.IsActive, cancellationToken);
 
-        //        // 2. HTTP Logs Today Query
-        //        var todayLogsQuery = _dbContext.HttpLog
-        //            .Where(l => l.RequestDate >= today)
-        //            .AsNoTracking();
+                summary.ActiveClientsCount = await _dbContext.Set<Model.Client>()
+                    .CountAsync(c => !c.Deleted && c.Status == "Active", cancellationToken);
 
-        //        summary.TotalRequestsToday = await todayLogsQuery.CountAsync();
+                summary.UnhealthyHostsCount = await _dbContext.Set<Model.TargetHost>()
+                    .CountAsync(h => !h.IsHealthy, cancellationToken);
 
-        //        if (summary.TotalRequestsToday > 0)
-        //        {
-        //            // Status Code Classification
-        //            var logsList = await todayLogsQuery.Select(l => new {
-        //                l.ResponseCode,
-        //                l.RequestDate,
-        //                l.ResponseDate,
-        //                l.RouteId,
-        //                l.ClientId,
-        //                l.TraceId,
-        //                l.HttpMethod,
-        //                l.Uri
-        //            }).ToListAsync();
+                // 2. HTTP Traffic Aggregations (Log_Http)
+                var todayLogsQuery = _dbContext.Set<Model.HttpLog>()
+                    .Where(l => l.RequestDate >= today)
+                    .AsNoTracking();
 
-        //            summary.Status2xxCount = logsList.Count(l => l.ResponseCode != null && l.ResponseCode.StartsWith("2"));
-        //            summary.Status4xxCount = logsList.Count(l => l.ResponseCode != null && l.ResponseCode.StartsWith("4"));
-        //            summary.Status5xxCount = logsList.Count(l => l.ResponseCode != null && l.ResponseCode.StartsWith("5"));
+                summary.TotalRequestsToday = await todayLogsQuery.CountAsync(cancellationToken);
 
-        //            double totalErrors = summary.Status4xxCount + summary.Status5xxCount;
-        //            summary.SuccessRatePercentage = Math.Round(((summary.TotalRequestsToday - totalErrors) / summary.TotalRequestsToday) * 100, 2);
+                if (summary.TotalRequestsToday > 0)
+                {
+                    summary.Status2xxCount = await todayLogsQuery
+                        .CountAsync(l => l.ResponseCode != null && l.ResponseCode.StartsWith("2"), cancellationToken);
 
-        //            // Average Latency
-        //            var latencies = logsList
-        //                .Where(l => l.ResponseDate.HasValue)
-        //                .Select(l => (l.ResponseDate!.Value - l.RequestDate).TotalMilliseconds);
+                    summary.Status4xxCount = await todayLogsQuery
+                        .CountAsync(l => l.ResponseCode != null && l.ResponseCode.StartsWith("4"), cancellationToken);
 
-        //            summary.AverageLatencyMs = latencies.Any() ? Math.Round(latencies.Average(), 2) : 0;
+                    summary.Status5xxCount = await todayLogsQuery
+                        .CountAsync(l => l.ResponseCode != null && l.ResponseCode.StartsWith("5"), cancellationToken);
 
-        //            // Hourly Traffic Distribution
-        //            summary.HourlyTraffic = logsList
-        //                .GroupBy(l => l.RequestDate.Hour)
-        //                .Select(g => new HourlyTrafficDto
-        //                {
-        //                    Hour = $"{g.Key:D2}:00",
-        //                    Requests = g.Count(),
-        //                    Errors = g.Count(l => l.ResponseCode != null && (l.ResponseCode.StartsWith("4") || l.ResponseCode.StartsWith("5")))
-        //                })
-        //                .OrderBy(g => g.Hour)
-        //                .ToList();
+                    int totalErrors = summary.Status4xxCount + summary.Status5xxCount;
+                    summary.SuccessRatePercentage = Math.Round(((double)(summary.TotalRequestsToday - totalErrors) / summary.TotalRequestsToday) * 100, 2);
 
-        //            // Recent Logs Activity Feed
-        //            summary.RecentLogs = logsList
-        //                .OrderByDescending(l => l.RequestDate)
-        //                .Take(10)
-        //                .Select(l => new RecentAuditLogDto
-        //                {
-        //                    TraceId = l.TraceId ?? "",
-        //                    HttpMethod = l.HttpMethod ?? "GET",
-        //                    Uri = l.Uri ?? "",
-        //                    ResponseCode = l.ResponseCode ?? "200",
-        //                    LatencyMs = l.ResponseDate.HasValue ? Math.Round((l.ResponseDate.Value - l.RequestDate).TotalMilliseconds, 2) : 0,
-        //                    RequestDate = l.RequestDate
-        //                })
-        //                .ToList();
-        //        }
+                    // Average Latency
+                    var avgDuration = await todayLogsQuery
+                        .Where(l => l.ResponseDate.HasValue)
+                        .Select(l => (double?)EF.Functions.DateDiffMillisecond(l.RequestDate, l.ResponseDate!.Value))
+                        .AverageAsync(cancellationToken);
 
-        //        // 3. Top Active Routes
-        //        var topRouteIds = await _dbContext.HttpLog
-        //            .Where(l => l.RequestDate >= today && !string.IsNullOrEmpty(l.RouteId))
-        //            .GroupBy(l => l.RouteId)
-        //            .Select(g => new { RouteId = g.Key, Count = g.Count() })
-        //            .OrderByDescending(g => g.Count)
-        //            .Take(5)
-        //            .ToListAsync();
+                    summary.AverageLatencyMs = Math.Round(avgDuration ?? 0, 2);
 
-        //        var routeIds = topRouteIds.Select(r => Convert.ToInt64(r.RouteId)).ToList();
-        //        var routesMap = await _dbContext.Set<Model.Route>()
-        //            .Where(r => routeIds.Contains(r.Id))
-        //            .ToDictionaryAsync(r => r.Id.ToString(), r => new { r.Code, r.Name });
+                    // Hourly Traffic Grouping
+                    var rawHourly = await todayLogsQuery
+                        .GroupBy(l => l.RequestDate.Hour)
+                        .Select(g => new
+                        {
+                            Hour = g.Key,
+                            Requests = g.Count(),
+                            Errors = g.Count(l => l.ResponseCode != null && (l.ResponseCode.StartsWith("4") || l.ResponseCode.StartsWith("5")))
+                        })
+                        .OrderBy(g => g.Hour)
+                        .ToListAsync(cancellationToken);
 
-        //        foreach (var item in topRouteIds)
-        //        {
-        //            if (item.RouteId != null && routesMap.TryGetValue(item.RouteId, out var routeInfo))
-        //            {
-        //                summary.TopRoutes.Add(new TopRouteMetricDto
-        //                {
-        //                    RouteCode = routeInfo.Code,
-        //                    RouteName = routeInfo.Name,
-        //                    RequestCount = item.Count
-        //                });
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logService.LogException(ex, "DashboardService");
-        //    }
+                    summary.HourlyTraffic = rawHourly.Select(g => new HourlyTrafficDto
+                    {
+                        Hour = $"{g.Hour:D2}:00",
+                        Requests = g.Requests,
+                        Errors = g.Errors
+                    }).ToList();
 
-        //    return summary;
-        //}
+                    // Top 5 Endpoints
+                    var topRouteGroups = await todayLogsQuery
+                        .Where(l => !string.IsNullOrEmpty(l.RouteId))
+                        .GroupBy(l => l.RouteId)
+                        .Select(g => new { RouteId = g.Key, Count = g.Count() })
+                        .OrderByDescending(g => g.Count)
+                        .Take(5)
+                        .ToListAsync(cancellationToken);
+
+                    var routeIds = topRouteGroups
+                        .Where(r => r.RouteId != null && long.TryParse(r.RouteId, out _))
+                        .Select(r => Convert.ToInt64(r.RouteId))
+                        .ToList();
+
+                    if (routeIds.Count > 0)
+                    {
+                        var routesMap = await _dbContext.Set<Model.Route>()
+                            .Where(r => routeIds.Contains(r.Id))
+                            .ToDictionaryAsync(r => r.Id.ToString(), r => new { r.Code, r.Name }, cancellationToken);
+
+                        foreach (var item in topRouteGroups)
+                        {
+                            if (item.RouteId != null && routesMap.TryGetValue(item.RouteId, out var routeInfo))
+                            {
+                                summary.TopRoutes.Add(new TopRouteMetricDto
+                                {
+                                    RouteCode = routeInfo.Code,
+                                    RouteName = routeInfo.Name,
+                                    RequestCount = item.Count
+                                });
+                            }
+                        }
+                    }
+
+                    // Recent 10 HTTP Logs
+                    var recentHttpLogs = await todayLogsQuery
+                        .OrderByDescending(l => l.RequestDate)
+                        .Take(10)
+                        .Select(l => new
+                        {
+                            l.Id,
+                            l.TraceId,
+                            l.HttpMethod,
+                            l.Uri,
+                            l.ResponseCode,
+                            Latency = l.ResponseDate.HasValue ? (double?)EF.Functions.DateDiffMillisecond(l.RequestDate, l.ResponseDate.Value) : 0,
+                            l.RequestDate
+                        })
+                        .ToListAsync(cancellationToken);
+
+                    // I-correlate ang TransactionId mula sa Log_Transaction gamit ang TraceId
+                    var traceIds = recentHttpLogs
+                        .Where(l => !string.IsNullOrEmpty(l.TraceId))
+                        .Select(l => l.TraceId!)
+                        .Distinct()
+                        .ToList();
+
+                    var tranMap = new Dictionary<string, string>();
+                    if (traceIds.Count > 0)
+                    {
+                        tranMap = await _dbContext.Set<Model.TransactionLog>()
+                            .Where(t => traceIds.Contains(t.TraceId!) && !string.IsNullOrEmpty(t.TransactionId))
+                            .GroupBy(t => t.TraceId!)
+                            .Select(g => new { TraceId = g.Key, TransactionId = g.Select(x => x.TransactionId).FirstOrDefault() })
+                            .ToDictionaryAsync(x => x.TraceId, x => x.TransactionId ?? string.Empty, cancellationToken);
+                    }
+
+                    summary.RecentLogs = recentHttpLogs.Select(l => new RecentAuditLogDto
+                    {
+                        Id = l.Id,
+                        TransactionId = (!string.IsNullOrEmpty(l.TraceId) && tranMap.TryGetValue(l.TraceId, out var tranId)) ? tranId : null,
+                        TraceId = l.TraceId ?? string.Empty,
+                        HttpMethod = l.HttpMethod ?? "GET",
+                        Uri = l.Uri ?? string.Empty,
+                        ResponseCode = l.ResponseCode ?? "200",
+                        LatencyMs = l.Latency ?? 0,
+                        RequestDate = l.RequestDate.ToString("HH:mm:ss")
+                    }).ToList();
+                }
+
+                // 3. Recent 5 Exceptions mula sa Log_Exception gamit ang Model.ExceptionLog
+                summary.RecentExceptions = await _dbContext.Set<Model.ExceptionLog>()
+                    .OrderByDescending(e => e.LogDate)
+                    .Take(5)
+                    .Select(e => new RecentExceptionDto
+                    {
+                        Id = e.Id,
+                        ModuleName = e.ModuleName ?? "UNKNOWN",
+                        Message = e.Message ?? string.Empty,
+                        Time = e.LogDate.ToString("HH:mm:ss")
+                    })
+                    .ToListAsync(cancellationToken);
+            }
+            catch
+            {
+            }
+
+            return summary;
+        }
     }
 }
