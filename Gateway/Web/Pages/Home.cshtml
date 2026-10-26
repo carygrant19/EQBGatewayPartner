@@ -2,441 +2,387 @@
 @using Gateway.Web
 @model Gateway.Web.Pages.HomeModel
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Gateway Operations Telemetry";
 }
-@using Microsoft.AspNetCore.Http
-@inject IHttpContextAccessor HttpContextAccessor
 
 <section class="content-header py-2 mb-2">
     <div class="container-fluid">
         <div class="row align-items-center">
             <div class="col-sm-6">
-                <span class="fs-4 fw-bold text-body"><i class="fas fa-home me-2 text-primary"></i>@ViewData["Title"]</span>
+                <span class="fs-4 fw-bold text-body">
+                    <i class="fas fa-satellite-dish me-2 text-primary"></i>Gateway Operations & Telemetry
+                </span>
             </div>
-            <div class="col-sm-6 text-sm-end mt-2 mt-sm-0">
-                <ol class="breadcrumb float-sm-end mb-0 text-xs">
-                    @foreach (var item in Model.PageUrl.Split('/'))
-                    {
-                        if (!String.IsNullOrEmpty(@item))
-                        {
-                            <li class="breadcrumb-item text-capitalize">@item</li>
-                        }
-                    }
-                </ol>
+            <div class="col-sm-6 text-sm-end mt-2 mt-sm-0 d-flex justify-content-sm-end align-items-center gap-2">
+                <a :href="aspireDashboardBase" target="_blank" class="btn btn-outline-secondary btn-sm" title="Open .NET Aspire Developer Dashboard">
+                    <i class="fas fa-external-link-alt me-1"></i>Aspire Console
+                </a>
+                <span class="badge rounded-pill px-3 py-2" :class="connectionStatusBadge">
+                    <i class="fas fa-circle fa-xs me-1"></i>{{ connectionStatusText }}
+                </span>
             </div>
         </div>
     </div>
 </section>
 
 <section class="content">
-    <div class="container-fluid" id="controller" autocomplete="off" data-aspire-base="@Model.AspireDashboardUrl">
-        <div class="row g-3">
-            <!-- Left Panel: Profile & Activity Logs -->
-            <div class="col-12 col-xl-3 col-lg-4">
-                <div class="card border shadow-sm rounded-3 mb-3 bg-body">
-                    <div class="card-body box-profile p-3 text-center">
-                        <div class="mb-3">
-                            <img src="@HttpContextAccessor.HttpContext!.Session.GetString("AppUrl")/Home?handler=UserProfileImage&timestamp=@DateTime.UtcNow.Ticks"
-                                 alt="Profile Picture" class="rounded-circle shadow-sm border" style="width: 110px; height: 110px; object-fit: cover;">
-                        </div>
-                        <h5 class="fw-bold text-body mb-1">@HttpContextAccessor.HttpContext!.Session.GetString("FullName")</h5>
-                        <p class="text-body-secondary small mb-3">@HttpContextAccessor.HttpContext!.Session.GetString("Email")</p>
-
-                        <ul class="list-group list-group-flush text-start small border-top">
-                            <li class="list-group-item bg-transparent px-0 py-2 d-flex justify-content-between">
-                                <span class="text-body-secondary"><i class="fas fa-user text-danger me-2"></i>Username</span>
-                                <b class="text-body">@HttpContextAccessor.HttpContext!.Session.GetString("Username")</b>
-                            </li>
-                            <li class="list-group-item bg-transparent px-0 py-2 d-flex justify-content-between">
-                                <span class="text-body-secondary"><i class="fas fa-building text-danger me-2"></i>Branch</span>
-                                <b class="text-body">@HttpContextAccessor.HttpContext!.Session.GetString("BranchCode")</b>
-                            </li>
-                            <li class="list-group-item bg-transparent px-0 py-2 d-flex justify-content-between">
-                                <span class="text-body-secondary"><i class="fas fa-desktop text-danger me-2"></i>Terminal</span>
-                                <b class="text-body">@HttpContextAccessor.HttpContext!.Session.GetString("Terminal")</b>
-                            </li>
-                        </ul>
+    <div class="container-fluid px-3" id="controller" autocomplete="off" data-aspire-base="@Model.AspireDashboardUrl">
+        <!-- 1. Infrastructure State Bar -->
+        <div class="row g-3 mb-3">
+            <div class="col-12 col-md-4">
+                <div class="p-3 border rounded-3 bg-body shadow-sm d-flex align-items-center justify-content-between">
+                    <div>
+                        <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.7rem;">Active Gateway Routes</small>
+                        <span class="fs-4 fw-bold text-body">{{ metrics.activeRoutesCount }}</span>
                     </div>
-                </div>
-
-                <div class="card border shadow-sm rounded-3 bg-body">
-                    <div class="card-header bg-transparent border-bottom py-2">
-                        <h6 class="card-title fw-bold text-body fs-6 mb-0">
-                            <i class="fas fa-history text-secondary me-2"></i>Personal Activity Log
-                        </h6>
-                    </div>
-                    <div class="card-body p-3">
-                        <div class="d-flex align-items-center gap-2 mb-3 text-xs text-body-secondary">
-                            <span>Show</span>
-                            <select v-model="params.pageSize" class="form-select form-select-sm w-auto" v-on:change="ItemCountChange()">
-                                <option v-for="pageSize in pageSizeArray" :key="pageSize" :value="pageSize">{{ pageSize }}</option>
-                            </select>
-                            <span>records</span>
-                        </div>
-
-                        <div v-for="record in records" :key="record.id" class="border-bottom pb-2 mb-2">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <span class="badge bg-success-subtle text-success border border-success-subtle" style="font-size: 0.65rem;">{{ record.moduleName }}</span>
-                                <small class="text-body-secondary" style="font-size: 0.65rem;">
-                                    <i class="fas fa-clock me-1"></i>{{ $formatDateText(record.logDate) }} {{ $formatTime(record.logDate) }}
-                                </small>
-                            </div>
-                            <span class="badge bg-info-subtle text-info border border-info-subtle mb-1" style="font-size: 0.65rem;">{{ record.action }}</span>
-                            <p class="text-body small mb-0 text-truncate" :title="record.details">{{ record.details }}</p>
-                        </div>
-
-                        <div v-if="records.length === 0" class="text-center text-muted py-3 small">
-                            No user activities found.
-                        </div>
-
-                        <div class="mt-2" v-show="show_table">
-                            <ul id="sync-pagination" class="pagination-sm float-end mb-0"></ul>
-                        </div>
+                    <div class="p-3 bg-primary-subtle text-primary rounded-circle">
+                        <i class="fas fa-route fa-lg"></i>
                     </div>
                 </div>
             </div>
-
-            <!-- Right Panel: Telemetry Dashboard -->
-            <div class="col-12 col-xl-9 col-lg-8">
-                <!-- Gateway Nodes Health -->
-                <div class="row g-2 mb-3">
-                    <div class="col-12 col-md-4">
-                        <div class="p-2 border rounded bg-body-secondary d-flex align-items-center justify-content-between">
-                            <div>
-                                <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.68rem;">Active Gateway Routes</small>
-                                <span class="fs-5 fw-bold text-body">{{ metrics.activeRoutesCount }}</span>
-                            </div>
-                            <i class="fas fa-route fa-lg text-primary opacity-75"></i>
-                        </div>
+            <div class="col-12 col-md-4">
+                <div class="p-3 border rounded-3 bg-body shadow-sm d-flex align-items-center justify-content-between">
+                    <div>
+                        <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.7rem;">Authorized Clients</small>
+                        <span class="fs-4 fw-bold text-body">{{ metrics.activeClientsCount }}</span>
                     </div>
-                    <div class="col-12 col-md-4">
-                        <div class="p-2 border rounded bg-body-secondary d-flex align-items-center justify-content-between">
-                            <div>
-                                <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.68rem;">Authorized Clients</small>
-                                <span class="fs-5 fw-bold text-body">{{ metrics.activeClientsCount }}</span>
-                            </div>
-                            <i class="fas fa-users fa-lg text-info opacity-75"></i>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <div class="p-2 border rounded bg-body-secondary d-flex align-items-center justify-content-between">
-                            <div>
-                                <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.68rem;">Unhealthy Target Hosts</small>
-                                <span class="fs-5 fw-bold" :class="metrics.unhealthyHostsCount > 0 ? 'text-danger' : 'text-success'">
-                                    {{ metrics.unhealthyHostsCount }}
-                                </span>
-                            </div>
-                            <i class="fas fa-heartbeat fa-lg text-danger opacity-75"></i>
-                        </div>
+                    <div class="p-3 bg-info-subtle text-info rounded-circle">
+                        <i class="fas fa-users-cog fa-lg"></i>
                     </div>
                 </div>
-
-                <!-- KPI Cards -->
-                <div class="row g-3 mb-3">
-                    <div class="col-12 col-sm-6 col-xl-3">
-                        <div class="card border shadow-sm rounded-3 p-3 bg-body h-100">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <small class="text-body-secondary text-uppercase fw-semibold" style="font-size: 0.7rem;">Volume Today</small>
-                                    <h4 class="fw-bold mb-0 mt-1 text-body">{{ metrics.totalRequestsToday }}</h4>
-                                    <small class="text-body-secondary">{{ metrics.status2xxCount }} successful (2xx)</small>
-                                </div>
-                                <div class="p-3 bg-primary-subtle text-primary rounded-circle">
-                                    <i class="fas fa-exchange-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-sm-6 col-xl-3">
-                        <div class="card border shadow-sm rounded-3 p-3 bg-body h-100">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <small class="text-body-secondary text-uppercase fw-semibold" style="font-size: 0.7rem;">Success Rate</small>
-                                    <h4 class="fw-bold mb-0 mt-1 text-success">{{ metrics.successRatePercentage }}%</h4>
-                                    <small class="text-danger">{{ metrics.status4xxCount + metrics.status5xxCount }} errors</small>
-                                </div>
-                                <div class="p-3 bg-success-subtle text-success rounded-circle">
-                                    <i class="fas fa-shield-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-sm-6 col-xl-3">
-                        <div class="card border shadow-sm rounded-3 p-3 bg-body h-100">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <small class="text-body-secondary text-uppercase fw-semibold" style="font-size: 0.7rem;">Avg Latency</small>
-                                    <h4 class="fw-bold mb-0 mt-1 text-body">{{ metrics.averageLatencyMs }} ms</h4>
-                                    <small class="text-body-secondary">Roundtrip duration</small>
-                                </div>
-                                <div class="p-3 bg-info-subtle text-info rounded-circle">
-                                    <i class="fas fa-stopwatch"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-sm-6 col-xl-3">
-                        <div class="card border shadow-sm rounded-3 p-3 bg-body h-100">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <small class="text-body-secondary text-uppercase fw-semibold" style="font-size: 0.7rem;">Exceptions Logged</small>
-                                    <h4 class="fw-bold mb-0 mt-1 text-danger">{{ recentExceptionsCount }}</h4>
-                                    <small class="text-danger">Critical exceptions</small>
-                                </div>
-                                <div class="p-3 bg-danger-subtle text-danger rounded-circle">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Top Routes & Hourly Traffic -->
-                <div class="row g-3 mb-3">
-                    <div class="col-12 col-xl-6">
-                        <div class="card border shadow-sm rounded-3 bg-body h-100">
-                            <div class="card-header bg-transparent border-bottom py-2">
-                                <h6 class="fw-bold mb-0 text-body fs-6">
-                                    <i class="fas fa-fire text-danger me-2"></i>Top 5 Endpoints Today
-                                </h6>
-                            </div>
-                            <div class="card-body p-2">
-                                <div class="table-responsive">
-                                    <table class="table table-sm align-middle mb-0">
-                                        <thead>
-                                            <tr class="text-muted text-xs text-uppercase bg-body-tertiary">
-                                                <th>Route Code</th>
-                                                <th>Name</th>
-                                                <th class="text-end">Calls</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="route in metrics.topRoutes" :key="route.routeCode">
-                                                <td><code class="fw-semibold text-warning bg-transparent p-0">{{ route.routeCode }}</code></td>
-                                                <td><span class="text-body small">{{ route.routeName }}</span></td>
-                                                <td class="text-end"><span class="badge bg-body-secondary text-body border">{{ route.requestCount }}</span></td>
-                                            </tr>
-                                            <tr v-if="!metrics.topRoutes || metrics.topRoutes.length === 0">
-                                                <td colspan="3" class="text-center text-muted py-3 small">No route traffic logged yet.</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-xl-6">
-                        <div class="card border shadow-sm rounded-3 bg-body h-100">
-                            <div class="card-header bg-transparent border-bottom py-2">
-                                <h6 class="fw-bold mb-0 text-body fs-6">
-                                    <i class="fas fa-clock text-info me-2"></i>Hourly Traffic Trend
-                                </h6>
-                            </div>
-                            <div class="card-body p-2">
-                                <div class="d-flex align-items-end gap-1 overflow-auto py-1" style="min-height: 120px;">
-                                    <div v-for="hour in metrics.hourlyTraffic" :key="hour.hour" class="text-center flex-fill" style="min-width: 42px;">
-                                        <div class="d-flex flex-column justify-content-end" style="height: 80px;">
-                                            <div class="bg-primary rounded-top mx-auto" :style="{ height: getBarHeight(hour.requests) + '%', width: '12px' }" :title="hour.requests + ' requests'"></div>
-                                        </div>
-                                        <small class="text-body-secondary d-block mt-1" style="font-size: 0.6rem;">{{ hour.hour }}</small>
-                                        <span class="badge bg-body-secondary text-body" style="font-size: 0.55rem;">{{ hour.requests }}</span>
-                                    </div>
-                                    <div v-if="!metrics.hourlyTraffic || metrics.hourlyTraffic.length === 0" class="w-100 text-center text-muted py-4 small">
-                                        Waiting for hourly aggregated traffic...
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Live Transaction Telemetry Feed -->
-                <div class="card border shadow-sm rounded-3 bg-body mb-3">
-                    <div class="card-header bg-transparent border-bottom py-2 d-flex justify-content-between align-items-center">
-                        <h6 class="fw-bold mb-0 text-body fs-6">
-                            <i class="fas fa-stream text-primary me-2"></i>Live Transaction Feed (Persistent SQL Audit)
-                        </h6>
-                        <span class="badge rounded-pill px-2 py-1" :class="connectionStatusBadge" style="font-size: 0.68rem;">
-                            <i class="fas fa-circle fa-xs me-1"></i>{{ connectionStatusText }}
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="p-3 border rounded-3 bg-body shadow-sm d-flex align-items-center justify-content-between">
+                    <div>
+                        <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.7rem;">Unhealthy Target Hosts</small>
+                        <span class="fs-4 fw-bold" :class="metrics.unhealthyHostsCount > 0 ? 'text-danger' : 'text-success'">
+                            {{ metrics.unhealthyHostsCount }}
                         </span>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0 text-sm">
-                            <thead>
-                                <tr class="text-muted text-xs text-uppercase bg-body-tertiary">
-                                    <th style="width: 10%">Time</th>
-                                    <th style="width: 18%">Transaction ID</th>
-                                    <th style="width: 25%">Trace ID</th>
-                                    <th style="width: 25%">Endpoint</th>
-                                    <th style="width: 10%">Latency</th>
-                                    <th style="width: 12%">Inspect</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="item in metrics.recentLogs" :key="item.id">
-                                    <td><small class="text-body-secondary">{{ item.requestDate }}</small></td>
-                                    <td>
-                                        <span class="fw-semibold text-body" v-if="item.transactionId">{{ item.transactionId }}</span>
-                                        <span class="text-muted" v-else>—</span>
-                                    </td>
-                                    <td><code class="small text-truncate d-inline-block" style="max-width: 160px;">{{ item.traceId }}</code></td>
-                                    <td><small class="text-truncate d-inline-block text-body" style="max-width: 190px;" :title="item.uri">{{ item.uri }}</small></td>
-                                    <td><small class="text-body-secondary">{{ item.latencyMs }} ms</small></td>
-                                    <td>
-                                        <button type="button" 
-                                                class="btn btn-outline-primary btn-xs py-1 px-2"
-                                                v-on:click="OpenTraceModal(item.traceId)"
-                                                title="Inspect Trace Waterfall & Payloads">
-                                            <i class="fas fa-project-diagram me-1"></i>Timeline
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr v-if="!metrics.recentLogs || metrics.recentLogs.length === 0">
-                                    <td colspan="6" class="text-center text-muted py-4 small">Waiting for transaction events...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- System Exceptions List with View Details Button -->
-                <div class="card border shadow-sm rounded-3 bg-body" v-if="metrics.recentExceptions && metrics.recentExceptions.length > 0">
-                    <div class="card-header bg-transparent border-bottom py-2">
-                        <h6 class="fw-bold mb-0 text-danger fs-6">
-                            <i class="fas fa-bug me-2"></i>Recent System Exceptions
-                        </h6>
-                    </div>
-                    <div class="card-body p-0">
-                        <ul class="list-group list-group-flush mb-0">
-                            <li v-for="ex in metrics.recentExceptions" :key="ex.id" class="list-group-item bg-transparent border-bottom px-3 py-2">
-                                <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle">{{ ex.moduleName }}</span>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <small class="text-body-secondary">{{ ex.time }}</small>
-                                        <button type="button" 
-                                                class="btn btn-outline-danger btn-xs py-0 px-2" 
-                                                v-on:click="OpenExceptionModal(ex)" 
-                                                title="View Full Exception Details">
-                                            <i class="fas fa-eye me-1"></i>Details
-                                        </button>
-                                    </div>
-                                </div>
-                                <small class="text-body d-block text-truncate" :title="ex.message">{{ ex.message }}</small>
-                            </li>
-                        </ul>
+                    <div class="p-3 rounded-circle" :class="metrics.unhealthyHostsCount > 0 ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success'">
+                        <i class="fas fa-heartbeat fa-lg"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ==================== IN-HOUSE TRACE INSPECTION MODAL ==================== -->
+        <!-- 2. KPI Metrics Cards -->
+        <div class="row g-3 mb-3">
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card border shadow-sm rounded-3 p-3 bg-body h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <small class="text-body-secondary text-uppercase fw-semibold" style="font-size: 0.7rem;">Requests Today</small>
+                            <h3 class="fw-bold mb-0 mt-1 text-body">{{ metrics.totalRequestsToday }}</h3>
+                            <small class="text-success"><i class="fas fa-check-circle me-1"></i>{{ metrics.status2xxCount }} successful (2xx)</small>
+                        </div>
+                        <div class="p-3 bg-primary-subtle text-primary rounded-circle">
+                            <i class="fas fa-exchange-alt fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card border shadow-sm rounded-3 p-3 bg-body h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <small class="text-body-secondary text-uppercase fw-semibold" style="font-size: 0.7rem;">Gateway Success Rate</small>
+                            <h3 class="fw-bold mb-0 mt-1 text-success">{{ metrics.successRatePercentage }}%</h3>
+                            <small class="text-danger"><i class="fas fa-exclamation-circle me-1"></i>{{ metrics.status4xxCount + metrics.status5xxCount }} errors</small>
+                        </div>
+                        <div class="p-3 bg-success-subtle text-success rounded-circle">
+                            <i class="fas fa-shield-alt fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card border shadow-sm rounded-3 p-3 bg-body h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <small class="text-body-secondary text-uppercase fw-semibold" style="font-size: 0.7rem;">Average Roundtrip Latency</small>
+                            <h3 class="fw-bold mb-0 mt-1 text-body">{{ metrics.averageLatencyMs }} ms</h3>
+                            <small class="text-body-secondary">Gateway Ingress to Egress</small>
+                        </div>
+                        <div class="p-3 bg-info-subtle text-info rounded-circle">
+                            <i class="fas fa-stopwatch fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card border shadow-sm rounded-3 p-3 bg-body h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <small class="text-body-secondary text-uppercase fw-semibold" style="font-size: 0.7rem;">Logged Exceptions</small>
+                            <h3 class="fw-bold mb-0 mt-1 text-danger">{{ recentExceptionsCount }}</h3>
+                            <small class="text-danger">Captured in Log_Exception</small>
+                        </div>
+                        <div class="p-3 bg-danger-subtle text-danger rounded-circle">
+                            <i class="fas fa-bug fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Traffic Distribution & Top Routes -->
+        <div class="row g-3 mb-3">
+            <div class="col-12 col-xl-7">
+                <div class="card border shadow-sm rounded-3 bg-body h-100">
+                    <div class="card-header bg-transparent border-bottom py-2 d-flex justify-content-between align-items-center">
+                        <h6 class="fw-bold mb-0 text-body fs-6">
+                            <i class="fas fa-chart-bar text-primary me-2"></i>Hourly Traffic Trend (24h Distribution)
+                        </h6>
+                        <small class="text-body-secondary">Real-time Volume</small>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-end gap-2 overflow-auto py-2" style="min-height: 140px;">
+                            <div v-for="hour in metrics.hourlyTraffic" :key="hour.hour" class="text-center flex-fill" style="min-width: 48px;">
+                                <div class="d-flex flex-column justify-content-end" style="height: 100px;">
+                                    <div class="bg-primary rounded-top mx-auto" :style="{ height: getBarHeight(hour.requests) + '%', width: '16px' }" :title="hour.requests + ' requests'"></div>
+                                </div>
+                                <small class="text-body-secondary d-block mt-2" style="font-size: 0.65rem;">{{ hour.hour }}</small>
+                                <span class="badge bg-body-secondary text-body" style="font-size: 0.6rem;">{{ hour.requests }}</span>
+                            </div>
+                            <div v-if="!metrics.hourlyTraffic || metrics.hourlyTraffic.length === 0" class="w-100 text-center text-muted py-5 small">
+                                Waiting for hourly aggregated traffic...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-xl-5">
+                <div class="card border shadow-sm rounded-3 bg-body h-100">
+                    <div class="card-header bg-transparent border-bottom py-2">
+                        <h6 class="fw-bold mb-0 text-body fs-6">
+                            <i class="fas fa-fire text-danger me-2"></i>Top 5 Active Endpoints Today
+                        </h6>
+                    </div>
+                    <div class="card-body p-2">
+                        <div class="table-responsive">
+                            <table class="table table-sm align-middle mb-0">
+                                <thead>
+                                    <tr class="text-muted text-xs text-uppercase bg-body-tertiary">
+                                        <th>Route Code</th>
+                                        <th>Name</th>
+                                        <th class="text-end">Calls</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="route in metrics.topRoutes" :key="route.routeCode">
+                                        <td><code class="fw-semibold text-warning bg-transparent p-0">{{ route.routeCode }}</code></td>
+                                        <td><span class="text-body small">{{ route.routeName }}</span></td>
+                                        <td class="text-end"><span class="badge bg-body-secondary text-body border">{{ route.requestCount }}</span></td>
+                                    </tr>
+                                    <tr v-if="!metrics.topRoutes || metrics.topRoutes.length === 0">
+                                        <td colspan="3" class="text-center text-muted py-4 small">No route traffic logged yet.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Live OpenTelemetry Transaction Feed -->
+        <div class="card border shadow-sm rounded-3 bg-body mb-3">
+            <div class="card-header bg-transparent border-bottom py-2 d-flex justify-content-between align-items-center">
+                <h6 class="fw-bold mb-0 text-body fs-6">
+                    <i class="fas fa-stream text-primary me-2"></i>Live Transaction Feed (OpenTelemetry Correlated)
+                </h6>
+                <small class="text-body-secondary">Auto-refreshed via SignalR</small>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 text-sm">
+                    <thead>
+                        <tr class="text-muted text-xs text-uppercase bg-body-tertiary">
+                            <th style="width: 8%">Time</th>
+                            <th style="width: 15%">Transaction ID</th>
+                            <th style="width: 25%">Trace ID (Correlation Key)</th>
+                            <th style="width: 25%">Endpoint</th>
+                            <th style="width: 10%">Latency</th>
+                            <th style="width: 7%">Status</th>
+                            <th style="width: 10%" class="text-center">Inspection</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in metrics.recentLogs" :key="item.id">
+                            <td><small class="text-body-secondary">{{ item.requestDate }}</small></td>
+                            <td>
+                                <span class="fw-semibold text-body" v-if="item.transactionId">{{ item.transactionId }}</span>
+                                <span class="text-muted" v-else>—</span>
+                            </td>
+                            <td><code class="small text-truncate d-inline-block text-warning" style="max-width: 220px;">{{ item.traceId }}</code></td>
+                            <td><small class="text-truncate d-inline-block text-body" style="max-width: 260px;" :title="item.uri">{{ item.uri }}</small></td>
+                            <td><small class="text-body-secondary">{{ item.latencyMs }} ms</small></td>
+                            <td>
+                                <span class="badge rounded-pill" :class="getStatusBadge(item.responseCode)">
+                                    {{ item.responseCode }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" 
+                                        class="btn btn-outline-primary btn-xs py-1 px-2"
+                                        v-on:click="OpenTraceModal(item.traceId)"
+                                        title="Inspect Distributed Waterfall Trace">
+                                    <i class="fas fa-project-diagram me-1"></i>Timeline
+                                </button>
+                            </td>
+                        </tr>
+                        <tr v-if="!metrics.recentLogs || metrics.recentLogs.length === 0">
+                            <td colspan="7" class="text-center text-muted py-5 small">Waiting for transaction events...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 5. System Exceptions Panel -->
+        <div class="card border shadow-sm rounded-3 bg-body mb-3" v-if="metrics.recentExceptions && metrics.recentExceptions.length > 0">
+            <div class="card-header bg-transparent border-bottom py-2">
+                <h6 class="fw-bold mb-0 text-danger fs-6">
+                    <i class="fas fa-bug me-2"></i>System Exceptions (Diagnostic Audit)
+                </h6>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush mb-0">
+                    <li v-for="ex in metrics.recentExceptions" :key="ex.id" class="list-group-item bg-transparent border-bottom px-3 py-2">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle">{{ ex.moduleName }}</span>
+                            <div class="d-flex align-items-center gap-2">
+                                <small class="text-body-secondary">{{ ex.time }}</small>
+                                <button type="button" 
+                                        class="btn btn-outline-danger btn-xs py-0 px-2" 
+                                        v-on:click="OpenExceptionModal(ex)" 
+                                        title="View Full Stack Trace">
+                                    <i class="fas fa-eye me-1"></i>Details
+                                </button>
+                            </div>
+                        </div>
+                        <small class="text-body d-block text-truncate" :title="ex.message">{{ ex.message }}</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ==================== DISTRIBUTED TRACE (WATERFALL) MODAL ==================== -->
         <div id="traceModal" class="modal fade" tabindex="-1" data-bs-backdrop="static">
-            <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 90vw; width: 1200px;">
+            <div class="modal-dialog modal-xl modal-dialog-scrollable" style="max-width: 92vw; width: 1300px;">
                 <div class="modal-content border shadow bg-body">
                     <div class="modal-header border-bottom py-3 custom-modal-header text-white d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center gap-2 flex-wrap">
                             <i class="fas fa-project-diagram text-primary fa-lg"></i>
-                            <h5 class="modal-title fw-bold text-white mb-0">Distributed Trace Inspection</h5>
+                            <h5 class="modal-title fw-bold text-white mb-0">Distributed Trace Waterfall</h5>
                             <span class="badge rounded-pill" :class="selectedTrace?.overallStatus === 'SUCCESS' ? 'bg-success' : 'bg-danger'">
                                 {{ selectedTrace?.overallStatus || 'PENDING' }}
                             </span>
                         </div>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        <div class="d-flex align-items-center gap-2">
+                            <a :href="getAspireTraceUrl(selectedTrace?.traceId)" target="_blank" class="btn btn-outline-light btn-xs py-1 px-2" title="View in Aspire Dashboard">
+                                <i class="fas fa-external-link-alt me-1"></i>Open in Aspire
+                            </a>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
                     </div>
 
                     <div class="modal-body p-3 bg-body-tertiary">
-                        <!-- Loading State -->
                         <div v-if="isTraceLoading" class="text-center py-5">
                             <div class="spinner-border text-primary mb-2" role="status"></div>
                             <div class="text-body-secondary small">Correlating SQL logs for Trace ID...</div>
                         </div>
 
-                        <!-- Trace Data Loaded -->
                         <div v-else-if="selectedTrace">
-                            <!-- Clean 3-Card Summary (Wala nang nakalilitong global Txn ID) -->
+                            <!-- Trace Metadata Bar -->
                             <div class="row g-2 mb-3">
                                 <div class="col-12 col-md-5">
                                     <div class="p-2 border rounded bg-body">
-                                        <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.65rem;">Trace ID (Correlation Key)</small>
+                                        <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.65rem;">Trace ID (OpenTelemetry)</small>
                                         <code class="small text-truncate d-block text-warning">{{ selectedTrace.traceId }}</code>
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-4">
                                     <div class="p-2 border rounded bg-body">
-                                        <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.65rem;">Started Timestamp</small>
+                                        <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.65rem;">Start Timestamp</small>
                                         <span class="fw-semibold text-body small">{{ selectedTrace.startTime }}</span>
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-3">
                                     <div class="p-2 border rounded bg-body">
-                                        <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.65rem;">Total Duration</small>
+                                        <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.65rem;">Total Request Latency</small>
                                         <span class="fw-bold text-primary small">{{ selectedTrace.totalDurationMs }} ms</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Waterfall Timeline -->
+                            <!-- Waterfall Execution Flow -->
                             <div class="card border shadow-sm bg-body">
                                 <div class="card-header bg-transparent border-bottom py-2">
                                     <h6 class="fw-bold mb-0 text-body small">
-                                        <i class="fas fa-layer-group text-secondary me-2"></i>Execution Flow ({{ selectedTrace.hops.length }} Hops)
+                                        <i class="fas fa-layer-group text-secondary me-2"></i>Hop Execution Timeline ({{ selectedTrace.hops.length }} Spans)
                                     </h6>
                                 </div>
                                 <div class="card-body p-3">
-                                    <div class="timeline-container">
-                                        <div v-for="hop in selectedTrace.hops" :key="hop.step" class="border rounded p-3 mb-3 bg-body-secondary">
-                                            <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
-                                                <div class="d-flex align-items-center gap-2 flex-wrap">
-                                                    <span class="badge rounded-circle bg-dark text-white p-2" style="width:24px; height:24px; line-height:10px; font-size:0.7rem;">{{ hop.step }}</span>
-                                                    <span class="fw-bold text-body">{{ hop.title }}</span>
-                                                    <span class="badge bg-secondary-subtle text-body border" style="font-size:0.68rem;">{{ hop.httpMethod }}</span>
-                                            
-                                                    <!-- Dito na lalabas ang Transaction ID ng bawat Hop -->
-                                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle" v-if="hop.transactionId" style="font-size:0.68rem;">
-                                                        <i class="fas fa-receipt me-1"></i>Txn Ref: {{ hop.transactionId }}
-                                                    </span>
-                                                </div>
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <span class="badge" :class="hop.isError ? 'bg-danger' : 'bg-success'">{{ hop.status }}</span>
-                                                    <span class="fw-semibold text-body small"><i class="fas fa-stopwatch me-1 text-muted"></i>{{ hop.durationMs }} ms</span>
-                                                    <small class="text-body-secondary"><i class="fas fa-clock me-1"></i>{{ hop.timestamp }}</small>
-                                                </div>
+                                    <div v-for="hop in selectedTrace.hops" :key="hop.step" class="border rounded p-3 mb-3 bg-body-secondary">
+                                        <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+                                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                                <span class="badge rounded-circle bg-dark text-white p-2" style="width:24px; height:24px; line-height:10px; font-size:0.7rem;">{{ hop.step }}</span>
+                                                <span class="fw-bold text-body">{{ hop.title }}</span>
+                                                <span class="badge bg-secondary-subtle text-body border" style="font-size:0.68rem;">{{ hop.httpMethod }}</span>
+                                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle" v-if="hop.transactionId" style="font-size:0.68rem;">
+                                                    <i class="fas fa-receipt me-1"></i>Txn Ref: {{ hop.transactionId }}
+                                                </span>
                                             </div>
-
-                                            <div class="mb-2">
-                                                <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.65rem;">Endpoint / Route</small>
-                                                <code class="small d-block text-truncate p-1 bg-body rounded border">{{ hop.endpoint }}</code>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="badge" :class="hop.isError ? 'bg-danger' : 'bg-success'">{{ hop.status }}</span>
+                                                <span class="fw-semibold text-body small"><i class="fas fa-stopwatch me-1 text-muted"></i>{{ hop.durationMs }} ms</span>
+                                                <small class="text-body-secondary"><i class="fas fa-clock me-1"></i>{{ hop.timestamp }}</small>
                                             </div>
+                                        </div>
 
-                                            <!-- Request & Response Payloads -->
-                                            <div class="accordion accordion-flush" :id="'acc_' + hop.step">
-                                                <div class="accordion-item bg-transparent border rounded mb-1" v-if="hop.requestPayload">
-                                                    <h2 class="accordion-header">
-                                                        <button class="accordion-button collapsed py-2 px-3 small bg-body text-body" type="button" data-bs-toggle="collapse" :data-bs-target="'#req_' + hop.step">
-                                                            <i class="fas fa-arrow-right text-info me-2"></i> Request Payload
-                                                        </button>
-                                                    </h2>
-                                                    <div :id="'req_' + hop.step" class="accordion-collapse collapse" :data-bs-parent="'#acc_' + hop.step">
-                                                        <div class="accordion-body p-2 bg-body">
-                                                            <pre class="mb-0 small font-monospace text-body-secondary p-2 bg-body-secondary rounded border" style="max-height: 200px; overflow-y: auto;"><code>{{ formatJson(hop.requestPayload) }}</code></pre>
-                                                        </div>
+                                        <!-- Aspire-style Visual Latency Bar -->
+                                        <div class="progress mb-2" style="height: 6px; background-color: rgba(0,0,0,0.06);">
+                                            <div class="progress-bar" 
+                                                 :class="hop.isError ? 'bg-danger' : 'bg-primary'" 
+                                                 role="progressbar" 
+                                                 :style="{ width: getWaterfallWidth(hop.durationMs, selectedTrace.totalDurationMs) + '%' }">
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-2">
+                                            <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.65rem;">Endpoint / Route</small>
+                                            <code class="small d-block text-truncate p-1 bg-body rounded border">{{ hop.endpoint }}</code>
+                                        </div>
+
+                                        <!-- Payloads Collapsible -->
+                                        <div class="accordion accordion-flush" :id="'acc_' + hop.step">
+                                            <div class="accordion-item bg-transparent border rounded mb-1" v-if="hop.requestPayload">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed py-2 px-3 small bg-body text-body" type="button" data-bs-toggle="collapse" :data-bs-target="'#req_' + hop.step">
+                                                        <i class="fas fa-arrow-right text-info me-2"></i> Request Payload
+                                                    </button>
+                                                </h2>
+                                                <div :id="'req_' + hop.step" class="accordion-collapse collapse" :data-bs-parent="'#acc_' + hop.step">
+                                                    <div class="accordion-body p-2 bg-body">
+                                                        <pre class="mb-0 small font-monospace text-body-secondary p-2 bg-body-secondary rounded border" style="max-height: 200px; overflow-y: auto;"><code>{{ formatJson(hop.requestPayload) }}</code></pre>
                                                     </div>
                                                 </div>
+                                            </div>
 
-                                                <div class="accordion-item bg-transparent border rounded" v-if="hop.responsePayload">
-                                                    <h2 class="accordion-header">
-                                                        <button class="accordion-button collapsed py-2 px-3 small bg-body text-body" type="button" data-bs-toggle="collapse" :data-bs-target="'#res_' + hop.step">
-                                                            <i class="fas fa-arrow-left text-success me-2"></i> Response Payload
-                                                        </button>
-                                                    </h2>
-                                                    <div :id="'res_' + hop.step" class="accordion-collapse collapse" :data-bs-parent="'#acc_' + hop.step">
-                                                        <div class="accordion-body p-2 bg-body">
-                                                            <pre class="mb-0 small font-monospace text-body-secondary p-2 bg-body-secondary rounded border" style="max-height: 200px; overflow-y: auto;"><code>{{ formatJson(hop.responsePayload) }}</code></pre>
-                                                        </div>
+                                            <div class="accordion-item bg-transparent border rounded" v-if="hop.responsePayload">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed py-2 px-3 small bg-body text-body" type="button" data-bs-toggle="collapse" :data-bs-target="'#res_' + hop.step">
+                                                        <i class="fas fa-arrow-left text-success me-2"></i> Response Payload
+                                                    </button>
+                                                </h2>
+                                                <div :id="'res_' + hop.step" class="accordion-collapse collapse" :data-bs-parent="'#acc_' + hop.step">
+                                                    <div class="accordion-body p-2 bg-body">
+                                                        <pre class="mb-0 small font-monospace text-body-secondary p-2 bg-body-secondary rounded border" style="max-height: 200px; overflow-y: auto;"><code>{{ formatJson(hop.responsePayload) }}</code></pre>
                                                     </div>
                                                 </div>
                                             </div>
@@ -473,23 +419,21 @@
                     </div>
 
                     <div class="modal-body p-3 bg-body-tertiary">
-                        <!-- Date & Source Meta -->
                         <div class="row g-2 mb-3">
                             <div class="col-6">
                                 <div class="p-2 border rounded bg-body">
-                                    <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.65rem;">Logged Date & Time</small>
+                                    <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.65rem;">Logged Time</small>
                                     <span class="small fw-semibold text-body">{{ selectedException.fullDate || selectedException.time }}</span>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="p-2 border rounded bg-body">
-                                    <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.65rem;">Source Module / Class</small>
+                                    <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.65rem;">Source Module</small>
                                     <span class="small fw-semibold text-body text-truncate d-block" :title="selectedException.source">{{ selectedException.source || '—' }}</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Exception Message -->
                         <div class="mb-3">
                             <label class="text-body-secondary small text-uppercase fw-semibold mb-1">Error Message</label>
                             <div class="alert alert-danger border mb-0 small">
@@ -497,7 +441,6 @@
                             </div>
                         </div>
 
-                        <!-- Inner Exception if exists -->
                         <div class="mb-3" v-if="selectedException.innerException">
                             <label class="text-body-secondary small text-uppercase fw-semibold mb-1">Inner Exception</label>
                             <div class="alert alert-warning border mb-0 small font-monospace">
@@ -505,7 +448,6 @@
                             </div>
                         </div>
 
-                        <!-- Stack Trace -->
                         <div class="mb-0">
                             <div class="d-flex justify-content-between align-items-center mb-1">
                                 <label class="text-body-secondary small text-uppercase fw-semibold mb-0">Stack Trace</label>
@@ -589,6 +531,5 @@
 
 @section scripts {
     <script src="~/js/app/directive/common.js" asp-append-version="true"></script>
-    <script src="~/js/app/services/user.js" asp-append-version="true"></script>
     <script src="~/js/app/controller/home.js" asp-append-version="true"></script>
 }

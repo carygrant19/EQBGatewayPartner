@@ -6,13 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Model = Gateway.Data.Models;
-using Request = Gateway.BLL.DTO.Request;
-using Response = Gateway.BLL.DTO.Response;
 
 namespace Gateway.Web.Pages
 {
@@ -73,28 +69,6 @@ namespace Gateway.Web.Pages
             return new JsonResult(trace);
         }
 
-        public async Task<JsonResult> OnPostFilterActivityLog([FromBody] Request.FParam param)
-        {
-            try
-            {
-                param.Filters.Add(
-                    new() { Property = "UserId", Value = Convert.ToInt32(HttpContext.Session.GetString("UserId")), Operator = "EQUALS" }
-                );
-                var data = await _userService.FilterActivityLog(param);
-                return new JsonResult(data);
-            }
-            catch (Exception ex)
-            {
-                return new(
-                    new Response.Result
-                    {
-                        Status = "ERROR",
-                        Message = ex.Message
-                    }
-                );
-            }
-        }
-
         public async Task<JsonResult> OnGetSessionConfig()
         {
             SessionTimeoutMinutes = (double)_systemParameters.SessionTimeOutMinutes;
@@ -107,73 +81,11 @@ namespace Gateway.Web.Pages
             });
         }
 
-        public async Task<IActionResult> OnGetUserProfileImage()
-        {
-            try
-            {
-                var username = Convert.ToString(HttpContext.Session.GetString("Username"));
-                var user = await _userService.ByUsername(username!);
-
-                if (user?.ImageContent != null && user.ImageType != null)
-                    return File(user.ImageContent, user.ImageType);
-                else
-                    return File("~/images/default-user.png", "image/png");
-            }
-            catch
-            {
-                return File("~/images/default-user.png", "image/png");
-            }
-        }
-
-        public async Task<IActionResult> OnGetUserProfileImageThumbnail()
-        {
-            try
-            {
-                var username = Convert.ToString(HttpContext.Session.GetString("Username"));
-                var user = await _userService.ByUsername(username!);
-
-                if (user?.ImageContentThumbnail != null && user.ImageType != null)
-                    return File(user.ImageContentThumbnail, user.ImageType);
-                else
-                    return File("~/images/default-user.png", "image/png");
-            }
-            catch
-            {
-                return File("~/images/default-user.png", "image/png");
-            }
-        }
-
-        public async Task<JsonResult> OnPostChangeProfileImage(List<IFormFile> images)
-        {
-            try
-            {
-                var user = new Request.User();
-                if (images.Count > 0)
-                {
-                    using MemoryStream imageMS = new();
-                    images[0].CopyTo(imageMS);
-
-                    user.Id = Convert.ToString(HttpContext.Session.GetString("UserId"))!;
-                    user.Username = HttpContext.Session.GetString("Username")!;
-                    user.OpUser = HttpContext.Session.GetString("Username");
-                    user.OpUserId = Convert.ToString(HttpContext.Session.GetString("UserId"));
-                    user.ImageContent = imageMS.ToArray();
-                    user.ImageType = images[0].ContentType;
-                }
-                var result = await _userService.ChangeProfileImage(user);
-                return new JsonResult(result);
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult(ex.ToString());
-            }
-        }
-
         public JsonResult OnGetSessionExpired()
         {
             try
             {
-                var userRequest = new Request.User()
+                var userRequest = new Gateway.BLL.DTO.Request.User()
                 {
                     Id = Convert.ToString(HttpContext.Session.GetString("UserId"))!,
                     Username = Convert.ToString(HttpContext.Session.GetString("Username"))!,
