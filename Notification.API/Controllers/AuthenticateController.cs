@@ -1,6 +1,5 @@
 ﻿//using Common.Services.IService;
-using Microsoft.AspNetCore.Mvc;
-using Request = Common.DTOs.Request;
+using Microsoft.AspNetCore.Mvc; 
 
 namespace Notification.API.Controllers
 {

@@ -1,0 +1,39 @@
+﻿@page
+@model EQBGateway.Portal.Pages.ActiveSessionModel
+@{
+    ViewData["Title"] = "Active Session";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<section class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-6">@ViewData["Title"]</h1>
+        </div>
+    </div>
+
+    <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <div>
+            <strong>Active session detected:</strong> The system has detected that you have an active session from a different workstation.
+        </div>
+    </div>
+
+    <form method="post" asp-page="ActiveSession" class="d-flex gap-2  col-6">
+        <button type="submit" class="btn btn-primary" asp-page-handler="Continue">
+            <i class="fas fa-arrow-alt-circle-right me-1"></i> Continue
+        </button>
+        <button type="submit" class="btn btn-secondary" asp-page-handler="Logout">
+            <i class="fas fa-sign-out-alt me-1"></i> Logout
+        </button>
+    </form>
+</section>
+
+<script>
+    $(function () {
+        $(".preloader").hide();
+    });
+</script>

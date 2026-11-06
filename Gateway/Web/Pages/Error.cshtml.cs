@@ -6,7 +6,7 @@ using Response = Gateway.BLL.DTO.Response;
 
 namespace Gateway.Web.Pages
 {
-    public class ErrorModel(IConfiguration configuration) : PageModel
+    public class ErrorModel(IConfiguration configuration) : PageModelExtension
     {
         [BindProperty]
         public string? Actions { get; set; }

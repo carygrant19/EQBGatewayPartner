@@ -1,6 +1,5 @@
 ﻿//using Common.Services.IService;
-// Microsoft.AspNetCore.Mvc;
-using Request = Common.DTOs.Request;
+// Microsoft.AspNetCore.Mvc; 
 
 namespace Pesonet.API.Controllers
 {

@@ -479,7 +479,7 @@ namespace Gateway.BLL.Services
                         {
 
                             UserId = data.Id,
-                            RoleId = Convert.ToInt32(StringManipulation.Decrypt(userRole.RoleId!, _encryptionKey)),
+                            RoleId = Convert.ToInt32(userRole.RoleId!),
                         }).ToList();
                         await _userRoleRepository.AddRangeAsync(userRolesList);
                     }
@@ -600,7 +600,7 @@ namespace Gateway.BLL.Services
                         {
 
                             UserId = id,
-                            RoleId = Convert.ToInt32(StringManipulation.Decrypt(userRole.RoleId!, _encryptionKey)),
+                            RoleId = Convert.ToInt32(userRole.RoleId!),
                         }).ToList();
                         await _userRoleRepository.AddRangeAsync(userRolesList);
                     }
