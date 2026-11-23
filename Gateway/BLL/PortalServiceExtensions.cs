@@ -28,6 +28,7 @@ namespace Gateway.BLL
             services.AddScoped<ILDAPService, LDAPService>();
             services.AddScoped<IModuleService, ModuleService>();
             services.AddScoped<IPermissionService, PermissionService>();
+            services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
 

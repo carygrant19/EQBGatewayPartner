@@ -204,6 +204,7 @@ namespace Gateway.BLL.Services
             var detail = new TraceDetailDto
             {
                 TraceId = traceId,
+                ClientId = firstHttp?.ClientId,
                 StartTime = (firstHttp?.RequestDate ?? firstTran?.RequestDate ?? DateTime.Now).ToString("yyyy-MM-dd HH:mm:ss.fff")
             };
 
@@ -252,7 +253,8 @@ namespace Gateway.BLL.Services
                     Step = step++,
                     HopType = "MICROSERVICE_CALL",
                     Title = ResolveServiceTitle(tran.UrlEndpoint),
-                    TransactionId = tran.TransactionId, // Bawat hop may hawak ng sariling Transaction ID
+                    TransactionId = tran.TransactionId,
+                    CheckSum = tran.CheckSum,
                     Endpoint = tran.UrlEndpoint ?? "Downstream Service",
                     HttpMethod = "POST",
                     Status = tran.Status ?? "PENDING",

@@ -7,10 +7,6 @@ const controller = createApp({
         const isTraceLoading = ref(false);
         const selectedException = ref(null);
 
-        const container = document.getElementById('controller');
-        const rawAspireBase = container ? container.getAttribute('data-aspire-base') : 'http://localhost:18888';
-        const aspireDashboardBase = (rawAspireBase || 'http://localhost:18888').replace(/\/$/, '');
-
         const metrics = ref({
             activeRoutesCount: 0,
             activeClientsCount: 0,
@@ -41,11 +37,6 @@ const controller = createApp({
             return metrics.value.recentExceptions ? metrics.value.recentExceptions.length : 0;
         });
 
-        const getAspireTraceUrl = (traceId) => {
-            if (!traceId) return aspireDashboardBase;
-            return `${aspireDashboardBase}/traces/${traceId}`;
-        };
-
         const getStatusBadge = (code) => {
             const strCode = String(code || '');
             if (strCode.startsWith('2') || strCode === 'SUCCESS') {
@@ -64,7 +55,6 @@ const controller = createApp({
             return Math.max(calculated, 8);
         };
 
-        // Kinakalkula ang visual bar percentage ng bawat span batay sa kabuuang tagal ng trace
         const getWaterfallWidth = (durationMs, totalDurationMs) => {
             if (!totalDurationMs || totalDurationMs <= 0) return 15;
             const percent = Math.round((durationMs / totalDurationMs) * 100);
@@ -81,7 +71,6 @@ const controller = createApp({
             }
         };
 
-        // Open Distributed Trace Inspection Modal
         const OpenTraceModal = async (traceId) => {
             if (!traceId) return;
 
@@ -101,7 +90,6 @@ const controller = createApp({
             }
         };
 
-        // Open System Exception Details Modal
         const OpenExceptionModal = (ex) => {
             if (!ex) return;
             selectedException.value = ex;
@@ -184,7 +172,6 @@ const controller = createApp({
         });
 
         return {
-            aspireDashboardBase,
             metrics,
             isConnected,
             connectionStatusBadge,
@@ -193,13 +180,10 @@ const controller = createApp({
             getStatusBadge,
             getBarHeight,
             getWaterfallWidth,
-            getAspireTraceUrl,
             formatJson,
-            // Trace Modal
             selectedTrace,
             isTraceLoading,
             OpenTraceModal,
-            // Exception Modal
             selectedException,
             OpenExceptionModal,
             CopyStackTrace

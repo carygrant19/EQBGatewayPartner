@@ -14,9 +14,6 @@
                 </span>
             </div>
             <div class="col-sm-6 text-sm-end mt-2 mt-sm-0 d-flex justify-content-sm-end align-items-center gap-2">
-                <a :href="aspireDashboardBase" target="_blank" class="btn btn-outline-secondary btn-sm" title="Open .NET Aspire Developer Dashboard">
-                    <i class="fas fa-external-link-alt me-1"></i>Aspire Console
-                </a>
                 <span class="badge rounded-pill px-3 py-2" :class="connectionStatusBadge">
                     <i class="fas fa-circle fa-xs me-1"></i>{{ connectionStatusText }}
                 </span>
@@ -26,7 +23,7 @@
 </section>
 
 <section class="content">
-    <div class="container-fluid px-3" id="controller" autocomplete="off" data-aspire-base="@Model.AspireDashboardUrl">
+    <div class="container-fluid px-3" id="controller" autocomplete="off">
         <!-- 1. Infrastructure State Bar -->
         <div class="row g-3 mb-3">
             <div class="col-12 col-md-4">
@@ -190,11 +187,11 @@
             </div>
         </div>
 
-        <!-- 4. Live OpenTelemetry Transaction Feed -->
+        <!-- 4. Live Transaction Feed -->
         <div class="card border shadow-sm rounded-3 bg-body mb-3">
             <div class="card-header bg-transparent border-bottom py-2 d-flex justify-content-between align-items-center">
                 <h6 class="fw-bold mb-0 text-body fs-6">
-                    <i class="fas fa-stream text-primary me-2"></i>Live Transaction Feed (OpenTelemetry Correlated)
+                    <i class="fas fa-stream text-primary me-2"></i>Live Transaction Feed (Persistent SQL Audit)
                 </h6>
                 <small class="text-body-secondary">Auto-refreshed via SignalR</small>
             </div>
@@ -227,7 +224,7 @@
                                 </span>
                             </td>
                             <td class="text-center">
-                                <button type="button" 
+                                <button type="button"
                                         class="btn btn-outline-primary btn-xs py-1 px-2"
                                         v-on:click="OpenTraceModal(item.traceId)"
                                         title="Inspect Distributed Waterfall Trace">
@@ -257,9 +254,9 @@
                             <span class="badge bg-danger-subtle text-danger border border-danger-subtle">{{ ex.moduleName }}</span>
                             <div class="d-flex align-items-center gap-2">
                                 <small class="text-body-secondary">{{ ex.time }}</small>
-                                <button type="button" 
-                                        class="btn btn-outline-danger btn-xs py-0 px-2" 
-                                        v-on:click="OpenExceptionModal(ex)" 
+                                <button type="button"
+                                        class="btn btn-outline-danger btn-xs py-0 px-2"
+                                        v-on:click="OpenExceptionModal(ex)"
                                         title="View Full Stack Trace">
                                     <i class="fas fa-eye me-1"></i>Details
                                 </button>
@@ -283,12 +280,7 @@
                                 {{ selectedTrace?.overallStatus || 'PENDING' }}
                             </span>
                         </div>
-                        <div class="d-flex align-items-center gap-2">
-                            <a :href="getAspireTraceUrl(selectedTrace?.traceId)" target="_blank" class="btn btn-outline-light btn-xs py-1 px-2" title="View in Aspire Dashboard">
-                                <i class="fas fa-external-link-alt me-1"></i>Open in Aspire
-                            </a>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                        </div>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
 
                     <div class="modal-body p-3 bg-body-tertiary">
@@ -302,7 +294,7 @@
                             <div class="row g-2 mb-3">
                                 <div class="col-12 col-md-5">
                                     <div class="p-2 border rounded bg-body">
-                                        <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.65rem;">Trace ID (OpenTelemetry)</small>
+                                        <small class="text-body-secondary d-block text-uppercase fw-semibold" style="font-size:0.65rem;">Trace ID (Correlation Key)</small>
                                         <code class="small text-truncate d-block text-warning">{{ selectedTrace.traceId }}</code>
                                     </div>
                                 </div>
@@ -345,11 +337,11 @@
                                             </div>
                                         </div>
 
-                                        <!-- Aspire-style Visual Latency Bar -->
+                                        <!-- Visual Latency Bar -->
                                         <div class="progress mb-2" style="height: 6px; background-color: rgba(0,0,0,0.06);">
-                                            <div class="progress-bar" 
-                                                 :class="hop.isError ? 'bg-danger' : 'bg-primary'" 
-                                                 role="progressbar" 
+                                            <div class="progress-bar"
+                                                 :class="hop.isError ? 'bg-danger' : 'bg-primary'"
+                                                 role="progressbar"
                                                  :style="{ width: getWaterfallWidth(hop.durationMs, selectedTrace.totalDurationMs) + '%' }">
                                             </div>
                                         </div>
@@ -504,17 +496,17 @@
         border-color: #30363d !important;
     }
 
-    .dark-mode .table thead tr,
-    [data-bs-theme="dark"] .table thead tr {
-        background-color: #161b22 !important;
-        color: #8b949e !important;
-    }
+        .dark-mode .table thead tr,
+        [data-bs-theme="dark"] .table thead tr {
+            background-color: #161b22 !important;
+            color: #8b949e !important;
+        }
 
-    .dark-mode .table td,
-    [data-bs-theme="dark"] .table td {
-        border-color: #30363d !important;
-        background-color: transparent !important;
-    }
+        .dark-mode .table td,
+        [data-bs-theme="dark"] .table td {
+            border-color: #30363d !important;
+            background-color: transparent !important;
+        }
 
     .dark-mode .list-group-item,
     [data-bs-theme="dark"] .list-group-item {

@@ -7,10 +7,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Model = Gateway.Data.Models;
 using Request = Gateway.BLL.DTO.Request;
+
 namespace Gateway.Web.Pages
 {
     public class HomeModel(
@@ -26,7 +29,6 @@ namespace Gateway.Web.Pages
         public string JavascriptToRun { get; set; } = string.Empty;
         public double SessionTimeoutMinutes { get; set; }
         public double WarningBeforeMinutes { get; set; }
-        public string AspireDashboardUrl { get; set; } = string.Empty;
 
         public async Task<IActionResult> OnGet()
         {
@@ -34,8 +36,6 @@ namespace Gateway.Web.Pages
 
             if (page == "")
             {
-                AspireDashboardUrl = configuration["Telemetry:AspireDashboardUrl"] ?? "http://localhost:18888";
-
                 if (!Convert.ToBoolean(HttpContext.Session.GetObject<bool>("LDAPAuthentication")))
                 {
                     var remainingDays = await _userService.GetRemainingDaysPasswordExpiry(Convert.ToString(HttpContext.Session.GetString("Username")!));
@@ -154,11 +154,12 @@ namespace Gateway.Web.Pages
                 else
                     return File("~/images/default-user.png", "image/png");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return File("~/images/default-user.png", "image/png");
             }
         }
+
         public async Task<IActionResult> OnGetUserProfileImageThumbnail()
         {
             try
@@ -166,22 +167,19 @@ namespace Gateway.Web.Pages
                 var username = Convert.ToString(HttpContext.Session.GetString("Username"));
                 var user = await _userService.ByUsername(username!);
 
-                //if (user != null)
-                //    return File(user.ImageContent!, user.ImageType!);
                 if (user != null)
                     return File(user.ImageContentThumbnail!, user.ImageType!);
                 else
                     return File("~/images/default-user.png", "image/png");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return File("~/images/default-user.png", "image/png");
             }
-
         }
+
         public async Task<JsonResult> OnPostChangeProfileImage(List<IFormFile> images)
         {
-
             try
             {
                 var user = new Request.User();
