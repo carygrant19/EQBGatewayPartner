@@ -6,5 +6,6 @@ namespace Temenos.API.Services.IService.v1.loans
     public interface IAccountService
     {
         Task<ApiResponse.Response<List<Response.AmortizationSchedule>>> AmortizationSchedule(string arrangementId);
+        Task<List<(string RecId, string AltAcctId)>> GetAccountNumberByPN(List<string> PNList, CancellationToken cancellationToken = default);
     }
 }

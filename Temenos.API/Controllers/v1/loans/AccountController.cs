@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Temenos.API.Services.IService.v1.loans;
 using ApiResponse = Common.DTOs.Response.Api;
 
@@ -12,7 +15,7 @@ namespace Temenos.API.Controllers.v1.loans
         private readonly IAccountService _accountService = accountService;
 
         [HttpGet("amortizationSchedule")]
-        public async Task<IActionResult> AmortizationSchedule([FromQuery]string arrangementId)
+        public async Task<IActionResult> AmortizationSchedule([FromQuery] string arrangementId)
         {
             try
             {
@@ -26,7 +29,6 @@ namespace Temenos.API.Controllers.v1.loans
                 {
                     return NotFound(result);
                 }
-
             }
             catch (Exception ex)
             {
@@ -35,18 +37,31 @@ namespace Temenos.API.Controllers.v1.loans
                     Success = false,
                     Message = "An unexpected system error occurred while processing the request.",
                     Errors =
-                   [
-                       new ApiResponse.Error
+                    [
+                        new ApiResponse.Error
                         {
-                            Message =  ex.Message
+                            Message = ex.Message
                         }
-                   ]
+                    ]
                 };
 
                 return StatusCode(500, dtoResponse);
             }
         }
 
-
+        [HttpPost("accountnumbers")]
+        public async Task<IActionResult> GetAccountNumbers([FromBody] List<string> pnList, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var result = await _accountService.GetAccountNumberByPN(pnList, cancellationToken);
+                var response = result.Select(x => new { x.RecId, x.AltAcctId });
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

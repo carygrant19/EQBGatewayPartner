@@ -1,0 +1,7 @@
+2026-11-25 09:29:53.389 +08:00 [INF] Now listening on: https://localhost:7000
+2026-11-25 09:29:53.557 +08:00 [INF] Now listening on: http://localhost:9012
+2026-11-25 09:29:53.912 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-11-25 09:29:53.919 +08:00 [INF] Hosting environment: Development
+2026-11-25 09:29:53.930 +08:00 [INF] Content root path: C:\Users\jalemania\Desktop\Projects\EQB Projects\EQBGatewayPartner\Gateway\Proxy\Gateway.Proxy
+2026-11-25 09:44:30.873 +08:00 [WRN] You do not have a valid license key for the Lucky Penny software AutoMapper. This is allowed for development and testing scenarios. If you are running in production you are required to have a licensed version. Please visit https://luckypennysoftware.com to obtain a valid license.
+2026-11-25 09:44:31.978 +08:00 [INF] HTTP POST /internal/gateway/reload responded 200 in 3167.6893 ms

@@ -111,8 +111,7 @@ const controller = createApp({
                                 '<div class="text-start mt-2 fs-14">',
                                 '<p class="mb-1"><strong>Client Name:</strong> ', formData.name, '</p>',
                                 '<p class="mb-1"><strong>API Key:</strong> <code class="text-primary">', key, '</code></p>',
-                                '<p class="mb-1"><strong>API Secret:</strong> <code class="text-danger">', secret, '</code></p>',
-                                '<small class="text-muted">Please save these credentials securely. The API Secret will not be shown again.</small>',
+                                '<p class="mb-1"><strong>API Secret:</strong> <code class="text-danger">', secret, '</code></p>', 
                                 '</div>'
                             ].join('');
 

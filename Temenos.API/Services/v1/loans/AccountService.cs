@@ -1,9 +1,11 @@
 ﻿using Common.Services.IService;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -106,6 +108,56 @@ namespace Temenos.API.Services.v1.loans
             }
 
             return dtoResponse;
+        }
+
+        public async Task<List<(string RecId, string AltAcctId)>> GetAccountNumberByPN(List<string> PNList, CancellationToken cancellationToken = default)
+        {
+            var result = new List<(string RecId, string AltAcctId)>();
+
+            if (PNList == null || PNList.Count == 0)
+                return result;
+
+            using var conn = new SqlConnection(_conString);
+            await conn.OpenAsync(cancellationToken);
+
+            var batches = PNList
+                .Select(pn => (pn ?? string.Empty).Replace('\u00A0', ' ').Replace("-", "").Trim())
+                .Where(pn => !string.IsNullOrWhiteSpace(pn))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Chunk(1000);
+
+            foreach (var batch in batches)
+            {
+                var paramNames = batch.Select((_, i) => $"@pn{i}").ToArray();
+                var query = $@"
+                SELECT 
+                    RECID,
+                    REPLACE(ALT_ACCT_ID, '-', '') AS ALT_ACCT_ID
+                FROM V_FH01_ACCOUNT 
+                WHERE CO_CODE = 'PH0011996' 
+                    AND RECID NOT LIKE 'PHP%' 
+                    AND RECID NOT LIKE 'USD%'
+                    AND REPLACE(ALT_ACCT_ID, '-', '') IN ({string.Join(",", paramNames)})";
+
+                using var command = new SqlCommand(query, conn);
+                command.CommandType = CommandType.Text;
+                command.CommandTimeout = 0;
+
+                for (int i = 0; i < batch.Length; i++)
+                {
+                    command.Parameters.Add(paramNames[i], SqlDbType.VarChar, 50).Value = batch[i];
+                }
+
+                using var reader = await command.ExecuteReaderAsync(cancellationToken);
+                while (await reader.ReadAsync(cancellationToken))
+                {
+                    var recId = reader["RECID"] == DBNull.Value ? string.Empty : reader["RECID"].ToString()!.Trim();
+                    var altAcctId = reader["ALT_ACCT_ID"] == DBNull.Value ? string.Empty : reader["ALT_ACCT_ID"].ToString()!.Trim();
+                    result.Add((recId, altAcctId));
+                }
+            }
+
+            return result;
         }
     }
 }

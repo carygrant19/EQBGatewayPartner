@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.IdentityModel.Tokens;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -11,6 +12,7 @@ using iloansV1 = Temenos.API.Services.IService.v1.loans;
 using Common.Services.IService;
 using Common.Services;
 using Common.Handlers;
+
 var basePath = AppContext.BaseDirectory;
 var logFilePath = Path.Combine(basePath, "Logs", "TemenosService-.txt");
 
@@ -31,6 +33,21 @@ try
     Log.Information("Starting Temenos Microservice...");
     builder.Host.UseSerilog();
 
+    // Extend Kestrel and request timeouts for long-running queries
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(20);
+        options.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(5);
+    });
+
+    builder.Services.AddRequestTimeouts(options =>
+    {
+        options.DefaultPolicy = new RequestTimeoutPolicy
+        {
+            Timeout = TimeSpan.FromMinutes(20)
+        };
+    });
+
     // CORS Configuration
     builder.Services.AddCors(options =>
     {
@@ -50,7 +67,6 @@ try
                     ResourceBuilder.CreateDefault()
                         .AddService(serviceName: "Temenos.Microservice", serviceVersion: "1.0.0"));
 
-            // Uncomment as needed:
             tracing.AddAspNetCoreInstrumentation(options => options.RecordException = true);
             tracing.AddHttpClientInstrumentation();
 
@@ -79,12 +95,11 @@ try
     // Service Dependency Injection
     builder.Services.AddScoped<icasaV1.ITransactionService, casaV1.TransactionService>();
     builder.Services.AddScoped<icasaV1.IAccountService, casaV1.AccountService>();
-    builder.Services.AddScoped<icasaV1.IAccountService, casaV1.AccountService>();
     builder.Services.AddScoped<iloansV1.IAccountService, loansV1.AccountService>();
     builder.Services.AddHttpContextAccessor();
-     
+
     builder.Services.AddOutboundTransactionLogging();
-     
+
     builder.Services.AddHttpClient("ExternalClient")
         .AddHttpMessageHandler<OutboundLoggingHandler>();
 
@@ -105,6 +120,7 @@ try
 
     // Middleware Pipeline Order
     app.UseCors("CorsPolicy");
+    app.UseRequestTimeouts();
     app.UseAuthentication();
     app.UseAuthorization();
 

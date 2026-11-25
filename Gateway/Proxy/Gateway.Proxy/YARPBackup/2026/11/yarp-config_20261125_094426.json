@@ -1,0 +1,586 @@
+{
+  "PublishedDate": "2026-11-25T09:44:26.4102601+08:00",
+  "PublishedBy": "JALEMANIA",
+  "ReverseProxy": {
+    "Routes": {
+      "AUTH-GATEWAY": {
+        "ClusterId": "AUTH-GATEWAY",
+        "Order": 1,
+        "Match": {
+          "Path": "/auth",
+          "Methods": [
+            "GET"
+          ]
+        },
+        "Transforms": null
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "ClusterId": "TEMENOS-CASA-ACCOUNT",
+        "Order": 1,
+        "Match": {
+          "Path": "/api/v1/casa/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        },
+        "Transforms": [
+          {
+            "PathPattern": "/api/v1/casa/account/{**catch-all}"
+          }
+        ]
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "ClusterId": "TEMENOS-CASA-TRANSACTION",
+        "Order": 1,
+        "Match": {
+          "Path": "/api/v1/casa/transaction/{**catch-all}",
+          "Methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ]
+        },
+        "Transforms": [
+          {
+            "PathPattern": "/api/v1/casa/transaction/{**catch-all}"
+          }
+        ]
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "ClusterId": "TEMENOS-LOANS-ACCOUNT",
+        "Order": 1,
+        "Match": {
+          "Path": "/api/v1/loans/account/{**catch-all}",
+          "Methods": [
+            "GET"
+          ]
+        },
+        "Transforms": [
+          {
+            "PathPattern": "/api/v1/loans/account/{**catch-all}"
+          }
+        ]
+      },
+      "IDENTITY-VERIFICATION": {
+        "ClusterId": "IDENTITY-VERIFICATION",
+        "Order": 1,
+        "Match": {
+          "Path": "/api/NIDAS/{**catch-all}",
+          "Methods": [
+            "POST"
+          ]
+        },
+        "Transforms": [
+          {
+            "PathPattern": "/api/NIDAS/{**catch-all}"
+          }
+        ]
+      }
+    },
+    "Clusters": {
+      "AUTH-GATEWAY": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "https://localhost"
+          }
+        }
+      },
+      "TEMENOS-CASA-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "http://localhost:9003"
+          }
+        }
+      },
+      "TEMENOS-CASA-TRANSACTION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "http://localhost:9003"
+          }
+        }
+      },
+      "TEMENOS-LOANS-ACCOUNT": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "http://localhost:9003"
+          }
+        }
+      },
+      "IDENTITY-VERIFICATION": {
+        "Destinations": {
+          "destination_1": {
+            "Address": "http://localhost:9004"
+          }
+        }
+      }
+    }
+  },
+  "Metadata": {
+    "RawRoutes": [
+      {
+        "Id": "2",
+        "Code": "AUTH-GATEWAY",
+        "Name": "Gateway Authentication",
+        "Description": "Gateway Authentication",
+        "CategoryId": 5,
+        "CategoryName": null,
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1,
+          2
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/auth",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "",
+        "DownstreamScheme": "https",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "INTERNAL_AUTH",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 110,
+            "EndpointId": "2",
+            "Host": "localhost",
+            "Port": 0,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [
+          {
+            "Id": 15,
+            "EndpointId": "2",
+            "IpAddressOrRange": "172.16.69.15",
+            "RuleType": "Allow",
+            "Description": "Ramon PC"
+          },
+          {
+            "Id": 16,
+            "EndpointId": "2",
+            "IpAddressOrRange": "::1",
+            "RuleType": "Allow",
+            "Description": "Local"
+          },
+          {
+            "Id": 17,
+            "EndpointId": "2",
+            "IpAddressOrRange": "192.168.112.211",
+            "RuleType": "Allow",
+            "Description": "NAT IP (3rd party IP's)"
+          }
+        ],
+        "Transforms": []
+      },
+      {
+        "Id": "3",
+        "Code": "TEMENOS-CASA-ACCOUNT",
+        "Name": "Temenos CASA Accounts",
+        "Description": "Temenos CASA Accounts",
+        "CategoryId": 4,
+        "CategoryName": null,
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1,
+          2
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/casa/account/{**catch-all}",
+        "DownstreamScheme": "http",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 93,
+            "EndpointId": "3",
+            "Host": "localhost",
+            "Port": 9003,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "4",
+        "Code": "TEMENOS-CASA-TRANSACTION",
+        "Name": "Temenos CASA Transaction",
+        "Description": "Temenos CASA Transaction",
+        "CategoryId": 4,
+        "CategoryName": null,
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1,
+          2
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": false,
+        "UpstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "UpstreamHttpMethod": "GET,POST,DELETE",
+        "DownstreamPathTemplate": "/api/v1/casa/transaction/{**catch-all}",
+        "DownstreamScheme": "http",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET,POST,DELETE",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 69,
+            "EndpointId": "4",
+            "Host": "localhost",
+            "Port": 9003,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "5",
+        "Code": "TEMENOS-LOANS-ACCOUNT",
+        "Name": "Temenos Loans Account",
+        "Description": "Temenos Loans Account",
+        "CategoryId": 4,
+        "CategoryName": null,
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 2,
+        "OutboundAuthProfileName": "Temenos Bearer Token",
+        "ClientIds": [
+          1,
+          2,
+          3
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/v1/loans/account/{**catch-all}",
+        "UpstreamHttpMethod": "GET",
+        "DownstreamPathTemplate": "/api/v1/loans/account/{**catch-all}",
+        "DownstreamScheme": "http",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "GET",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\r\n  \"message\": \"Mock Response Success\"\r\n}",
+        "TargetHosts": [
+          {
+            "Id": 112,
+            "EndpointId": "5",
+            "Host": "localhost",
+            "Port": 9003,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [],
+        "Transforms": []
+      },
+      {
+        "Id": "6",
+        "Code": "IDENTITY-VERIFICATION",
+        "Name": "Indentity Verfication",
+        "Description": "",
+        "CategoryId": 1,
+        "CategoryName": null,
+        "AuthProviderId": 1,
+        "AuthProviderName": "Gateway",
+        "OutboundAuthProfileId": 3,
+        "OutboundAuthProfileName": "NIDAS Identity Verification Token",
+        "ClientIds": [
+          2
+        ],
+        "IsActive": true,
+        "IsWebSocket": false,
+        "RequireApiKey": true,
+        "UpstreamPathTemplate": "/api/NIDAS/{**catch-all}",
+        "UpstreamHttpMethod": "POST",
+        "DownstreamPathTemplate": "/api/NIDAS/{**catch-all}",
+        "DownstreamScheme": "http",
+        "Priority": 1,
+        "EnableRateLimiting": false,
+        "RateLimit": 100,
+        "RatePeriod": null,
+        "RatePeriodTimespan": 60,
+        "TimeFrom": null,
+        "TimeTo": null,
+        "DateFrom": null,
+        "DateTo": null,
+        "AllowedDays": "",
+        "LoadBalancingPolicy": "RoundRobin",
+        "TimeoutSeconds": 30,
+        "EnableCaching": false,
+        "CacheTtlSeconds": 60,
+        "AllowedOrigins": "*",
+        "MaxRequestBodySize": null,
+        "IntegrationType": "PROXY",
+        "StripPath": true,
+        "PreserveHostHeader": false,
+        "AllowedMethods": "POST",
+        "ApiVersion": "v1",
+        "MaxRetries": 0,
+        "RetryDelayMs": 1000,
+        "EnableCircuitBreaker": false,
+        "MockResponseCode": 200,
+        "MockResponseBody": "{\n  \"message\": \"Mock Response Success\"\n}",
+        "TargetHosts": [
+          {
+            "Id": 111,
+            "EndpointId": "6",
+            "Host": "localhost",
+            "Port": 9004,
+            "Weight": 1,
+            "Description": "Primary Host",
+            "HealthCheckPath": "/health",
+            "IsHealthy": true
+          }
+        ],
+        "IpRules": [
+          {
+            "Id": 18,
+            "EndpointId": "6",
+            "IpAddressOrRange": "172.16.69.15",
+            "RuleType": "Allow",
+            "Description": "Ramon Local PC"
+          },
+          {
+            "Id": 19,
+            "EndpointId": "6",
+            "IpAddressOrRange": "192.168.112.211",
+            "RuleType": "Allow",
+            "Description": "NAT IP (3rd Party IP)"
+          },
+          {
+            "Id": 20,
+            "EndpointId": "6",
+            "IpAddressOrRange": "::1",
+            "RuleType": "Allow",
+            "Description": "Local"
+          }
+        ],
+        "Transforms": []
+      }
+    ],
+    "AuthProviders": [
+      {
+        "Id": 1,
+        "Code": "GATEWAY",
+        "Name": "Gateway",
+        "Issuer": "gateway.proxy.equicomsavings.com.ph",
+        "Audience": "gateway.proxy.equicomsavings.com.ph",
+        "SecretKey": "ooWTeAVPfeFYXKfzQb2hvaRYYJokuMbY",
+        "TokenLifetimeMinutes": 10,
+        "IsActive": true,
+        "Deleted": false
+      }
+    ],
+    "OutboundAuthProfiles": [
+      {
+        "Id": 2,
+        "Code": "TEMENOS-BEARER-TOKEN",
+        "Name": "Temenos Bearer Token",
+        "Description": "To pass Temenos token from gateway to Temenos API",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-09-23T10:56:32.11",
+        "UpdatedBy": 1,
+        "UpdatedDate": "2026-09-30T14:18:28.6547398",
+        "Headers": [
+          {
+            "Id": 4,
+            "ProfileId": 2,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4NTIzNTE5NjAsImlzcyI6InQyNC5lcXVpY29tc2F2aW5ncy5jb20ucGgiLCJhdWQiOiJ0MjQuZXF1aWNvbXNhdmluZ3MuY29tLnBoIn0.B6RZEqcQdWxGDWE7mUa-fXLLY1k2gJOaEqfC0wlR50Q",
+            "SecondaryCredentialValue": ""
+          }
+        ],
+        "Endpoints": []
+      },
+      {
+        "Id": 3,
+        "Code": "IDENTITY-VERIFICATION-TOKEN",
+        "Name": "NIDAS Identity Verification Token",
+        "Description": "NIDAS Identity Verification Token",
+        "IsActive": true,
+        "CreatedBy": 1,
+        "CreatedDate": "2026-10-23T13:48:26.1626024",
+        "UpdatedBy": 1,
+        "UpdatedDate": "2026-10-23T13:48:39.0215132",
+        "Headers": [
+          {
+            "Id": 6,
+            "ProfileId": 3,
+            "AuthType": "Bearer",
+            "HeaderName": "Authorization",
+            "CredentialValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE4MjM4Mzg0OTUsImlzcyI6Im5pZGFzLmVxdWljb21zYXZpbmdzLmNvbS5waCIsImF1ZCI6Im5pZGFzLmVxdWljb21zYXZpbmdzLmNvbS5waCJ9.vp80Ai6Ksbt1cf1Nq6mw5JaanVASI-Hikn9xPaKODw4",
+            "SecondaryCredentialValue": ""
+          }
+        ],
+        "Endpoints": []
+      }
+    ],
+    "Categories": [
+      {
+        "Id": 1,
+        "Code": "PUBLIC",
+        "Name": "Public APIs",
+        "Description": "Endpoints accessible without authentication",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 2,
+        "Code": "AUTH",
+        "Name": "Authentication",
+        "Description": "Endpoints for authenticating",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-03T14:13:12.2033333",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 4,
+        "Code": "TEMENOS",
+        "Name": "Temenos",
+        "Description": "Endpoints for Temenos",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-09-18T15:10:00.4966667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      },
+      {
+        "Id": 5,
+        "Code": "NIDAS",
+        "Name": "NIDAS",
+        "Description": "Endpoints for NIDAS Identity Verification",
+        "IsActive": true,
+        "CreatedBy": null,
+        "CreatedDate": "2026-10-28T13:24:37.0166667",
+        "UpdatedBy": null,
+        "UpdatedDate": null
+      }
+    ]
+  }
+}
